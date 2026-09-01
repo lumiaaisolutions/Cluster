@@ -1,0 +1,72 @@
+name: Smoke tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  php-lint:
+    name: PHP syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - name: Lint every .php file
+        run: |
+          set -e
+          fail=0
+          while IFS= read -r -d '' file; do
+            php -l "$file" || fail=1
+          done < <(find build -name "*.php" -print0)
+          exit $fail
+
+  broken-links:
+    name: Broken internal link check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Scan for broken href/src/fetch references
+        run: |
+          python3 - << 'EOF'
+          import re, os, sys
+          BUILD = 'build'
+          SKIP_DIRS = {'node_modules', '.git', 'uploads', 'storage', 'dist'}
+          pat_href = re.compile(r'''(?:href|src|action)=["']([^"'#?]+)''')
+          pat_fetch = re.compile(r'''fetch\(\s*[`"']([^`"'$]+?)[`"'?]''')
+          broken = []
+          for root, dirs, files in os.walk(BUILD):
+              dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+              for f in files:
+                  if not f.endswith(('.html', '.js', '.php')):
+                      continue
+                  p = os.path.join(root, f)
+                  txt = open(p, encoding='utf-8', errors='ignore').read()
+                  rel = os.path.relpath(p, BUILD)
+                  for pat in (pat_href, pat_fetch):
+                      for m in pat.finditer(txt):
+                          r = m.group(1).strip()
+                          if r.startswith(('http', '//', 'mailto:', 'tel:', 'javascript:', 'data:', '${', '{{', '#', 'blob:')):
+                              continue
+                          if not re.search(r'\.(html|php|js|css|png|jpg|jpeg|svg|gif|webp|ico|pdf|json)$', r, re.I):
+                              continue
+                          if r.startswith('/'):
+                              target = os.path.join(BUILD, r.lstrip('/'))
+                          else:
+                              rr = r[2:] if r.startswith('./') else r
+                              target = os.path.normpath(os.path.join(BUILD, os.path.dirname(rel), rr))
+                          if not os.path.exists(target):
+                              broken.append(f"{rel}: {r}")
+          if broken:
+              print(f"::warning::{len(broken)} possibly-broken references found (informational, not blocking)")
+              for b in broken[:50]:
+                  print(f"  {b}")
+          else:
+              print("No broken references found.")
+          EOF
