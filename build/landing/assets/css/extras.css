@@ -1,0 +1,471 @@
+/* ============================================================
+   CLAUTMET · Extras (ClautMet block, invert-on-scroll, scroll fx)
+   ============================================================ */
+
+/* ---------- ClautMet block ---------- */
+.clautmet {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+  padding: 56px 56px 48px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-2xl);
+  background:
+    radial-gradient(140% 80% at 100% 0%, rgba(199,37,43,.08), transparent 55%),
+    var(--glass-bg);
+  overflow: hidden;
+}
+.clautmet::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  mask-image: radial-gradient(80% 100% at 50% 0%, #000 0%, transparent 80%);
+}
+.clautmet-lead {
+  font-family: var(--font-display, var(--font-sans));
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.45;
+  color: var(--fg-1);
+  text-wrap: pretty;
+  letter-spacing: -0.01em;
+  position: relative;
+}
+.clautmet-lead strong {
+  color: var(--claut-red);
+  font-weight: 600;
+}
+.clautmet-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: relative;
+}
+.clautmet-cell {
+  background: var(--bg-1);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 130px;
+  transition: background .35s ease;
+}
+.clautmet-cell:hover {
+  background: var(--bg-2);
+}
+.clautmet-cell .k {
+  font-family: var(--font-display, var(--font-serif, var(--font-sans)));
+  font-size: clamp(36px, 3vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--fg-1);
+}
+.clautmet-cell .l {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+@media (max-width: 980px) {
+  .clautmet { grid-template-columns: 1fr; padding: 36px 24px; gap: 32px; }
+}
+
+/* ---------- INVERT ON SCROLL ----------
+   Section flips foreground/background when it enters the viewport.
+   We animate via CSS variables so children inherit the change. */
+.invert-on-scroll {
+  position: relative;
+  transition: background 1.6s cubic-bezier(.4,0,.2,1), color 1.6s cubic-bezier(.4,0,.2,1), border-color 1.6s cubic-bezier(.4,0,.2,1);
+  background: var(--bg-0);
+}
+.invert-on-scroll.is-inverted {
+  background: #F5F5F7 !important;
+  color: #07080A !important;
+}
+.invert-on-scroll.is-inverted::before {
+  display: none !important;
+}
+.invert-on-scroll.is-inverted .kicker,
+.invert-on-scroll.is-inverted .display,
+.invert-on-scroll.is-inverted .lead,
+.invert-on-scroll.is-inverted h1,
+.invert-on-scroll.is-inverted h2,
+.invert-on-scroll.is-inverted h3,
+.invert-on-scroll.is-inverted h4,
+.invert-on-scroll.is-inverted h5,
+.invert-on-scroll.is-inverted p,
+.invert-on-scroll.is-inverted .display em {
+  transition: color 1.6s cubic-bezier(.4,0,.2,1) !important;
+  color: #07080A !important;
+}
+.invert-on-scroll.is-inverted .kicker .num {
+  color: var(--claut-red) !important;
+}
+.invert-on-scroll.is-inverted .display em {
+  color: rgba(7,8,10,0.62) !important;
+}
+
+/* CTA card inversion */
+
+/* Footer inversion */
+.footer.invert-on-scroll.is-inverted {
+  background: linear-gradient(180deg, #FAFAFC 0%, #F2F2F5 100%) !important;
+  border-top-color: rgba(0,0,0,0.08) !important;
+}
+.footer.invert-on-scroll.is-inverted::before {
+  display: block !important;
+  background: linear-gradient(90deg, transparent, var(--claut-red), transparent) !important;
+  opacity: .6 !important;
+}
+.footer.invert-on-scroll.is-inverted .footer-mega {
+  background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.02) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-stroke: 1px rgba(0,0,0,0.18) !important;
+}
+.footer.invert-on-scroll.is-inverted .brand,
+.footer.invert-on-scroll.is-inverted .brand-text,
+.footer.invert-on-scroll.is-inverted .footer-grid h5,
+.footer.invert-on-scroll.is-inverted .footer-grid a,
+.footer.invert-on-scroll.is-inverted .footer-grid li,
+.footer.invert-on-scroll.is-inverted .footer-bottom span,
+.footer.invert-on-scroll.is-inverted .muted {
+  color: #07080A !important;
+}
+.footer.invert-on-scroll.is-inverted .brand em {
+  color: rgba(7,8,10,0.55) !important;
+}
+.footer.invert-on-scroll.is-inverted .footer-grid h5 {
+  color: rgba(7,8,10,0.5) !important;
+}
+.footer.invert-on-scroll.is-inverted .footer-grid a,
+.footer.invert-on-scroll.is-inverted .footer-grid li {
+  color: rgba(7,8,10,0.65) !important;
+}
+.footer.invert-on-scroll.is-inverted .footer-grid a:hover {
+  color: var(--claut-red) !important;
+}
+.footer.invert-on-scroll.is-inverted .footer-bottom {
+  border-top-color: rgba(0,0,0,0.08) !important;
+}
+.footer.invert-on-scroll.is-inverted .footer-bottom .mono {
+  color: rgba(7,8,10,0.45) !important;
+}
+.invert-on-scroll.is-inverted .clautmet {
+  border-color: rgba(0,0,0,.12);
+  background:
+    radial-gradient(140% 80% at 100% 0%, rgba(199,37,43,.10), transparent 55%),
+    rgba(0,0,0,.03);
+}
+.invert-on-scroll.is-inverted .clautmet::before {
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,.05) 1px, transparent 1px);
+}
+.invert-on-scroll.is-inverted .clautmet-grid {
+  background: rgba(0,0,0,.10);
+  border-color: rgba(0,0,0,.10);
+}
+.invert-on-scroll.is-inverted .clautmet-cell {
+  background: var(--fg-1);
+  color: var(--bg-0);
+}
+.invert-on-scroll.is-inverted .clautmet-cell:hover {
+  background: rgba(0,0,0,.04);
+}
+.invert-on-scroll.is-inverted .clautmet-cell .k { color: var(--bg-0); }
+.invert-on-scroll.is-inverted .clautmet-cell .l { color: rgba(7,8,10,.55); }
+.invert-on-scroll.is-inverted .clautmet-lead strong { color: var(--claut-red); }
+
+/* Add a thin horizontal hairline that draws across as a hint */
+.invert-on-scroll::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--claut-red), transparent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.invert-on-scroll.is-inverted::after { transform: scaleX(1); }
+
+/* ---------- Parallax + scroll-driven enhancements ---------- */
+
+/* Soft float for benefit cards on scroll */
+.benefit {
+  transform: translateY(0);
+  transition: transform .9s cubic-bezier(.2,.7,.2,1), opacity .9s ease;
+  will-change: transform;
+}
+
+/* Section heads: animate kicker number on enter */
+.section-head .kicker .num {
+  position: relative;
+  display: inline-block;
+}
+[data-reveal].in .kicker .num::after {
+  content: "";
+  position: absolute;
+  left: -3px; right: -3px; bottom: -2px;
+  height: 1px;
+  background: var(--claut-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: numUnderline 1.2s .25s cubic-bezier(.2,.7,.2,1) forwards;
+}
+@keyframes numUnderline {
+  to { transform: scaleX(1); }
+}
+
+/* Scroll progress bar at very top */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: var(--p, 0%);
+  background: linear-gradient(90deg, var(--claut-red), #f06b70);
+  z-index: 250;
+  pointer-events: none;
+  transition: width .12s linear;
+  box-shadow: 0 0 10px rgba(199,37,43,.5);
+}
+
+/* Display title scroll-driven scale (subtle) */
+@supports (animation-timeline: view()) {
+  .display.lg, .display.md {
+    animation: titleEnter linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+  @keyframes titleEnter {
+    from { opacity: 0; transform: translateY(28px); letter-spacing: -.02em; }
+    to   { opacity: 1; transform: translateY(0);   letter-spacing: -.04em; }
+  }
+
+  /* Marquee parallax */
+  .marquee-track {
+    animation-timeline: scroll(root);
+  }
+
+  /* Benefits stagger in via scroll-timeline */
+  .benefit {
+    animation: benefitIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+  @keyframes benefitIn {
+    from { transform: translateY(40px) scale(.985); opacity: 0; }
+    to   { transform: translateY(0) scale(1);     opacity: 1; }
+  }
+
+  /* Sector cards float in */
+  .sector-card {
+    animation: cardFlip linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+  }
+  @keyframes cardFlip {
+    from { transform: translateY(24px) rotateX(8deg); opacity: 0; }
+    to   { transform: translateY(0) rotateX(0);       opacity: 1; }
+  }
+
+  /* Map zooms a touch as it enters */
+  .states-stack {
+    animation: mapZoom linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+  @keyframes mapZoom {
+    from { transform: scale(.94); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
+  /* Footer mega type slide */
+  .footer-mega {
+    animation: megaSlide linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 50%;
+  }
+  @keyframes megaSlide {
+    from { transform: translateX(-6%); }
+    to   { transform: translateX(0); }
+  }
+
+  /* Eventos rows slide */
+  .evento {
+    animation: eventoIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+  @keyframes eventoIn {
+    from { transform: translateX(-24px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+  }
+
+  /* Posts subtle */
+  .post {
+    animation: postIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+  @keyframes postIn {
+    from { transform: translateY(28px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+}
+
+/* Hover-lift on logo cells */
+.logo-cell { transition: transform .35s ease, border-color .35s ease, background .35s ease; }
+.logo-cell:hover { transform: translateY(-3px); border-color: var(--claut-red); }
+
+/* Map glow on enter (legacy — kept harmless) */
+
+/* Animated map pin pulse */
+.map-pin {
+  fill: var(--claut-red);
+  filter: drop-shadow(0 0 6px rgba(199,37,43,.7));
+  animation: pinPulse 2.4s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes pinPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.35); opacity: .65; }
+}
+
+/* Reveal masking for headings — soft */
+[data-reveal] {
+  --rd: 0s;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .8s ease var(--rd), transform .8s cubic-bezier(.2,.7,.2,1) var(--rd);
+}
+[data-reveal].in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* ============================================================
+   Brand logo sizing
+   ============================================================ */
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+.brand-logo-footer {
+  width: 48px;
+  height: 48px;
+}
+.nav .brand {
+  font-size: 16px;
+  line-height: 1;
+}
+.nav .brand-text {
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Footer — lift contrast and add rhythm
+   ============================================================ */
+.footer {
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(199,37,43,.06), transparent 55%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--claut-red), transparent);
+  opacity: .4;
+}
+.footer .footer-grid {
+  position: relative;
+  z-index: 2;
+}
+.footer .footer-grid h5 {
+  color: var(--fg-1);
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  opacity: .55;
+  font-weight: 600;
+}
+.footer .footer-grid a,
+.footer .footer-grid li {
+  color: var(--fg-2);
+  font-size: 14px;
+  transition: color .25s ease, transform .25s ease;
+}
+.footer .footer-grid a {
+  display: inline-block;
+}
+.footer .footer-grid a:hover {
+  color: var(--fg-1);
+  transform: translateX(4px);
+}
+.footer .footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer .footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: var(--fg-3);
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+
+/* Footer reveal — staggered columns lift in (disabled to ensure visibility) */
+.footer .footer-grid > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Brand mark in footer pulses subtle */
+.brand-logo-footer {
+  animation: footerLogoFloat 6s ease-in-out infinite;
+}
+@keyframes footerLogoFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-3px) rotate(-2deg); }
+}
+
+/* Footer mega type — gradient overlay for legibility */
+.footer-mega {
+  background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.18);
+}

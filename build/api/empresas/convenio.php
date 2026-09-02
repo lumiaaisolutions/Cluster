@@ -86,7 +86,7 @@ function handleGet($db) {
                         e.*, 
                         COUNT(DISTINCT u.id) as total_empleados,
                         COUNT(DISTINCT cm.comite_id) as comites_participando
-                    FROM empresas e
+                    FROM empresas_convenio e
                     LEFT JOIN usuarios u ON e.id = u.empresa_id AND u.estado = 'activo'
                     LEFT JOIN comite_miembros cm ON u.id = cm.usuario_id AND cm.estado = 'activo'
                     WHERE e.estado = 'activa'
@@ -129,7 +129,7 @@ function handlePost($db) {
     }
     
     // Insertar empresa
-    $sql = "INSERT INTO empresas (nombre, descripcion, website, telefono, email, direccion, logo, estado, fecha_registro) 
+    $sql = "INSERT INTO empresas_convenio (nombre, descripcion, website, telefono, email, direccion, logo, estado, fecha_registro) 
             VALUES (?, ?, ?, ?, ?, ?, ?, 'activa', NOW())";
     
     $empresaId = $db->insert($sql, [
@@ -137,7 +137,7 @@ function handlePost($db) {
     ]);
     
     if ($empresaId) {
-        $empresa = $db->selectOne("SELECT * FROM empresas WHERE id = ?", [$empresaId]);
+        $empresa = $db->selectOne("SELECT * FROM empresas_convenio WHERE id = ?", [$empresaId]);
         jsonResponse($empresa, 201, 'Empresa creada exitosamente');
     } else {
         jsonError('Error al crear empresa', 500);
@@ -162,7 +162,7 @@ function handlePut($db) {
     }
     
     // Verificar que la empresa existe
-    $empresa = $db->selectOne("SELECT * FROM empresas WHERE id = ?", [$id]);
+    $empresa = $db->selectOne("SELECT * FROM empresas_convenio WHERE id = ?", [$id]);
     if (!$empresa) {
         jsonError('Empresa no encontrada', 404);
     }
@@ -185,12 +185,12 @@ function handlePut($db) {
     }
     
     $params[] = $id;
-    $sql = "UPDATE empresas SET " . implode(', ', $updateFields) . ", fecha_actualizacion = NOW() WHERE id = ?";
+    $sql = "UPDATE empresas_convenio SET " . implode(', ', $updateFields) . ", fecha_actualizacion = NOW() WHERE id = ?";
     
     $updated = $db->update($sql, $params);
     
     if ($updated) {
-        $empresa = $db->selectOne("SELECT * FROM empresas WHERE id = ?", [$id]);
+        $empresa = $db->selectOne("SELECT * FROM empresas_convenio WHERE id = ?", [$id]);
         jsonResponse($empresa, 200, 'Empresa actualizada exitosamente');
     } else {
         jsonError('Error al actualizar empresa', 500);
@@ -207,13 +207,13 @@ function handleDelete($db) {
     }
     
     // Verificar que la empresa exists
-    $empresa = $db->selectOne("SELECT * FROM empresas WHERE id = ?", [$id]);
+    $empresa = $db->selectOne("SELECT * FROM empresas_convenio WHERE id = ?", [$id]);
     if (!$empresa) {
         jsonError('Empresa no encontrada', 404);
     }
     
     // Soft delete - cambiar estado
-    $deleted = $db->update("UPDATE empresas SET estado = 'inactiva', fecha_actualizacion = NOW() WHERE id = ?", [$id]);
+    $deleted = $db->update("UPDATE empresas_convenio SET estado = 'inactiva', fecha_actualizacion = NOW() WHERE id = ?", [$id]);
     
     if ($deleted) {
         jsonResponse(null, 200, 'Empresa marcada como inactiva exitosamente');

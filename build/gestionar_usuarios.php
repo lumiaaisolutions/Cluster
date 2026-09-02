@@ -271,6 +271,9 @@ try {
     <title>Gestión de Usuarios - Clúster</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
+    <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
         body {
             font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -305,16 +308,6 @@ try {
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
-        }
-        
-        .header-stat-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
         }
         
         .stat-number {
@@ -467,133 +460,7 @@ try {
             }
         }
 
-        /* Porsche-inspired Design System - Responsive Sidebar */
-        :root {
-            /* Primary Colors - Inspired by Porsche */
-            --porsche-black: #1a1a1a;
-            --porsche-charcoal: #2d2d2d;
-            --porsche-silver: #8a8a8a;
-            --porsche-white: #ffffff;
-            --porsche-light-gray: #f5f5f5;
-            --porsche-accent: #c9302c;
-            /* Typography */
-            --porsche-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --porsche-radius-lg: 12px;
-        }
-
-        /* === RESPONSIVE SIDEBAR FUNCTIONALITY === */
-
-        /* Porsche-inspired Sidebar */
-        .porsche-sidebar {
-            background: linear-gradient(180deg, var(--porsche-black) 0%, var(--porsche-charcoal) 100%) !important;
-            border-radius: var(--porsche-radius-lg) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
-            height: calc(100vh - 2rem) !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            font-family: var(--porsche-font) !important;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-        }
-
-        .porsche-sidebar .porsche-logo {
-            color: var(--porsche-white) !important;
-            font-weight: 700 !important;
-            font-size: 1.5rem !important;
-        }
-
-        .porsche-nav-item {
-            color: rgba(255, 255, 255, 0.8) !important;
-            border-radius: 12px !important;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            font-weight: 500 !important;
-        }
-
-        .porsche-nav-item:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            color: var(--porsche-white) !important;
-            transform: translateX(4px) !important;
-        }
-
-        .porsche-nav-item.active {
-            background: rgba(199, 37, 43, 0.2) !important;
-            color: var(--porsche-white) !important;
-            border-left: 3px solid #C7252B !important;
-        }
-
-        /* Sidebar Overlay */
-        .sidenav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-            backdrop-filter: blur(4px);
-        }
-
-        .sidenav-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            z-index: 998;
-        }
-
-        /* Close button styling */
-        #sidebarCloseBtn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        #sidebarCloseBtn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* Sidebar always retractable - All screens */
-        .porsche-sidebar {
-            transform: translateX(-100%) !important;
-            z-index: 999 !important;
-            margin: 0 !important;
-            top: 0 !important;
-            left: 0 !important;
-            border-radius: 0 !important;
-            width: 280px !important;
-            max-width: 280px !important;
-            height: 100vh !important;
-            position: fixed !important;
-            display: block !important;
-        }
-
-        .porsche-sidebar.sidenav-show {
-            transform: translateX(0) !important;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Main content always without sidebar margin */
-        .main-content {
-            margin-left: 0 !important;
-            width: 100% !important;
-        }
-
         .container {
-            margin-left: 0 !important;
             padding-left: 1rem !important;
             padding-right: 1rem !important;
         }
@@ -604,39 +471,6 @@ try {
                 padding-left: 2rem !important;
                 padding-right: 2rem !important;
             }
-        }
-
-        /* Force sidebar behavior on all screens - Override any conflicting styles */
-        .porsche-sidebar.sidebar-enhanced {
-            transform: translateX(-100%) !important;
-        }
-
-        .porsche-sidebar.sidebar-enhanced.sidenav-show {
-            transform: translateX(0) !important;
-        }
-
-        /* Override any Tailwind classes that might interfere */
-        aside.porsche-sidebar {
-            left: 0 !important;
-            margin-left: 0 !important;
-        }
-
-        /* Ensure hamburger button works on all screens */
-        @media (min-width: 1280px) {
-            [sidenav-trigger] {
-                display: block !important;
-                visibility: visible !important;
-            }
-        }
-
-        /* Hamburger button styling */
-        .hamburger-btn {
-            transition: all 0.3s ease;
-        }
-
-        .hamburger-btn:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.1) !important;
         }
 
         /* ============================================================
@@ -710,157 +544,89 @@ try {
         }
     </style>
 </head>
-<body>
-    <!-- Sidebar Overlay for Mobile -->
-    <div class="sidenav-overlay" id="sidenavOverlay"></div>
-    <!-- Porsche Sidebar -->
-    <aside id="porscheSidebar"
-        class="porsche-sidebar sidebar-enhanced fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 m-0 overflow-y-auto overflow-x-hidden antialiased transition-transform duration-200 border-0 max-w-64 ease-nav-brand z-990"
-        aria-expanded="false">
-        <div class="h-48 py-6 relative mb-4">
-            <!-- Botón de cerrar para todas las pantallas -->
-            <button class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-50 p-3 bg-black/30 rounded-lg hover:bg-black/50 transition-all"
-                    id="sidebarCloseBtn"
-                    sidenav-close
-                    aria-label="Cerrar menú">
-                <i class="fas fa-times"></i>
-            </button>
-            <a class="porsche-logo block px-6 py-4 m-0 text-center whitespace-nowrap" href="dashboard.html"
-              target="_blank">
-                <img src="../assets/img/apple-icon.png"
-                  class="block mx-auto h-32 w-32 max-w-full transition-all duration-200 ease-nav-brand mb-4"
-                  alt="main_logo" />
-                <span class="block text-lg transition-all duration-200 ease-nav-brand text-white font-semibold mb-4">Clúster Admin</span>
-            </a>
+<body class="claut-dark claut-skin">
+    <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
+        <div class="claut-admin-sidebar-brand">
+            <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
+            <span class="claut-admin-sidebar-title">Clúster Admin</span>
         </div>
-        <hr class="h-px mt-4 mb-4 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
-        <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-            <ul class="flex flex-col pl-0 mb-0 pt-4">
-                <!-- Dashboard -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="dashboard.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Dashboard</span>
-                    </a>
-                </li>
-                <!-- admin panel -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin-panel.html?login=success">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Panel Administrador</span>
-                    </a>
-                </li>
-                <!-- Usuarios - ACTIVE -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item active py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="gestionar_usuarios.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-emerald-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Gestión de Usuarios</span>
-                    </a>
-                </li>
-                <!-- Empresas -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_empresas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-building text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Empresas</span>
-                    </a>
-                </li>
-                <!-- Descuentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_descuentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tags text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Descuentos</span>
-                    </a>
-                </li>
-                <!-- Comités -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_comite.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Comités</span>
-                    </a>
-                </li>
-                <!-- Eventos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_evento.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-calendar text-orange-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Eventos</span>
-                    </a>
-                </li>
-                <!-- Gestión Gráfico -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_gestion_grafico.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-chart-bar text-teal-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Gestión Gráfico</span>
-                    </a>
-                </li>
-                <!-- Estadísticas Dinámicas -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_estadisticasdinamicas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-chart-line text-indigo-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Estadísticas Dinámicas</span>
-                    </a>
-                </li>
-                <!-- Visitantes -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_visitante.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-eye text-cyan-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Visitantes</span>
-                    </a>
-                </li>
-                <!-- Banners -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin/banner-admin-mejorado.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-images text-pink-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Banners</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="claut-admin-sidebar-divider"></div>
+
+        <nav class="claut-admin-nav">
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">General</p>
+                <a href="admin-panel.html?login=success" class="claut-admin-nav-item">
+                    <i class="fas fa-shield-halved"></i><span>Panel Admin</span>
+                </a>
+                <a href="dashboard.html" class="claut-admin-nav-item">
+                    <i class="fas fa-house"></i><span>Dashboard</span>
+                </a>
+            </div>
+
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Ecosistema de módulos</p>
+                <a href="admin/banner-admin-mejorado.php" class="claut-admin-nav-item">
+                    <i class="fas fa-images"></i><span>Banners</span>
+                </a>
+                <a href="demo_boletines.html" class="claut-admin-nav-item">
+                    <i class="fas fa-newspaper"></i><span>Boletines</span>
+                </a>
+                <a href="demo_documentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-folder-open"></i><span>Documentos</span>
+                </a>
+                <a href="demo_descuentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-tags"></i><span>Beneficios</span>
+                </a>
+                <a href="demo_comite.html" class="claut-admin-nav-item">
+                    <i class="fas fa-people-group"></i><span>Comités</span>
+                </a>
+                <a href="calendario.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-days"></i><span>Calendario</span>
+                </a>
+                <a href="demo_empresas.html" class="claut-admin-nav-item">
+                    <i class="fas fa-building"></i><span>Socios</span>
+                </a>
+                <a href="demo_evento.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-check"></i><span>Eventos</span>
+                </a>
+                <a href="gestionar_usuarios.php" class="claut-admin-nav-item active">
+                    <i class="fas fa-users"></i><span>Usuarios</span>
+                </a>
+                <a href="demo_visitante.html" class="claut-admin-nav-item">
+                    <i class="fas fa-user-shield"></i><span>Visitantes</span>
+                </a>
+            </div>
+
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Sistema</p>
+                <a href="profile.html" class="claut-admin-nav-item">
+                    <i class="fas fa-gear"></i><span>Configuración</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="claut-admin-sidebar-foot">
+            <button onclick="window.location.href='pages/sign-in.html'" class="claut-admin-nav-item claut-admin-nav-item--danger">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
+            </button>
         </div>
     </aside>
 
+    <div class="claut-admin-sidebar-overlay" id="claut-admin-sidebar-overlay"></div>
+
     <div class="main-content">
     <!-- Header - Premium Redesign -->
-    <header class="header-gradient-premium text-white shadow-lg sticky top-0 z-40">
+    <header class="claut-admin-main header-gradient-premium text-white shadow-lg sticky top-0 z-40">
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
-                    <button class="hamburger-btn bg-white/5 hover:bg-white/10 p-3 rounded-xl mr-5 backdrop-blur-md border border-white/10"
-                            sidenav-trigger
-                            id="hamburgerBtn"
-                            aria-label="Abrir menú">
-                        <i class="fas fa-bars text-white/90"></i>
+                    <button class="mr-5 p-3 bg-white/5 hover:bg-white/10 rounded-xl backdrop-blur-md border border-white/10 text-white/90"
+                            id="claut-header-menu-btn"
+                            style="transition: background .2s ease;"
+                            aria-label="Abrir menú de navegación">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
                     </button>
                     <div>
                         <h1 class="text-2xl font-extrabold tracking-tight flex items-center">
@@ -885,7 +651,7 @@ try {
         </div>
     </header>
 
-    <div class="container mx-auto px-6 py-8">
+    <div class="claut-admin-main container mx-auto px-6 py-8">
         <!-- Stats Cards Redesign -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <?php
@@ -897,74 +663,46 @@ try {
             ];
             ?>
             <!-- Total Card -->
-            <div class="glass-card p-5 relative overflow-hidden group">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-red-600/5 rounded-full blur-3xl group-hover:bg-red-600/10 transition-colors"></div>
-                <div class="flex items-start justify-between">
+            <div class="claut-stat-card claut-stat-card--red">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Total Usuarios</p>
-                        <h3 class="text-3xl font-black text-white"><?php echo $stats['total']; ?></h3>
+                        <p class="stat-label">Total Usuarios</p>
+                        <p class="stat-value"><?php echo $stats['total']; ?></p>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-red-600/10 flex items-center justify-center border border-red-600/20">
-                        <i class="fas fa-users text-red-500"></i>
-                    </div>
-                </div>
-                <div class="mt-4 flex items-center text-[10px] font-bold text-gray-500 uppercase">
-                    <span class="text-green-500 mr-1"><i class="fas fa-arrow-up"></i> 100%</span>
-                    Base de datos activa
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
                 </div>
             </div>
 
             <!-- Activos Card -->
-            <div class="glass-card p-5 relative overflow-hidden group">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-green-600/5 rounded-full blur-3xl group-hover:bg-green-600/10 transition-colors"></div>
-                <div class="flex items-start justify-between">
+            <div class="claut-stat-card claut-stat-card--green">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Usuarios Activos</p>
-                        <h3 class="text-3xl font-black text-white"><?php echo $stats['activos']; ?></h3>
+                        <p class="stat-label">Usuarios Activos</p>
+                        <p class="stat-value"><?php echo $stats['activos']; ?></p>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-green-600/10 flex items-center justify-center border border-green-600/20">
-                        <i class="fas fa-user-check text-green-500"></i>
-                    </div>
-                </div>
-                <div class="mt-4 flex items-center text-[10px] font-bold text-gray-500 uppercase">
-                    <span class="text-green-500 mr-1"><i class="fas fa-check-circle"></i> Verificados</span>
-                    En el sistema
+                    <div class="stat-icon"><i class="fas fa-user-check"></i></div>
                 </div>
             </div>
 
             <!-- Inactivos Card -->
-            <div class="glass-card p-5 relative overflow-hidden group">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-orange-600/5 rounded-full blur-3xl group-hover:bg-orange-600/10 transition-colors"></div>
-                <div class="flex items-start justify-between">
+            <div class="claut-stat-card claut-stat-card--gold">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Inactivos / Pendientes</p>
-                        <h3 class="text-3xl font-black text-white"><?php echo $stats['inactivos']; ?></h3>
+                        <p class="stat-label">Inactivos / Pendientes</p>
+                        <p class="stat-value"><?php echo $stats['inactivos']; ?></p>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-orange-600/10 flex items-center justify-center border border-orange-600/20">
-                        <i class="fas fa-user-clock text-orange-500"></i>
-                    </div>
-                </div>
-                <div class="mt-4 flex items-center text-[10px] font-bold text-gray-500 uppercase">
-                    <span class="text-orange-500 mr-1"><i class="fas fa-exclamation-triangle"></i> Revisión</span>
-                    Pendiente de acción
+                    <div class="stat-icon"><i class="fas fa-user-clock"></i></div>
                 </div>
             </div>
 
             <!-- Admins Card -->
-            <div class="glass-card p-5 relative overflow-hidden group">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-purple-600/5 rounded-full blur-3xl group-hover:bg-purple-600/10 transition-colors"></div>
-                <div class="flex items-start justify-between">
+            <div class="claut-stat-card claut-stat-card--blue">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Administradores</p>
-                        <h3 class="text-3xl font-black text-white"><?php echo $stats['administradores']; ?></h3>
+                        <p class="stat-label">Administradores</p>
+                        <p class="stat-value"><?php echo $stats['administradores']; ?></p>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-purple-600/10 flex items-center justify-center border border-purple-600/20">
-                        <i class="fas fa-shield-alt text-purple-500"></i>
-                    </div>
-                </div>
-                <div class="mt-4 flex items-center text-[10px] font-bold text-gray-500 uppercase">
-                    <span class="text-purple-500 mr-1"><i class="fas fa-crown"></i> Privilegiados</span>
-                    Acceso total
+                    <div class="stat-icon"><i class="fas fa-shield-alt"></i></div>
                 </div>
             </div>
         </div>
@@ -1125,7 +863,7 @@ try {
 
                                     <!-- Botón Restricciones -->
                                     <button type="button" class="btn btn-warning" onclick="abrirModalRestricciones(<?php echo $usuario['id']; ?>, '<?php echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellidos']); ?>')">
-                                        🔒 Restricciones
+                                        <i class="fas fa-lock"></i> Restricciones
                                     </button>
                                     
                                     <?php if ($estado_real !== 'activo'): ?>
@@ -1133,7 +871,7 @@ try {
                                             <input type="hidden" name="action" value="activar">
                                             <input type="hidden" name="user_id" value="<?php echo $usuario['id']; ?>">
                                             <button type="submit" class="btn btn-success" onclick="return confirm('¿Activar este usuario?')">
-                                                ✅ Activar
+                                                <i class="fas fa-circle-check"></i> Activar
                                             </button>
                                         </form>
                                     <?php endif; ?>
@@ -1143,7 +881,7 @@ try {
                                             <input type="hidden" name="action" value="desactivar">
                                             <input type="hidden" name="user_id" value="<?php echo $usuario['id']; ?>">
                                             <button type="submit" class="btn btn-secondary" onclick="return confirm('¿Desactivar este usuario?')">
-                                                ❌ Desactivar
+                                                <i class="fas fa-circle-xmark"></i> Desactivar
                                             </button>
                                         </form>
                                     <?php endif; ?>
@@ -1152,7 +890,7 @@ try {
                                         <input type="hidden" name="action" value="eliminar">
                                         <input type="hidden" name="user_id" value="<?php echo $usuario['id']; ?>">
                                         <button type="submit" class="btn btn-danger" onclick="return confirm('¿ELIMINAR permanentemente este usuario? Esta acción no se puede deshacer.')">
-                                            🗑️ Eliminar
+                                            <i class="fas fa-trash"></i> Eliminar
                                         </button>
                                     </form>
                                 </div>
@@ -1251,13 +989,14 @@ try {
             cargarEmpresasSelect();
 
             // Mostrar el modal
-            document.getElementById('editModal').classList.remove('hidden');
-            document.getElementById('editModal').style.display = 'flex';
+            const editModal = document.getElementById('editModal');
+            editModal.classList.add('open');
+            const editWizardEl = editModal.querySelector('.claut-wizard');
+            if (editWizardEl && editWizardEl.__clautWizardReset) editWizardEl.__clautWizardReset();
         }
-        
+
         function cerrarModal() {
-            document.getElementById('editModal').classList.add('hidden');
-            document.getElementById('editModal').style.display = 'none';
+            document.getElementById('editModal').classList.remove('open');
             // Limpiar campos de contraseña al cerrar
             if (document.getElementById('nueva_password')) {
                 document.getElementById('nueva_password').value = '';
@@ -1313,12 +1052,12 @@ try {
                     renderProfileNotifications(result.notificaciones);
                 } else {
                     document.getElementById('profileNotificationsContainer').innerHTML =
-                        '<div style="text-align: center; padding: 20px; color: #e74c3c;">❌ Error al cargar notificaciones</div>';
+                        '<div style="text-align: center; padding: 20px; color: #e74c3c;"><i class="fas fa-circle-xmark"></i> Error al cargar notificaciones</div>';
                 }
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('profileNotificationsContainer').innerHTML =
-                    '<div style="text-align: center; padding: 20px; color: #e74c3c;">❌ Error de conexión</div>';
+                    '<div style="text-align: center; padding: 20px; color: #e74c3c;"><i class="fas fa-circle-xmark"></i> Error de conexión</div>';
             }
         }
 
@@ -1448,14 +1187,14 @@ try {
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('✅ Cambio aprobado exitosamente');
+                    alert('Cambio aprobado exitosamente');
                     loadProfileNotifications();
                 } else {
-                    alert('❌ Error: ' + (result.message || 'Error al aprobar cambio'));
+                    alert('Error: ' + (result.message || 'Error al aprobar cambio'));
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('❌ Error de conexión');
+                alert('Error de conexión');
             }
         }
 
@@ -1477,14 +1216,14 @@ try {
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('✅ Cambio rechazado');
+                    alert('Cambio rechazado');
                     loadProfileNotifications();
                 } else {
-                    alert('❌ Error: ' + (result.message || 'Error al rechazar cambio'));
+                    alert('Error: ' + (result.message || 'Error al rechazar cambio'));
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('❌ Error de conexión');
+                alert('Error de conexión');
             }
         }
 
@@ -1495,168 +1234,183 @@ try {
     </script>
 
     <!-- Modal de Edición -->
-    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop" style="display: none;">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg max-w-2xl w-full slide-in max-h-[90vh] overflow-hidden">
-                <div class="p-6 border-b">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-xl font-bold text-gray-800">
-                            <i class="fas fa-edit mr-2" style="color: #C7252B;"></i>Editar Usuario
-                        </h2>
-                        <button onclick="cerrarModal()" class="text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-times text-xl"></i>
-                        </button>
-                    </div>
-                </div>
-            
-                <div class="p-6 overflow-y-auto max-h-[70vh]">
-                    <form method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="editar">
-                <input type="hidden" id="edit_user_id" name="user_id" value="">
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nombre *</label>
-                        <input type="text" id="edit_nombre" name="nombre" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-                    
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Apellidos</label>
-                        <input type="text" id="edit_apellidos" name="apellidos" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Email *</label>
-                        <input type="email" id="edit_email" name="email" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-                    
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Teléfono</label>
-                        <input type="tel" id="edit_telefono" name="telefono" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                    <div>
-                        <label id="lbl_fecha_edit" style="display: block; margin-bottom: 5px; font-weight: bold;">Fecha de Nacimiento</label>
-                        <input type="date" id="edit_fecha_nacimiento" name="fecha_nacimiento" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+    <div id="editModal" class="claut-wizard-backdrop">
+        <form method="POST" enctype="multipart/form-data" class="claut-wizard" style="max-width:760px;">
+            <input type="hidden" name="action" value="editar">
+            <input type="hidden" id="edit_user_id" name="user_id" value="">
+
+            <div class="claut-wizard-head">
+                <h2><i class="fas fa-edit mr-2" style="color: #C7252B;"></i>Editar Usuario</h2>
+                <p>Actualiza los datos, la empresa asociada y las credenciales del usuario</p>
+                <button type="button" class="claut-modal-close" onclick="cerrarModal()" aria-label="Cerrar">&times;</button>
+            </div>
+
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Datos personales</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Empresa y ubicación</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="3">
+                        <span class="claut-wizard-step-num">3</span><span>Biografía y seguridad</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="4">
+                        <span class="claut-wizard-step-num">4</span><span>Foto de perfil</span>
+                    </button>
+                </nav>
+
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Datos personales -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 4</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label>Nombre *</label>
+                                <input type="text" id="edit_nombre" name="nombre" required>
+                            </div>
+                            <div>
+                                <label>Apellidos</label>
+                                <input type="text" id="edit_apellidos" name="apellidos">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label>Email *</label>
+                                <input type="email" id="edit_email" name="email" required>
+                            </div>
+                            <div>
+                                <label>Teléfono</label>
+                                <input type="tel" id="edit_telefono" name="telefono">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label id="lbl_fecha_edit">Fecha de Nacimiento</label>
+                                <input type="date" id="edit_fecha_nacimiento" name="fecha_nacimiento">
+                            </div>
+                            <div>
+                                <label>Rol</label>
+                                <select id="edit_rol" name="rol">
+                                    <option value="empleado">Empleado</option>
+                                    <option value="empresa">Empresa</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Rol</label>
-                        <select id="edit_rol" name="rol" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                            <option value="empleado">Empleado</option>
-                            <option value="empresa">Empresa</option>
-                            <option value="admin">Administrador</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nombre de Empresa</label>
-                    <input type="text" id="edit_nombre_empresa" name="nombre_empresa" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Dirección</label>
-                    <input type="text" id="edit_direccion" name="direccion" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Ciudad</label>
-                        <input type="text" id="edit_ciudad" name="ciudad" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Estado</label>
-                        <input type="text" id="edit_estado" name="estado" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Código Postal</label>
-                        <input type="text" id="edit_codigo_postal" name="codigo_postal" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">País</label>
-                        <input type="text" id="edit_pais" name="pais" value="México" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Teléfono Emergencia</label>
-                        <input type="tel" id="edit_telefono_emergencia" name="telefono_emergencia" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Contacto Emergencia</label>
-                    <input type="text" id="edit_contacto_emergencia" name="contacto_emergencia" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Biografía</label>
-                    <textarea id="edit_biografia" name="biografia" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; resize: vertical;"></textarea>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Empresa Asociada</label>
-                    <select id="edit_empresa_id" name="empresa_id" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                        <option value="">Seleccionar empresa</option>
-                        <!-- Se cargarán dinámicamente -->
-                    </select>
-                </div>
-                
-                <!-- Sección para cambiar contraseña -->
-                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-                    <h4 style="margin: 0 0 15px 0; color: #495057; font-size: 16px;">🔐 Cambiar Contraseña (Opcional)</h4>
-                    <p style="margin: 0 0 15px 0; color: #6c757d; font-size: 14px;">Deja en blanco si no deseas cambiar la contraseña</p>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <!-- Paso 2: Empresa y ubicación -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 4</p>
                         <div>
-                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nueva Contraseña</label>
-                            <input type="password" name="nueva_password" id="nueva_password" placeholder="Mínimo 6 caracteres" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                            <label>Nombre de Empresa</label>
+                            <input type="text" id="edit_nombre_empresa" name="nombre_empresa">
                         </div>
-                        
                         <div>
-                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Confirmar Contraseña</label>
-                            <input type="password" name="confirmar_password" id="confirmar_password" placeholder="Repetir contraseña" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                            <label>Empresa Asociada</label>
+                            <select id="edit_empresa_id" name="empresa_id">
+                                <option value="">Seleccionar empresa</option>
+                                <!-- Se cargarán dinámicamente -->
+                            </select>
+                        </div>
+                        <div>
+                            <label>Dirección</label>
+                            <input type="text" id="edit_direccion" name="direccion">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label>Ciudad</label>
+                                <input type="text" id="edit_ciudad" name="ciudad">
+                            </div>
+                            <div>
+                                <label>Estado</label>
+                                <input type="text" id="edit_estado" name="estado">
+                            </div>
+                            <div>
+                                <label>Código Postal</label>
+                                <input type="text" id="edit_codigo_postal" name="codigo_postal">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label>País</label>
+                                <input type="text" id="edit_pais" name="pais" value="México">
+                            </div>
+                            <div>
+                                <label>Teléfono Emergencia</label>
+                                <input type="tel" id="edit_telefono_emergencia" name="telefono_emergencia">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Contacto Emergencia</label>
+                            <input type="text" id="edit_contacto_emergencia" name="contacto_emergencia">
                         </div>
                     </div>
-                    
-                    <div style="margin-top: 10px;">
-                        <input type="checkbox" id="mostrar_passwords" onchange="togglePasswordVisibility()" style="margin-right: 8px;">
-                        <label for="mostrar_passwords" style="font-size: 14px; color: #6c757d; cursor: pointer;">Mostrar contraseñas</label>
-                    </div>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Foto de Perfil</label>
-                    <input type="file" name="avatar" accept="image/*" onchange="previewAvatar(this)" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    <small style="color: #666; font-size: 12px;">Formatos permitidos: JPG, PNG, GIF. Máximo 5MB.</small>
-                    
-                    <div id="avatar_preview" style="margin-top: 10px; display: none;">
-                        <p style="margin: 10px 0 5px 0; font-weight: bold;">Vista previa:</p>
-                        <img id="current_avatar" src="" alt="Vista previa" style="max-width: 150px; max-height: 150px; border: 2px solid #ddd; border-radius: 8px; object-fit: cover;">
-                    </div>
-                </div>
-                
-                        <div class="flex justify-end space-x-3 pt-6 border-t">
-                            <button type="button" onclick="cerrarModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
-                                <i class="fas fa-times mr-2"></i>Cancelar
-                            </button>
-                            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition" style="background-color: #C7252B;">
-                                <i class="fas fa-save mr-2"></i>Guardar Cambios
-                            </button>
+
+                    <!-- Paso 3: Biografía y seguridad -->
+                    <div class="claut-wizard-panel" data-step="3">
+                        <p class="claut-wizard-panel-eyebrow">Paso 3 de 4</p>
+                        <div>
+                            <label>Biografía</label>
+                            <textarea id="edit_biografia" name="biografia" rows="3"></textarea>
                         </div>
-                    </form>
+
+                        <div style="background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 1rem;">
+                            <h4 style="margin: 0 0 .5rem; color: #f8fafc; font-size: .9rem; font-weight:700;"><i class="fas fa-lock"></i> Cambiar Contraseña (Opcional)</h4>
+                            <p style="margin: 0 0 .75rem; color: #94a3b8; font-size: .8rem;">Deja en blanco si no deseas cambiar la contraseña</p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label>Nueva Contraseña</label>
+                                    <input type="password" name="nueva_password" id="nueva_password" placeholder="Mínimo 6 caracteres">
+                                </div>
+                                <div>
+                                    <label>Confirmar Contraseña</label>
+                                    <input type="password" name="confirmar_password" id="confirmar_password" placeholder="Repetir contraseña">
+                                </div>
+                            </div>
+
+                            <div style="margin-top: .65rem;">
+                                <label class="flex items-center" style="width:auto;font-weight:400;color:#94a3b8;">
+                                    <input type="checkbox" id="mostrar_passwords" onchange="togglePasswordVisibility()" class="mr-2" style="width:auto;">
+                                    Mostrar contraseñas
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 4: Foto de perfil -->
+                    <div class="claut-wizard-panel" data-step="4">
+                        <p class="claut-wizard-panel-eyebrow">Paso 4 de 4</p>
+                        <div>
+                            <label>Foto de Perfil</label>
+                            <input type="file" name="avatar" accept="image/*" onchange="previewAvatar(this)">
+                            <small style="color: #64748b; font-size: 12px;">Formatos permitidos: JPG, PNG, GIF. Máximo 5MB.</small>
+
+                            <div id="avatar_preview" style="margin-top: 10px; display: none;">
+                                <p style="margin: 10px 0 5px 0; font-weight: bold; color:#94a3b8; font-size:.8rem;">Vista previa:</p>
+                                <img id="current_avatar" src="" alt="Vista previa" style="max-width: 150px; max-height: 150px; border: 2px solid rgba(255,255,255,.12); border-radius: 8px; object-fit: cover;">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="cerrarModal()" class="porsche-btn porsche-btn--ghost">Cancelar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" data-wizard-submit class="porsche-btn" style="display:none;">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -1709,120 +1463,130 @@ try {
     </script>
 
     <!-- Modal de Restricciones de Acceso -->
-    <div id="modalRestricciones" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mx-4 max-h-90vh overflow-y-auto">
-            <div class="bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-4 rounded-t-2xl">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <i class="fas fa-lock mr-3 text-lg"></i>
-                        <h3 class="text-lg font-semibold">Gestionar Restricciones de Acceso</h3>
-                    </div>
-                    <button onclick="cerrarModalRestricciones()" class="text-white hover:text-gray-200 transition-colors">
-                        <i class="fas fa-times text-lg"></i>
-                    </button>
-                </div>
-                <p class="text-sm opacity-90 mt-2">Usuario: <span id="nombreUsuarioRestricciones"></span></p>
+    <div id="modalRestricciones" class="claut-wizard-backdrop">
+        <form id="formRestricciones" class="claut-wizard" style="max-width:640px;">
+            <input type="hidden" id="usuarioIdRestricciones" name="usuario_id">
+
+            <div class="claut-wizard-head">
+                <h2><i class="fas fa-lock mr-2"></i>Gestionar Restricciones de Acceso</h2>
+                <p>Usuario: <span id="nombreUsuarioRestricciones"></span></p>
+                <button type="button" class="claut-modal-close" onclick="cerrarModalRestricciones()" aria-label="Cerrar">&times;</button>
             </div>
 
-            <div class="p-6">
-                <div class="mb-6">
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-                        <div class="flex">
-                            <i class="fas fa-exclamation-triangle text-yellow-400 mr-3 mt-1"></i>
-                            <div>
-                                <h4 class="text-sm font-medium text-yellow-800">Información sobre las restricciones</h4>
-                                <p class="text-sm text-yellow-700 mt-1">
-                                    Las páginas marcadas como restringidas mostrarán una advertencia al usuario y lo redirigirán automáticamente al dashboard.
-                                </p>
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Información</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Páginas</span>
+                    </button>
+                </nav>
+
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Información -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 2</p>
+                        <div style="background: rgba(234,179,8,.1); border-left: 3px solid #eab308; padding: 1rem; border-radius: 8px;">
+                            <div class="flex">
+                                <i class="fas fa-exclamation-triangle mr-3 mt-1" style="color:#eab308;"></i>
+                                <div>
+                                    <h4 style="color:#fde68a; font-size:.85rem; font-weight:700; margin:0 0 .35rem;">Información sobre las restricciones</h4>
+                                    <p style="color:#cbd5e1; font-size:.8rem; margin:0;">
+                                        Las páginas marcadas como restringidas mostrarán una advertencia al usuario y lo redirigirán automáticamente al dashboard.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <form id="formRestricciones">
-                    <input type="hidden" id="usuarioIdRestricciones" name="usuario_id">
+                    <!-- Paso 2: Páginas a restringir -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 2</p>
+                        <h4 style="color:#f8fafc; font-size:.85rem; font-weight:700;">Selecciona las páginas a restringir:</h4>
 
-                    <div class="space-y-4">
-                        <h4 class="font-semibold text-gray-800 mb-4">Selecciona las páginas a restringir:</h4>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" name="paginas[]" value="eventos" class="mr-3 h-4 w-4 text-orange-600">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer" style="border-color: rgba(255,255,255,.1);">
+                                <input type="checkbox" name="paginas[]" value="eventos" class="mr-3" style="width:auto;">
                                 <div>
-                                    <div class="font-medium">Eventos</div>
-                                    <div class="text-sm text-gray-500">eventos.html</div>
+                                    <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Eventos</div>
+                                    <div style="color:#64748b; font-size:.75rem;">eventos.html</div>
                                 </div>
                             </label>
 
-                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" name="paginas[]" value="documentacion" class="mr-3 h-4 w-4 text-orange-600">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer" style="border-color: rgba(255,255,255,.1);">
+                                <input type="checkbox" name="paginas[]" value="documentacion" class="mr-3" style="width:auto;">
                                 <div>
-                                    <div class="font-medium">Documentación</div>
-                                    <div class="text-sm text-gray-500">documentacion.html</div>
+                                    <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Documentación</div>
+                                    <div style="color:#64748b; font-size:.75rem;">documentacion.html</div>
                                 </div>
                             </label>
 
-                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" name="paginas[]" value="boletines" class="mr-3 h-4 w-4 text-orange-600">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer" style="border-color: rgba(255,255,255,.1);">
+                                <input type="checkbox" name="paginas[]" value="boletines" class="mr-3" style="width:auto;">
                                 <div>
-                                    <div class="font-medium">Boletines</div>
-                                    <div class="text-sm text-gray-500">boletines.html</div>
+                                    <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Boletines</div>
+                                    <div style="color:#64748b; font-size:.75rem;">boletines.html</div>
                                 </div>
                             </label>
 
-                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" name="paginas[]" value="comites" class="mr-3 h-4 w-4 text-orange-600">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer" style="border-color: rgba(255,255,255,.1);">
+                                <input type="checkbox" name="paginas[]" value="comites" class="mr-3" style="width:auto;">
                                 <div>
-                                    <div class="font-medium">Comités</div>
-                                    <div class="text-sm text-gray-500">comites.html</div>
+                                    <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Comités</div>
+                                    <div style="color:#64748b; font-size:.75rem;">comites.html</div>
                                 </div>
                             </label>
 
-                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" name="paginas[]" value="contacto" class="mr-3 h-4 w-4 text-orange-600">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer" style="border-color: rgba(255,255,255,.1);">
+                                <input type="checkbox" name="paginas[]" value="contacto" class="mr-3" style="width:auto;">
                                 <div>
-                                    <div class="font-medium">Contacto</div>
-                                    <div class="text-sm text-gray-500">contacto.html</div>
+                                    <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Contacto</div>
+                                    <div style="color:#64748b; font-size:.75rem;">contacto.html</div>
                                 </div>
                             </label>
 
-                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" name="paginas[]" value="empresas-convenio" class="mr-3 h-4 w-4 text-orange-600">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer" style="border-color: rgba(255,255,255,.1);">
+                                <input type="checkbox" name="paginas[]" value="empresas-convenio" class="mr-3" style="width:auto;">
                                 <div>
-                                    <div class="font-medium">Empresas en Convenio</div>
-                                    <div class="text-sm text-gray-500">empresas-convenio.html</div>
+                                    <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Empresas en Convenio</div>
+                                    <div style="color:#64748b; font-size:.75rem;">empresas-convenio.html</div>
                                 </div>
                             </label>
 
-                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" name="paginas[]" value="descuentos" class="mr-3 h-4 w-4 text-orange-600">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer" style="border-color: rgba(255,255,255,.1);">
+                                <input type="checkbox" name="paginas[]" value="descuentos" class="mr-3" style="width:auto;">
                                 <div>
-                                    <div class="font-medium">Descuentos</div>
-                                    <div class="text-sm text-gray-500">descuentos.html</div>
+                                    <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Descuentos</div>
+                                    <div style="color:#64748b; font-size:.75rem;">descuentos.html</div>
                                 </div>
                             </label>
 
-                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" name="paginas[]" value="profile" class="mr-3 h-4 w-4 text-orange-600">
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer" style="border-color: rgba(255,255,255,.1);">
+                                <input type="checkbox" name="paginas[]" value="profile" class="mr-3" style="width:auto;">
                                 <div>
-                                    <div class="font-medium">Perfil</div>
-                                    <div class="text-sm text-gray-500">profile.html</div>
+                                    <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Perfil</div>
+                                    <div style="color:#64748b; font-size:.75rem;">profile.html</div>
                                 </div>
                             </label>
                         </div>
                     </div>
-
-                    <div class="flex justify-end space-x-3 mt-8 pt-6 border-t">
-                        <button type="button" onclick="cerrarModalRestricciones()" class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
-                            <i class="fas fa-times mr-2"></i>Cancelar
-                        </button>
-                        <button type="submit" class="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition">
-                            <i class="fas fa-save mr-2"></i>Guardar Restricciones
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
+
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="cerrarModalRestricciones()" class="porsche-btn porsche-btn--ghost">Cancelar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" data-wizard-submit class="porsche-btn" style="display:none;">
+                    <i class="fas fa-save"></i> Guardar Restricciones
+                </button>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -1830,7 +1594,10 @@ try {
         function abrirModalRestricciones(usuarioId, nombreUsuario) {
             document.getElementById('usuarioIdRestricciones').value = usuarioId;
             document.getElementById('nombreUsuarioRestricciones').textContent = nombreUsuario;
-            document.getElementById('modalRestricciones').classList.remove('hidden');
+            const restriccionesModal = document.getElementById('modalRestricciones');
+            restriccionesModal.classList.add('open');
+            const restriccionesWizardEl = restriccionesModal.querySelector('.claut-wizard');
+            if (restriccionesWizardEl && restriccionesWizardEl.__clautWizardReset) restriccionesWizardEl.__clautWizardReset();
 
             // Cargar restricciones actuales del usuario
             cargarRestriccionesUsuario(usuarioId);
@@ -1838,7 +1605,7 @@ try {
 
         // Función para cerrar el modal de restricciones
         function cerrarModalRestricciones() {
-            document.getElementById('modalRestricciones').classList.add('hidden');
+            document.getElementById('modalRestricciones').classList.remove('open');
         }
 
         // Función para cargar las restricciones actuales del usuario
@@ -1906,222 +1673,35 @@ try {
 
     </div>
 
-    <script>
-        // === SIDEBAR RETRACTABLE FUNCTIONALITY ===
-        function initializeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-            const hamburgerBtn = document.querySelector('[sidenav-trigger]');
-            const closeBtn = document.getElementById('sidebarCloseBtn');
-
-            console.log('Sidebar elements:', {
-                sidebar: !!sidebar,
-                overlay: !!overlay,
-                hamburgerBtn: !!hamburgerBtn,
-                closeBtn: !!closeBtn,
-                screenWidth: window.innerWidth,
-                isDesktop: window.innerWidth >= 1280
-            });
-
-            // Log computed styles for debugging
-            if (sidebar) {
-                const styles = window.getComputedStyle(sidebar);
-                console.log('Sidebar computed styles:', {
-                    display: styles.display,
-                    transform: styles.transform,
-                    left: styles.left,
-                    position: styles.position,
-                    zIndex: styles.zIndex
-                });
-            }
-
-            if (!sidebar || !overlay || !hamburgerBtn) {
-                console.error('Sidebar elements not found:', {
-                    sidebar: !!sidebar,
-                    overlay: !!overlay,
-                    hamburgerBtn: !!hamburgerBtn
-                });
-                return;
-            }
-
-            // Toggle sidebar function
-            function toggleSidebar(e) {
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                const isVisible = sidebar.classList.contains('sidenav-show');
-                console.log('Toggle sidebar - currently visible:', isVisible);
-                if (!isVisible) {
-                    // Open sidebar
-                    console.log('Opening sidebar');
-                    sidebar.classList.add('sidenav-show');
-                    sidebar.setAttribute('aria-expanded', 'true');
-                    overlay.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                    // Focus management for accessibility
-                    const firstLink = sidebar.querySelector('.porsche-nav-item');
-                    if (firstLink) {
-                        setTimeout(() => firstLink.focus(), 100);
-                    }
-                } else {
-                    // Close sidebar
-                    console.log('Closing sidebar');
-                    closeSidebarInternal();
-                }
-            }
-
-            // Close sidebar function
-            function closeSidebarInternal() {
-                console.log('Executing closeSidebarInternal');
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-                // Return focus to hamburger button
-                if (hamburgerBtn) {
-                    hamburgerBtn.focus();
-                }
-            }
-
-            // Event listeners
-            console.log('Adding click event to hamburger button');
-            hamburgerBtn.addEventListener('click', toggleSidebar);
-            hamburgerBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleSidebar(e);
-            }, { passive: false });
-
-            if (overlay) {
-                overlay.addEventListener('click', closeSidebarInternal);
-                overlay.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                });
-                closeBtn.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            // Close on escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-            });
-
-            // Handle window resize - Keep sidebar closed on all screen sizes
-            window.addEventListener('resize', function() {
-                // Optional: could add logic here if needed
-            });
-
-            // Swipe to close functionality
-            let touchStartX = 0;
-            let touchStartY = 0;
-            sidebar.addEventListener('touchstart', function(e) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-
-            sidebar.addEventListener('touchmove', function(e) {
-                if (!touchStartX) return;
-                const currentX = e.touches[0].clientX;
-                const currentY = e.touches[0].clientY;
-                const diffX = touchStartX - currentX;
-                const diffY = Math.abs(touchStartY - currentY);
-
-                // Swipe left to close
-                if (diffX > 50 && diffY < 100) {
-                    closeSidebarInternal();
-                    touchStartX = 0;
-                    touchStartY = 0;
-                }
-            }, { passive: true });
-
-            // Keyboard navigation in sidebar
-            sidebar.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-                // Arrow navigation
-                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    const navItems = Array.from(sidebar.querySelectorAll('.porsche-nav-item:not([style*="display: none"])'));
-                    const currentIndex = navItems.indexOf(document.activeElement);
-                    if (e.key === 'ArrowDown') {
-                        const nextIndex = (currentIndex + 1) % navItems.length;
-                        navItems[nextIndex].focus();
-                    } else {
-                        const prevIndex = currentIndex <= 0 ? navItems.length - 1 : currentIndex - 1;
-                        navItems[prevIndex].focus();
-                    }
-                }
-            });
-
-            console.log('✅ Sidebar functionality initialized successfully');
-        }
-
-        // Legacy function compatibility
-        function closeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-            if (sidebar && overlay) {
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-            }
-        }
-
-        // Initialize sidebar when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initializeSidebar, 100);
-        });
-    </script>
-
     <!-- Modal de Mensajería para Usuarios -->
-    <div id="modalMensajeria" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <!-- Header del Modal -->
-            <div class="text-white px-6 py-4" style="background: linear-gradient(135deg, #C7252B 0%, #A01E24 100%);">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <i class="fas fa-envelope-open mr-3 text-xl"></i>
-                        <div>
-                            <h2 class="text-xl font-bold">Enviar Mensaje a Usuarios</h2>
-                            <p class="text-red-100 text-sm">Sistema de mensajería para administradores</p>
-                        </div>
-                    </div>
-                    <button onclick="cerrarModalMensajeria()" class="text-white hover:bg-white/20 rounded-full p-2 transition-colors">
-                        <i class="fas fa-times text-lg"></i>
-                    </button>
-                </div>
+    <div id="modalMensajeria" class="claut-wizard-backdrop">
+        <form id="mensajeriaForm" class="claut-wizard" style="max-width:760px;">
+            <div class="claut-wizard-head">
+                <h2><i class="fas fa-envelope-open mr-2"></i>Enviar Mensaje a Usuarios</h2>
+                <p>Sistema de mensajería para administradores</p>
+                <button type="button" class="claut-modal-close" onclick="cerrarModalMensajeria()" aria-label="Cerrar">&times;</button>
             </div>
 
-            <!-- Contenido del Modal -->
-            <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 200px);">
-                <form id="mensajeriaForm" class="space-y-6">
-                    <!-- Selección de Destinatarios -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Destinatarios</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Mensaje</span>
+                    </button>
+                </nav>
+
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Destinatarios -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 2</p>
                         <div>
-                            <label for="destinatarioSelect" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="destinatarioSelect">
                                 <i class="fas fa-users mr-1" style="color: #C7252B;"></i>
                                 Destinatarios *
                             </label>
-                            <select id="destinatarioSelect" name="destinatario" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                                    style="focus:ring-color: #C7252B;">
+                            <select id="destinatarioSelect" name="destinatario" required>
                                 <option value="">Selecciona destinatarios...</option>
                                 <option value="todos">Todos los usuarios activos</option>
                                 <optgroup label="Usuarios específicos" id="usuariosEspecificos">
@@ -2131,14 +1711,11 @@ try {
                         </div>
 
                         <div>
-                            <label for="tipoMensajeSelect" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="tipoMensajeSelect">
                                 <i class="fas fa-tag mr-1" style="color: #C7252B;"></i>
                                 Tipo de Mensaje
                             </label>
-                            <select id="tipoMensajeSelect" name="tipo_mensaje"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                                    style="focus:ring-color: #C7252B;"
-                                    onchange="cambiarTipoMensaje()">
+                            <select id="tipoMensajeSelect" name="tipo_mensaje" onchange="cambiarTipoMensaje()">
                                 <option value="texto">Mensaje de Texto</option>
                                 <option value="link">Enlace/URL</option>
                                 <option value="imagen">Imagen</option>
@@ -2147,132 +1724,122 @@ try {
                         </div>
                     </div>
 
-                    <!-- Asunto -->
-                    <div>
-                        <label for="asuntoMensaje" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-heading mr-1" style="color: #C7252B;"></i>
-                            Asunto del Mensaje *
-                        </label>
-                        <input type="text" id="asuntoMensaje" name="asunto" required
-                               placeholder="Escriba el asunto del mensaje..."
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                               style="focus:ring-color: #C7252B;">
-                    </div>
+                    <!-- Paso 2: Mensaje -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 2</p>
 
-                    <!-- Contenido Dinámico según Tipo de Mensaje -->
-                    <div id="contenidoMensaje">
-                        <!-- Contenido de Texto (por defecto) -->
-                        <div id="contenidoTexto" class="mensaje-content">
-                            <label for="textoMensaje" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-edit mr-1" style="color: #C7252B;"></i>
-                                Contenido del Mensaje *
+                        <!-- Asunto -->
+                        <div>
+                            <label for="asuntoMensaje">
+                                <i class="fas fa-heading mr-1" style="color: #C7252B;"></i>
+                                Asunto del Mensaje *
                             </label>
-                            <textarea id="textoMensaje" name="contenido_texto" rows="6" required
-                                      placeholder="Escriba aquí el contenido del mensaje..."
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent resize-y"
-                                      style="focus:ring-color: #C7252B;"></textarea>
+                            <input type="text" id="asuntoMensaje" name="asunto" required
+                                   placeholder="Escriba el asunto del mensaje...">
                         </div>
 
-                        <!-- Contenido de Enlace -->
-                        <div id="contenidoLink" class="mensaje-content hidden space-y-3">
-                            <div>
-                                <label for="linkUrl" class="block text-sm font-medium text-gray-700 mb-1">
-                                    <i class="fas fa-link mr-1" style="color: #C7252B;"></i>
-                                    URL del Enlace *
+                        <!-- Contenido Dinámico según Tipo de Mensaje -->
+                        <div id="contenidoMensaje">
+                            <!-- Contenido de Texto (por defecto) -->
+                            <div id="contenidoTexto" class="mensaje-content">
+                                <label for="textoMensaje">
+                                    <i class="fas fa-edit mr-1" style="color: #C7252B;"></i>
+                                    Contenido del Mensaje *
                                 </label>
-                                <input type="url" id="linkUrl" name="link_url"
-                                       placeholder="https://ejemplo.com"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                                       style="focus:ring-color: #C7252B;">
+                                <textarea id="textoMensaje" name="contenido_texto" rows="6" required
+                                          placeholder="Escriba aquí el contenido del mensaje..."></textarea>
                             </div>
-                            <div>
-                                <label for="linkTexto" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Texto del Enlace
-                                </label>
-                                <input type="text" id="linkTexto" name="link_texto"
-                                       placeholder="Texto que aparecerá como enlace"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                                       style="focus:ring-color: #C7252B;">
-                            </div>
-                            <div>
-                                <label for="linkDescripcion" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Descripción
-                                </label>
-                                <textarea id="linkDescripcion" name="link_descripcion" rows="3"
-                                          placeholder="Descripción opcional del enlace"
-                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent resize-y"
-                                          style="focus:ring-color: #C7252B;"></textarea>
-                            </div>
-                        </div>
 
-                        <!-- Contenido de Imagen -->
-                        <div id="contenidoImagen" class="mensaje-content hidden space-y-3">
-                            <div>
-                                <label for="imagenArchivo" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-image mr-1" style="color: #C7252B;"></i>
-                                    Seleccionar Imagen *
-                                </label>
-                                <input type="file" id="imagenArchivo" name="imagen_archivo"
-                                       accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                                       style="focus:ring-color: #C7252B;">
-                                <p class="text-xs text-gray-500 mt-1">Formatos permitidos: JPG, PNG, GIF, WebP. Máximo 5MB.</p>
+                            <!-- Contenido de Enlace -->
+                            <div id="contenidoLink" class="mensaje-content hidden">
+                                <div>
+                                    <label for="linkUrl">
+                                        <i class="fas fa-link mr-1" style="color: #C7252B;"></i>
+                                        URL del Enlace *
+                                    </label>
+                                    <input type="url" id="linkUrl" name="link_url"
+                                           placeholder="https://ejemplo.com">
+                                </div>
+                                <div>
+                                    <label for="linkTexto">
+                                        Texto del Enlace
+                                    </label>
+                                    <input type="text" id="linkTexto" name="link_texto"
+                                           placeholder="Texto que aparecerá como enlace">
+                                </div>
+                                <div>
+                                    <label for="linkDescripcion">
+                                        Descripción
+                                    </label>
+                                    <textarea id="linkDescripcion" name="link_descripcion" rows="3"
+                                              placeholder="Descripción opcional del enlace"></textarea>
+                                </div>
                             </div>
-                            <div>
-                                <label for="imagenDescripcion" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Descripción de la Imagen
-                                </label>
-                                <textarea id="imagenDescripcion" name="imagen_descripcion" rows="3"
-                                          placeholder="Descripción o contexto de la imagen"
-                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent resize-y"
-                                          style="focus:ring-color: #C7252B;"></textarea>
-                            </div>
-                        </div>
 
-                        <!-- Contenido de Documento -->
-                        <div id="contenidoDocumento" class="mensaje-content hidden space-y-3">
-                            <div>
-                                <label for="documentoArchivo" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-file-alt mr-1" style="color: #C7252B;"></i>
-                                    Seleccionar Documento *
-                                </label>
-                                <input type="file" id="documentoArchivo" name="documento_archivo"
-                                       accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
-                                       style="focus:ring-color: #C7252B;">
-                                <p class="text-xs text-gray-500 mt-1">Formatos permitidos: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT. Máximo 10MB.</p>
+                            <!-- Contenido de Imagen -->
+                            <div id="contenidoImagen" class="mensaje-content hidden">
+                                <div>
+                                    <label for="imagenArchivo">
+                                        <i class="fas fa-image mr-1" style="color: #C7252B;"></i>
+                                        Seleccionar Imagen *
+                                    </label>
+                                    <input type="file" id="imagenArchivo" name="imagen_archivo"
+                                           accept="image/jpeg,image/jpg,image/png,image/gif,image/webp">
+                                    <p style="color:#64748b; font-size:.75rem; margin-top:.35rem;">Formatos permitidos: JPG, PNG, GIF, WebP. Máximo 5MB.</p>
+                                </div>
+                                <div>
+                                    <label for="imagenDescripcion">
+                                        Descripción de la Imagen
+                                    </label>
+                                    <textarea id="imagenDescripcion" name="imagen_descripcion" rows="3"
+                                              placeholder="Descripción o contexto de la imagen"></textarea>
+                                </div>
                             </div>
-                            <div>
-                                <label for="documentoDescripcion" class="block text-sm font-medium text-gray-700 mb-1">
-                                    Descripción del Documento
-                                </label>
-                                <textarea id="documentoDescripcion" name="documento_descripcion" rows="3"
-                                          placeholder="Descripción o contexto del documento"
-                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent resize-y"
-                                          style="focus:ring-color: #C7252B;"></textarea>
+
+                            <!-- Contenido de Documento -->
+                            <div id="contenidoDocumento" class="mensaje-content hidden">
+                                <div>
+                                    <label for="documentoArchivo">
+                                        <i class="fas fa-file-alt mr-1" style="color: #C7252B;"></i>
+                                        Seleccionar Documento *
+                                    </label>
+                                    <input type="file" id="documentoArchivo" name="documento_archivo"
+                                           accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt">
+                                    <p style="color:#64748b; font-size:.75rem; margin-top:.35rem;">Formatos permitidos: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT. Máximo 10MB.</p>
+                                </div>
+                                <div>
+                                    <label for="documentoDescripcion">
+                                        Descripción del Documento
+                                    </label>
+                                    <textarea id="documentoDescripcion" name="documento_descripcion" rows="3"
+                                              placeholder="Descripción o contexto del documento"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Botones de Acción -->
-                    <div class="flex justify-end space-x-3 pt-4 border-t">
-                        <button type="button" onclick="cerrarModalMensajeria()"
-                                class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                            <i class="fas fa-times mr-2"></i>Cancelar
-                        </button>
-                        <button type="submit" id="enviarMensajeBtn"
-                                class="px-6 py-2 text-white rounded-lg hover:opacity-90 transition-colors flex items-center"
-                                style="background: linear-gradient(135deg, #C7252B 0%, #A01E24 100%);">
-                            <span id="mensajeSpinner" class="hidden animate-spin mr-2">
-                                <i class="fas fa-spinner"></i>
-                            </span>
-                            <i id="mensajeIcon" class="fas fa-paper-plane mr-2"></i>
-                            <span id="mensajeText">Enviar Mensaje</span>
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
+
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="cerrarModalMensajeria()" class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-times mr-2"></i>Cancelar
+                </button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" id="enviarMensajeBtn" data-wizard-submit
+                        class="porsche-btn" style="display:none;">
+                    <span id="mensajeSpinner" class="hidden animate-spin mr-2">
+                        <i class="fas fa-spinner"></i>
+                    </span>
+                    <i id="mensajeIcon" class="fas fa-paper-plane mr-2"></i>
+                    <span id="mensajeText">Enviar Mensaje</span>
+                </button>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -2288,7 +1855,9 @@ try {
 
             // Mostrar modal
             const modal = document.getElementById('modalMensajeria');
-            modal.classList.remove('hidden');
+            modal.classList.add('open');
+            const mensajeriaWizardEl = modal.querySelector('.claut-wizard');
+            if (mensajeriaWizardEl && mensajeriaWizardEl.__clautWizardReset) mensajeriaWizardEl.__clautWizardReset();
 
             // Reset del formulario
             const form = document.getElementById('mensajeriaForm');
@@ -2306,7 +1875,7 @@ try {
         // Función para cerrar el modal de mensajería
         function cerrarModalMensajeria() {
             console.log('🚪 Cerrando modal de mensajería...');
-            document.getElementById('modalMensajeria').classList.add('hidden');
+            document.getElementById('modalMensajeria').classList.remove('open');
 
             // Reset del formulario
             const form = document.getElementById('mensajeriaForm');
@@ -2425,7 +1994,7 @@ try {
 
                 if (result.success) {
                     // Mostrar mensaje de éxito
-                    alert(`✅ Mensaje enviado correctamente a ${result.data.emails_enviados} usuario(s)`);
+                    alert(`Mensaje enviado correctamente a ${result.data.emails_enviados} usuario(s)`);
 
                     // Cerrar modal y resetear
                     cerrarModalMensajeria();
@@ -2437,7 +2006,7 @@ try {
 
             } catch (error) {
                 console.error('❌ Error enviando mensaje:', error);
-                alert('❌ Error al enviar el mensaje: ' + error.message);
+                alert('Error al enviar el mensaje: ' + error.message);
             } finally {
                 // Restaurar estado del botón
                 submitBtn.disabled = false;
@@ -2461,7 +2030,7 @@ try {
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     const modal = document.getElementById('modalMensajeria');
-                    if (modal && !modal.classList.contains('hidden')) {
+                    if (modal && modal.classList.contains('open')) {
                         cerrarModalMensajeria();
                     }
                 }
@@ -2477,5 +2046,8 @@ try {
             console.log('✅ Sistema de mensajería inicializado');
         });
     </script>
+
+    <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
+    <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
 </body>
 </html>

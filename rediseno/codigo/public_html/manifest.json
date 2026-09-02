@@ -1,0 +1,22 @@
+{
+  "name": "Clúster Automotriz Metropolitano",
+  "short_name": "CLAUTMET",
+  "description": "Intranet del Clúster Automotriz Metropolitano — Estado de México · CDMX · Hidalgo",
+  "start_url": "/app/dashboard.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#C7252B",
+  "lang": "es-MX",
+  "icons": [
+    { "src": "/assets/img/logo/logo-light.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/img/logo/logo-light.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/img/logo/logo-light.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Directorio",  "short_name": "Directorio", "url": "/app/directorio.html",  "icons": [{ "src": "/assets/img/logo/logo-light.png", "sizes": "96x96" }] },
+    { "name": "Eventos",     "short_name": "Eventos",    "url": "/app/eventos.html",     "icons": [{ "src": "/assets/img/logo/logo-light.png", "sizes": "96x96" }] },
+    { "name": "Comités",     "short_name": "Comités",    "url": "/app/comites.html",     "icons": [{ "src": "/assets/img/logo/logo-light.png", "sizes": "96x96" }] }
+  ]
+}

@@ -147,15 +147,13 @@ function renderDescuentos(descuentos) {
         `;
     }).join('');
 
-    // Duplicar las tarjetas para efecto infinito y luego inicializar animación
-    setTimeout(() => {
-        duplicateDiscountCardsForInfiniteEffect();
-        if (window.discountStreamController) {
-            window.discountStreamController.destroy();
-        }
-        window.discountStreamController = new DiscountStreamController();
-        window.discountParticleSystem = new DiscountParticleSystem();
-    }, 100);
+    // NOTA: se desactivó la marquesina infinita (duplicateDiscountCardsForInfiniteEffect +
+    // DiscountStreamController). Movía los códigos de descuento en scroll continuo,
+    // haciéndolos difíciles de leer/copiar, y su cálculo de ancho (cardWidth fijo de
+    // 350px) entraba en conflicto con el ancho responsive real de las tarjetas
+    // (clamp() en CSS), dejando el carrusel descentrado y roto en móvil.
+    // La fila ahora es estática: centrada cuando cabe, con scroll horizontal nativo
+    // cuando no (ver reglas .discount-stream / .discount-line en el <style>).
 }
 
 // Mostrar detalle del descuento

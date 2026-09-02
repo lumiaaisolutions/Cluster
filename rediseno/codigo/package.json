@@ -1,0 +1,14 @@
+{
+  "name": "clautmet-intranet-redesign",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Rediseño Clúster Automotriz Metropolitano Intranet — HTML+CSS+JS+PHP, 100% Hostinger Shared compatible.",
+  "scripts": {
+    "build:css":   "tailwindcss -i ./src/main.css -o ./public_html/assets/css/build.css --minify",
+    "watch:css":   "tailwindcss -i ./src/main.css -o ./public_html/assets/css/build.css --watch",
+    "vapid:keys":  "npx --yes web-push generate-vapid-keys"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
+  }
+}

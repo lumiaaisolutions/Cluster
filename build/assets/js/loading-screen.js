@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var LOGO_URL = './assets/img/apple-icon.png';
+  var LOGO_URL = '/assets/img/apple-icon.png';
   var MIN_SHOW = 900;
   var NAV_SHOW = 500;
 
@@ -54,14 +54,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 160px;
-      height: 160px;
+      width: 200px;
+      height: 200px;
     }
 
     /* ── LOGO — sin contorno ni borde ── */
     #claut-loader-logo {
-      width: 80px;
-      height: 80px;
+      width: 120px;
+      height: 120px;
       object-fit: contain;
       object-position: center;
       position: relative;
@@ -70,12 +70,16 @@
       border-radius: 0 !important;
       box-shadow: none !important;
       outline: none !important;
-      filter: drop-shadow(0 0 20px rgba(199,37,43,0.6));
+      filter: drop-shadow(0 0 24px rgba(199,37,43,0.55));
       animation: claut-logo-breathe 2.8s ease-in-out infinite;
     }
+    @media (max-width: 640px) {
+      #claut-loader-stage { width: 160px; height: 160px; }
+      #claut-loader-logo  { width: 92px;  height: 92px; }
+    }
     @keyframes claut-logo-breathe {
-      0%, 100% { filter: drop-shadow(0 0 14px rgba(199,37,43,0.45)); transform: scale(1);    }
-      50%       { filter: drop-shadow(0 0 32px rgba(199,37,43,0.80)); transform: scale(1.06); }
+      0%, 100% { filter: drop-shadow(0 0 16px rgba(199,37,43,0.40)); transform: scale(1);    }
+      50%       { filter: drop-shadow(0 0 36px rgba(199,37,43,0.78)); transform: scale(1.05); }
     }
 
     /* ── RIPPLE RINGS — se expanden desde el centro ── */
@@ -84,12 +88,15 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 100px;
-      height: 100px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       border: 2px solid rgba(199, 37, 43, 0.8);
       opacity: 0;
       pointer-events: none;
+    }
+    @media (max-width: 640px) {
+      .claut-ripple { width: 110px; height: 110px; }
     }
 
     /* 4 anillos con delays escalonados para efecto continuo */
@@ -99,8 +106,8 @@
     .claut-ripple-4 { animation: claut-ripple 3s cubic-bezier(0.1, 0.8, 0.25, 1) 2.25s infinite; border-color: rgba(199,37,43,0.18); }
 
     @keyframes claut-ripple {
-      0%   { width: 100px; height: 100px; opacity: 1;   }
-      100% { width: 420px; height: 420px; opacity: 0;   }
+      0%   { width: 140px; height: 140px; opacity: 1;   }
+      100% { width: 480px; height: 480px; opacity: 0;   }
     }
 
     /* ── TEXTO ── */
@@ -275,20 +282,53 @@
     }
   }
 
+  // Si el <body> tiene data-skip-initial-loader, NO se muestra al cargar la página
+  // (solo en transiciones via click). Útil para landing con animaciones propias.
+  function shouldSkipInitial() {
+    var body = document.body || document.querySelector('body');
+    return body && body.hasAttribute('data-skip-initial-loader');
+  }
+
+  function initLite() {
+    injectCSS();
+    injectHTML();
+    interceptLinks();
+    interceptHistory();
+    animateText();
+    // El loader queda oculto. Solo se mostrará al hacer clic en un link interno.
+    var loader = document.getElementById('claut-loader');
+    if (loader) {
+      loader.classList.add('claut-loader-hidden');
+      unlockScroll();
+    }
+  }
+
   if (document.readyState === 'loading') {
     if (document.head) injectCSS();
     else document.addEventListener('DOMContentLoaded', injectCSS);
     document.addEventListener('DOMContentLoaded', function () {
+      if (shouldSkipInitial()) {
+        initLite();
+        return;
+      }
       injectHTML();
       showLoader('Cargando');
       interceptLinks();
       interceptHistory();
       animateText();
     });
-    window.addEventListener('load', hideLoader);
-    setTimeout(hideLoader, 6000);
+    window.addEventListener('load', function () {
+      if (!shouldSkipInitial()) hideLoader();
+    });
+    setTimeout(function () {
+      if (!shouldSkipInitial()) hideLoader();
+    }, 6000);
   } else {
-    init();
+    if (shouldSkipInitial()) {
+      initLite();
+    } else {
+      init();
+    }
   }
 
   window.ClautLoader = { show: showLoader, hide: hideLoader };

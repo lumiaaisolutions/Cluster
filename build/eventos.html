@@ -36,17 +36,18 @@
   <link href="./assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
   <!-- Events specific CSS -->
   <link rel="stylesheet" href="./assets/css/eventos.css">
-  <link rel="stylesheet" href="./assets/css/layout/header-navbar.css">
+  <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a">
 
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
   <style>
     :root {
       /* Primary Colors - Inspired by Porsche */
-      --porsche-black: #1a1a1a;
+      --porsche-black: #09090b;
       --porsche-charcoal: #2d2d2d;
       --porsche-silver: #8a8a8a;
       --porsche-white: #ffffff;
       --porsche-light-gray: #f5f5f5;
-      --porsche-accent: #c9302c;
+      --porsche-accent: #C7252B;
 
       /* Typography */
       --porsche-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -884,7 +885,7 @@
     }
 
     .event-card--porsche {
-      --card-accent-color: #c9302c;
+      --card-accent-color: #C7252B;
     }
 
     .btn--secondary {
@@ -1308,6 +1309,13 @@
       .claut-nav-link i { font-size: 20px; }
     }
   </style>
+
+  <link rel="stylesheet" href="./assets/css/layout/claut-icon-rail.css?v=20260901g">
+  <style>
+    @media (min-width: 1025px) {
+      main.claut-main { padding-left: 134px !important; }
+    }
+  </style>
 </head>
 
 <body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default overflow-x-hidden"
@@ -1371,6 +1379,16 @@
       </button>
     </div>
   </header>
+
+  <nav class="claut-icon-rail">
+    <a href="dashboard.html" class="claut-icon-rail-item" data-label="Inicio"><i class="fas fa-home"></i></a>
+    <a href="./descuentos.html" class="claut-icon-rail-item" data-label="Descuentos"><i class="fas fa-tags"></i></a>
+    <a href="./boletines.html" class="claut-icon-rail-item" data-label="Boletines"><i class="fas fa-newspaper"></i></a>
+    <a href="./comites.html" class="claut-icon-rail-item" data-label="Comités"><i class="fas fa-users"></i></a>
+    <a href="./contacto.html" class="claut-icon-rail-item" data-label="Contacto"><i class="fas fa-headset"></i></a>
+    <a href="./eventos.html" class="claut-icon-rail-item" data-label="Eventos"><i class="fas fa-calendar-alt"></i></a>
+    <a href="./empresas-convenio.html" class="claut-icon-rail-item" data-label="Socios"><i class="fas fa-handshake"></i></a>
+  </nav>
 
   <!-- Menú curvo animado en la parte inferior -->
   <nav class="claut-bottom-nav">
@@ -1880,46 +1898,46 @@
       }
 
       // GSAP animations for navigation entrance
-      if (typeof gsap !== 'undefined') {
-        // Header navigation animation
+      if (typeof gsap !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        // Header navigation animation.
+        // NOTA: antes usaba rotationY:-180 (flip 3D). Un nav visto en cada
+        // navegación no debe usar animación vistosa (ver emil-design-eng:
+        // "tens of times/day -> remove or drastically reduce"); además el
+        // frame intermedio del flip Y hacía ver el texto espejado.
         gsap.fromTo('.claut-header-nav .claut-nav-item', {
-          rotationY: -180,
-          scale: 0.5,
           opacity: 0,
-          y: -30
+          y: -8
         }, {
-          rotationY: 0,
-          scale: 1,
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "back.out(1.7)",
-          delay: 0.2
+          duration: 0.3,
+          stagger: 0.03,
+          ease: "power2.out",
+          delay: 0.05
         });
 
         // Bottom navigation animation
         gsap.fromTo('.claut-bottom-nav', {
-          y: 100,
+          y: 40,
           opacity: 0
         }, {
           y: 0,
           opacity: 1,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-          delay: 0.5
+          duration: 0.3,
+          ease: "power2.out",
+          delay: 0.05
         });
-        // Animación escalonada de los iconos
+        // Animación escalonada de los iconos (scale desde 0.9, nunca desde 0)
         gsap.fromTo('.claut-bottom-nav .claut-nav-link i', {
-          scale: 0,
-          rotation: -180
+          scale: 0.9,
+          opacity: 0
         }, {
           scale: 1,
-          rotation: 0,
-          duration: 0.6,
-          ease: "back.out(2.5)",
-          stagger: 0.1,
-          delay: 1
+          opacity: 1,
+          duration: 0.25,
+          ease: "power2.out",
+          stagger: 0.03,
+          delay: 0.1
         });
       }
 
@@ -3012,6 +3030,7 @@
   </script>
   <script src="./js/auth-session.js"></script>
   <script src="assets/js/loading-screen.js"></script>
+  <script src="./assets/js/claut-icon-rail.js?v=20260901c"></script>
 </body>
 
 </html>

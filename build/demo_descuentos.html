@@ -7,6 +7,9 @@
     <title>Demo Descuentos - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
+    <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
         .modal-backdrop {
             backdrop-filter: blur(5px);
@@ -59,261 +62,6 @@
             }
         }
 
-        /* Porsche-inspired Design System */
-        :root {
-            /* Primary Colors - Inspired by Porsche */
-            --porsche-black: #1a1a1a;
-            --porsche-charcoal: #2d2d2d;
-            --porsche-silver: #8a8a8a;
-            --porsche-white: #ffffff;
-            --porsche-light-gray: #f5f5f5;
-            --porsche-accent: #c9302c;
-            /* Typography */
-            --porsche-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --porsche-radius-lg: 12px;
-        }
-
-        /* === RESPONSIVE SIDEBAR FUNCTIONALITY === */
-
-        /* Porsche-inspired Sidebar */
-        .porsche-sidebar {
-            background: linear-gradient(180deg, var(--porsche-black) 0%, var(--porsche-charcoal) 100%) !important;
-            border-radius: var(--porsche-radius-lg) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
-            height: calc(100vh - 2rem) !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            font-family: var(--porsche-font) !important;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-        }
-
-        .porsche-sidebar .porsche-logo {
-            color: var(--porsche-white) !important;
-            font-weight: 700 !important;
-            font-size: 1.5rem !important;
-        }
-
-        .porsche-nav-item {
-            color: rgba(255, 255, 255, 0.8) !important;
-            border-radius: 12px !important;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            font-weight: 500 !important;
-        }
-
-        .porsche-nav-item:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            color: var(--porsche-white) !important;
-            transform: translateX(4px) !important;
-        }
-
-        .porsche-nav-item.active {
-            background: rgba(199, 37, 43, 0.2) !important;
-            color: var(--porsche-white) !important;
-            border-left: 3px solid #C7252B !important;
-        }
-
-        /* Sidebar Overlay */
-        .sidenav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-            backdrop-filter: blur(4px);
-        }
-
-        .sidenav-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            z-index: 998;
-        }
-
-        /* Close button styling */
-        #sidebarCloseBtn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        #sidebarCloseBtn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* Sidebar always retractable - All screens */
-        .porsche-sidebar {
-            transform: translateX(-100%) !important;
-            z-index: 999 !important;
-            margin: 0 !important;
-            top: 0 !important;
-            left: 0 !important;
-            border-radius: 0 !important;
-            width: 280px !important;
-            max-width: 280px !important;
-            height: 100vh !important;
-            position: fixed !important;
-            display: block !important;
-        }
-
-        .porsche-sidebar.sidenav-show {
-            transform: translateX(0) !important;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Main content always without sidebar margin */
-        .main-content {
-            margin-left: 0 !important;
-            width: 100% !important;
-        }
-
-        .container {
-            margin-left: 0 !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-        }
-
-        /* Desktop adjustments */
-        @media (min-width: 1280px) {
-            .container {
-                padding-left: 2rem !important;
-                padding-right: 2rem !important;
-            }
-        }
-
-        /* Force sidebar behavior on all screens - Override any conflicting styles */
-        .porsche-sidebar.sidebar-enhanced {
-            transform: translateX(-100%) !important;
-        }
-
-        .porsche-sidebar.sidebar-enhanced.sidenav-show {
-            transform: translateX(0) !important;
-        }
-
-        /* Override any Tailwind classes that might interfere */
-        aside.porsche-sidebar {
-            left: 0 !important;
-            margin-left: 0 !important;
-        }
-
-        /* Ensure hamburger button works on all screens */
-        @media (min-width: 1280px) {
-            [sidenav-trigger] {
-                display: block !important;
-                visibility: visible !important;
-            }
-        }
-
-        /* Enhanced sidebar behavior for desktop */
-        @media (min-width: 1280px) {
-            .sidebar-enhanced {
-                transform: translateX(0) !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-        }
-
-        /* Responsive grid adjustments */
-        @media (max-width: 768px) {
-            header .flex {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-            }
-
-            header .flex.items-center.space-x-4 {
-                margin-top: 1rem !important;
-                align-self: flex-end !important;
-            }
-
-            .grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .overflow-x-auto table {
-                font-size: 0.75rem !important;
-            }
-
-            .overflow-x-auto th,
-            .overflow-x-auto td {
-                padding: 0.5rem !important;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .porsche-sidebar {
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-
-            header .container {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-            }
-
-            .flex.flex-wrap {
-                flex-direction: column !important;
-                gap: 1rem !important;
-            }
-
-            .flex.items-center.space-x-4 {
-                flex-direction: column !important;
-                align-items: stretch !important;
-                space-x: 0 !important;
-                gap: 0.5rem !important;
-            }
-
-            .flex.items-center.space-x-4>* {
-                margin: 0 !important;
-            }
-
-            .grid-cols-1 {
-                grid-template-columns: 1fr !important;
-            }
-        }
-
-        /* Ensure proper z-index hierarchy */
-        .porsche-sidebar {
-            z-index: 999 !important;
-        }
-
-        .sidenav-overlay {
-            z-index: 998 !important;
-        }
-
-        header {
-            z-index: 997 !important;
-        }
-
-        .main-content {
-            z-index: 1 !important;
-        }
-
-        /* Hamburger button styling */
-        .hamburger-btn {
-            transition: all 0.3s ease;
-        }
-
-        .hamburger-btn:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-        }
-
         /* Responsive table improvements */
         @media (max-width: 768px) {
             .overflow-x-auto {
@@ -327,179 +75,93 @@
     </style>
 </head>
 
-<body class="bg-gray-100">
-    <!-- Sidebar Overlay for Mobile -->
-    <div class="sidenav-overlay" id="sidenavOverlay"></div>
-
-    <!-- Porsche Sidebar -->
-    <aside id="porscheSidebar"
-        class="porsche-sidebar sidebar-enhanced fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 m-0 overflow-y-auto overflow-x-hidden antialiased transition-transform duration-200 border-0 max-w-64 ease-nav-brand z-990"
-        aria-expanded="false">
-        <div class="h-48 py-6 relative mb-4">
-            <!-- Botón de cerrar para todas las pantallas -->
-            <button
-                class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-50 p-3 bg-black/30 rounded-lg hover:bg-black/50 transition-all"
-                id="sidebarCloseBtn" sidenav-close aria-label="Cerrar menú">
-                <i class="fas fa-times"></i>
-            </button>
-
-            <a class="porsche-logo block px-6 py-4 m-0 text-center whitespace-nowrap" href="dashboard.html"
-                target="_blank">
-                <img src="../assets/img/apple-icon.png"
-                    class="block mx-auto h-32 w-32 max-w-full transition-all duration-200 ease-nav-brand mb-4"
-                    alt="main_logo" />
-                <span
-                    class="block text-lg transition-all duration-200 ease-nav-brand text-white font-semibold mb-4">Clúster
-                    Admin</span>
-            </a>
+<body class="bg-gray-100 claut-dark claut-skin">
+    <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
+        <div class="claut-admin-sidebar-brand">
+            <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
+            <span class="claut-admin-sidebar-title">Clúster Admin</span>
         </div>
+        <div class="claut-admin-sidebar-divider"></div>
 
-        <hr class="h-px mt-4 mb-4 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+        <nav class="claut-admin-nav">
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">General</p>
+                <a href="admin-panel.html?login=success" class="claut-admin-nav-item">
+                    <i class="fas fa-shield-halved"></i><span>Panel Admin</span>
+                </a>
+                <a href="dashboard.html" class="claut-admin-nav-item">
+                    <i class="fas fa-house"></i><span>Dashboard</span>
+                </a>
+            </div>
 
-        <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-            <ul class="flex flex-col pl-0 mb-0 pt-4">
-                <!-- Dashboard -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="dashboard.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Dashboard</span>
-                    </a>
-                </li>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Ecosistema de módulos</p>
+                <a href="admin/banner-admin-mejorado.php" class="claut-admin-nav-item">
+                    <i class="fas fa-images"></i><span>Banners</span>
+                </a>
+                <a href="demo_boletines.html" class="claut-admin-nav-item">
+                    <i class="fas fa-newspaper"></i><span>Boletines</span>
+                </a>
+                <a href="demo_documentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-folder-open"></i><span>Documentos</span>
+                </a>
+                <a href="demo_descuentos.html" class="claut-admin-nav-item active">
+                    <i class="fas fa-tags"></i><span>Beneficios</span>
+                </a>
+                <a href="demo_comite.html" class="claut-admin-nav-item">
+                    <i class="fas fa-people-group"></i><span>Comités</span>
+                </a>
+                <a href="calendario.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-days"></i><span>Calendario</span>
+                </a>
+                <a href="demo_empresas.html" class="claut-admin-nav-item">
+                    <i class="fas fa-building"></i><span>Socios</span>
+                </a>
+                <a href="demo_evento.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-check"></i><span>Eventos</span>
+                </a>
+                <a href="gestionar_usuarios.php" class="claut-admin-nav-item">
+                    <i class="fas fa-users"></i><span>Usuarios</span>
+                </a>
+                <a href="demo_visitante.html" class="claut-admin-nav-item">
+                    <i class="fas fa-user-shield"></i><span>Visitantes</span>
+                </a>
+            </div>
 
-                <!-- admin panel -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin-panel.html?login=success">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Panel Administrador</span>
-                    </a>
-                </li>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Sistema</p>
+                <a href="profile.html" class="claut-admin-nav-item">
+                    <i class="fas fa-gear"></i><span>Configuración</span>
+                </a>
+            </div>
+        </nav>
 
-                <!-- Usuarios -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_usuarios.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Usuarios</span>
-                    </a>
-                </li>
-
-                <!-- Empresas -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_empresas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-building text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Empresas</span>
-                    </a>
-                </li>
-
-                <!-- Eventos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_evento.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-calendar-alt text-orange-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Eventos</span>
-                    </a>
-                </li>
-
-                <!-- Boletines -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_boletines.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-newspaper text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Boletines</span>
-                    </a>
-                </li>
-
-                <!-- Documentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_documentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-file-alt text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Documentos</span>
-                    </a>
-                </li>
-
-                <!-- Banners -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin/banner-admin-mejorado.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-images text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Banners</span>
-                    </a>
-                </li>
-
-                <!-- Descuentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg active"
-                        href="demo_descuentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tags text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Descuentos</span>
-                    </a>
-                </li>
-
-                <!-- Perfil -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="profile.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-user-cog text-gray-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Perfil</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="mx-4">
-            <button onclick="window.location.href='pages/sign-in.html'"
-                class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors text-red-600 hover:text-red-800">
-                <div
-                    class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                    <i class="fas fa-sign-out-alt text-red-500" style="font-size: 16px;"></i>
-                </div>
-                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Cerrar Sesión</span>
+        <div class="claut-admin-sidebar-foot">
+            <button onclick="window.location.href='pages/sign-in.html'" class="claut-admin-nav-item claut-admin-nav-item--danger">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
             </button>
         </div>
-
     </aside>
 
+    <div class="claut-admin-sidebar-overlay" id="claut-admin-sidebar-overlay"></div>
+
     <!-- Header -->
-    <header class="main-content bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg"
+    <header class="claut-admin-main bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg"
         style="background: linear-gradient(135deg, #C7252B 0%, #A01E24 100%);">
         <div class="container mx-auto px-4 py-6">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <!-- Hamburger Menu Button for All Screens -->
                     <button
-                        class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md hamburger-btn"
-                        id="hamburgerBtn" sidenav-trigger aria-label="Abrir menú de navegación">
+                        class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
+                        id="claut-header-menu-btn" aria-label="Abrir menú de navegación">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                     <div>
-                        <h1 class="text-3xl font-bold">🏷️ Administrador de Descuentos</h1>
+                        <h1 class="text-3xl font-bold">Administrador de Descuentos</h1>
                         <p class="text-red-200 mt-1">CRUD Completo - Base de Datos</p>
                     </div>
                 </div>
@@ -515,42 +177,42 @@
     </header>
 
     <!-- Estadísticas -->
-    <div class="main-content container mx-auto px-4 py-6">
+    <div class="claut-admin-main container mx-auto px-4 py-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex items-center justify-between">
+            <div class="claut-stat-card claut-stat-card--red">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-500 text-sm">Total Descuentos</p>
-                        <p class="text-2xl font-bold text-gray-800" id="totalDescuentos">0</p>
+                        <p class="stat-label">Total Descuentos</p>
+                        <p class="stat-value" id="totalDescuentos">0</p>
                     </div>
-                    <i class="fas fa-tags text-3xl" style="color: #C7252B;"></i>
+                    <div class="stat-icon"><i class="fas fa-tags"></i></div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex items-center justify-between">
+            <div class="claut-stat-card claut-stat-card--green">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-500 text-sm">Activos</p>
-                        <p class="text-2xl font-bold text-green-600" id="activosDescuentos">0</p>
+                        <p class="stat-label">Activos</p>
+                        <p class="stat-value" id="activosDescuentos">0</p>
                     </div>
-                    <i class="fas fa-check-circle text-3xl text-green-500"></i>
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex items-center justify-between">
+            <div class="claut-stat-card claut-stat-card--gold">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-500 text-sm">Expirados</p>
-                        <p class="text-2xl font-bold text-red-600" id="expiradosDescuentos">0</p>
+                        <p class="stat-label">Expirados</p>
+                        <p class="stat-value" id="expiradosDescuentos">0</p>
                     </div>
-                    <i class="fas fa-times-circle text-3xl text-red-500"></i>
+                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex items-center justify-between">
+            <div class="claut-stat-card claut-stat-card--blue">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-500 text-sm">Empresas Participantes</p>
-                        <p class="text-2xl font-bold text-blue-600" id="empresasParticipantes">0</p>
+                        <p class="stat-label">Empresas Participantes</p>
+                        <p class="stat-value" id="empresasParticipantes">0</p>
                     </div>
-                    <i class="fas fa-building text-3xl text-blue-500"></i>
+                    <div class="stat-icon"><i class="fas fa-building"></i></div>
                 </div>
             </div>
         </div>
@@ -625,170 +287,178 @@
     </div>
 
     <!-- Modal para Crear/Editar Descuento -->
-    <div id="descuentoModal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden z-50">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full slide-in modal-content modal-container">
-                <div class="px-6 py-4 border-b">
-                    <h3 id="modalTitle" class="text-lg font-semibold text-gray-900">Crear Descuento</h3>
-                </div>
+    <div id="descuentoModal" class="claut-wizard-backdrop">
+        <form id="descuentoForm" class="claut-wizard" style="max-width:760px;" novalidate>
+            <input type="hidden" id="descuentoId">
 
-                <form id="descuentoForm" class="px-6 py-4 space-y-3" novalidate>
-                    <input type="hidden" id="descuentoId">
+            <div class="claut-wizard-head">
+                <h2 id="modalTitle">Crear Descuento</h2>
+                <p>Beneficio visible para los socios en el directorio de descuentos</p>
+                <button type="button" class="claut-modal-close" onclick="hideModal()" aria-label="Cerrar">&times;</button>
+            </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
-                        <input type="text" id="titulo" required
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                    </div>
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Información</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Descuento</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="3">
+                        <span class="claut-wizard-step-num">3</span><span>Vigencia</span>
+                    </button>
+                </nav>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-                        <textarea id="descripcion" rows="3"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
-                    </div>
-
-                    <!-- Selector de tipo de empresa -->
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-3">Tipo de Empresa Oferente *</label>
-                        <div class="flex items-center space-x-6">
-                            <label class="flex items-center">
-                                <input type="radio" name="tipoEmpresa" value="existente" id="empresaExistente" checked
-                                    class="h-4 w-4 border-gray-300" style="color: #C7252B; accent-color: #C7252B;">
-                                <span class="ml-2 text-sm text-gray-700">Empresa en convenio existente</span>
-                            </label>
-                            <label class="flex items-center">
-                                <input type="radio" name="tipoEmpresa" value="nueva" id="empresaNueva"
-                                    class="h-4 w-4 border-gray-300" style="color: #C7252B; accent-color: #C7252B;">
-                                <span class="ml-2 text-sm text-gray-700">Escribir nombre de empresa</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Selector de empresa existente -->
-                    <div id="selectorEmpresaExistente">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Empresa en Convenio *</label>
-                        <select id="empresaOferente"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                            <option value="">Cargando empresas...</option>
-                        </select>
-                        <p class="text-xs text-gray-500 mt-1">Se mostrarán solo las empresas activas con convenio
-                            vigente</p>
-                    </div>
-
-                    <!-- Input para empresa nueva -->
-                    <div id="inputEmpresaNueva" class="hidden">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de la Empresa *</label>
-                        <input type="text" id="nombreEmpresaNueva" placeholder="Escribe el nombre de la empresa"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                        <p class="text-xs text-gray-500 mt-1">Para empresas que no están en convenio con Clúster</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Código de Descuento</label>
-                        <input type="text" id="codigoDescuento"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Información -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 3</p>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Porcentaje (%)</label>
-                            <input type="number" id="porcentajeDescuento" step="0.01" min="0" max="100"
-                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <label>Título *</label>
+                            <input type="text" id="titulo" required placeholder="Ej. 15% en mantenimiento">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Monto ($)</label>
-                            <input type="number" id="montoDescuento" step="0.01" min="0"
-                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <label>Descripción</label>
+                            <textarea id="descripcion" rows="3" placeholder="Descripción del beneficio (opcional)"></textarea>
                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Selector de tipo de empresa -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio *</label>
-                            <input type="date" id="fechaInicio"
-                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <label>Tipo de Empresa Oferente *</label>
+                            <div class="flex items-center space-x-6 mb-2" style="color:#cbd5e1;font-size:.85rem;">
+                                <label class="flex items-center" style="width:auto;font-weight:400;">
+                                    <input type="radio" name="tipoEmpresa" value="existente" id="empresaExistente" checked
+                                        class="mr-2" style="width:auto;">
+                                    Empresa en convenio existente
+                                </label>
+                                <label class="flex items-center" style="width:auto;font-weight:400;">
+                                    <input type="radio" name="tipoEmpresa" value="nueva" id="empresaNueva"
+                                        class="mr-2" style="width:auto;">
+                                    Escribir nombre de empresa
+                                </label>
+                            </div>
                         </div>
+
+                        <!-- Selector de empresa existente -->
+                        <div id="selectorEmpresaExistente">
+                            <label>Empresa en Convenio *</label>
+                            <select id="empresaOferente">
+                                <option value="">Cargando empresas...</option>
+                            </select>
+                            <p class="text-xs mt-1" style="color:#94a3b8;">Se mostrarán solo las empresas activas con convenio
+                                vigente</p>
+                        </div>
+
+                        <!-- Input para empresa nueva -->
+                        <div id="inputEmpresaNueva" class="hidden">
+                            <label>Nombre de la Empresa *</label>
+                            <input type="text" id="nombreEmpresaNueva" placeholder="Escribe el nombre de la empresa">
+                            <p class="text-xs mt-1" style="color:#94a3b8;">Para empresas que no están en convenio con Clúster</p>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Descuento -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 3</p>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin *</label>
-                            <input type="date" id="fechaFin"
-                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Usos Máximos</label>
-                        <input type="number" id="usosMaximos" min="1"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                        <p class="text-xs text-gray-500 mt-1">Dejar vacío para usos ilimitados</p>
-                    </div>
-
-                    <!-- ===== BOTÓN DE ACCIÓN ===== -->
-                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-mouse-pointer text-red-500 mr-2"></i>
-                            <label class="text-sm font-semibold text-gray-700">Botón de Acción</label>
-                            <span class="ml-2 text-xs text-gray-500">(opcional)</span>
+                            <label>Código de Descuento</label>
+                            <input type="text" id="codigoDescuento">
                         </div>
 
-                        <div class="space-y-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Tipo de acción</label>
-                                <select id="accionTipo" onchange="onAccionTipoChange()"
-                                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm">
-                                    <option value="ninguno">Sin botón de acción</option>
-                                    <option value="link">🔗 Link externo (URL)</option>
-                                    <option value="telefono">📞 Llamar por teléfono</option>
-                                    <option value="email">✉️ Enviar email</option>
-                                    <option value="whatsapp">💬 WhatsApp</option>
-                                    <option value="mapa">📍 Mapa / Dirección</option>
-                                </select>
+                                <label>Porcentaje (%)</label>
+                                <input type="number" id="porcentajeDescuento" step="0.01" min="0" max="100">
                             </div>
-
-                            <div id="accionValorGroup" class="hidden">
-                                <label class="block text-xs font-medium text-gray-600 mb-1"
-                                    id="accionValorLabel">Valor</label>
-                                <input type="text" id="accionValor"
-                                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                                    placeholder="">
-                            </div>
-
-                            <div id="accionEtiquetaGroup" class="hidden">
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Etiqueta del botón <span
-                                        class="text-gray-400">(opcional)</span></label>
-                                <input type="text" id="accionEtiqueta"
-                                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                                    placeholder="Ej: Visitar sitio, Llamar ahora...">
-                                <p class="text-xs text-gray-400 mt-1">Si se deja vacío, se usará una etiqueta por
-                                    defecto.</p>
+                            <div>
+                                <label>Monto ($)</label>
+                                <input type="number" id="montoDescuento" step="0.01" min="0">
                             </div>
                         </div>
-                    </div>
-                    <!-- ===== FIN BOTÓN DE ACCIÓN ===== -->
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-                        <select id="estado"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                            <option value="activo">Activo</option>
-                            <option value="inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                </form>
+                        <div>
+                            <label>Usos Máximos</label>
+                            <input type="number" id="usosMaximos" min="1">
+                            <p class="text-xs mt-1" style="color:#94a3b8;">Dejar vacío para usos ilimitados</p>
+                        </div>
 
-                <div class="px-6 py-4 border-t flex justify-end space-x-3">
-                    <button type="button" onclick="hideModal()"
-                        class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
-                        Cancelar
-                    </button>
-                    <button type="button" id="saveButton"
-                        onclick="saveDescuento(event)"
-                        class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition"
-                        style="background: #C7252B;">
-                        Guardar
-                    </button>
+                        <!-- ===== BOTÓN DE ACCIÓN ===== -->
+                        <div style="border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;background:rgba(255,255,255,.03);">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-mouse-pointer mr-2" style="color:#C7252B;"></i>
+                                <label class="text-sm font-semibold" style="color:#e2e8f0;margin:0;">Botón de Acción</label>
+                                <span class="ml-2 text-xs" style="color:#94a3b8;">(opcional)</span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="text-xs" style="color:#94a3b8;">Tipo de acción</label>
+                                    <select id="accionTipo" onchange="onAccionTipoChange()">
+                                        <option value="ninguno">Sin botón de acción</option>
+                                        <option value="link">Link externo (URL)</option>
+                                        <option value="telefono">Llamar por teléfono</option>
+                                        <option value="email">Enviar email</option>
+                                        <option value="whatsapp">WhatsApp</option>
+                                        <option value="mapa">Mapa / Dirección</option>
+                                    </select>
+                                </div>
+
+                                <div id="accionValorGroup" class="hidden">
+                                    <label class="text-xs" id="accionValorLabel" style="color:#94a3b8;">Valor</label>
+                                    <input type="text" id="accionValor" placeholder="">
+                                </div>
+
+                                <div id="accionEtiquetaGroup" class="hidden">
+                                    <label class="text-xs" style="color:#94a3b8;">Etiqueta del botón <span style="color:#64748b;">(opcional)</span></label>
+                                    <input type="text" id="accionEtiqueta" placeholder="Ej: Visitar sitio, Llamar ahora...">
+                                    <p class="text-xs mt-1" style="color:#64748b;">Si se deja vacío, se usará una etiqueta por
+                                        defecto.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ===== FIN BOTÓN DE ACCIÓN ===== -->
+                    </div>
+
+                    <!-- Paso 3: Vigencia -->
+                    <div class="claut-wizard-panel" data-step="3">
+                        <p class="claut-wizard-panel-eyebrow">Paso 3 de 3</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label>Fecha Inicio *</label>
+                                <input type="date" id="fechaInicio">
+                            </div>
+                            <div>
+                                <label>Fecha Fin *</label>
+                                <input type="date" id="fechaFin">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Estado</label>
+                            <select id="estado">
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="hideModal()" class="porsche-btn porsche-btn--ghost">Cancelar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="button" id="saveButton" data-wizard-submit
+                    onclick="saveDescuento(event)"
+                    class="porsche-btn" style="display:none;">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+            </div>
+        </form>
     </div>
 
     <!-- Modal de Confirmación de Eliminación -->
@@ -835,9 +505,6 @@
             loadDescuentos();
             setupEventListeners();
             setupEmpresaToggle();
-
-            // Initialize sidebar functionality
-            setTimeout(initializeSidebar, 100); // Pequeño delay para asegurar que el DOM esté listo
 
             // Debug: verificar selector después de 2 segundos
             setTimeout(() => {
@@ -1364,7 +1031,10 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('fechaInicio').value = today;
 
-            document.getElementById('descuentoModal').classList.remove('hidden');
+            const modal = document.getElementById('descuentoModal');
+            modal.classList.add('open');
+            const wizardEl = modal.querySelector('.claut-wizard');
+            if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
         }
 
         // Editar descuento
@@ -1397,7 +1067,10 @@
                     document.getElementById('accionEtiqueta').value = descuento.accion_etiqueta || '';
                     onAccionTipoChange(); // mostrar/ocultar grupos según el tipo cargado
 
-                    document.getElementById('descuentoModal').classList.remove('hidden');
+                    const modal = document.getElementById('descuentoModal');
+                    modal.classList.add('open');
+                    const wizardEl = modal.querySelector('.claut-wizard');
+                    if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
                 }
             } catch (error) {
                 console.error('Error al cargar descuento:', error);
@@ -1618,7 +1291,7 @@
 
         // Ocultar modales
         function hideModal() {
-            document.getElementById('descuentoModal').classList.add('hidden');
+            document.getElementById('descuentoModal').classList.remove('open');
         }
 
         function hideDeleteModal() {
@@ -1760,197 +1433,13 @@
             showToast(message, 'error');
         }
 
-        // === SIDEBAR RETRACTABLE FUNCTIONALITY ===
-        function initializeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-            const hamburgerBtn = document.querySelector('[sidenav-trigger]');
-            const closeBtn = document.getElementById('sidebarCloseBtn');
-
-            console.log('Sidebar elements:', {
-                sidebar: !!sidebar,
-                overlay: !!overlay,
-                hamburgerBtn: !!hamburgerBtn,
-                closeBtn: !!closeBtn,
-                screenWidth: window.innerWidth,
-                isDesktop: window.innerWidth >= 1280
-            });
-
-            // Log computed styles for debugging
-            if (sidebar) {
-                const styles = window.getComputedStyle(sidebar);
-                console.log('Sidebar computed styles:', {
-                    display: styles.display,
-                    transform: styles.transform,
-                    left: styles.left,
-                    position: styles.position,
-                    zIndex: styles.zIndex
-                });
-            }
-
-            if (!sidebar || !overlay || !hamburgerBtn) {
-                console.error('Sidebar elements not found:', {
-                    sidebar: !!sidebar,
-                    overlay: !!overlay,
-                    hamburgerBtn: !!hamburgerBtn
-                });
-                return;
-            }
-
-            // Toggle sidebar function
-            function toggleSidebar(e) {
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-
-                const isVisible = sidebar.classList.contains('sidenav-show');
-                console.log('Toggle sidebar - currently visible:', isVisible);
-
-                if (!isVisible) {
-                    // Open sidebar
-                    console.log('Opening sidebar');
-                    sidebar.classList.add('sidenav-show');
-                    sidebar.setAttribute('aria-expanded', 'true');
-                    overlay.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-
-                    // Focus management for accessibility
-                    const firstLink = sidebar.querySelector('.porsche-nav-item');
-                    if (firstLink) {
-                        setTimeout(() => firstLink.focus(), 100);
-                    }
-                } else {
-                    // Close sidebar
-                    console.log('Closing sidebar');
-                    closeSidebarInternal();
-                }
-            }
-
-            // Close sidebar function
-            function closeSidebarInternal() {
-                console.log('Executing closeSidebarInternal');
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-
-                // Return focus to hamburger button
-                if (hamburgerBtn) {
-                    hamburgerBtn.focus();
-                }
-            }
-
-            // Event listeners
-            console.log('Adding click event to hamburger button');
-            hamburgerBtn.addEventListener('click', toggleSidebar);
-
-            hamburgerBtn.addEventListener('touchstart', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleSidebar(e);
-            }, { passive: false });
-
-            if (overlay) {
-                overlay.addEventListener('click', closeSidebarInternal);
-                overlay.addEventListener('touchstart', function (e) {
-                    e.preventDefault();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                });
-                closeBtn.addEventListener('touchstart', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            // Close on escape key
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-            });
-
-            // Handle window resize - Keep sidebar closed on all screen sizes
-            window.addEventListener('resize', function () {
-                // Optional: could add logic here if needed
-            });
-
-            // Swipe to close functionality
-            let touchStartX = 0;
-            let touchStartY = 0;
-
-            sidebar.addEventListener('touchstart', function (e) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-
-            sidebar.addEventListener('touchmove', function (e) {
-                if (!touchStartX) return;
-
-                const currentX = e.touches[0].clientX;
-                const currentY = e.touches[0].clientY;
-                const diffX = touchStartX - currentX;
-                const diffY = Math.abs(touchStartY - currentY);
-
-                // Swipe left to close
-                if (diffX > 50 && diffY < 100) {
-                    closeSidebarInternal();
-                    touchStartX = 0;
-                    touchStartY = 0;
-                }
-            }, { passive: true });
-
-            // Keyboard navigation in sidebar
-            sidebar.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-
-                // Arrow navigation
-                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    const navItems = Array.from(sidebar.querySelectorAll('.porsche-nav-item:not([style*="display: none"])'));
-                    const currentIndex = navItems.indexOf(document.activeElement);
-
-                    if (e.key === 'ArrowDown') {
-                        const nextIndex = (currentIndex + 1) % navItems.length;
-                        navItems[nextIndex].focus();
-                    } else {
-                        const prevIndex = currentIndex <= 0 ? navItems.length - 1 : currentIndex - 1;
-                        navItems[prevIndex].focus();
-                    }
-                }
-            });
-
-            console.log('✅ Sidebar functionality initialized successfully');
-        }
-
-        // Legacy function compatibility
-        function closeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-
-            if (sidebar && overlay) {
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-            }
-        }
     </script>
 
     <!-- Auth Session Script -->
     <script src="./js/auth-session.js"></script>
   <script src="assets/js/loading-screen.js"></script>
+    <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
+    <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
 </body>
 
 </html>

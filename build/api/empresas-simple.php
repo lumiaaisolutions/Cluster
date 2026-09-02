@@ -445,7 +445,7 @@ function crearEmpresa($db) {
                 $db2 = Database::getInstance()->getConnection();
                 NotificationMailer::dispatch(
                     'nueva_empresa',
-                    "🏢 Nueva empresa registrada: $nombre",
+                    "Nueva empresa registrada: $nombre",
                     "Se ha registrado una nueva empresa en el sistema y requiere revisión.\n\n" .
                     "Empresa: $nombre\n" .
                     "Sector: $sector\n" .
@@ -624,6 +624,13 @@ function eliminarEmpresa($db) {
         );
 
         if ($rowsAffected !== false) {
+            // Auditoría
+            if (file_exists(__DIR__ . '/../utils/AuditLogger.php')) {
+                require_once __DIR__ . '/../utils/AuditLogger.php';
+                AuditLogger::log('empresa.eliminar', 'empresa', $id, [
+                    'nombre' => $empresaExistente['nombre'] ?? null,
+                ]);
+            }
             sendResponse(true, 'Empresa eliminada físicamente de la base de datos', ['id' => $id]);
         } else {
             sendResponse(false, 'Error al eliminar la empresa', null, 500);

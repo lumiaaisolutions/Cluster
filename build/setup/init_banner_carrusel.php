@@ -49,7 +49,7 @@ class BannerCarruselSetup {
     }
     
     public function crearTablaBannerCarrusel() {
-        echo "<h3>🔨 Creando tabla banner_carrusel...</h3>\n";
+        echo "<h3><i class=\"fas fa-hammer\"></i> Creando tabla banner_carrusel...</h3>\n";
         
         try {
             // Primero, verificar si la tabla existe
@@ -57,7 +57,7 @@ class BannerCarruselSetup {
             $stmt->execute();
             
             if ($stmt->rowCount() > 0) {
-                echo "<p style='color: orange;'>⚠️ La tabla banner_carrusel ya existe. Verificando estructura...</p>\n";
+                echo "<p style='color: orange;'><i class=\"fas fa-triangle-exclamation\"></i> La tabla banner_carrusel ya existe. Verificando estructura...</p>\n";
                 $this->verificarEstructuraTabla();
             } else {
                 // Crear la tabla
@@ -81,11 +81,11 @@ class BannerCarruselSetup {
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
                 
                 $this->conn->exec($sql);
-                echo "<p style='color: green;'>✅ Tabla banner_carrusel creada exitosamente</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> Tabla banner_carrusel creada exitosamente</p>\n";
             }
-            
+
         } catch (Exception $e) {
-            echo "<p style='color: red;'>❌ Error al crear tabla: " . htmlspecialchars($e->getMessage()) . "</p>\n";
+            echo "<p style='color: red;'><i class=\"fas fa-circle-xmark\"></i> Error al crear tabla: " . htmlspecialchars($e->getMessage()) . "</p>\n";
             return false;
         }
         
@@ -102,23 +102,23 @@ class BannerCarruselSetup {
             
             // Verificar si falta la columna 'orden'
             if (!in_array('orden', $columnNames)) {
-                echo "<p style='color: blue;'>🔧 Agregando columna 'orden'...</p>\n";
+                echo "<p style='color: blue;'><i class=\"fas fa-wrench\"></i> Agregando columna 'orden'...</p>\n";
                 $this->conn->exec("ALTER TABLE banner_carrusel ADD COLUMN orden INT DEFAULT 1 AFTER imagen_url");
-                echo "<p style='color: green;'>✅ Columna 'orden' agregada</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> Columna 'orden' agregada</p>\n";
             }
             
             // Verificar si falta la columna 'posicion'
             if (!in_array('posicion', $columnNames)) {
-                echo "<p style='color: blue;'>🔧 Agregando columna 'posicion'...</p>\n";
+                echo "<p style='color: blue;'><i class=\"fas fa-wrench\"></i> Agregando columna 'posicion'...</p>\n";
                 $this->conn->exec("ALTER TABLE banner_carrusel ADD COLUMN posicion INT DEFAULT 1 AFTER orden");
-                echo "<p style='color: green;'>✅ Columna 'posicion' agregada</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> Columna 'posicion' agregada</p>\n";
             }
-            
+
             // Crear índices si no existen
             $this->crearIndices();
-            
+
         } catch (Exception $e) {
-            echo "<p style='color: red;'>❌ Error al verificar estructura: " . htmlspecialchars($e->getMessage()) . "</p>\n";
+            echo "<p style='color: red;'><i class=\"fas fa-circle-xmark\"></i> Error al verificar estructura: " . htmlspecialchars($e->getMessage()) . "</p>\n";
         }
     }
     
@@ -133,17 +133,17 @@ class BannerCarruselSetup {
         foreach ($indices as $nombre => $sql) {
             try {
                 $this->conn->exec($sql);
-                echo "<p style='color: green;'>✅ Índice $nombre creado</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> Índice $nombre creado</p>\n";
             } catch (Exception $e) {
                 if (strpos($e->getMessage(), 'Duplicate key name') === false) {
-                    echo "<p style='color: orange;'>⚠️ Índice $nombre ya existe</p>\n";
+                    echo "<p style='color: orange;'><i class=\"fas fa-triangle-exclamation\"></i> Índice $nombre ya existe</p>\n";
                 }
             }
         }
     }
     
     public function insertarBannersEjemplo() {
-        echo "<h3>📸 Insertando banners de ejemplo...</h3>\n";
+        echo "<h3><i class=\"fas fa-camera\"></i> Insertando banners de ejemplo...</h3>\n";
         
         try {
             // Verificar si ya hay banners
@@ -152,7 +152,7 @@ class BannerCarruselSetup {
             $result = $stmt->fetch();
             
             if ($result['total'] > 0) {
-                echo "<p style='color: orange;'>⚠️ Ya existen {$result['total']} banners en la base de datos</p>\n";
+                echo "<p style='color: orange;'><i class=\"fas fa-triangle-exclamation\"></i> Ya existen {$result['total']} banners en la base de datos</p>\n";
                 return;
             }
             
@@ -206,18 +206,18 @@ class BannerCarruselSetup {
                     $banner['activo']
                 ]);
                 
-                echo "<p style='color: green;'>✅ Banner '{$banner['titulo']}' insertado</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> Banner '{$banner['titulo']}' insertado</p>\n";
             }
-            
-            echo "<p style='color: green;'><strong>✅ " . count($banners) . " banners de ejemplo insertados exitosamente</strong></p>\n";
-            
+
+            echo "<p style='color: green;'><strong><i class=\"fas fa-circle-check\"></i> " . count($banners) . " banners de ejemplo insertados exitosamente</strong></p>\n";
+
         } catch (Exception $e) {
-            echo "<p style='color: red;'>❌ Error al insertar banners: " . htmlspecialchars($e->getMessage()) . "</p>\n";
+            echo "<p style='color: red;'><i class=\"fas fa-circle-xmark\"></i> Error al insertar banners: " . htmlspecialchars($e->getMessage()) . "</p>\n";
         }
     }
     
     public function crearDirectorioUploads() {
-        echo "<h3>📁 Verificando directorio de uploads...</h3>\n";
+        echo "<h3><i class=\"fas fa-folder\"></i> Verificando directorio de uploads...</h3>\n";
         
         $uploadPaths = [
             '../uploads/banners',
@@ -227,12 +227,12 @@ class BannerCarruselSetup {
         foreach ($uploadPaths as $path) {
             if (!file_exists($path)) {
                 if (mkdir($path, 0755, true)) {
-                    echo "<p style='color: green;'>✅ Directorio creado: $path</p>\n";
+                    echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> Directorio creado: $path</p>\n";
                 } else {
-                    echo "<p style='color: red;'>❌ No se pudo crear el directorio: $path</p>\n";
+                    echo "<p style='color: red;'><i class=\"fas fa-circle-xmark\"></i> No se pudo crear el directorio: $path</p>\n";
                 }
             } else {
-                echo "<p style='color: green;'>✅ Directorio ya existe: $path</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> Directorio ya existe: $path</p>\n";
             }
         }
         
@@ -246,7 +246,7 @@ class BannerCarruselSetup {
     }
     
     public function verificarSistema() {
-        echo "<h3>🔍 Verificando sistema...</h3>\n";
+        echo "<h3><i class=\"fas fa-magnifying-glass\"></i> Verificando sistema...</h3>\n";
         
         try {
             // Contar banners
@@ -254,7 +254,7 @@ class BannerCarruselSetup {
             $stmt->execute();
             $stats = $stmt->fetch();
             
-            echo "<p><strong>📊 Estadísticas:</strong></p>\n";
+            echo "<p><strong><i class=\"fas fa-chart-column\"></i> Estadísticas:</strong></p>\n";
             echo "<ul>\n";
             echo "<li>Total de banners: {$stats['total']}</li>\n";
             echo "<li>Banners activos: {$stats['activos']}</li>\n";
@@ -262,7 +262,7 @@ class BannerCarruselSetup {
             
             // Mostrar banners activos
             if ($stats['activos'] > 0) {
-                echo "<p><strong>🎯 Banners activos:</strong></p>\n";
+                echo "<p><strong><i class=\"fas fa-bullseye\"></i> Banners activos:</strong></p>\n";
                 $stmt = $this->conn->prepare("SELECT id, titulo, orden, posicion FROM banner_carrusel WHERE activo = 1 ORDER BY orden ASC");
                 $stmt->execute();
                 $banners = $stmt->fetchAll();
@@ -275,10 +275,10 @@ class BannerCarruselSetup {
             }
             
             // Probar API
-            echo "<p><strong>🔌 Probando API...</strong></p>\n";
+            echo "<p><strong><i class=\"fas fa-plug\"></i> Probando API...</strong></p>\n";
             $apiUrl = '../api/banners.php';
             if (file_exists($apiUrl)) {
-                echo "<p style='color: green;'>✅ Archivo API encontrado</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> Archivo API encontrado</p>\n";
                 
                 // Hacer una petición de prueba interna
                 ob_start();
@@ -287,22 +287,22 @@ class BannerCarruselSetup {
                 $apiResponse = ob_get_clean();
                 
                 if (!empty($apiResponse)) {
-                    echo "<p style='color: green;'>✅ API respondiendo correctamente</p>\n";
+                    echo "<p style='color: green;'><i class=\"fas fa-circle-check\"></i> API respondiendo correctamente</p>\n";
                 } else {
-                    echo "<p style='color: orange;'>⚠️ API no está respondiendo como se esperaba</p>\n";
+                    echo "<p style='color: orange;'><i class=\"fas fa-triangle-exclamation\"></i> API no está respondiendo como se esperaba</p>\n";
                 }
             } else {
-                echo "<p style='color: red;'>❌ Archivo API no encontrado</p>\n";
+                echo "<p style='color: red;'><i class=\"fas fa-circle-xmark\"></i> Archivo API no encontrado</p>\n";
             }
-            
+
         } catch (Exception $e) {
-            echo "<p style='color: red;'>❌ Error en verificación: " . htmlspecialchars($e->getMessage()) . "</p>\n";
+            echo "<p style='color: red;'><i class=\"fas fa-circle-xmark\"></i> Error en verificación: " . htmlspecialchars($e->getMessage()) . "</p>\n";
         }
     }
     
     public function ejecutarConfiguracionCompleta() {
         echo "<div style='background: #e3f2fd; padding: 20px; border-radius: 8px; border-left: 4px solid #2196f3; margin: 20px 0;'>\n";
-        echo "<h2>🚀 Iniciando configuración del Sistema de Banner Carrusel</h2>\n";
+        echo "<h2><i class=\"fas fa-rocket\"></i> Iniciando configuración del Sistema de Banner Carrusel</h2>\n";
         echo "</div>\n";
         
         $pasos = [
@@ -320,7 +320,7 @@ class BannerCarruselSetup {
         }
         
         echo "<div style='background: #e8f5e8; padding: 20px; border-radius: 8px; border-left: 4px solid #4caf50; margin: 20px 0;'>\n";
-        echo "<h2>🎉 ¡Configuración completada!</h2>\n";
+        echo "<h2><i class=\"fas fa-champagne-glasses\"></i> ¡Configuración completada!</h2>\n";
         echo "<p>El sistema de banner carrusel está listo para usarse.</p>\n";
         echo "</div>\n";
     }
@@ -450,7 +450,7 @@ class BannerCarruselSetup {
 </head>
 <body>
     <div class="header">
-        <h1>🎨 Clúster Intranet</h1>
+        <h1><i class="fas fa-palette"></i> Clúster Intranet</h1>
         <p>Sistema de Banner Carrusel - Inicialización</p>
     </div>
     
@@ -461,21 +461,21 @@ class BannerCarruselSetup {
             $setup->ejecutarConfiguracionCompleta();
             
             echo "<hr style='margin: 30px 0;'>\n";
-            echo "<h3>🔗 Enlaces de Acceso</h3>\n";
+            echo "<h3><i class=\"fas fa-link\"></i> Enlaces de Acceso</h3>\n";
             echo "<div style='text-align: center;'>\n";
-            echo "<a href='../admin/banner-admin.php' class='btn btn-success'>📊 Panel de Administración</a>\n";
-            echo "<a href='../pages/sign-in.html' class='btn'>🔐 Ver Página de Login</a>\n";
-            echo "<a href='../api/banners.php' class='btn'>🔌 Probar API</a>\n";
+            echo "<a href='../admin/banner-admin.php' class='btn btn-success'><i class=\"fas fa-chart-column\"></i> Panel de Administración</a>\n";
+            echo "<a href='../pages/sign-in.html' class='btn'><i class=\"fas fa-lock\"></i> Ver Página de Login</a>\n";
+            echo "<a href='../api/banners.php' class='btn'><i class=\"fas fa-plug\"></i> Probar API</a>\n";
             echo "</div>\n";
             
         } else {
         ?>
-            <h2>🎯 Sistema de Banner Carrusel</h2>
+            <h2><i class="fas fa-bullseye"></i> Sistema de Banner Carrusel</h2>
             <p>Este script configurará completamente el sistema de banners para la página de login de Clúster Intranet.</p>
             
             <div class="feature-grid">
                 <div class="feature-card">
-                    <h4>🗄️ Base de Datos</h4>
+                    <h4><i class="fas fa-database"></i> Base de Datos</h4>
                     <ul>
                         <li>Creación de tabla <code>banner_carrusel</code></li>
                         <li>Índices optimizados</li>
@@ -484,7 +484,7 @@ class BannerCarruselSetup {
                 </div>
                 
                 <div class="feature-card">
-                    <h4>📸 Contenido</h4>
+                    <h4><i class="fas fa-camera"></i> Contenido</h4>
                     <ul>
                         <li>Banners de ejemplo listos</li>
                         <li>Imágenes de alta calidad</li>
@@ -493,7 +493,7 @@ class BannerCarruselSetup {
                 </div>
                 
                 <div class="feature-card">
-                    <h4>🔧 Configuración</h4>
+                    <h4><i class="fas fa-wrench"></i> Configuración</h4>
                     <ul>
                         <li>Directorios de subida</li>
                         <li>Permisos de archivos</li>
@@ -502,7 +502,7 @@ class BannerCarruselSetup {
                 </div>
                 
                 <div class="feature-card">
-                    <h4>🚀 API Ready</h4>
+                    <h4><i class="fas fa-rocket"></i> API Ready</h4>
                     <ul>
                         <li>Endpoints funcionales</li>
                         <li>Operaciones CRUD</li>
@@ -512,7 +512,7 @@ class BannerCarruselSetup {
             </div>
             
             <div class="alert alert-warning">
-                <strong>⚠️ Requisitos previos:</strong>
+                <strong><i class="fas fa-triangle-exclamation"></i> Requisitos previos:</strong>
                 <ul style="margin: 10px 0;">
                     <li>Base de datos <code>claut_intranet</code> debe existir</li>
                     <li>Usuario MySQL con permisos de CREATE y INSERT</li>
@@ -522,19 +522,19 @@ class BannerCarruselSetup {
             </div>
             
             <div class="alert alert-info">
-                <strong>ℹ️ Lo que hará este script:</strong>
+                <strong><i class="fas fa-circle-info"></i> Lo que hará este script:</strong>
                 <ul style="margin: 10px 0;">
-                    <li>✅ Crear tabla <code>banner_carrusel</code> con estructura optimizada</li>
-                    <li>✅ Insertar 4 banners de ejemplo con imágenes de calidad</li>
-                    <li>✅ Crear directorios necesarios con permisos adecuados</li>
-                    <li>✅ Verificar que el API funcione correctamente</li>
-                    <li>✅ Generar estadísticas del sistema</li>
+                    <li><i class="fas fa-circle-check"></i> Crear tabla <code>banner_carrusel</code> con estructura optimizada</li>
+                    <li><i class="fas fa-circle-check"></i> Insertar 4 banners de ejemplo con imágenes de calidad</li>
+                    <li><i class="fas fa-circle-check"></i> Crear directorios necesarios con permisos adecuados</li>
+                    <li><i class="fas fa-circle-check"></i> Verificar que el API funcione correctamente</li>
+                    <li><i class="fas fa-circle-check"></i> Generar estadísticas del sistema</li>
                 </ul>
             </div>
             
             <form method="post" style="text-align: center; margin: 40px 0;">
                 <button type="submit" class="btn btn-success" style="font-size: 20px; padding: 20px 40px;">
-                    🚀 Inicializar Sistema Completo
+                    <i class="fas fa-rocket"></i> Inicializar Sistema Completo
                 </button>
             </form>
             
@@ -549,7 +549,7 @@ class BannerCarruselSetup {
     
     <footer style="text-align: center; margin-top: 40px; color: #6c757d; padding: 20px;">
         <p>&copy; <?= date('Y') ?> Clúster Intranet - Sistema de Gestión de Banners</p>
-        <p style="font-size: 14px;">Desarrollado para el clúster automotriz líder de México 🚗🇲🇽</p>
+        <p style="font-size: 14px;">Desarrollado para el clúster automotriz líder de México</p>
     </footer>
 </body>
 </html>

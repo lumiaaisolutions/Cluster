@@ -218,7 +218,7 @@ class JWTManager {
                 this.clearTokens();
 
                 if (typeof window !== 'undefined' && !window.location.pathname.includes('sign-in')) {
-                    window.location.href = '/sign-in.html?session_expired=1';
+                    window.location.href = '/pages/sign-in.html?session_expired=1';
                 }
 
                 throw error;

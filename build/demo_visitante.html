@@ -6,6 +6,9 @@
     <title>Administrador de Acceso Visitante - CLAUT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
+    <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
         .modal-backdrop { backdrop-filter: blur(5px); }
         .slide-in { animation: slideIn 0.3s ease-out; }
@@ -53,333 +56,95 @@
             left: 32px;
         }
 
-        /* Porsche-inspired Design System - Responsive Sidebar */
-        :root {
-            /* Primary Colors - Inspired by Porsche */
-            --porsche-black: #1a1a1a;
-            --porsche-charcoal: #2d2d2d;
-            --porsche-silver: #8a8a8a;
-            --porsche-white: #ffffff;
-            --porsche-light-gray: #f5f5f5;
-            --porsche-accent: #c9302c;
-            /* Typography */
-            --porsche-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --porsche-radius-lg: 12px;
-        }
-
-        /* === RESPONSIVE SIDEBAR FUNCTIONALITY === */
-
-        /* Porsche-inspired Sidebar */
-        .porsche-sidebar {
-            background: linear-gradient(180deg, var(--porsche-black) 0%, var(--porsche-charcoal) 100%) !important;
-            border-radius: var(--porsche-radius-lg) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
-            height: calc(100vh - 2rem) !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            font-family: var(--porsche-font) !important;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-        }
-
-        .porsche-sidebar .porsche-logo {
-            color: var(--porsche-white) !important;
-            font-weight: 700 !important;
-            font-size: 1.5rem !important;
-        }
-
-        .porsche-nav-item {
-            color: rgba(255, 255, 255, 0.8) !important;
-            border-radius: 12px !important;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            font-weight: 500 !important;
-        }
-
-        .porsche-nav-item:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            color: var(--porsche-white) !important;
-            transform: translateX(4px) !important;
-        }
-
-        .porsche-nav-item.active {
-            background: rgba(199, 37, 43, 0.2) !important;
-            color: var(--porsche-white) !important;
-            border-left: 3px solid #C7252B !important;
-        }
-
-        /* Sidebar Overlay */
-        .sidenav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-            backdrop-filter: blur(4px);
-        }
-
-        .sidenav-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            z-index: 998;
-        }
-
-        /* Close button styling */
-        #sidebarCloseBtn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        #sidebarCloseBtn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* Sidebar always retractable - All screens */
-        .porsche-sidebar {
-            transform: translateX(-100%) !important;
-            z-index: 999 !important;
-            margin: 0 !important;
-            top: 0 !important;
-            left: 0 !important;
-            border-radius: 0 !important;
-            width: 280px !important;
-            max-width: 280px !important;
-            height: 100vh !important;
-            position: fixed !important;
-            display: block !important;
-        }
-
-        .porsche-sidebar.sidenav-show {
-            transform: translateX(0) !important;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Main content always without sidebar margin */
-        .main-content {
-            margin-left: 0 !important;
-            width: 100% !important;
-        }
-
-        .container {
-            margin-left: 0 !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-        }
-
-        /* Desktop adjustments */
-        @media (min-width: 1280px) {
-            .container {
-                padding-left: 2rem !important;
-                padding-right: 2rem !important;
-            }
-        }
-
-        /* Force sidebar behavior on all screens - Override any conflicting styles */
-        .porsche-sidebar.sidebar-enhanced {
-            transform: translateX(-100%) !important;
-        }
-
-        .porsche-sidebar.sidebar-enhanced.sidenav-show {
-            transform: translateX(0) !important;
-        }
-
-        /* Override any Tailwind classes that might interfere */
-        aside.porsche-sidebar {
-            left: 0 !important;
-            margin-left: 0 !important;
-        }
-
-        /* Ensure hamburger button works on all screens */
-        @media (min-width: 1280px) {
-            [sidenav-trigger] {
-                display: block !important;
-                visibility: visible !important;
-            }
-        }
-
-        /* Hamburger button styling */
-        .hamburger-btn {
-            transition: all 0.3s ease;
-        }
-
-        .hamburger-btn:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.1) !important;
-        }
+        header.claut-admin-main { position: relative; z-index: 10; }
     </style>
 </head>
-<body class="bg-gray-100">
-    <!-- Sidebar Overlay for Mobile -->
-    <div class="sidenav-overlay" id="sidenavOverlay"></div>
-    <!-- Porsche Sidebar -->
-    <aside id="porscheSidebar"
-        class="porsche-sidebar sidebar-enhanced fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 m-0 overflow-y-auto overflow-x-hidden antialiased transition-transform duration-200 border-0 max-w-64 ease-nav-brand z-990"
-        aria-expanded="false">
-        <div class="h-48 py-6 relative mb-4">
-            <!-- Botón de cerrar para todas las pantallas -->
-            <button class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-50 p-3 bg-black/30 rounded-lg hover:bg-black/50 transition-all"
-                    id="sidebarCloseBtn"
-                    sidenav-close
-                    aria-label="Cerrar menú">
-                <i class="fas fa-times"></i>
-            </button>
-            <a class="porsche-logo block px-6 py-4 m-0 text-center whitespace-nowrap" href="dashboard.html"
-              target="_blank">
-                <img src="../assets/img/apple-icon.png"
-                  class="block mx-auto h-32 w-32 max-w-full transition-all duration-200 ease-nav-brand mb-4"
-                  alt="main_logo" />
-                <span class="block text-lg transition-all duration-200 ease-nav-brand text-white font-semibold mb-4">Clúster Admin</span>
-            </a>
+<body class="bg-gray-100 claut-dark claut-skin">
+    <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
+        <div class="claut-admin-sidebar-brand">
+            <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
+            <span class="claut-admin-sidebar-title">Clúster Admin</span>
         </div>
-        <hr class="h-px mt-4 mb-4 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
-        <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-            <ul class="flex flex-col pl-0 mb-0 pt-4">
-                <!-- Dashboard -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="dashboard.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Dashboard</span>
-                    </a>
-                </li>
-                <!-- admin panel -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin-panel.html?login=success">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Panel Administrador</span>
-                    </a>
-                </li>
-                <!-- Usuarios -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="gestionar_usuarios.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-emerald-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Gestión de Usuarios</span>
-                    </a>
-                </li>
-                <!-- Empresas -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_empresas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-building text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Empresas</span>
-                    </a>
-                </li>
-                <!-- Descuentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_descuentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tags text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Descuentos</span>
-                    </a>
-                </li>
-                <!-- Comités -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_comite.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Comités</span>
-                    </a>
-                </li>
-                <!-- Eventos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_evento.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-calendar text-orange-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Eventos</span>
-                    </a>
-                </li>
-                <!-- Gestión Gráfico -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_gestion_grafico.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-chart-bar text-teal-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Gestión Gráfico</span>
-                    </a>
-                </li>
-                <!-- Estadísticas Dinámicas -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_estadisticasdinamicas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-chart-line text-indigo-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Estadísticas Dinámicas</span>
-                    </a>
-                </li>
-                <!-- Visitantes - ACTIVE -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item active py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_visitante.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-eye text-cyan-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Acceso Visitante</span>
-                    </a>
-                </li>
-                <!-- Banners -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin/banner-admin-mejorado.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-images text-pink-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Banners</span>
-                    </a>
-                </li>
-            </ul>
+        <div class="claut-admin-sidebar-divider"></div>
+
+        <nav class="claut-admin-nav">
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">General</p>
+                <a href="admin-panel.html?login=success" class="claut-admin-nav-item">
+                    <i class="fas fa-shield-halved"></i><span>Panel Admin</span>
+                </a>
+                <a href="dashboard.html" class="claut-admin-nav-item">
+                    <i class="fas fa-house"></i><span>Dashboard</span>
+                </a>
+            </div>
+
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Ecosistema de módulos</p>
+                <a href="admin/banner-admin-mejorado.php" class="claut-admin-nav-item">
+                    <i class="fas fa-images"></i><span>Banners</span>
+                </a>
+                <a href="demo_boletines.html" class="claut-admin-nav-item">
+                    <i class="fas fa-newspaper"></i><span>Boletines</span>
+                </a>
+                <a href="demo_documentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-folder-open"></i><span>Documentos</span>
+                </a>
+                <a href="demo_descuentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-tags"></i><span>Beneficios</span>
+                </a>
+                <a href="demo_comite.html" class="claut-admin-nav-item">
+                    <i class="fas fa-people-group"></i><span>Comités</span>
+                </a>
+                <a href="calendario.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-days"></i><span>Calendario</span>
+                </a>
+                <a href="demo_empresas.html" class="claut-admin-nav-item">
+                    <i class="fas fa-building"></i><span>Socios</span>
+                </a>
+                <a href="demo_evento.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-check"></i><span>Eventos</span>
+                </a>
+                <a href="gestionar_usuarios.php" class="claut-admin-nav-item">
+                    <i class="fas fa-users"></i><span>Usuarios</span>
+                </a>
+                <a href="demo_visitante.html" class="claut-admin-nav-item active">
+                    <i class="fas fa-user-shield"></i><span>Visitantes</span>
+                </a>
+            </div>
+
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Sistema</p>
+                <a href="profile.html" class="claut-admin-nav-item">
+                    <i class="fas fa-gear"></i><span>Configuración</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="claut-admin-sidebar-foot">
+            <button onclick="window.location.href='pages/sign-in.html'" class="claut-admin-nav-item claut-admin-nav-item--danger">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
+            </button>
         </div>
     </aside>
 
-    <div class="main-content">
+    <div class="claut-admin-sidebar-overlay" id="claut-admin-sidebar-overlay"></div>
+
     <!-- Header -->
-    <header class="bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg" style="background: linear-gradient(135deg, #C7252B 0%, #A01E24 100%);">
+    <header class="claut-admin-main bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg" style="background: linear-gradient(135deg, #C7252B 0%, #A01E24 100%);">
         <div class="container mx-auto px-4 py-6">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
-                    <button class="hamburger-btn bg-white/10 hover:bg-white/20 p-3 rounded-lg mr-4"
-                            sidenav-trigger
-                            id="hamburgerBtn"
-                            aria-label="Abrir menú">
-                        <i class="fas fa-bars text-white"></i>
+                    <!-- Hamburger Menu Button for All Screens -->
+                    <button class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
+                            id="claut-header-menu-btn"
+                            style="transition: background .2s ease;"
+                            aria-label="Abrir menú de navegación">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
                     </button>
                     <div>
-                        <h1 class="text-3xl font-bold">👁️ Administrador de Acceso Visitante</h1>
+                        <h1 class="text-3xl font-bold">Administrador de Acceso Visitante</h1>
                         <p class="text-red-200 mt-1">Configurar páginas disponibles para visitantes</p>
                     </div>
                 </div>
@@ -396,7 +161,7 @@
     </header>
 
     <!-- Contenido Principal -->
-    <div class="container mx-auto px-4 py-6">
+    <div class="claut-admin-main container mx-auto px-4 py-6">
         <!-- Información del Sistema -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <div class="flex items-center justify-between">
@@ -452,21 +217,41 @@
         <div class="bg-white rounded-lg shadow p-6 mt-6">
             <h3 class="text-xl font-bold text-gray-800 mb-4">Estadísticas de Uso</h3>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-blue-600">--</div>
-                    <div class="text-sm text-gray-500">Visitas Hoy</div>
+                <div class="claut-stat-card claut-stat-card--red">
+                    <div class="stat-row">
+                        <div>
+                            <p class="stat-label">Visitas Hoy</p>
+                            <p class="stat-value">--</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-eye"></i></div>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-green-600">--</div>
-                    <div class="text-sm text-gray-500">Páginas Más Vistas</div>
+                <div class="claut-stat-card claut-stat-card--green">
+                    <div class="stat-row">
+                        <div>
+                            <p class="stat-label">Páginas Más Vistas</p>
+                            <p class="stat-value">--</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-orange-600">--</div>
-                    <div class="text-sm text-gray-500">Tiempo Promedio</div>
+                <div class="claut-stat-card claut-stat-card--gold">
+                    <div class="stat-row">
+                        <div>
+                            <p class="stat-label">Tiempo Promedio</p>
+                            <p class="stat-value">--</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-red-600">--</div>
-                    <div class="text-sm text-gray-500">Conversiones</div>
+                <div class="claut-stat-card claut-stat-card--blue">
+                    <div class="stat-row">
+                        <div>
+                            <p class="stat-label">Conversiones</p>
+                            <p class="stat-value">--</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    </div>
                 </div>
             </div>
             <p class="text-center text-gray-500 text-sm mt-4">
@@ -477,47 +262,66 @@
     </div>
 
     <!-- Modal para Agregar Página -->
-    <div id="modalAgregarPagina" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto slide-in">
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Agregar Página Personalizada</h3>
+    <div id="modalAgregarPagina" class="claut-wizard-backdrop">
+        <form id="formPaginaPersonalizada" class="claut-wizard" style="max-width:640px;">
+            <div class="claut-wizard-head">
+                <h2>Agregar Página Personalizada</h2>
+                <p>Define el acceso público que verán los visitantes sin autenticación</p>
+                <button type="button" class="claut-modal-close" onclick="cerrarModalAgregar()" aria-label="Cerrar">&times;</button>
+            </div>
 
-                    <form id="formPaginaPersonalizada">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
-                                <input type="text" id="paginaTitulo" class="w-full px-3 py-2 border rounded-lg" placeholder="Ej: Documentos Públicos">
-                            </div>
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Información</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Configuración</span>
+                    </button>
+                </nav>
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-                                <textarea id="paginaDescripcion" class="w-full px-3 py-2 border rounded-lg" rows="3" placeholder="Descripción de la página"></textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">URL</label>
-                                <input type="text" id="paginaUrl" class="w-full px-3 py-2 border rounded-lg" placeholder="./mi-pagina.html">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Icono (FontAwesome)</label>
-                                <input type="text" id="paginaIcono" class="w-full px-3 py-2 border rounded-lg" placeholder="fas fa-file" value="fas fa-file">
-                            </div>
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Información -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 2</p>
+                        <div>
+                            <label>Título</label>
+                            <input type="text" id="paginaTitulo" placeholder="Ej: Documentos Públicos">
                         </div>
-
-                        <div class="flex space-x-3 mt-6">
-                            <button type="button" onclick="cerrarModalAgregar()" class="flex-1 bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600 transition">
-                                Cancelar
-                            </button>
-                            <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-                                Agregar
-                            </button>
+                        <div>
+                            <label>Descripción</label>
+                            <textarea id="paginaDescripcion" rows="3" placeholder="Descripción de la página"></textarea>
                         </div>
-                    </form>
+                    </div>
+
+                    <!-- Paso 2: Configuración -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 2</p>
+                        <div>
+                            <label>URL</label>
+                            <input type="text" id="paginaUrl" placeholder="./mi-pagina.html">
+                        </div>
+                        <div>
+                            <label>Icono (FontAwesome)</label>
+                            <input type="text" id="paginaIcono" placeholder="fas fa-file" value="fas fa-file">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="cerrarModalAgregar()" class="porsche-btn porsche-btn--ghost">Cancelar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" id="submitAgregarPagina" data-wizard-submit class="porsche-btn" style="display:none;">
+                    <i class="fas fa-plus"></i> Agregar
+                </button>
+            </div>
+        </form>
     </div>
 
     <script>
@@ -643,14 +447,30 @@
         }
 
         function agregarPaginaPersonalizada() {
-            document.getElementById('modalAgregarPagina').classList.remove('hidden');
+            const modal = document.getElementById('modalAgregarPagina');
+            modal.classList.add('open');
+            const wizardEl = modal.querySelector('.claut-wizard');
+            if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
         }
 
         function cerrarModalAgregar() {
-            document.getElementById('modalAgregarPagina').classList.add('hidden');
+            document.getElementById('modalAgregarPagina').classList.remove('open');
             // Limpiar formulario
             document.getElementById('formPaginaPersonalizada').reset();
         }
+
+        // Cerrar modal al hacer clic fuera o con ESC
+        document.getElementById('modalAgregarPagina').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModalAgregar();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('modalAgregarPagina').classList.contains('open')) {
+                cerrarModalAgregar();
+            }
+        });
 
         function agregarPagina() {
             const titulo = document.getElementById('paginaTitulo').value.trim();
@@ -736,192 +556,9 @@
         }
     </script>
 
-    </div>
-
-    <script>
-        // === SIDEBAR RETRACTABLE FUNCTIONALITY ===
-        function initializeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-            const hamburgerBtn = document.querySelector('[sidenav-trigger]');
-            const closeBtn = document.getElementById('sidebarCloseBtn');
-
-            console.log('Sidebar elements:', {
-                sidebar: !!sidebar,
-                overlay: !!overlay,
-                hamburgerBtn: !!hamburgerBtn,
-                closeBtn: !!closeBtn,
-                screenWidth: window.innerWidth,
-                isDesktop: window.innerWidth >= 1280
-            });
-
-            // Log computed styles for debugging
-            if (sidebar) {
-                const styles = window.getComputedStyle(sidebar);
-                console.log('Sidebar computed styles:', {
-                    display: styles.display,
-                    transform: styles.transform,
-                    left: styles.left,
-                    position: styles.position,
-                    zIndex: styles.zIndex
-                });
-            }
-
-            if (!sidebar || !overlay || !hamburgerBtn) {
-                console.error('Sidebar elements not found:', {
-                    sidebar: !!sidebar,
-                    overlay: !!overlay,
-                    hamburgerBtn: !!hamburgerBtn
-                });
-                return;
-            }
-
-            // Toggle sidebar function
-            function toggleSidebar(e) {
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                const isVisible = sidebar.classList.contains('sidenav-show');
-                console.log('Toggle sidebar - currently visible:', isVisible);
-                if (!isVisible) {
-                    // Open sidebar
-                    console.log('Opening sidebar');
-                    sidebar.classList.add('sidenav-show');
-                    sidebar.setAttribute('aria-expanded', 'true');
-                    overlay.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                    // Focus management for accessibility
-                    const firstLink = sidebar.querySelector('.porsche-nav-item');
-                    if (firstLink) {
-                        setTimeout(() => firstLink.focus(), 100);
-                    }
-                } else {
-                    // Close sidebar
-                    console.log('Closing sidebar');
-                    closeSidebarInternal();
-                }
-            }
-
-            // Close sidebar function
-            function closeSidebarInternal() {
-                console.log('Executing closeSidebarInternal');
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-                // Return focus to hamburger button
-                if (hamburgerBtn) {
-                    hamburgerBtn.focus();
-                }
-            }
-
-            // Event listeners
-            console.log('Adding click event to hamburger button');
-            hamburgerBtn.addEventListener('click', toggleSidebar);
-            hamburgerBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleSidebar(e);
-            }, { passive: false });
-
-            if (overlay) {
-                overlay.addEventListener('click', closeSidebarInternal);
-                overlay.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                });
-                closeBtn.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            // Close on escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-            });
-
-            // Handle window resize - Keep sidebar closed on all screen sizes
-            window.addEventListener('resize', function() {
-                // Optional: could add logic here if needed
-            });
-
-            // Swipe to close functionality
-            let touchStartX = 0;
-            let touchStartY = 0;
-            sidebar.addEventListener('touchstart', function(e) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-
-            sidebar.addEventListener('touchmove', function(e) {
-                if (!touchStartX) return;
-                const currentX = e.touches[0].clientX;
-                const currentY = e.touches[0].clientY;
-                const diffX = touchStartX - currentX;
-                const diffY = Math.abs(touchStartY - currentY);
-
-                // Swipe left to close
-                if (diffX > 50 && diffY < 100) {
-                    closeSidebarInternal();
-                    touchStartX = 0;
-                    touchStartY = 0;
-                }
-            }, { passive: true });
-
-            // Keyboard navigation in sidebar
-            sidebar.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-                // Arrow navigation
-                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    const navItems = Array.from(sidebar.querySelectorAll('.porsche-nav-item:not([style*="display: none"])'));
-                    const currentIndex = navItems.indexOf(document.activeElement);
-                    if (e.key === 'ArrowDown') {
-                        const nextIndex = (currentIndex + 1) % navItems.length;
-                        navItems[nextIndex].focus();
-                    } else {
-                        const prevIndex = currentIndex <= 0 ? navItems.length - 1 : currentIndex - 1;
-                        navItems[prevIndex].focus();
-                    }
-                }
-            });
-
-            console.log('✅ Sidebar functionality initialized successfully');
-        }
-
-        // Legacy function compatibility
-        function closeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-            if (sidebar && overlay) {
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-            }
-        }
-
-        // Initialize sidebar when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initializeSidebar, 100);
-        });
-    </script>
-  <script src="./js/auth-session.js"></script>
-  <script src="assets/js/loading-screen.js"></script>
+    <script src="./js/auth-session.js"></script>
+    <script src="assets/js/loading-screen.js"></script>
+    <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
+    <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
 </body>
 </html>

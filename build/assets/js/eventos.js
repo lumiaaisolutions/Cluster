@@ -161,7 +161,7 @@ class EventsManager {
                 <img src="${evento.imagen}"
                      alt="${evento.titulo}"
                      class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                     onerror="this.src='./assets/img/evento-default.jpg'">
+                     onerror="this.src='./assets/img/placeholder.svg'">
                 <div class="absolute inset-0 bg-black bg-opacity-20"></div>
 
                 <!-- Badge de estado -->

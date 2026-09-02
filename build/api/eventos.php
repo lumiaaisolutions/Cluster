@@ -749,7 +749,7 @@ try {
                             : 'próximamente';
                         NotificationMailer::dispatch(
                             'nuevo_evento',
-                            "📅 Nuevo evento: $titulo",
+                            "Nuevo evento: $titulo",
                             "Se ha programado un nuevo evento en la Intranet del Clúster.\n\n" .
                             "Evento: $titulo\n" .
                             "Fecha: $fechaFormateada\n" .

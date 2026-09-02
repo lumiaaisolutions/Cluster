@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticación de 2 Factores — Clúster Intranet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc; color: #0f172a;
+            margin: 0; padding: 40px 24px;
+            min-height: 100vh;
+        }
+        .wrap { max-width: 720px; margin: 0 auto; }
+        .back { color: #64748b; text-decoration: none; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px; }
+        .back:hover { color: #C7252B; }
+        h1 { font-size: 28px; font-weight: 800; margin: 0 0 8px; letter-spacing: -0.02em; }
+        .lead { color: #64748b; margin: 0 0 32px; font-size: 14px; }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 16px;
+        }
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px; font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .status-pill.on  { background: #dcfce7; color: #166534; }
+        .status-pill.off { background: #fef2f2; color: #C7252B; }
+        .status-pill::before { content: '●'; }
+
+        .step { margin-bottom: 16px; padding-left: 32px; position: relative; }
+        .step::before {
+            content: counter(s);
+            counter-increment: s;
+            position: absolute; left: 0; top: -2px;
+            width: 24px; height: 24px;
+            background: #C7252B; color: #fff;
+            border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 800;
+        }
+        .steps { counter-reset: s; margin: 24px 0; }
+
+        .qr-box {
+            text-align: center;
+            background: #f8fafc;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+        }
+        .qr-box img { max-width: 240px; }
+        .secret {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            user-select: all;
+            color: #C7252B;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 18px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.2em;
+            text-align: center;
+            font-weight: 700;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #C7252B;
+            box-shadow: 0 0 0 4px rgba(199,37,43,0.1);
+        }
+        button {
+            padding: 12px 24px;
+            background: #0f172a;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+        button:hover { background: #C7252B; }
+        button.danger { background: #C7252B; }
+        button.danger:hover { background: #991b1b; }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .msg {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin: 16px 0;
+            font-weight: 600;
+        }
+        .msg.error   { background: #fef2f2; color: #C7252B; }
+        .msg.success { background: #dcfce7; color: #166534; }
+
+        .recovery-codes {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 16px;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            margin: 12px 0;
+        }
+        .warn {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            border-left: 4px solid #f59e0b;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <a href="./dashboard.html" class="back"><i class="fas fa-arrow-left"></i> Volver al dashboard</a>
+    <h1>Autenticación de 2 Factores</h1>
+    <p class="lead">Añade una capa extra de seguridad a tu cuenta usando Google Authenticator, Authy o 1Password.</p>
+
+    <div id="status-area"></div>
+
+    <div class="card" id="setup-area" style="display:none;">
+        <h3 style="margin-top:0;">Activar 2FA</h3>
+        <div class="steps">
+            <div class="step">
+                <strong>Instala una app autenticadora</strong><br>
+                <small>Google Authenticator, Authy, 1Password, Microsoft Authenticator</small>
+            </div>
+            <div class="step">
+                <strong>Escanea este código QR</strong>
+                <div class="qr-box">
+                    <img id="qr-img" alt="QR Code 2FA">
+                    <p style="margin: 16px 0 4px; font-size: 11px; color: #64748b;">¿No puedes escanear? Ingresa este código manualmente:</p>
+                    <code class="secret" id="secret-text"></code>
+                </div>
+            </div>
+            <div class="step">
+                <strong>Ingresa el código de 6 dígitos</strong><br>
+                <small>Lo verás en tu app autenticadora</small>
+                <input type="text" id="code-input" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="off" style="margin-top:12px;">
+                <div style="margin-top: 12px;">
+                    <button id="verify-btn">Activar 2FA</button>
+                </div>
+                <div id="setup-msg"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" id="recovery-area" style="display:none;">
+        <h3 style="margin-top:0;color:#166534;"><i class="fas fa-circle-check"></i> 2FA activado correctamente</h3>
+        <div class="warn">
+            <strong><i class="fas fa-triangle-exclamation"></i> IMPORTANTE:</strong> Guarda estos códigos de recuperación en un lugar seguro.
+            Te permitirán acceder a tu cuenta si pierdes tu dispositivo.
+            <strong>Solo se muestran una vez.</strong>
+        </div>
+        <div class="recovery-codes" id="recovery-codes"></div>
+        <button onclick="window.location.reload()">Entendido, continuar</button>
+    </div>
+
+    <div class="card" id="disable-area" style="display:none;">
+        <h3 style="margin-top:0;">Desactivar 2FA</h3>
+        <p style="color:#64748b;">Si necesitas desactivar 2FA, ingresa un código actual de tu app autenticadora.</p>
+        <input type="text" id="disable-code" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="off">
+        <div style="margin-top: 12px;">
+            <button class="danger" id="disable-btn">Desactivar 2FA</button>
+        </div>
+        <div id="disable-msg"></div>
+    </div>
+</div>
+
+<script>
+async function callAPI(action, body = null) {
+    const opts = {
+        method: body ? 'POST' : 'GET',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+    };
+    if (body) opts.body = JSON.stringify({ action, ...body });
+    const url = body ? './api/auth/2fa.php' : './api/auth/2fa.php?action=' + action;
+    const res = await fetch(url, opts);
+    return res.json();
+}
+
+function showMsg(el, text, type = 'error') {
+    el.innerHTML = `<div class="msg ${type}">${text}</div>`;
+}
+
+async function init() {
+    const status = await callAPI('status');
+    const enabled = status?.data?.enabled;
+
+    if (enabled) {
+        document.getElementById('status-area').innerHTML = `<div class="card"><span class="status-pill on">2FA Activo</span><p style="margin:0;color:#64748b;">Tu cuenta está protegida con autenticación de 2 factores.</p></div>`;
+        document.getElementById('disable-area').style.display = 'block';
+    } else {
+        document.getElementById('status-area').innerHTML = `<div class="card"><span class="status-pill off">2FA No activo</span><p style="margin:0;color:#64748b;">Activa 2FA para mayor seguridad.</p></div>`;
+        // Iniciar setup
+        const setup = await callAPI('setup', {});
+        if (setup?.success) {
+            document.getElementById('qr-img').src = setup.data.qr_url;
+            document.getElementById('secret-text').textContent = setup.data.secret;
+            document.getElementById('setup-area').style.display = 'block';
+        }
+    }
+}
+
+document.getElementById('verify-btn').addEventListener('click', async () => {
+    const code = document.getElementById('code-input').value.trim();
+    const msg = document.getElementById('setup-msg');
+    if (code.length !== 6) { showMsg(msg, 'Ingresa los 6 dígitos'); return; }
+
+    const result = await callAPI('enable', { code });
+    if (result?.success) {
+        document.getElementById('setup-area').style.display = 'none';
+        document.getElementById('recovery-codes').innerHTML = result.data.recovery_codes.map(c => `<div>${c}</div>`).join('');
+        document.getElementById('recovery-area').style.display = 'block';
+    } else {
+        showMsg(msg, result?.message || 'Error');
+    }
+});
+
+document.getElementById('disable-btn').addEventListener('click', async () => {
+    const code = document.getElementById('disable-code').value.trim();
+    const msg = document.getElementById('disable-msg');
+    if (code.length !== 6) { showMsg(msg, 'Ingresa los 6 dígitos'); return; }
+
+    if (!confirm('¿Seguro que quieres desactivar 2FA? Tu cuenta será menos segura.')) return;
+
+    const result = await callAPI('disable', { code });
+    if (result?.success) {
+        showMsg(msg, '2FA desactivado correctamente', 'success');
+        setTimeout(() => window.location.reload(), 1500);
+    } else {
+        showMsg(msg, result?.message || 'Error');
+    }
+});
+
+init();
+</script>
+</body>
+</html>

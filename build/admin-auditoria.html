@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora de Auditoría — Clúster Intranet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <style>
+        :root {
+            --red: #C7252B;
+            --dark: #0f172a;
+            --bg: #f8fafc;
+            --line: #e2e8f0;
+            --muted: #64748b;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+            margin: 0;
+            padding: 32px 24px;
+        }
+        .wrap { max-width: 1280px; margin: 0 auto; }
+        .head { margin-bottom: 24px; }
+        .head h1 { font-size: 28px; font-weight: 800; margin: 0 0 4px; letter-spacing: -0.02em; }
+        .head p  { color: var(--muted); margin: 0; font-size: 14px; }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none; margin-bottom: 12px; }
+        .back-link:hover { color: var(--red); }
+
+        .filters {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            align-items: end;
+        }
+        .filters label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .filters input, .filters select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fff;
+            transition: border-color 0.2s;
+        }
+        .filters input:focus, .filters select:focus {
+            outline: none;
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(199,37,43,0.1);
+        }
+        .filters button {
+            padding: 10px 20px;
+            background: var(--dark);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .filters button:hover { background: var(--red); }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+        .meta strong { color: var(--dark); }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+            font-size: 13px;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 700;
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+        }
+        td.action {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--red);
+            font-weight: 700;
+        }
+        td.user { font-weight: 600; }
+        td.time { color: var(--muted); font-size: 11px; white-space: nowrap; }
+        td.detail {
+            max-width: 320px;
+            font-size: 12px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            word-break: break-all;
+        }
+        tr:hover td { background: rgba(199,37,43,0.02); }
+
+        .pagination {
+            display: flex; justify-content: center; gap: 8px;
+            margin-top: 16px;
+        }
+        .pagination button {
+            padding: 8px 16px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--dark);
+        }
+        .pagination button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .pagination button:hover:not(:disabled) {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red);
+        }
+        .empty {
+            text-align: center;
+            padding: 60px 24px;
+            color: var(--muted);
+        }
+        .empty i { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 800;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .badge.admin { background: #fef2f2; color: var(--red); }
+        .badge.user  { background: #f1f5f9; color: var(--muted); }
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+    <a href="./dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver al dashboard</a>
+    <div class="head">
+        <h1>Bitácora de Auditoría</h1>
+        <p>Historial de acciones críticas del sistema. Solo visible para administradores.</p>
+    </div>
+
+    <form class="filters" id="filtersForm">
+        <div>
+            <label>Acción</label>
+            <input type="text" name="accion" placeholder="ej: empresa.eliminar">
+        </div>
+        <div>
+            <label>Entidad</label>
+            <select name="entidad">
+                <option value="">Todas</option>
+                <option value="empresa">Empresa</option>
+                <option value="usuario">Usuario</option>
+                <option value="evento">Evento</option>
+                <option value="descuento">Descuento</option>
+                <option value="documento">Documento</option>
+                <option value="boletin">Boletín</option>
+                <option value="comite">Comité</option>
+            </select>
+        </div>
+        <div>
+            <label>Usuario (email)</label>
+            <input type="text" name="usuario" placeholder="ej: admin@">
+        </div>
+        <div>
+            <label>Desde</label>
+            <input type="date" name="desde">
+        </div>
+        <div>
+            <label>Hasta</label>
+            <input type="date" name="hasta">
+        </div>
+        <button type="submit"><i class="fas fa-filter"></i> Filtrar</button>
+    </form>
+
+    <div class="meta">
+        <span><strong id="total">0</strong> registros</span>
+        <span id="pageInfo">Página 1</span>
+    </div>
+
+    <div class="card">
+        <table id="logTable">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Acción</th>
+                    <th>Entidad</th>
+                    <th>Detalle</th>
+                    <th>IP</th>
+                </tr>
+            </thead>
+            <tbody id="logBody">
+                <tr><td colspan="6" class="empty"><i class="fas fa-spinner fa-spin"></i><br>Cargando...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i> Anterior</button>
+        <button id="nextBtn" disabled>Siguiente <i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<script>
+const PAGE_SIZE = 50;
+let offset = 0;
+let total  = 0;
+let filters = {};
+
+function getParams() {
+    const p = new URLSearchParams({ limit: PAGE_SIZE, offset });
+    for (const k in filters) if (filters[k]) p.set(k, filters[k]);
+    return p.toString();
+}
+
+function fmtTime(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso.replace(' ', 'T'));
+    return d.toLocaleString('es-MX', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function rolBadge(rol) {
+    if (!rol) return '';
+    const isAdmin = /admin|root/i.test(rol);
+    return `<span class="badge ${isAdmin ? 'admin' : 'user'}">${rol}</span>`;
+}
+
+async function load() {
+    const tbody = document.getElementById('logBody');
+    tbody.innerHTML = '<tr><td colspan="6" class="empty"><i class="fas fa-spinner fa-spin"></i></td></tr>';
+    try {
+        const res = await fetch('./api/auditoria.php?' + getParams(), { credentials: 'include' });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || 'Error');
+
+        const logs = data.data.logs || [];
+        total = data.data.total || 0;
+        document.getElementById('total').textContent = total.toLocaleString();
+        const page = Math.floor(offset / PAGE_SIZE) + 1;
+        const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+        document.getElementById('pageInfo').textContent = `Página ${page} de ${totalPages}`;
+
+        if (!logs.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty"><i class="fas fa-inbox"></i><br>Sin registros</td></tr>';
+        } else {
+            tbody.innerHTML = logs.map(l => `
+                <tr>
+                    <td class="time">${fmtTime(l.creado_en)}</td>
+                    <td class="user">${l.usuario_email || '—'}<br>${rolBadge(l.usuario_rol)}</td>
+                    <td class="action">${l.accion || ''}</td>
+                    <td>${l.entidad || '—'}${l.entidad_id ? ' #' + l.entidad_id : ''}</td>
+                    <td class="detail">${(l.detalle || '').replace(/[<>]/g, '')}</td>
+                    <td class="time">${l.ip || '—'}</td>
+                </tr>
+            `).join('');
+        }
+
+        document.getElementById('prevBtn').disabled = offset === 0;
+        document.getElementById('nextBtn').disabled = !data.page.hasMore;
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty"><i class="fas fa-triangle-exclamation"></i><br>Error: ${e.message}</td></tr>`;
+    }
+}
+
+document.getElementById('filtersForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    filters = {};
+    for (const [k, v] of fd.entries()) if (v) filters[k] = v;
+    offset = 0;
+    load();
+});
+
+document.getElementById('prevBtn').addEventListener('click', () => { offset = Math.max(0, offset - PAGE_SIZE); load(); });
+document.getElementById('nextBtn').addEventListener('click', () => { offset += PAGE_SIZE; load(); });
+
+load();
+</script>
+</body>
+</html>

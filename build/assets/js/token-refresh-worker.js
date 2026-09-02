@@ -97,7 +97,7 @@ class TokenRefreshWorker {
                 // Redirigir a login si no estamos ya ahí
                 if (typeof window !== 'undefined' && !window.location.pathname.includes('sign-in')) {
                     console.log('🔄 Redirigiendo a login...');
-                    window.location.href = '/sign-in.html?session_expired=1';
+                    window.location.href = '/pages/sign-in.html?session_expired=1';
                 }
             }
         } else {

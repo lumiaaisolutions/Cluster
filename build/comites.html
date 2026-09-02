@@ -39,7 +39,7 @@
             'clúster-red-dark': '#A31E23',
             'clúster-red-light': '#E8434A',
             'clúster-gray': '#F5F5F7',
-            'clúster-dark': '#1D1D1F'
+            'clúster-dark': '#09090b'
           },
           fontFamily: {
             'inter': ['Inter', 'sans-serif']
@@ -49,16 +49,17 @@
     }
   </script>
 
-  <link rel="stylesheet" href="./assets/css/layout/header-navbar.css" />
+  <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a" />
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
   <style>
     :root {
       /* Primary Colors - Inspired by Porsche */
-      --porsche-black: #1a1a1a;
+      --porsche-black: #09090b;
       --porsche-charcoal: #2d2d2d;
       --porsche-silver: #8a8a8a;
       --porsche-white: #ffffff;
       --porsche-light-gray: #f5f5f5;
-      --porsche-accent: #c9302c;
+      --porsche-accent: #C7252B;
 
       /* Typography */
       --porsche-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -598,8 +599,15 @@
     }
   </style>
 
+  <link rel="stylesheet" href="./assets/css/layout/claut-icon-rail.css?v=20260901g">
+  <style>
+    @media (min-width: 1025px) {
+      main.claut-main { padding-left: 134px !important; }
+    }
+  </style>
+
 <body
-  class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default text-slate-500 overflow-x-hidden">
+  class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default text-slate-500 overflow-x-hidden claut-dark claut-skin">
   <!-- Header Horizontal con Navegación Premium -->
   <!-- Header Horizontal Premium con Menú Integrado -->
   <header class="claut-header">
@@ -651,6 +659,16 @@
       </button>
     </div>
   </header>
+
+  <nav class="claut-icon-rail">
+    <a href="dashboard.html" class="claut-icon-rail-item" data-label="Inicio"><i class="fas fa-home"></i></a>
+    <a href="./descuentos.html" class="claut-icon-rail-item" data-label="Descuentos"><i class="fas fa-tags"></i></a>
+    <a href="./boletines.html" class="claut-icon-rail-item" data-label="Boletines"><i class="fas fa-newspaper"></i></a>
+    <a href="./comites.html" class="claut-icon-rail-item" data-label="Comités"><i class="fas fa-users"></i></a>
+    <a href="./contacto.html" class="claut-icon-rail-item" data-label="Contacto"><i class="fas fa-headset"></i></a>
+    <a href="./eventos.html" class="claut-icon-rail-item" data-label="Eventos"><i class="fas fa-calendar-alt"></i></a>
+    <a href="./empresas-convenio.html" class="claut-icon-rail-item" data-label="Socios"><i class="fas fa-handshake"></i></a>
+  </nav>
 
   <!-- Menú curvo animado en la parte inferior -->
   <nav class="claut-bottom-nav">
@@ -1054,7 +1072,7 @@
         // Simplified image loading function based on empresas-convenio.html pattern
         function createComiteImageElement(comite) {
           const img = document.createElement('img');
-          img.className = 'w-full h-56 object-cover rounded-t-xl';
+          img.className = 'w-full h-56 object-contain rounded-t-xl';
           img.alt = comite.nombre || 'Comité';
 
           // Generate dynamic placeholder as fallback (like empresas-convenio.html)
@@ -1211,9 +1229,8 @@
           comites.forEach(comite => {
             html += `
             <div class="porsche-card bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition duration-300 card-hover card-animate" data-comite-id="${comite.id}">
-              <div class="relative w-full h-56 overflow-hidden rounded-2xl shadow-xl group">
+              <div class="relative w-full h-56 overflow-hidden rounded-2xl shadow-xl group" style="background: linear-gradient(135deg, #16161a 0%, #1e1e24 100%);">
                 <!-- Enhanced image container will be inserted here -->
-                <div class="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#C7252B]/80 to-transparent z-10"></div>
                 <div class="relative z-20 flex flex-col justify-end h-full p-4">
                 </div>
               </div>
@@ -1793,22 +1810,22 @@
       });
 
       // GSAP animations for navigation entrance
-      if (typeof gsap !== 'undefined') {
-        // Header navigation animation
+      if (typeof gsap !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        // Header navigation animation.
+        // NOTA: antes usaba rotationY:-180 (flip 3D) — el frame intermedio
+        // hacía ver el texto espejado. Un nav visto en cada navegación no
+        // debe llevar animación vistosa (emil-design-eng: "tens of times/day
+        // -> remove or drastically reduce").
         gsap.fromTo('.claut-header-nav .claut-nav-item', {
-          rotationY: -180,
-          scale: 0.5,
           opacity: 0,
-          y: -30
+          y: -8
         }, {
-          rotationY: 0,
-          scale: 1,
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "back.out(1.7)",
-          delay: 0.2,
+          duration: 0.3,
+          stagger: 0.03,
+          ease: "power2.out",
+          delay: 0.05,
           clearProps: "all"
         });
 
@@ -2074,5 +2091,6 @@
 <script src="./assets/js/plugins/perfect-scrollbar.min.js" async></script>
 <!-- main script file  -->
 <script src="./assets/js/argon-dashboard-tailwind.js?v=1.0.1" async></script>
+<script src="./assets/js/claut-icon-rail.js?v=20260901c"></script>
 
 </html>

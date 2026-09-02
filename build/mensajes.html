@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes — Clúster Intranet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #09090b; background-image: radial-gradient(at 0% 0%, rgba(199, 37, 43, 0.05) 0px, transparent 50%); color: #f8fafc; margin: 0; }
+        .header { background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 18px; font-weight: 800; margin: 0; color: #f8fafc; }
+        .header a { color: #94a3b8; text-decoration: none; font-size: 12px; font-weight: 700; }
+        .header a:hover { color: #C7252B; }
+
+        .layout { display: grid; grid-template-columns: 280px 1fr; height: calc(100vh - 65px); }
+        @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+        .sidebar { background: rgba(255,255,255,0.02); border-right: 1px solid rgba(255,255,255,0.08); overflow-y: auto; }
+        .sidebar-head { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+        .sidebar-head h3 { font-size: 12px; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; }
+        .new-btn { padding: 6px 10px; background: #C7252B; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: 700; }
+
+        .conv-item { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: background 0.15s; }
+        .conv-item:hover { background: rgba(255,255,255,0.04); }
+        .conv-item.active { background: rgba(199,37,43,0.12); border-left: 3px solid #C7252B; }
+        .conv-item.unread .conv-from { font-weight: 800; }
+        .conv-item.unread::after { content: '●'; color: #C7252B; float: right; }
+        .conv-from { font-size: 13px; font-weight: 600; color: #f8fafc; margin-bottom: 4px; }
+        .conv-preview { font-size: 11px; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .main { display: flex; flex-direction: column; }
+        .main-empty { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; color: #64748b; }
+        .main-empty i { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+
+        .messages { flex: 1; overflow-y: auto; padding: 20px 24px; }
+        .msg { max-width: 70%; margin-bottom: 12px; padding: 12px 16px; border-radius: 16px; font-size: 13px; line-height: 1.5; }
+        .msg.mine { background: #C7252B; color: #fff; margin-left: auto; border-bottom-right-radius: 4px; }
+        .msg.theirs { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: #f8fafc; border-bottom-left-radius: 4px; }
+        .msg-time { font-size: 10px; opacity: 0.7; margin-top: 4px; }
+
+        .composer { border-top: 1px solid rgba(255,255,255,0.08); padding: 16px 24px; background: rgba(255,255,255,0.02); }
+        .composer textarea { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: #f8fafc; border-radius: 12px; font-family: inherit; font-size: 13px; resize: none; min-height: 60px; }
+        .composer textarea:focus { outline: none; border-color: #C7252B; }
+        .composer-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+        .composer button { padding: 8px 16px; background: #C7252B; color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; }
+        .composer button:hover { filter: brightness(1.1); }
+        .composer small { color: #64748b; font-size: 11px; }
+
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 999; padding: 24px; }
+        .modal.open { display: flex; }
+        .modal-box { background: #101013; border: 1px solid rgba(255,255,255,0.14); padding: 24px; border-radius: 18px; width: 100%; max-width: 480px; }
+        .modal-box h3 { margin: 0 0 16px; font-size: 16px; color: #f8fafc; }
+        .modal-box label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8; margin-bottom: 6px; }
+        .modal-box input, .modal-box select, .modal-box textarea { width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: #f8fafc; border-radius: 10px; font-family: inherit; font-size: 13px; margin-bottom: 12px; }
+        .modal-box select option { background: #101013; color: #f8fafc; }
+        .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+        .modal-actions button { padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; font-size: 13px; }
+        .modal-actions .cancel { background: rgba(255,255,255,0.06); color: #cbd5e1; }
+        .modal-actions .send { background: #C7252B; color: #fff; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1><i class="fas fa-comment"></i> Mensajes</h1>
+    <a href="./dashboard.html"><i class="fas fa-arrow-left"></i> Dashboard</a>
+</div>
+
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-head">
+            <h3>Bandeja</h3>
+            <button class="new-btn" id="newBtn"><i class="fas fa-plus"></i> Nuevo</button>
+        </div>
+        <div id="conv-list"></div>
+    </aside>
+
+    <main class="main">
+        <div id="main-content" class="main-empty">
+            <i class="fas fa-envelope-open"></i>
+            <p>Selecciona una conversación o escribe a un socio.</p>
+        </div>
+    </main>
+</div>
+
+<!-- Modal nuevo mensaje -->
+<div class="modal" id="newModal">
+    <div class="modal-box">
+        <h3>Nuevo mensaje</h3>
+        <label>Para</label>
+        <select id="newTo"><option value="">Cargando socios…</option></select>
+        <label>Asunto (opcional)</label>
+        <input type="text" id="newSubject" maxlength="200">
+        <label>Mensaje</label>
+        <textarea id="newBody" rows="5" maxlength="5000"></textarea>
+        <div class="modal-actions">
+            <button class="cancel" onclick="closeNew()">Cancelar</button>
+            <button class="send" onclick="sendNew()">Enviar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = './api/mensajes-socios.php';
+let currentConversation = null;
+let myUserId = null;
+
+async function loadInbox() {
+    const res = await fetch(`${API}?action=inbox`, { credentials: 'include' });
+    const data = await res.json();
+    if (!data.success) return;
+    const list = document.getElementById('conv-list');
+    const msgs = data.data.mensajes || [];
+    if (!msgs.length) {
+        list.innerHTML = '<p style="padding:20px;text-align:center;color:#94a3b8;font-size:12px;">Sin mensajes aún</p>';
+        return;
+    }
+    // Agrupar por remitente (conversación)
+    const groups = {};
+    for (const m of msgs) {
+        if (!groups[m.remitente_id]) groups[m.remitente_id] = { ...m, count: 0, unread: 0 };
+        groups[m.remitente_id].count++;
+        if (!Number(m.leido)) groups[m.remitente_id].unread++;
+    }
+    list.innerHTML = Object.values(groups).map(g => `
+        <div class="conv-item ${g.unread ? 'unread' : ''}" onclick="openConv(${g.remitente_id}, '${(g.remitente_nombre || '').replace(/'/g, "\\'")}')">
+            <div class="conv-from">${g.remitente_nombre || g.remitente_email}</div>
+            <div class="conv-preview">${(g.asunto || g.contenido || '').substring(0, 60)}</div>
+        </div>
+    `).join('');
+}
+
+async function openConv(userId, userName) {
+    currentConversation = userId;
+    document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
+    event?.currentTarget?.classList.add('active');
+
+    const res = await fetch(`${API}?action=conversation&with=${userId}`, { credentials: 'include' });
+    const data = await res.json();
+    const msgs = data.data?.mensajes || [];
+
+    const html = `
+        <div style="padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:#f8fafc;">
+            <strong>${userName}</strong>
+        </div>
+        <div class="messages" id="msg-list">
+            ${msgs.map(m => `
+                <div class="msg ${m.remitente_id == userId ? 'theirs' : 'mine'}">
+                    ${m.asunto ? `<strong>${escapeHtml(m.asunto)}</strong><br>` : ''}
+                    ${escapeHtml(m.contenido).replace(/\n/g, '<br>')}
+                    <div class="msg-time">${new Date(m.creado_en.replace(' ','T')).toLocaleString('es-MX')}</div>
+                </div>
+            `).join('')}
+        </div>
+        <div class="composer">
+            <textarea id="reply-text" placeholder="Escribe tu respuesta..."></textarea>
+            <div class="composer-actions">
+                <small>Cmd/Ctrl + Enter para enviar</small>
+                <button onclick="sendReply()">Enviar</button>
+            </div>
+        </div>
+    `;
+    document.getElementById('main-content').className = '';
+    document.getElementById('main-content').innerHTML = html;
+    setTimeout(() => {
+        const list = document.getElementById('msg-list');
+        if (list) list.scrollTop = list.scrollHeight;
+        const ta = document.getElementById('reply-text');
+        if (ta) ta.addEventListener('keydown', e => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') sendReply();
+        });
+    }, 50);
+}
+
+async function sendReply() {
+    const text = document.getElementById('reply-text').value.trim();
+    if (!text || !currentConversation) return;
+    const res = await fetch(API, {
+        method: 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'send', destinatario_id: currentConversation, contenido: text }),
+    });
+    if ((await res.json()).success) openConv(currentConversation, document.querySelector('.conv-item.active .conv-from')?.textContent || 'Socio');
+}
+
+async function loadContacts() {
+    const res = await fetch(`${API}?action=contacts`, { credentials: 'include' });
+    const data = await res.json();
+    const select = document.getElementById('newTo');
+    const contacts = data.data?.contactos || [];
+    select.innerHTML = '<option value="">Selecciona…</option>' + contacts.map(c =>
+        `<option value="${c.id}">${escapeHtml(c.nombre_completo)} (${escapeHtml(c.nombre_empresa || c.email)})</option>`
+    ).join('');
+}
+
+function openNew() { document.getElementById('newModal').classList.add('open'); loadContacts(); }
+function closeNew() { document.getElementById('newModal').classList.remove('open'); }
+async function sendNew() {
+    const dest = parseInt(document.getElementById('newTo').value);
+    const subject = document.getElementById('newSubject').value.trim();
+    const body = document.getElementById('newBody').value.trim();
+    if (!dest || !body) return alert('Completa los campos');
+    const res = await fetch(API, {
+        method: 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'send', destinatario_id: dest, asunto: subject, contenido: body }),
+    });
+    if ((await res.json()).success) {
+        closeNew();
+        document.getElementById('newSubject').value = '';
+        document.getElementById('newBody').value = '';
+        loadInbox();
+    }
+}
+function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+document.getElementById('newBtn').addEventListener('click', openNew);
+document.getElementById('newModal').addEventListener('click', e => { if (e.target.id === 'newModal') closeNew(); });
+loadInbox();
+setInterval(loadInbox, 60000);
+</script>
+</body>
+</html>

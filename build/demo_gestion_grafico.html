@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 Gestión de Gráficos - Clúster Intranet</title>
+    <title>Gestión de Gráficos - Clúster Intranet</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
     <style>
         /* Porsche-inspired Design System */
         :root {
             /* Primary Colors - Inspired by Porsche */
-            --porsche-black: #1a1a1a;
+            --porsche-black: #09090b;
             --porsche-charcoal: #2d2d2d;
             --porsche-silver: #8a8a8a;
             --porsche-white: #ffffff;
             --porsche-light-gray: #f5f5f5;
-            --porsche-accent: #c9302c;
+            --porsche-accent: #C7252B;
             /* Typography */
             --porsche-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --porsche-radius-lg: 12px;
@@ -310,7 +311,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 claut-dark claut-skin">
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidenav-overlay" id="sidenavOverlay"></div>
     <!-- Porsche Sidebar -->
@@ -327,7 +328,7 @@
             </button>
             <a class="porsche-logo block px-6 py-4 m-0 text-center whitespace-nowrap" href="dashboard.html"
               target="_blank">
-                <img src="../assets/img/apple-icon.png"
+                <img src="./assets/img/apple-icon.png"
                   class="block mx-auto h-32 w-32 max-w-full transition-all duration-200 ease-nav-brand mb-4"
                   alt="main_logo" />
                 <span class="block text-lg transition-all duration-200 ease-nav-brand text-white font-semibold mb-4">Clúster Admin</span>
@@ -453,7 +454,7 @@
                         <i class="fas fa-bars text-white"></i>
                     </button>
                     <div>
-                        <h1 class="text-3xl font-bold">📊 Gestión de Gráficos</h1>
+                        <h1 class="text-3xl font-bold">Gestión de Gráficos</h1>
                         <p class="text-red-200 mt-1">Sistema Avanzado de Visualización de Datos</p>
                     </div>
                 </div>
@@ -587,7 +588,7 @@
                     
                     <!-- Tipo de Gráfico -->
                     <div class="config-section">
-                        <h3>📈 Tipo de Gráfico</h3>
+                        <h3>Tipo de Gráfico</h3>
                         <div class="radio-group">
                             <label class="radio-item">
                                 <input type="radio" name="chartType" value="line" checked>
@@ -615,24 +616,24 @@
 
                     <!-- Fuente de Datos -->
                     <div class="config-section">
-                        <h3>🗄️ Fuente de Datos</h3>
+                        <h3>Fuente de Datos</h3>
                         
                         <!-- Selector de origen -->
                         <div class="form-group">
                             <label for="dataSource">Origen de Datos:</label>
                             <select id="dataSource" class="form-control">
-                                <option value="empresas" selected>📈 Empresas Registradas</option>
-                                <option value="usuarios">👥 Usuarios Nuevos</option>
-                                <option value="eventos">📅 Eventos Programados</option>
-                                <option value="comites">🏛️ Miembros de Comités</option>
-                                <option value="descuentos">💰 Descuentos Activos</option>
-                                <option value="custom">🔧 Datos Personalizados</option>
+                                <option value="empresas" selected>Empresas Registradas</option>
+                                <option value="usuarios">Usuarios Nuevos</option>
+                                <option value="eventos">Eventos Programados</option>
+                                <option value="comites">Miembros de Comités</option>
+                                <option value="descuentos">Descuentos Activos</option>
+                                <option value="custom">Datos Personalizados</option>
                             </select>
                             
                             <!-- Descripción del tipo de dato seleccionado -->
                             <div id="descripcionTipoDato" class="mt-2 p-3 bg-blue-50 rounded border border-blue-200">
                                 <div class="text-sm text-blue-800">
-                                    <div class="font-medium mb-1">📈 Empresas Registradas</div>
+                                    <div class="font-medium mb-1"><i class="fas fa-chart-line"></i> Empresas Registradas</div>
                                     <div class="text-blue-600">Muestra la evolución histórica de empresas registradas en la plataforma, incluyendo nuevas incorporaciones y estado actual.</div>
                                 </div>
                             </div>
@@ -713,14 +714,14 @@
 
                     <!-- Personalización Visual -->
                     <div class="config-section">
-                        <h3>🎨 Personalización Visual</h3>
+                        <h3>Personalización Visual</h3>
                         
                         <div class="form-group">
                             <label for="chartTitle">Título del Gráfico:</label>
                             <input type="text" id="chartTitle" class="form-control" 
                                    value="Empresas Registradas" placeholder="Título personalizado">
                             <div class="mt-1 text-xs text-gray-500">
-                                💡 El título se actualiza automáticamente según el tipo de datos seleccionado
+                                <i class="fas fa-lightbulb"></i> El título se actualiza automáticamente según el tipo de datos seleccionado
                             </div>
                         </div>
 
@@ -764,7 +765,7 @@
 
                     <!-- Filtros Avanzados -->
                     <div class="config-section">
-                        <h3>🔍 Filtros Avanzados</h3>
+                        <h3>Filtros Avanzados</h3>
                         
                         <div id="filtrosContainer">
                             <!-- Los filtros se generarán dinámicamente -->
@@ -1064,7 +1065,7 @@
             <div class="bg-white rounded-lg max-w-4xl w-full slide-in max-h-[90vh] overflow-hidden">
                 <div class="p-6 border-b">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-bold text-gray-800">⚙️ Configuración Avanzada</h3>
+                        <h3 class="text-xl font-bold text-gray-800">Configuración Avanzada</h3>
                         <button onclick="cerrarModal('advancedConfigModal')" class="text-gray-500 hover:text-gray-700">
                             <i class="fas fa-times text-xl"></i>
                         </button>
@@ -1111,13 +1112,8 @@
 
     <!-- Scripts -->
     <script src="./assets/js/plugins/chartjs.min.js"></script>
-    <script src="./js/diagnostico-simple.js"></script>
-    <script src="./js/gestor-datos-reales.js"></script>
     <script src="./js/controlador-tipos-datos.js"></script>
-    <script src="./js/emergencia.js"></script>
     <script src="./js/guardado-edicion.js"></script>
-    <script src="./js/solucionador.js"></script>
-    <script src="./js/test-tres-puntos.js"></script>
     <script src="./js/gestion-graficos-mejorado.js"></script>
 
     <script>

@@ -28,7 +28,7 @@
 |---|---------|----------------|
 | 11 | `api/auth/login-compatible.php` (L143) | **Línea `login_time` duplicada** (L141 y L143): asignación duplicada que sugiere código de debugging no limpiado. |
 | 12 | `middleware/security-headers.php` | **CSP con `unsafe-inline` y `unsafe-eval`** en `script-src`: elimina completamente la protección contra XSS que CSP debería dar. |
-| 13 | `.htaccess` (L43-44) | **Páginas `demo_*` sin autenticación**: cualquier persona puede acceder a `demo_boletines.html`, `demo_empresas.html`, etc. sin login. |
+| 13 | `.htaccess` (L43-44) | **Páginas `demo_*` sin autenticación**. **[RESUELTO 2026-08]** — servidas vía `auth-gate.php` con validación de sesión PHP (ver CORRECCIONES_2026-08.md). |
 | 14 | `config/database.php` (L147) | **Datos de prueba en producción (`insertSampleData`)**: inserta usuarios y contraseñas demo en la BD cuando no hay datos. |
 | 15 | `api/auth/jwt_helper_fixed.php` (L21) | **`FILTER_SANITIZE_STRING` deprecado en PHP 8.1+**: causa errores silenciosos en servidores PHP 8+. |
 
@@ -59,7 +59,7 @@
 - [ ] Eliminar **debug info** de respuestas de error en producción.
 - [ ] Eliminar **`debug_session`** del JSON de respuesta.
 - [ ] Rotar el **JWT secret** y nunca hardcodearlo en código.
-- [ ] Implementar **autenticación en páginas demo** o eliminarlas de producción.
+- [x] Implementar **autenticación en páginas demo** — hecho vía `auth-gate.php` (2026-08).
 - [ ] Agregar **Content-Security-Policy** sin `unsafe-inline`/`unsafe-eval`.
 - [ ] Cambiar **permisos de directorio SQLite** de `0777` a `0750` o `0700`.
 

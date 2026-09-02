@@ -1,0 +1,171 @@
+/* ============================================================
+   CLAUT ICON RAIL — menú único y reutilizable (riel vertical en
+   escritorio, tab-bar horizontal en móvil). UN SOLO componente en
+   todos los tamaños — no duplicar con otro sistema de navegación
+   (p. ej. .claut-bottom-nav legacy debe quedar oculto en páginas
+   que usen este riel, para evitar doble menú).
+
+   Escritorio (≥1025px): riel vertical fijo a la izquierda, sin
+   fondo propio, círculos con tooltip al hover.
+   Móvil (≤1024px): se transforma en una barra tipo "tab bar" fija
+   abajo, siempre visible (sin hamburguesa ni pasos extra), con
+   fondo tipo píldora para que se lea bien sobre cualquier contenido.
+
+   USO:
+     <link rel="stylesheet" href="./assets/css/layout/claut-icon-rail.css">
+     <nav class="claut-icon-rail">
+       <a href="dashboard.html" class="claut-icon-rail-item" data-label="Inicio">
+         <i class="fas fa-home"></i>
+       </a>
+       ...
+     </nav>
+   Requiere assets/js/claut-icon-rail.js (marca el ítem activo según la URL).
+   ============================================================ */
+
+.claut-icon-rail {
+  /* !important: algunas páginas heredan reglas legacy muy amplias
+     ("nav, .navbar, header { position: relative !important; z-index: 99997 !important }")
+     que de otro modo romperían el fixed/z-index de cualquier <nav> nuevo. */
+  position: fixed !important;
+  left: 0;
+  top: var(--header-height, 64px) !important;
+  bottom: 0 !important;
+  width: clamp(92px, 7.5vw, 116px);
+  z-index: 900 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.1rem, 2.6vh, 1.75rem);
+  pointer-events: none; /* el hueco entre íconos deja pasar clics al contenido */
+}
+
+.claut-icon-rail-item {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(52px, 4.8vh, 60px);
+  height: clamp(52px, 4.8vh, 60px);
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: rgba(248, 250, 252, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.55);
+  font-size: clamp(1.1rem, 2vh, 1.3rem);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.23, 1, 0.32, 1),
+              width 0.18s ease, height 0.18s ease,
+              background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.claut-icon-rail-item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.08);
+}
+.claut-icon-rail-item:active { transform: scale(0.94); }
+
+.claut-icon-rail-item.active {
+  width: clamp(60px, 5.6vh, 68px);
+  height: clamp(60px, 5.6vh, 68px);
+  color: #fff;
+  background: linear-gradient(135deg, var(--claut-red, #C7252B), var(--claut-red-dark, #A01E23));
+  border-color: transparent;
+  font-size: clamp(1.3rem, 2.4vh, 1.5rem);
+  box-shadow: 0 0 0 5px rgba(199, 37, 43, 0.14), 0 10px 32px -6px rgba(199, 37, 43, 0.7);
+}
+.claut-icon-rail-item.active:hover { transform: none; }
+
+/* Tooltip: aparece a la derecha del ícono */
+.claut-icon-rail-item::after {
+  content: attr(data-label);
+  position: absolute;
+  left: calc(100% + 0.65rem);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  background: rgba(10, 10, 12, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+.claut-icon-rail-item:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Cualquier página que use este riel debe apagar el/los sistema(s) de
+   navegación móvil viejos para no tener doble menú. */
+.claut-bottom-nav,
+.claut-header-nav { display: none !important; }
+
+@media (max-width: 1024px) {
+  /* !important en top/bottom: la regla de escritorio arriba también usa
+     !important en esas dos propiedades (necesario para vencer overrides
+     legacy de otras páginas), así que sin !important aquí esta versión
+     móvil pierde el empate y el riel queda estirado a pantalla completa
+     (top:header, bottom:0), flotando centrado a la mitad de la pantalla
+     en vez de pegado abajo. */
+  .claut-icon-rail {
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px)) !important;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: calc(100vw - 1.25rem);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem;
+    border-radius: 999px;
+    background: rgba(10, 10, 12, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 14px 36px -10px rgba(0, 0, 0, 0.65), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+    pointer-events: auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .claut-icon-rail::-webkit-scrollbar { display: none; }
+
+  .claut-icon-rail-item {
+    width: 44px;
+    height: 44px;
+    font-size: 1.02rem;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .claut-icon-rail-item::after { display: none; } /* sin espacio para tooltip en la tab bar */
+
+  .claut-icon-rail-item.active {
+    width: 48px;
+    height: 48px;
+    box-shadow: 0 6px 18px -4px rgba(199, 37, 43, 0.6);
+  }
+}
+
+@media (max-width: 380px) {
+  .claut-icon-rail { gap: 0.15rem; padding: 0.4rem; }
+  .claut-icon-rail-item { width: 40px; height: 40px; font-size: 0.95rem; }
+  .claut-icon-rail-item.active { width: 44px; height: 44px; }
+}

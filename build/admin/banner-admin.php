@@ -134,6 +134,7 @@ $banners = obtenerBanners($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Banners Carrusel</title>
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <style>
         * {
             margin: 0;
@@ -431,7 +432,7 @@ $banners = obtenerBanners($conn);
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎨 Panel de Banners</h1>
+            <h1><i class="fas fa-palette"></i> Panel de Banners</h1>
             <p>Administra el carrusel de banners del login</p>
         </div>
         
@@ -466,10 +467,10 @@ $banners = obtenerBanners($conn);
                         + Nuevo Banner
                     </button>
                     <a href="../pages/sign-in.html" class="btn btn-secondary" target="_blank">
-                        👁️ Vista Previa
+                        <i class="fas fa-eye"></i> Vista Previa
                     </a>
                     <a href="../api/banners.php" class="btn btn-primary" target="_blank">
-                        🔗 API JSON
+                        <i class="fas fa-link"></i> API JSON
                     </a>
                 </div>
             </div>
@@ -505,7 +506,7 @@ $banners = obtenerBanners($conn);
                             
                             <div class="actions">
                                 <button class="btn btn-primary" onclick="editarBanner(<?= htmlspecialchars(json_encode($banner)) ?>)">
-                                    ✏️ Editar
+                                    <i class="fas fa-pen"></i> Editar
                                 </button>
                                 
                                 <form method="post" style="display: inline;" 
@@ -513,7 +514,7 @@ $banners = obtenerBanners($conn);
                                     <input type="hidden" name="accion" value="eliminar">
                                     <input type="hidden" name="id" value="<?= $banner['id'] ?>">
                                     <button type="submit" class="btn btn-danger">
-                                        🗑️ Eliminar
+                                        <i class="fas fa-trash"></i> Eliminar
                                     </button>
                                 </form>
                             </div>
@@ -592,10 +593,10 @@ $banners = obtenerBanners($conn);
                 
                 <div style="text-align: center; margin-top: 30px;">
                     <button type="submit" class="btn btn-success">
-                        💾 Guardar Banner
+                        <i class="fas fa-floppy-disk"></i> Guardar Banner
                     </button>
                     <button type="button" class="btn btn-secondary" onclick="cerrarModal()">
-                        ❌ Cancelar
+                        <i class="fas fa-circle-xmark"></i> Cancelar
                     </button>
                 </div>
             </form>

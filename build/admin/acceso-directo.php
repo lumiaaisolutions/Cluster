@@ -88,6 +88,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Directo Admin - Clúster</title>
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <style>
         body {
             margin: 0;
@@ -171,17 +172,17 @@ try {
         </div>
         
         <?php if (isset($error)): ?>
-            <div class="error">❌ <?php echo htmlspecialchars($error); ?></div>
+            <div class="error"><i class="fas fa-circle-xmark"></i> <?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         
         <form method="POST">
             <div class="form-group">
-                <label for="email">📧 Email de Administrador:</label>
+                <label for="email"><i class="fas fa-envelope"></i> Email de Administrador:</label>
                 <input type="email" id="email" name="email" value="admin@clúster.com" required>
             </div>
             
             <div class="form-group">
-                <label for="password">🔑 Contraseña:</label>
+                <label for="password"><i class="fas fa-key"></i> Contraseña:</label>
                 <input type="password" id="password" name="password" value="admin123" required>
             </div>
             

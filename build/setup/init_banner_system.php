@@ -32,20 +32,20 @@ function inicializarSistemaBanners() {
                 try {
                     $conn->exec($query);
                     $executedQueries++;
-                    echo "<p style='color: green;'>✓ Consulta ejecutada exitosamente</p>\n";
+                    echo "<p style='color: green;'><i class=\"fas fa-check\"></i> Consulta ejecutada exitosamente</p>\n";
                 } catch (PDOException $e) {
                     // Ignorar errores de tablas que ya existen
                     if (strpos($e->getMessage(), 'already exists') === false && 
                         strpos($e->getMessage(), 'Duplicate entry') === false) {
-                        echo "<p style='color: red;'>✗ Error en consulta: " . htmlspecialchars($e->getMessage()) . "</p>\n";
+                        echo "<p style='color: red;'><i class=\"fas fa-xmark\"></i> Error en consulta: " . htmlspecialchars($e->getMessage()) . "</p>\n";
                     } else {
-                        echo "<p style='color: orange;'>⚠ Elemento ya existe (se omite)</p>\n";
+                        echo "<p style='color: orange;'><i class=\"fas fa-triangle-exclamation\"></i> Elemento ya existe (se omite)</p>\n";
                     }
                 }
             }
         }
         
-        echo "<h3 style='color: green;'>✓ Sistema de Banners inicializado correctamente</h3>\n";
+        echo "<h3 style='color: green;'><i class=\"fas fa-check\"></i> Sistema de Banners inicializado correctamente</h3>\n";
         echo "<p>Se ejecutaron $executedQueries consultas.</p>\n";
         
         // Verificar que los banners se insertaron correctamente
@@ -62,7 +62,7 @@ function inicializarSistemaBanners() {
         return true;
         
     } catch (Exception $e) {
-        echo "<h3 style='color: red;'>✗ Error al inicializar el sistema:</h3>\n";
+        echo "<h3 style='color: red;'><i class=\"fas fa-xmark\"></i> Error al inicializar el sistema:</h3>\n";
         echo "<p style='color: red;'>" . htmlspecialchars($e->getMessage()) . "</p>\n";
         return false;
     }
@@ -144,7 +144,7 @@ function verificarBanners($conn) {
 </head>
 <body>
     <div class="header">
-        <h1>🎨 Clúster Intranet</h1>
+        <h1><i class="fas fa-palette"></i> Clúster Intranet</h1>
         <p>Inicialización del Sistema de Banners</p>
     </div>
     
@@ -158,14 +158,14 @@ function verificarBanners($conn) {
             <p>Este script inicializará el sistema de banners para la página de login, incluyendo:</p>
             
             <ul>
-                <li>✅ Creación de la tabla <code>banner_carrusel</code></li>
-                <li>✅ Inserción de banners de ejemplo</li>
-                <li>✅ Configuración de índices para optimización</li>
-                <li>✅ Verificación de la estructura de datos</li>
+                <li><i class="fas fa-circle-check"></i> Creación de la tabla <code>banner_carrusel</code></li>
+                <li><i class="fas fa-circle-check"></i> Inserción de banners de ejemplo</li>
+                <li><i class="fas fa-circle-check"></i> Configuración de índices para optimización</li>
+                <li><i class="fas fa-circle-check"></i> Verificación de la estructura de datos</li>
             </ul>
             
             <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 15px; margin: 20px 0;">
-                <strong>⚠️ Importante:</strong>
+                <strong><i class="fas fa-triangle-exclamation"></i> Importante:</strong>
                 <ul>
                     <li>Asegúrate de que la base de datos <code>claut_intranet</code> existe</li>
                     <li>Verifica que las credenciales en <code>config/database.php</code> sean correctas</li>
@@ -175,7 +175,7 @@ function verificarBanners($conn) {
             
             <form method="post" style="text-align: center; margin: 30px 0;">
                 <button type="submit" class="btn" style="font-size: 18px; padding: 15px 30px;">
-                    🚀 Inicializar Sistema de Banners
+                    <i class="fas fa-rocket"></i> Inicializar Sistema de Banners
                 </button>
             </form>
             

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="">
+  <title>Dashboard — CLAUTMET</title>
+  <link rel="icon" href="/assets/img/logo/logo-light.png">
+  <link rel="preload" href="/assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/build.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+  <script>
+    var saved = localStorage.getItem('theme');
+    var prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefers ? 'dark' : 'light'));
+  </script>
+</head>
+
+<body data-density="app" class="min-h-screen flex">
+
+  <!-- Sidebar desktop -->
+  <aside id="sidebar" class="hidden lg:flex flex-col w-60 border-r border-border h-screen sticky top-0">
+    <div class="p-6">
+      <a href="/app/dashboard.html" class="flex items-center gap-2">
+        <img src="/assets/img/logo/logo-light.png" alt="" class="h-8 w-auto">
+        <span class="font-semibold tracking-tight">CLAUTMET</span>
+      </a>
+    </div>
+    <nav class="flex-1 px-3 space-y-1 text-sm">
+      <a href="/app/dashboard.html"   class="block px-3 py-2 rounded-lg hover:bg-surface transition" data-i18n="nav.home">Inicio</a>
+      <a href="/app/directorio.html"  class="block px-3 py-2 rounded-lg hover:bg-surface transition" data-i18n="nav.directorio">Directorio</a>
+      <a href="/app/eventos.html"     class="block px-3 py-2 rounded-lg hover:bg-surface transition" data-i18n="nav.eventos">Eventos</a>
+      <a href="/app/comites.html"     class="block px-3 py-2 rounded-lg hover:bg-surface transition" data-i18n="nav.comites">Comités</a>
+      <a href="/app/boletines.html"   class="block px-3 py-2 rounded-lg hover:bg-surface transition" data-i18n="nav.boletines">Boletines</a>
+      <a href="/app/documentos.html"  class="block px-3 py-2 rounded-lg hover:bg-surface transition" data-i18n="nav.documentos">Documentos</a>
+      <a href="/app/descuentos.html"  class="block px-3 py-2 rounded-lg hover:bg-surface transition" data-i18n="nav.descuentos">Descuentos</a>
+      <a href="/app/buzon.html"       class="block px-3 py-2 rounded-lg hover:bg-surface transition" data-i18n="nav.buzon">Buzón</a>
+    </nav>
+    <div class="p-3 border-t border-border">
+      <a href="/app/perfil.html" class="block px-3 py-2 rounded-lg hover:bg-surface transition text-sm" data-i18n="nav.profile">Mi perfil</a>
+      <button id="logout-btn" class="w-full text-left px-3 py-2 rounded-lg hover:bg-surface transition text-sm" data-i18n="nav.logout">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <main id="main" class="flex-1 min-w-0">
+    <!-- Header móvil -->
+    <header class="lg:hidden flex items-center justify-between px-4 h-14 border-b border-border sticky top-0 z-30 bg-bg">
+      <img src="/assets/img/logo/logo-light.png" class="h-7 w-auto" alt="CLAUTMET">
+      <button id="logout-btn-m" class="text-sm" data-i18n="nav.logout">Salir</button>
+    </header>
+
+    <div class="container-app py-8 md:py-10">
+      <!-- Saludo -->
+      <div class="mb-10">
+        <p class="text-sm text-muted" id="greeting-time">Buenas tardes</p>
+        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mt-1">
+          <span id="user-name">…</span>
+        </h1>
+        <p class="text-muted mt-2" id="user-empresa"></p>
+      </div>
+
+      <!-- KPIs -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <div class="card">
+          <p class="text-xs text-muted uppercase tracking-widest" data-i18n="dashboard.kpi_eventos">Eventos próximos</p>
+          <p class="text-3xl font-semibold mt-2" id="kpi-eventos">—</p>
+        </div>
+        <div class="card">
+          <p class="text-xs text-muted uppercase tracking-widest" data-i18n="dashboard.kpi_comites">Comités activos</p>
+          <p class="text-3xl font-semibold mt-2" id="kpi-comites">—</p>
+        </div>
+        <div class="card">
+          <p class="text-xs text-muted uppercase tracking-widest" data-i18n="dashboard.kpi_descuentos">Descuentos vigentes</p>
+          <p class="text-3xl font-semibold mt-2" id="kpi-descuentos">—</p>
+        </div>
+        <div class="card">
+          <p class="text-xs text-muted uppercase tracking-widest" data-i18n="dashboard.kpi_boletines">Boletines</p>
+          <p class="text-3xl font-semibold mt-2" id="kpi-boletines">—</p>
+        </div>
+      </div>
+
+      <!-- Próximos eventos + Notificaciones -->
+      <div class="grid lg:grid-cols-2 gap-6">
+        <section class="card" data-tilt>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold" data-i18n="dashboard.upcoming">Próximas sesiones</h2>
+            <a href="/app/comites.html" class="text-sm text-brand hover:underline" data-i18n="dashboard.see_all">Ver todas</a>
+          </div>
+          <ul id="upcoming-sessions" class="space-y-3 text-sm">
+            <li class="text-muted">Cargando…</li>
+          </ul>
+        </section>
+
+        <section class="card" data-tilt>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold" data-i18n="dashboard.notifications">Notificaciones</h2>
+            <a href="/app/notificaciones.html" class="text-sm text-brand hover:underline" data-i18n="dashboard.see_all">Ver todas</a>
+          </div>
+          <ul id="notifications-list" class="space-y-3 text-sm">
+            <li class="text-muted">Cargando…</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <!-- Bottom nav móvil -->
+    <nav class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-bg border-t border-border h-16 flex items-center justify-around">
+      <a href="/app/dashboard.html" class="text-xs flex flex-col items-center" data-i18n="nav.home">Inicio</a>
+      <a href="/app/directorio.html" class="text-xs flex flex-col items-center" data-i18n="nav.directorio">Directorio</a>
+      <a href="/app/eventos.html" class="text-xs flex flex-col items-center" data-i18n="nav.eventos">Eventos</a>
+      <a href="/app/comites.html" class="text-xs flex flex-col items-center" data-i18n="nav.comites">Comités</a>
+      <a href="/app/perfil.html" class="text-xs flex flex-col items-center" data-i18n="nav.profile">Perfil</a>
+    </nav>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+  <script type="module">
+    import { api, bootstrapCsrf } from '/assets/js/core/api.js';
+    import { requireRole, getUser, logout } from '/assets/js/core/auth.js';
+    import { loadLang } from '/assets/js/core/i18n.js';
+    import { initCardTilt } from '/assets/js/components/card-tilt.js';
+
+    (async () => {
+      await Promise.all([bootstrapCsrf(), loadLang()]);
+      const user = await requireRole(['admin', 'empleado_cluster', 'empleado', 'empresa_socio', 'empresa', 'superadmin']);
+      if (!user) return;
+
+      // Saludo
+      const h = new Date().getHours();
+      document.getElementById('greeting-time').textContent =
+        h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
+      document.getElementById('user-name').textContent = user.user_nombre || user.nombre || '';
+      document.getElementById('user-empresa').textContent = user.user_nombre_empresa || user.nombre_empresa || '';
+
+      // KPIs en paralelo
+      const [stats, sesiones, notifs] = await Promise.allSettled([
+        api('admin/stats.php'),
+        api('comite-sesiones.php?proximas=1'),
+        api('notificaciones.php?limit=5'),
+      ]);
+
+      if (stats.value?.success) {
+        document.getElementById('kpi-eventos').textContent     = stats.value.data.eventos ?? '0';
+        document.getElementById('kpi-comites').textContent     = stats.value.data.comites ?? '0';
+        document.getElementById('kpi-descuentos').textContent  = stats.value.data.descuentos ?? '0';
+        document.getElementById('kpi-boletines').textContent   = stats.value.data.boletines ?? '0';
+      }
+
+      if (sesiones.value?.success) {
+        const ul = document.getElementById('upcoming-sessions');
+        ul.innerHTML = sesiones.value.data.length
+          ? sesiones.value.data.slice(0, 5).map(s => `
+              <li class="flex justify-between gap-3 py-2 border-b border-border last:border-0">
+                <span>${escape(s.comite_nombre)}</span>
+                <span class="text-muted text-xs">${s.fecha} ${s.hora || ''}</span>
+              </li>`).join('')
+          : '<li class="text-muted text-sm">Sin sesiones programadas.</li>';
+      }
+
+      if (notifs.value?.success) {
+        const ul = document.getElementById('notifications-list');
+        ul.innerHTML = notifs.value.data?.length
+          ? notifs.value.data.slice(0, 5).map(n => `
+              <li class="py-2 border-b border-border last:border-0">
+                <p class="font-medium">${escape(n.titulo)}</p>
+                <p class="text-muted text-xs">${escape(n.contenido?.slice(0, 80) || '')}</p>
+              </li>`).join('')
+          : '<li class="text-muted text-sm">Sin notificaciones nuevas.</li>';
+      }
+
+      initCardTilt();
+    })();
+
+    document.getElementById('logout-btn').addEventListener('click', logout);
+    document.getElementById('logout-btn-m').addEventListener('click', logout);
+
+    function escape(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  </script>
+</body>
+</html>

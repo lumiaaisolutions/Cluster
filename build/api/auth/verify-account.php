@@ -36,11 +36,15 @@ try {
             exit();
         }
 
+        // COLLATE forzado: las tablas tienen utf8mb4_unicode_ci vs utf8mb4_uca1400_ai_ci,
+        // sin COLLATE el JOIN dispara "Illegal mix of collations" (1267).
         $stmt = $db->prepare(
             "SELECT et.id, et.user_email, et.expires_at, et.usado,
                     up.id AS user_id, up.nombre
              FROM email_tokens et
-             JOIN usuarios_perfil up ON up.email = et.user_email AND up.activo = 1
+             JOIN usuarios_perfil up
+               ON up.email COLLATE utf8mb4_unicode_ci = et.user_email COLLATE utf8mb4_unicode_ci
+              AND up.activo = 1
              WHERE et.token = :token AND et.tipo = 'account_verify'
              LIMIT 1"
         );
@@ -150,8 +154,8 @@ try {
 
     jsonResponse(false, 'Método no permitido.');
 
-} catch (Exception $e) {
-    error_log('[verify-account] Error: ' . $e->getMessage());
+} catch (Throwable $e) {
+    error_log('[verify-account] Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
     header('Content-Type: application/json; charset=UTF-8');
     jsonResponse(false, 'Ocurrió un error. Intenta nuevamente.');
 }

@@ -68,7 +68,7 @@ try {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --porsche-accent: #c9302c;
+            --porsche-accent: #C7252B;
             --porsche-charcoal: #2d2d2d;
             --porsche-radius: 0.75rem;
         }

@@ -1,0 +1,240 @@
+/* ============================================================
+   CTA PRO · Section 10
+   ============================================================ */
+.cta-section {
+  padding: 140px 0 160px;
+}
+.cta-head {
+  max-width: 880px;
+  margin-bottom: 80px;
+}
+/* Override de .display.xl (mayor specificity) para que el CTA sea más compacto */
+.display.xl.cta-title,
+.cta-title {
+  margin-top: 28px;
+  font-size: clamp(28px, 3.8vw, 56px) !important;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+@media (max-width: 880px) {
+  .display.xl.cta-title,
+  .cta-title { font-size: clamp(26px, 6.5vw, 42px) !important; max-width: none; }
+}
+@media (max-width: 480px) {
+  .display.xl.cta-title,
+  .cta-title { font-size: clamp(22px, 7vw, 32px) !important; line-height: 1.15; }
+}
+
+.cta-pro-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(0, 1.6fr);
+  gap: 48px;
+  align-items: stretch;
+}
+
+/* Pillars column */
+.cta-pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  align-self: start;
+  transition: background 1.6s cubic-bezier(.4,0,.2,1), border-color 1.6s cubic-bezier(.4,0,.2,1);
+}
+.cta-pillar {
+  background: var(--bg-1);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 168px;
+  transition: background 1.6s cubic-bezier(.4,0,.2,1);
+}
+.cta-pillar-num {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 4vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.cta-pillar-num span {
+  font-size: 0.4em;
+  color: var(--claut-red);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.cta-pillar-label {
+  font-size: 13px;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,0.55);
+  margin-top: auto;
+  transition: color 1.6s cubic-bezier(.4,0,.2,1);
+}
+
+/* Card pro */
+.cta-card-pro {
+  position: relative;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(199,37,43,0.10), transparent 55%),
+    rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 22px;
+  padding: 48px 48px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow: hidden;
+  transition: background 1.6s cubic-bezier(.4,0,.2,1), border-color 1.6s cubic-bezier(.4,0,.2,1);
+}
+.cta-card-pro::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--claut-red), transparent);
+  opacity: 0.6;
+}
+.cta-card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--claut-red);
+  padding: 6px 12px;
+  background: rgba(199,37,43,0.10);
+  border: 1px solid rgba(199,37,43,0.25);
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+.cta-card-pro-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 0 0 16px;
+  text-wrap: balance;
+}
+.cta-card-pro-sub {
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.65);
+  max-width: 56ch;
+  margin: 0;
+  transition: color 1.6s cubic-bezier(.4,0,.2,1);
+}
+.cta-card-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 24px 0;
+  transition: border-color 1.6s cubic-bezier(.4,0,.2,1);
+}
+.cta-card-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  transition: color 1.6s cubic-bezier(.4,0,.2,1);
+}
+.cta-card-features svg {
+  flex-shrink: 0;
+  color: var(--claut-red);
+}
+.cta-card-pro-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cta-card-secondary {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.16);
+  color: #fff;
+  transition: background 1.6s cubic-bezier(.4,0,.2,1), border-color 1.6s cubic-bezier(.4,0,.2,1), color .25s ease;
+}
+.cta-card-secondary:hover {
+  background: rgba(255,255,255,0.06);
+}
+.cta-card-foot {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: .04em;
+  transition: color 1.6s cubic-bezier(.4,0,.2,1);
+}
+
+/* Inverted state */
+.invert-on-scroll.is-inverted .cta-pillars {
+  background: rgba(0,0,0,0.06) !important;
+  border-color: rgba(0,0,0,0.10) !important;
+}
+.invert-on-scroll.is-inverted .cta-pillar {
+  background: #FAFAFC !important;
+}
+.invert-on-scroll.is-inverted .cta-pillar-num {
+  color: #07080A !important;
+}
+.invert-on-scroll.is-inverted .cta-pillar-label {
+  color: rgba(7,8,10,0.55) !important;
+}
+.invert-on-scroll.is-inverted .cta-card-pro {
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(199,37,43,0.08), transparent 55%),
+    rgba(255,255,255,0.7) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 40px 80px -40px rgba(0,0,0,0.18);
+}
+.invert-on-scroll.is-inverted .cta-card-pro-title,
+.invert-on-scroll.is-inverted .cta-card-features li {
+  color: #07080A !important;
+}
+.invert-on-scroll.is-inverted .cta-card-pro-sub {
+  color: rgba(7,8,10,0.62) !important;
+}
+.invert-on-scroll.is-inverted .cta-card-features {
+  border-color: rgba(0,0,0,0.08) !important;
+}
+.invert-on-scroll.is-inverted .cta-card-features li {
+  color: rgba(7,8,10,0.78) !important;
+}
+.invert-on-scroll.is-inverted .cta-card-secondary {
+  border-color: rgba(0,0,0,0.16) !important;
+  color: #07080A !important;
+}
+.invert-on-scroll.is-inverted .cta-card-secondary:hover {
+  background: rgba(0,0,0,0.04) !important;
+}
+.invert-on-scroll.is-inverted .cta-card-foot {
+  color: rgba(7,8,10,0.5) !important;
+}
+
+@media (max-width: 900px) {
+  .cta-pro-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .cta-card-pro {
+    padding: 32px 28px 28px;
+  }
+  .cta-card-features {
+    grid-template-columns: 1fr;
+  }
+}

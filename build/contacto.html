@@ -37,7 +37,7 @@
           colors: {
             'clúster-red': 'black',
             'clúster-gray': '#F5F5F7',
-            'clúster-dark': '#1D1D1F'
+            'clúster-dark': '#09090b'
           },
           fontFamily: {
             'inter': ['Inter', 'sans-serif']
@@ -47,7 +47,8 @@
     }
   </script>
 </head>
-<link rel="stylesheet" href="./assets/css/layout/header-navbar.css" />
+<link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a" />
+<link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
 <style>
   /* Fix para alineación de header */
   .claut-header {
@@ -441,9 +442,16 @@
     .claut-nav-link i { font-size: 20px; }
   }
 </style>
+
+<link rel="stylesheet" href="./assets/css/layout/claut-icon-rail.css?v=20260901g">
+<style>
+  @media (min-width: 1025px) {
+    main.claut-main { padding-left: 134px !important; }
+  }
+</style>
 </head>
 
-<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default overflow-x-hidden"
+<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default overflow-x-hidden claut-dark claut-skin"
   style="background: var(--claut-bg-main); background-image: radial-gradient(ellipse at 60% 0%, rgba(199, 37, 43, 0.05) 0%, transparent 55%), radial-gradient(ellipse at 10% 80%, rgba(15, 23, 42, 0.02) 0%, transparent 50%), radial-gradient(ellipse at 90% 90%, rgba(199, 37, 43, 0.05) 0%, transparent 45%); background-attachment: fixed; color: var(--claut-text-primary);">
   <!-- Background Scroll Image - Fixed position behind everything -->
   <section class="scroll-image-section"
@@ -507,6 +515,16 @@
       </button>
     </div>
   </header>
+
+  <nav class="claut-icon-rail">
+    <a href="dashboard.html" class="claut-icon-rail-item" data-label="Inicio"><i class="fas fa-home"></i></a>
+    <a href="./descuentos.html" class="claut-icon-rail-item" data-label="Descuentos"><i class="fas fa-tags"></i></a>
+    <a href="./boletines.html" class="claut-icon-rail-item" data-label="Boletines"><i class="fas fa-newspaper"></i></a>
+    <a href="./comites.html" class="claut-icon-rail-item" data-label="Comités"><i class="fas fa-users"></i></a>
+    <a href="./contacto.html" class="claut-icon-rail-item" data-label="Contacto"><i class="fas fa-headset"></i></a>
+    <a href="./eventos.html" class="claut-icon-rail-item" data-label="Eventos"><i class="fas fa-calendar-alt"></i></a>
+    <a href="./empresas-convenio.html" class="claut-icon-rail-item" data-label="Socios"><i class="fas fa-handshake"></i></a>
+  </nav>
 
   <!-- Menú curvo animado en la parte inferior -->
   <nav class="claut-bottom-nav">
@@ -907,5 +925,6 @@
     navManager.init();
   });
 </script>
+<script src="./assets/js/claut-icon-rail.js?v=20260901c"></script>
 
 </html>

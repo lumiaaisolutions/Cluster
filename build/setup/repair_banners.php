@@ -8,26 +8,26 @@ require_once '../config/database.php';
 
 function repararSistemaBanners() {
     try {
-        echo "🔧 Iniciando reparación del sistema de banners...\n\n";
+        echo "Iniciando reparación del sistema de banners...\n\n";
         
         $db = Database::getInstance();
         $conn = $db->getConnection();
         
         // Paso 1: Eliminar índices duplicados
-        echo "📝 Paso 1: Eliminando índices existentes...\n";
+        echo "Paso 1: Eliminando índices existentes...\n";
         $indices = ['idx_banner_posicion', 'idx_banner_fechas', 'idx_banner_activo'];
         
         foreach ($indices as $indice) {
             try {
                 $conn->exec("DROP INDEX IF EXISTS $indice ON banner_carrusel");
-                echo "   ✓ Índice '$indice' eliminado\n";
+                echo "   Índice '$indice' eliminado\n";
             } catch (PDOException $e) {
-                echo "   ⚠ Error al eliminar '$indice': " . $e->getMessage() . "\n";
+                echo "   Error al eliminar '$indice': " . $e->getMessage() . "\n";
             }
         }
         
         // Paso 2: Recrear índices
-        echo "\n📝 Paso 2: Recreando índices optimizados...\n";
+        echo "\nPaso 2: Recreando índices optimizados...\n";
         $nuevosIndices = [
             "CREATE INDEX idx_banner_activo ON banner_carrusel(activo)" => "idx_banner_activo",
             "CREATE INDEX idx_banner_posicion ON banner_carrusel(posicion)" => "idx_banner_posicion", 
@@ -37,21 +37,21 @@ function repararSistemaBanners() {
         foreach ($nuevosIndices as $query => $nombre) {
             try {
                 $conn->exec($query);
-                echo "   ✓ Índice '$nombre' creado correctamente\n";
+                echo "   Índice '$nombre' creado correctamente\n";
             } catch (PDOException $e) {
-                echo "   ✗ Error al crear '$nombre': " . $e->getMessage() . "\n";
+                echo "   Error al crear '$nombre': " . $e->getMessage() . "\n";
             }
         }
         
         // Paso 3: Verificar banners existentes
-        echo "\n📝 Paso 3: Verificando banners existentes...\n";
+        echo "\nPaso 3: Verificando banners existentes...\n";
         $stmt = $conn->query("SELECT COUNT(*) as total FROM banner_carrusel");
         $result = $stmt->fetch();
-        
-        echo "   📊 Total de banners: {$result['total']}\n";
-        
+
+        echo "   Total de banners: {$result['total']}\n";
+
         if ($result['total'] == 0) {
-            echo "   📝 No hay banners, insertando ejemplos...\n";
+            echo "   No hay banners, insertando ejemplos...\n";
             insertarBannersEjemplo($conn);
         } else {
             // Mostrar banners existentes
@@ -60,18 +60,18 @@ function repararSistemaBanners() {
             
             foreach ($banners as $banner) {
                 $estado = $banner['activo'] ? 'Activo' : 'Inactivo';
-                echo "   📌 ID {$banner['id']}: {$banner['titulo']} (Pos: {$banner['posicion']}, {$estado})\n";
+                echo "   ID {$banner['id']}: {$banner['titulo']} (Pos: {$banner['posicion']}, {$estado})\n";
             }
         }
         
         // Paso 4: Verificar funcionamiento del API
-        echo "\n📝 Paso 4: Verificando API...\n";
+        echo "\nPaso 4: Verificando API...\n";
         verificarAPI($conn);
-        
-        echo "\n🎉 ¡Reparación completada exitosamente!\n\n";
-        
+
+        echo "\n¡Reparación completada exitosamente!\n\n";
+
         // Enlaces útiles
-        echo "🔗 Enlaces útiles:\n";
+        echo "Enlaces útiles:\n";
         echo "   • Panel Admin: /build/admin/banner-admin.php\n";
         echo "   • Página Login: /build/pages/sign-in.html\n";
         echo "   • API Banners: /build/api/banners.php\n\n";
@@ -79,7 +79,7 @@ function repararSistemaBanners() {
         return true;
         
     } catch (Exception $e) {
-        echo "💥 Error crítico: " . $e->getMessage() . "\n";
+        echo "Error crítico: " . $e->getMessage() . "\n";
         return false;
     }
 }
@@ -119,7 +119,7 @@ function insertarBannersEjemplo($conn) {
             $banner['posicion']
         ]);
         
-        echo "   ✓ Banner '{$banner['titulo']}' insertado\n";
+        echo "   Banner '{$banner['titulo']}' insertado\n";
     }
 }
 
@@ -135,13 +135,13 @@ function verificarAPI($conn) {
         $banners = $stmt->fetchAll();
         
         if (count($banners) > 0) {
-            echo "   ✓ API funcional - " . count($banners) . " banners activos disponibles\n";
+            echo "   API funcional - " . count($banners) . " banners activos disponibles\n";
         } else {
-            echo "   ⚠ API funcional pero sin banners activos\n";
+            echo "   API funcional pero sin banners activos\n";
         }
-        
+
     } catch (Exception $e) {
-        echo "   ✗ Error en API: " . $e->getMessage() . "\n";
+        echo "   Error en API: " . $e->getMessage() . "\n";
     }
 }
 
@@ -234,14 +234,14 @@ function verificarAPI($conn) {
 </head>
 <body>
     <div class="header">
-        <h1>🛠️ Reparación Sistema de Banners</h1>
+        <h1><i class="fas fa-screwdriver-wrench"></i> Reparación Sistema de Banners</h1>
         <p>Script de diagnóstico y reparación para índices duplicados</p>
     </div>
     
     <div class="content">
         <?php
         if ($_GET['action'] === 'repair' || $_POST['action'] === 'repair') {
-            echo "<h2>🔧 Ejecutando Reparación</h2>";
+            echo "<h2><i class=\"fas fa-wrench\"></i> Ejecutando Reparación</h2>";
             echo "<div class='output'>";
             ob_start();
             $resultado = repararSistemaBanners();
@@ -251,19 +251,19 @@ function verificarAPI($conn) {
             
             if ($resultado) {
                 echo "<div class='alert alert-info'>";
-                echo "<strong>✅ Reparación exitosa!</strong><br>";
+                echo "<strong><i class=\"fas fa-circle-check\"></i> Reparación exitosa!</strong><br>";
                 echo "El sistema de banners ha sido reparado correctamente.";
                 echo "</div>";
-                
+
                 echo "<div style='text-align: center; margin: 30px 0;'>";
-                echo "<a href='../pages/sign-in.html' class='btn btn-success'>🔐 Ver Página de Login</a>";
-                echo "<a href='../admin/banner-admin.php' class='btn'>📊 Panel de Admin</a>";
-                echo "<a href='../api/banners.php' class='btn'>🔗 API Banners</a>";
+                echo "<a href='../pages/sign-in.html' class='btn btn-success'><i class=\"fas fa-lock\"></i> Ver Página de Login</a>";
+                echo "<a href='../admin/banner-admin.php' class='btn'><i class=\"fas fa-chart-column\"></i> Panel de Admin</a>";
+                echo "<a href='../api/banners.php' class='btn'><i class=\"fas fa-link\"></i> API Banners</a>";
                 echo "</div>";
             }
         } else {
         ?>
-            <h2>🚨 Error Detectado: Índice Duplicado</h2>
+            <h2><i class="fas fa-triangle-exclamation"></i> Error Detectado: Índice Duplicado</h2>
             
             <div class="alert alert-info">
                 <strong>Problema:</strong> Error SQLSTATE[42000] - Duplicate key name 'idx_banner_fechas'<br><br>
@@ -273,18 +273,18 @@ function verificarAPI($conn) {
             
             <h3>¿Qué hace esta reparación?</h3>
             <ul>
-                <li>✅ Elimina índices duplicados de forma segura</li>
-                <li>✅ Recrea los índices optimizados</li>
-                <li>✅ Verifica la integridad de los datos</li>
-                <li>✅ Confirma el funcionamiento del API</li>
-                <li>✅ Mantiene todos los banners existentes</li>
+                <li><i class="fas fa-circle-check"></i> Elimina índices duplicados de forma segura</li>
+                <li><i class="fas fa-circle-check"></i> Recrea los índices optimizados</li>
+                <li><i class="fas fa-circle-check"></i> Verifica la integridad de los datos</li>
+                <li><i class="fas fa-circle-check"></i> Confirma el funcionamiento del API</li>
+                <li><i class="fas fa-circle-check"></i> Mantiene todos los banners existentes</li>
             </ul>
             
             <div style="text-align: center; margin: 40px 0;">
                 <form method="get" style="display: inline;">
                     <input type="hidden" name="action" value="repair">
                     <button type="submit" class="btn btn-success" style="font-size: 18px; padding: 15px 30px;">
-                        🚀 Ejecutar Reparación
+                        <i class="fas fa-rocket"></i> Ejecutar Reparación
                     </button>
                 </form>
             </div>
@@ -293,8 +293,8 @@ function verificarAPI($conn) {
             
             <h3>Enlaces Alternativos:</h3>
             <div style="text-align: center;">
-                <a href="fix_banner_duplicate_index.php?action=fix" class="btn">🔧 Script Alternativo</a>
-                <a href="init_banner_system.php?init=1" class="btn">🎨 Inicialización Original</a>
+                <a href="fix_banner_duplicate_index.php?action=fix" class="btn"><i class="fas fa-wrench"></i> Script Alternativo</a>
+                <a href="init_banner_system.php?init=1" class="btn"><i class="fas fa-palette"></i> Inicialización Original</a>
             </div>
         <?php
         }

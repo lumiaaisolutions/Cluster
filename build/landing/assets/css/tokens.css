@@ -1,0 +1,120 @@
+/* ============================================================
+   CLAUTMET · Tokens
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Brand */
+  --claut-red:        #C7252B;
+  --claut-red-hover:  #E53E3E;
+  --claut-red-deep:   #A51D22;
+  --claut-gold:       #F2B73F;
+  --claut-cyan:       #6FD7FF;
+  --claut-cyan-deep:  #2E9BC9;
+
+  /* Surfaces — dark default */
+  --bg-0: #07080A;
+  --bg-1: #0C0D10;
+  --bg-2: #131418;
+  --bg-3: #1B1D22;
+  --bg-elev: #22252C;
+
+  /* Text */
+  --fg-1: #F5F5F7;
+  --fg-2: #B5B7BD;
+  --fg-3: #75787F;
+  --fg-4: #4A4D54;
+
+  /* Lines */
+  --line-1: rgba(255,255,255,0.06);
+  --line-2: rgba(255,255,255,0.10);
+  --line-3: rgba(255,255,255,0.18);
+
+  /* Glass */
+  --glass-bg:     rgba(255,255,255,0.04);
+  --glass-bg-2:   rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.10);
+
+  /* Accent gradient */
+  --grad-red:  linear-gradient(135deg, #E53E3E 0%, #C7252B 50%, #8B1538 100%);
+  --grad-cyan: linear-gradient(135deg, #B7ECFF 0%, #6FD7FF 45%, #2E9BC9 100%);
+  --grad-mix:  linear-gradient(135deg, #FF6B6B 0%, #C7252B 50%, #6FD7FF 100%);
+
+  /* Type */
+  --font-display: 'Inter Tight', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', SFMono-Regular, Menlo, monospace;
+
+  /* Spacing (4pt) */
+  --s-1:  4px;  --s-2:  8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px;  --s-8: 32px;  --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --s-20: 80px; --s-24: 96px; --s-32: 128px; --s-40: 160px;
+
+  /* Radii */
+  --r-xs:  4px; --r-sm:  8px; --r-md: 12px; --r-lg: 16px;
+  --r-xl: 20px; --r-2xl: 24px; --r-3xl: 32px; --r-pill: 9999px;
+
+  /* Shadows */
+  --sh-sm:  0 2px 8px rgba(0,0,0,0.30);
+  --sh-md:  0 12px 32px rgba(0,0,0,0.40);
+  --sh-lg:  0 24px 60px rgba(0,0,0,0.55);
+  --sh-red: 0 14px 40px -8px rgba(199,37,43,0.55);
+  --sh-cyan:0 14px 40px -8px rgba(111,215,255,0.45);
+
+  /* Motion */
+  --e-out:   cubic-bezier(0.22, 1, 0.36, 1);
+  --e-in-out:cubic-bezier(0.65, 0, 0.35, 1);
+  --e-snap:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layout */
+  --max-w: 1440px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --nav-h: 68px;
+}
+
+/* Light theme overrides */
+:root[data-theme="light"] {
+  --bg-0: #F2F2F5;
+  --bg-1: #FAFAFC;
+  --bg-2: #FFFFFF;
+  --bg-3: #F4F4F7;
+  --bg-elev: #FFFFFF;
+  --fg-1: #0A0B0D;
+  --fg-2: #3F4248;
+  --fg-3: #6B6E75;
+  --fg-4: #9CA0A8;
+  --line-1: rgba(0,0,0,0.06);
+  --line-2: rgba(0,0,0,0.10);
+  --line-3: rgba(0,0,0,0.18);
+  --glass-bg:     rgba(255,255,255,0.65);
+  --glass-bg-2:   rgba(255,255,255,0.85);
+  --glass-border: rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-1);
+  color: var(--fg-1);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01', 'cv11';
+  overflow-x: hidden;
+}
+
+::selection { background: var(--claut-red); color: #fff; }
+img, svg, video, canvas { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+input, textarea, select { font: inherit; color: inherit; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--line-3); }

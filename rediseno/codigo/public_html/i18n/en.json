@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "description": "Metropolitan Automotive Cluster — Engine of connection for the automotive industry in Estado de México, Mexico City and Hidalgo."
+  },
+  "a11y": {
+    "skip_to_content": "Skip to content"
+  },
+  "nav": {
+    "home": "Home",
+    "directorio": "Directory",
+    "eventos": "Events",
+    "comites": "Committees",
+    "boletines": "Newsletter",
+    "documentos": "Documents",
+    "descuentos": "Discounts",
+    "buzon": "Inbox",
+    "profile": "My profile",
+    "logout": "Sign out",
+    "about": "About us",
+    "sectors": "Sectors",
+    "benefits": "Benefits",
+    "contact": "Contact",
+    "login": "Sign in",
+    "register": "Join us"
+  },
+  "hero": {
+    "kicker": "METROPOLITAN AUTOMOTIVE CLUSTER",
+    "title_1": "Engine of connection",
+    "title_2": "for the automotive industry.",
+    "subtitle": "We connect companies, talent and technology across the Mexico Valley metropolitan zone, Mexico City and Hidalgo.",
+    "cta_primary": "Join the cluster",
+    "cta_secondary": "Learn more",
+    "scroll_hint": "SCROLL"
+  },
+  "about": {
+    "kicker": "WHO WE ARE",
+    "title": "300+ companies. 3 states. One engine.",
+    "body": "We are a civil organization with international reach. Eleven years powering development, growth and business opportunities across Estado de México, Mexico City and Hidalgo.",
+    "stat_companies": "Member companies",
+    "stat_workforce": "Million-strong workforce",
+    "stat_export": "USD in exports",
+    "stat_years": "Years of experience"
+  },
+  "sectors": {
+    "kicker": "ECOSYSTEM",
+    "title": "The full automotive value chain."
+  },
+  "benefits": {
+    "kicker": "MEMBERSHIP",
+    "title": "Benefits that accelerate your operation.",
+    "b1_title": "Strategic networking",
+    "b1_body": "Access to the interactive member directory and verified B2B connections.",
+    "b2_title": "Specialized committees",
+    "b2_body": "Manufacturing, Technology Development, Human Capital, International Cooperation, Quality and Supply Chain.",
+    "b3_title": "Events and training",
+    "b3_body": "Technical forums, trade missions and Industry 4.0 skill-building programs."
+  },
+  "cta": {
+    "title": "Ready to connect your company to the ecosystem.",
+    "body": "Join the strongest network in the metropolitan automotive industry.",
+    "button": "Register your company",
+    "login": "I'm already a member"
+  },
+  "footer": {
+    "tagline": "Metropolitan Automotive Cluster — Engine of connection across industry players.",
+    "contact": "CONTACT",
+    "quick": "QUICK ACCESS",
+    "login": "Sign in",
+    "register": "Register",
+    "register_company": "Register company"
+  },
+  "auth": {
+    "back": "Back to site",
+    "welcome": "Welcome back",
+    "welcome_sub": "Sign in to your CLAUTMET account",
+    "email": "Email address",
+    "email_placeholder": "you@company.com",
+    "password": "Password",
+    "forgot": "Forgot your password?",
+    "signin": "Sign in",
+    "no_account": "Don't have an account?",
+    "create": "Create account"
+  },
+  "dashboard": {
+    "kpi_eventos": "Upcoming events",
+    "kpi_comites": "Active committees",
+    "kpi_descuentos": "Active discounts",
+    "kpi_boletines": "Newsletters",
+    "upcoming": "Upcoming sessions",
+    "notifications": "Notifications",
+    "see_all": "See all"
+  },
+  "casual": {
+    "saved": "Changes saved.",
+    "deleted": "Deleted.",
+    "error_generic": "We couldn't complete the action. Try again in a moment.",
+    "empty_directory": "No companies match this filter yet.",
+    "empty_events": "No upcoming events.",
+    "empty_comites": "No sessions scheduled."
+  }
+}

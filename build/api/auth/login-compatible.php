@@ -26,6 +26,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../utils/api-response.php';
 
+// ============================================================================
+// RATE LIMITING — solo para POST con action=login (anti brute-force)
+// 5 intentos por IP en ventana de 5 minutos.
+// ============================================================================
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $rawInput = file_get_contents('php://input');
+    $parsed   = json_decode($rawInput, true);
+    $action   = $parsed['action'] ?? $_POST['action'] ?? '';
+    if ($action === 'login') {
+        try {
+            require_once dirname(dirname(__DIR__)) . '/middleware/rate-limiter.php';
+            $rateLimiter = new RateLimiter();
+            $clientIP = getRateLimitIdentifier();
+            $rateLimiter->protect(
+                $clientIP,
+                RateLimitConfig::LOGIN['max'],
+                RateLimitConfig::LOGIN['window'],
+                RateLimitConfig::LOGIN['action']
+            );
+        } catch (Exception $e) {
+            // Si el rate limiter falla por motivos internos, log y continúa
+            // (preferimos no bloquear logins por bugs del middleware).
+            error_log('[login rate-limiter] ' . $e->getMessage());
+        }
+    }
+}
+
 /**
  * Verificar usuario por credenciales - Compatible con cualquier estructura
  */
@@ -34,8 +61,8 @@ function verificarCredenciales($email, $password) {
         $db = Database::getInstance();
         $conn = $db->getConnection();
         
-        // Query incluyendo estado_usuario para verificar aprobación
-        $selectQuery = "SELECT email, password, nombre, nombre_empresa, rol, estado_usuario FROM usuarios_perfil WHERE email = :email";
+        // Query incluyendo estado_usuario Y email_verificado para validación completa
+        $selectQuery = "SELECT email, password, nombre, nombre_empresa, rol, estado_usuario, email_verificado FROM usuarios_perfil WHERE email = :email";
         error_log("Attempting login for email: " . $email);
         
         $stmt = $conn->prepare($selectQuery);
@@ -52,28 +79,41 @@ function verificarCredenciales($email, $password) {
         
         if ($user && !empty($user['password'])) {
             if (password_verify($password, $user['password'])) {
-                // Verificar estado de aprobación
-                $estado_usuario = $user['estado_usuario'] ?? 'pendiente';
+                $rolLower = strtolower($user['rol'] ?? '');
+                $esAdmin  = in_array($rolLower, ['admin', 'administrador', 'root'], true);
 
-                if ($estado_usuario !== 'activo' && $user['rol'] !== 'admin' && $user['rol'] !== 'Administrador') {
+                // 1. Verificar email verificado.
+                // Defensa: si la columna no existe (BD sin migración aplicada) o es NULL,
+                // NO bloquear (modo legacy). Solo bloquear si está explícitamente en 0.
+                $emailVerificadoRaw = array_key_exists('email_verificado', $user) ? $user['email_verificado'] : null;
+                $bloquearPorEmail = ($emailVerificadoRaw !== null) && ((int)$emailVerificadoRaw === 0);
+                if ($bloquearPorEmail && !$esAdmin) {
+                    return [
+                        'error' => 'email_not_verified',
+                        'message' => 'Debes verificar tu correo antes de iniciar sesión. Revisa tu bandeja de entrada.'
+                    ];
+                }
+
+                // 2. Verificar estado de aprobación admin
+                $estado_usuario = $user['estado_usuario'] ?? 'pendiente';
+                if ($estado_usuario !== 'activo' && !$esAdmin) {
                     $mensajes_estado = [
-                        'pendiente' => 'Tu cuenta está pendiente de aprobación por un administrador. Te notificaremos cuando sea aprobada.',
-                        'rechazado' => 'Tu cuenta ha sido rechazada. Contacta al administrador para más información.',
+                        'pendiente'    => 'Tu cuenta está pendiente de aprobación por un administrador. Te notificaremos cuando sea aprobada.',
+                        'rechazado'    => 'Tu cuenta ha sido rechazada. Contacta al administrador para más información.',
                         'lista_espera' => 'Tu cuenta está en lista de espera. Te notificaremos cuando sea aprobada.'
                     ];
-
                     return [
-                        'error' => 'account_not_approved',
+                        'error'   => 'account_not_approved',
                         'message' => $mensajes_estado[$estado_usuario] ?? 'Tu cuenta no está activa. Contacta al administrador.'
                     ];
                 }
 
-                // Usuario aprobado - permitir acceso
+                // Usuario aprobado y email verificado - permitir acceso
                 return [
-                    'email' => $user['email'],
-                    'nombre' => $user['nombre'],
+                    'email'          => $user['email'],
+                    'nombre'         => $user['nombre'],
                     'nombre_empresa' => $user['nombre_empresa'],
-                    'rol' => $user['rol'],
+                    'rol'            => $user['rol'],
                     'estado_usuario' => $estado_usuario
                 ];
             }
@@ -183,9 +223,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $user = verificarCredenciales($input['email'], $input['password']);
 
                 if ($user) {
-                    // Verificar si hay error de aprobación
-                    if (isset($user['error']) && $user['error'] === 'account_not_approved') {
-                        ApiResponse::error($user['message'], 403, ['error_type' => 'account_not_approved']);
+                    // Verificar errores de aprobación o verificación de email
+                    if (isset($user['error']) && in_array($user['error'], ['account_not_approved', 'email_not_verified'], true)) {
+                        ApiResponse::error($user['message'], 403, ['error_type' => $user['error']]);
                     } else {
                         // Usuario aprobado - iniciar sesión
                         iniciarSesion($user);

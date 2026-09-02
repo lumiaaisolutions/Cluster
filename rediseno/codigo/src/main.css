@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==============================================================
+   Inter Variable — self-hosted (no Google Fonts)
+   ============================================================== */
+@font-face {
+  font-family: InterVariable;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/inter/InterVariable.woff2") format("woff2-variations"),
+       url("/assets/fonts/inter/InterVariable.woff2") format("woff2");
+}
+@font-face {
+  font-family: InterVariable;
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/inter/InterVariable-Italic.woff2") format("woff2-variations"),
+       url("/assets/fonts/inter/InterVariable-Italic.woff2") format("woff2");
+}
+
+/* ==============================================================
+   CSS Variables — leídas/sobrescritas por theme.js
+   ============================================================== */
+:root {
+  --bg: #FFFFFF;
+  --text: #1D1D1F;
+  --brand: #C7252B;
+  --surface: #FAFAFA;
+  --border: #E5E5E7;
+  --muted: #6E6E73;
+  --carbon: #1D1D1F;
+  --bg-light: #FFFFFF;
+  --bg-dark: #0A0A0B;
+}
+
+[data-theme="dark"] {
+  --bg: #0A0A0B;
+  --text: #F2F2F2;
+  --surface: #1D1D1F;
+  --border: #2C2C2E;
+  --muted: #98989D;
+}
+
+/* ==============================================================
+   Base layer
+   ============================================================== */
+@layer base {
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "InterVariable", "Inter", system-ui, sans-serif;
+    font-optical-sizing: auto;
+    font-feature-settings: "cv11", "ss01", "ss03";
+    width: 100%;        /* nunca 100vw — BUG dashboard responsive */
+    overflow-x: hidden;
+    transition: background 600ms cubic-bezier(0.22, 1, 0.36, 1),
+                color 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  ::selection { background: var(--brand); color: #fff; }
+
+  /* Scrollbar fina y minimal */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  h1 { font-weight: 600; letter-spacing: -0.025em; }
+  h2 { font-weight: 600; letter-spacing: -0.02em; }
+  h3 { font-weight: 600; letter-spacing: -0.015em; }
+
+  /* Skip link accesibilidad */
+  .skip-link {
+    position: absolute; top: -40px; left: 0; padding: 8px 16px;
+    background: var(--brand); color: #fff; z-index: 1000;
+    transition: top 200ms;
+  }
+  .skip-link:focus { top: 0; }
+
+  /* Focus rings consistentes */
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ==============================================================
+   Components
+   ============================================================== */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full font-medium
+           transition-all duration-300 ease-liquid select-none;
+  }
+  .btn-primary {
+    @apply bg-brand text-white hover:bg-brand/90 active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply border border-border text-text hover:bg-surface active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply text-text hover:bg-surface active:scale-[0.98];
+  }
+
+  .card {
+    @apply bg-surface border border-border rounded-2xl p-6
+           transition-all duration-400 ease-liquid;
+  }
+  .card-hover {
+    @apply hover:-translate-y-1 hover:shadow-[0_12px_32px_-12px_rgba(0,0,0,0.18)];
+  }
+
+  .input {
+    @apply w-full px-4 py-3 rounded-xl bg-surface border border-border text-text
+           placeholder:text-muted focus:border-brand focus:bg-bg
+           transition-colors duration-200 ease-liquid;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+           bg-surface border border-border text-text;
+  }
+  .badge-brand {
+    @apply bg-brand/10 border-brand/20 text-brand;
+  }
+
+  .container-app {
+    @apply mx-auto px-4 md:px-6 lg:px-8;
+    max-width: 100%;
+  }
+  /* Densidad por contexto (D3 fricciones) */
+  [data-density="hero"] .container-app { @apply max-w-8xl; }
+  [data-density="app"]  .container-app { @apply max-w-9xl; }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface) 0%, var(--border) 50%, var(--surface) 100%);
+    background-size: 200% 100%;
+    @apply animate-shimmer rounded-md;
+  }
+
+  /* Hero canvas wrap */
+  .hero-canvas-wrap {
+    @apply relative w-full overflow-hidden;
+    height: 100vh;
+    height: 100dvh;
+  }
+  .hero-canvas-wrap canvas {
+    @apply absolute inset-0;
+    display: block;
+  }
+}
+
+/* ==============================================================
+   Utilities
+   ============================================================== */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+  .glass {
+    background: color-mix(in srgb, var(--bg) 75%, transparent);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+}
+
+/* ==============================================================
+   Notyf overrides para que case con la paleta
+   ============================================================== */
+.notyf__toast {
+  border-radius: 12px !important;
+  font-family: "InterVariable", "Inter", sans-serif !important;
+  padding: 14px 18px !important;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.25) !important;
+}
+
+/* ==============================================================
+   Reduced motion
+   ============================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

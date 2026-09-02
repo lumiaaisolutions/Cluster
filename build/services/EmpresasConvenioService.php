@@ -127,7 +127,7 @@ class EmpresasConvenioService {
             
             $this->db->beginTransaction();
             
-            $sql = "INSERT INTO empresas (nombre, descripcion, sitio_web, telefono, email, direccion, logo, estado, razon_social, rfc, sector) 
+            $sql = "INSERT INTO empresas_convenio (nombre, descripcion, sitio_web, telefono, email, direccion, logo, estado, razon_social, rfc, sector) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, 'activo', ?, ?, ?)";
             
             $params = [
@@ -208,7 +208,7 @@ class EmpresasConvenioService {
             $this->db->beginTransaction();
             
             $valores[] = $id;
-            $sql = "UPDATE empresas SET " . implode(', ', $campos) . " WHERE id = ?";
+            $sql = "UPDATE empresas_convenio SET " . implode(', ', $campos) . " WHERE id = ?";
             
             $this->db->update($sql, $valores);
             
@@ -245,7 +245,7 @@ class EmpresasConvenioService {
             
             $this->db->beginTransaction();
             
-            $this->db->update("UPDATE empresas SET estado = 'inactivo' WHERE id = ?", [$id]);
+            $this->db->update("UPDATE empresas_convenio SET estado = 'inactivo' WHERE id = ?", [$id]);
             
             $this->db->commit();
             

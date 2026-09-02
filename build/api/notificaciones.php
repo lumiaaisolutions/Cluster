@@ -202,7 +202,7 @@ class NotificacionesAPI {
 
                 NotificationMailer::dispatch(
                     'mensaje_buzon',
-                    "🔔 $tituloNot",
+                    "$tituloNot",
                     "$contenidoNot\n\n" .
                     "Puedes ver todas tus notificaciones ingresando a la Intranet del Clúster.",
                     $this->connection,

@@ -281,16 +281,19 @@ try {
     <title>Administrador de Banners - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="../assets/css/layout/claut-wizard.css?v=20260901a">
+    <link rel="stylesheet" href="../assets/css/layout/admin-sidebar.css?v=20260901c">
     <style>
         /* Porsche-inspired Design System */
         :root {
             /* Primary Colors - Inspired by Porsche */
-            --porsche-black: #1a1a1a;
+            --porsche-black: #09090b;
             --porsche-charcoal: #2d2d2d;
             --porsche-silver: #8a8a8a;
             --porsche-white: #ffffff;
             --porsche-light-gray: #f5f5f5;
-            --porsche-accent: #c9302c;
+            --porsche-accent: #C7252B;
             /* Typography */
             --porsche-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --porsche-radius-lg: 12px;
@@ -336,377 +339,112 @@ try {
             justify-content: center;
         }
 
-        /* === RESPONSIVE SIDEBAR FUNCTIONALITY === */
+        header.claut-admin-main { position: relative; z-index: 10; }
 
-        /* Porsche-inspired Sidebar */
-        .porsche-sidebar {
-            background: linear-gradient(180deg, var(--porsche-black) 0%, var(--porsche-charcoal) 100%) !important;
-            border-radius: var(--porsche-radius-lg) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
-            height: calc(100vh - 2rem) !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            font-family: var(--porsche-font) !important;
+        /* Pulido visual del panel — jerarquía y feedback más claros dentro del tema oscuro */
+        .claut-stat-card { transition: transform .18s cubic-bezier(0.23,1,0.32,1), box-shadow .18s ease; }
+        .claut-stat-card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px -12px rgba(0,0,0,.55); }
+
+        .banner-item {
+            position: relative;
+            padding-left: 1.5rem !important;
+            transition: transform .18s cubic-bezier(0.23,1,0.32,1), box-shadow .18s ease, border-color .18s ease;
         }
-
-        .porsche-sidebar::-webkit-scrollbar {
+        .banner-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: .6rem; bottom: .6rem;
             width: 4px;
+            border-radius: 999px;
+            background: #22c55e;
         }
-
-        .porsche-sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-        }
-
-        .porsche-sidebar .porsche-logo {
-            color: var(--porsche-white) !important;
-            font-weight: 700 !important;
-            font-size: 1.5rem !important;
-        }
-
-        .porsche-nav-item {
-            color: rgba(255, 255, 255, 0.8) !important;
-            border-radius: 12px !important;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            font-weight: 500 !important;
-        }
-
-        .porsche-nav-item:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            color: var(--porsche-white) !important;
-            transform: translateX(4px) !important;
-        }
-
-        .porsche-nav-item.active {
-            background: rgba(199, 37, 43, 0.2) !important;
-            color: var(--porsche-white) !important;
-            border-left: 3px solid #C7252B !important;
-        }
-
-        /* Sidebar Overlay */
-        .sidenav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-            backdrop-filter: blur(4px);
-        }
-
-        .sidenav-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            z-index: 998;
-        }
-
-        /* Close button styling */
-        #sidebarCloseBtn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        #sidebarCloseBtn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* Sidebar always retractable - All screens */
-        .porsche-sidebar {
-            transform: translateX(-100%) !important;
-            z-index: 999 !important;
-            margin: 0 !important;
-            top: 0 !important;
-            left: 0 !important;
-            border-radius: 0 !important;
-            width: 280px !important;
-            max-width: 280px !important;
-            height: 100vh !important;
-            position: fixed !important;
-            display: block !important;
-        }
-
-        .sidenav-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            z-index: 998;
-        }
-
-        .porsche-sidebar.sidenav-show {
-            transform: translateX(0) !important;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Main content always without sidebar margin */
-        .main-content {
-            margin-left: 0 !important;
-            width: 100% !important;
-        }
-
-        .container {
-            margin-left: 0 !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-        }
-
-        /* Desktop adjustments */
-        @media (min-width: 1280px) {
-            .container {
-                padding-left: 2rem !important;
-                padding-right: 2rem !important;
-            }
-        }
-
-        /* Force sidebar behavior on all screens - Override any conflicting styles */
-        .porsche-sidebar.sidebar-enhanced {
-            transform: translateX(-100%) !important;
-        }
-
-        .porsche-sidebar.sidebar-enhanced.sidenav-show {
-            transform: translateX(0) !important;
-        }
-
-        /* Override any Tailwind classes that might interfere */
-        aside.porsche-sidebar {
-            left: 0 !important;
-            margin-left: 0 !important;
-        }
-
-        /* Ensure hamburger button works on all screens */
-        @media (min-width: 1280px) {
-            [sidenav-trigger] {
-                display: block !important;
-                visibility: visible !important;
-            }
-        }
-
-        /* Enhanced sidebar behavior for desktop */
-        @media (min-width: 1280px) {
-            .sidebar-enhanced {
-                transform: translateX(0) !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-        }
-
-        /* Responsive grid adjustments */
-        @media (max-width: 768px) {
-            header .flex {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-            }
-
-            header .flex.items-center.space-x-4 {
-                margin-top: 1rem !important;
-                align-self: flex-end !important;
-            }
-
-            .grid {
-                grid-template-columns: 1fr !important;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .porsche-sidebar {
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-
-            header .container {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-            }
-        }
-
-        /* Ensure proper z-index hierarchy */
-        .porsche-sidebar {
-            z-index: 999 !important;
-        }
-
-        .sidenav-overlay {
-            z-index: 998 !important;
-        }
-
-        header {
-            z-index: 997 !important;
-        }
-
-        .main-content {
-            z-index: 1 !important;
-        }
-
-        /* Hamburger button styling */
-        .hamburger-btn {
-            transition: all 0.3s ease;
-        }
-
-        .hamburger-btn:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
+        .banner-item[data-estado="inactivo"]::before { background: #64748b; }
+        .banner-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 34px -10px rgba(0,0,0,.55) !important;
+            border-color: rgba(199,37,43,.35) !important;
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <!-- Sidebar Overlay for Mobile -->
-    <div class="sidenav-overlay" id="sidenavOverlay"></div>
-
-    <!-- Sidebar -->
-    <aside
-        class="porsche-sidebar sidebar-enhanced fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 m-0 overflow-y-auto overflow-x-hidden antialiased transition-transform duration-200 border-0 max-w-64 ease-nav-brand z-990"
-        aria-expanded="false">
-        <div class="h-48 py-6 relative mb-4">
-            <!-- Botón de cerrar para todas las pantallas -->
-            <button class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-50 p-3 bg-black/30 rounded-lg hover:bg-black/50 transition-all"
-                    id="sidebarCloseBtn"
-                    sidenav-close
-                    aria-label="Cerrar menú">
-                <i class="fas fa-times"></i>
-            </button>
-
-            <a class="porsche-logo block px-6 py-4 m-0 text-center whitespace-nowrap" href="../dashboard.html"
-              target="_blank">
-                <img src="../assets/img/apple-icon.png"
-                  class="block mx-auto h-32 w-32 max-w-full transition-all duration-200 ease-nav-brand mb-4"
-                  alt="main_logo" />
-                <span class="block text-lg transition-all duration-200 ease-nav-brand text-white font-semibold mb-4">Clúster Admin</span>
-            </a>
+<body class="bg-gray-100 claut-dark claut-skin">
+    <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
+        <div class="claut-admin-sidebar-brand">
+            <img src="../assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
+            <span class="claut-admin-sidebar-title">Clúster Admin</span>
         </div>
+        <div class="claut-admin-sidebar-divider"></div>
 
-        <hr class="h-px mt-4 mb-4 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+        <nav class="claut-admin-nav">
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">General</p>
+                <a href="../admin-panel.html?login=success" class="claut-admin-nav-item">
+                    <i class="fas fa-shield-halved"></i><span>Panel Admin</span>
+                </a>
+                <a href="../dashboard.html" class="claut-admin-nav-item">
+                    <i class="fas fa-house"></i><span>Dashboard</span>
+                </a>
+            </div>
 
-        <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-            <ul class="flex flex-col pl-0 mb-0 pt-4">
-                <!-- Dashboard -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="../dashboard.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Dashboard</span>
-                    </a>
-                </li>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Ecosistema de módulos</p>
+                <a href="./banner-admin-mejorado.php" class="claut-admin-nav-item active">
+                    <i class="fas fa-images"></i><span>Banners</span>
+                </a>
+                <a href="../demo_boletines.html" class="claut-admin-nav-item">
+                    <i class="fas fa-newspaper"></i><span>Boletines</span>
+                </a>
+                <a href="../demo_documentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-folder-open"></i><span>Documentos</span>
+                </a>
+                <a href="../demo_descuentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-tags"></i><span>Beneficios</span>
+                </a>
+                <a href="../demo_comite.html" class="claut-admin-nav-item">
+                    <i class="fas fa-people-group"></i><span>Comités</span>
+                </a>
+                <a href="../calendario.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-days"></i><span>Calendario</span>
+                </a>
+                <a href="../demo_empresas.html" class="claut-admin-nav-item">
+                    <i class="fas fa-building"></i><span>Socios</span>
+                </a>
+                <a href="../demo_evento.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-check"></i><span>Eventos</span>
+                </a>
+                <a href="../gestionar_usuarios.php" class="claut-admin-nav-item">
+                    <i class="fas fa-users"></i><span>Usuarios</span>
+                </a>
+                <a href="../demo_visitante.html" class="claut-admin-nav-item">
+                    <i class="fas fa-user-shield"></i><span>Visitantes</span>
+                </a>
+            </div>
 
-                <!-- admin panel -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="../admin-panel.html?login=success">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Panel Administrador</span>
-                    </a>
-                </li>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Sistema</p>
+                <a href="../profile.html" class="claut-admin-nav-item">
+                    <i class="fas fa-gear"></i><span>Configuración</span>
+                </a>
+            </div>
+        </nav>
 
-                <!-- Usuarios -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="gestionar_usuarios.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Usuarios</span>
-                    </a>
-                </li>
-
-                <!-- Empresas -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="../demo_empresas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-building text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Empresas</span>
-                    </a>
-                </li>
-
-                <!-- Eventos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="../demo_evento.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-calendar-alt text-orange-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Eventos</span>
-                    </a>
-                </li>
-
-                <!-- Boletines -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="../demo_boletines.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-newspaper text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Boletines</span>
-                    </a>
-                </li>
-
-                <!-- Banners -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg active"
-                        href="banner-admin-mejorado.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-images text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Banners</span>
-                    </a>
-                </li>
-
-                <!-- Descuentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="../demo_descuentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tags text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Descuentos</span>
-                    </a>
-                </li>
-
-                <!-- Perfil -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="../profile.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-user-cog text-gray-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Perfil</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="mx-4">
-            <button onclick="window.location.href='../pages/sign-in.html'"
-                class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors text-red-600 hover:text-red-800">
-                <div
-                    class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                    <i class="fas fa-sign-out-alt text-red-500" style="font-size: 16px;"></i>
-                </div>
-                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Cerrar Sesión</span>
+        <div class="claut-admin-sidebar-foot">
+            <button onclick="window.location.href='../pages/sign-in.html'" class="claut-admin-nav-item claut-admin-nav-item--danger">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
             </button>
         </div>
-
     </aside>
 
+    <div class="claut-admin-sidebar-overlay" id="claut-admin-sidebar-overlay"></div>
+
     <!-- Header -->
-    <header class="main-content bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg" style="background: linear-gradient(135deg, #C7252B 0%, #A01E24 100%);">
+    <header class="claut-admin-main bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg" style="background: linear-gradient(135deg, #C7252B 0%, #A01E24 100%);">
         <div class="container mx-auto px-4 py-6">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <!-- Hamburger Menu Button for All Screens -->
-                    <button class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md hamburger-btn"
-                            sidenav-trigger
+                    <button class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
+                            id="claut-header-menu-btn"
+                            style="transition: background .2s ease;"
                             aria-label="Abrir menú de navegación">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -722,42 +460,42 @@ try {
     </header>
 
     <!-- Estadísticas -->
-    <div class="main-content container mx-auto px-4 py-6">
+    <div class="claut-admin-main container mx-auto px-4 py-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex items-center justify-between">
+            <div class="claut-stat-card claut-stat-card--red">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-500 text-sm">Total Banners</p>
-                        <p class="text-2xl font-bold text-gray-800"><?= count($banners) ?></p>
+                        <p class="stat-label">Total Banners</p>
+                        <p class="stat-value"><?= count($banners) ?></p>
                     </div>
-                    <i class="fas fa-images text-3xl text-red-500" style="color: #C7252B;"></i>
+                    <div class="stat-icon"><i class="fas fa-images"></i></div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex items-center justify-between">
+            <div class="claut-stat-card claut-stat-card--green">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-500 text-sm">Banners Activos</p>
-                        <p class="text-2xl font-bold text-green-600"><?= count(array_filter($banners, fn($b) => $b['activo'])) ?></p>
+                        <p class="stat-label">Banners Activos</p>
+                        <p class="stat-value"><?= count(array_filter($banners, fn($b) => $b['activo'])) ?></p>
                     </div>
-                    <i class="fas fa-check-circle text-3xl text-green-500"></i>
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex items-center justify-between">
+            <div class="claut-stat-card claut-stat-card--gold">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-500 text-sm">Banners Inactivos</p>
-                        <p class="text-2xl font-bold text-red-600"><?= count(array_filter($banners, fn($b) => !$b['activo'])) ?></p>
+                        <p class="stat-label">Banners Inactivos</p>
+                        <p class="stat-value"><?= count(array_filter($banners, fn($b) => !$b['activo'])) ?></p>
                     </div>
-                    <i class="fas fa-times-circle text-3xl text-red-500"></i>
+                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex items-center justify-between">
+            <div class="claut-stat-card claut-stat-card--blue">
+                <div class="stat-row">
                     <div>
-                        <p class="text-gray-500 text-sm">Última Actualización</p>
-                        <p class="text-2xl font-bold text-blue-600"><?= !empty($banners) ? date('d/m') : '--' ?></p>
+                        <p class="stat-label">Última Actualización</p>
+                        <p class="stat-value"><?= !empty($banners) ? date('d/m') : '--' ?></p>
                     </div>
-                    <i class="fas fa-clock text-3xl text-blue-500"></i>
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
                 </div>
             </div>
         </div>
@@ -816,7 +554,7 @@ try {
                     <div id="banner-list" class="space-y-4">
                         <?php if (empty($banners)): ?>
                             <div class="text-center py-12">
-                                <div class="text-6xl mb-4">📸</div>
+                                <div class="text-6xl mb-4" style="color:#475569;"><i class="fas fa-images"></i></div>
                                 <h3 class="text-xl font-semibold mb-2 text-gray-700">No hay banners configurados</h3>
                                 <p class="text-gray-500 mb-4">Crea tu primer banner para comenzar</p>
                                 <button onclick="abrirModalNuevo()" class="text-white px-6 py-3 rounded-lg hover:opacity-90 transition" style="background: #C7252B;">
@@ -857,7 +595,7 @@ try {
                                                     <p class="text-gray-600 text-sm"><?= htmlspecialchars($banner['descripcion'] ?: 'Sin descripción') ?></p>
                                                 </div>
                                                 <span class="px-2 py-1 rounded-full text-xs font-medium ml-3 <?= $banner['activo'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
-                                                    <?= $banner['activo'] ? '✅ ACTIVO' : '❌ INACTIVO' ?>
+                                                    <?= $banner['activo'] ? '<i class="fas fa-check-circle"></i> ACTIVO' : '<i class="fas fa-times-circle"></i> INACTIVO' ?>
                                                 </span>
                                             </div>
 
@@ -909,111 +647,133 @@ try {
     </div>
 
     <!-- Modal Crear/Editar Banner -->
-    <div id="modalBanner" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto slide-in">
-                <div class="p-6 border-b">
-                    <h2 id="modalTitulo" class="text-2xl font-bold text-gray-800">Nuevo Banner</h2>
-                </div>
+    <div id="modalBanner" class="claut-wizard-backdrop">
+        <form method="post" enctype="multipart/form-data" class="claut-wizard" style="max-width:760px;">
+            <input type="hidden" name="accion" value="guardar">
+            <input type="hidden" name="id" id="bannerId">
+            <input type="hidden" name="imagen_url_actual" id="imagenUrlActual">
 
-                <form method="post" enctype="multipart/form-data" class="p-6">
-                <input type="hidden" name="accion" value="guardar">
-                <input type="hidden" name="id" id="bannerId">
-                <input type="hidden" name="imagen_url_actual" id="imagenUrlActual">
-                
-                    <div class="grid grid-cols-1 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
-                            <input type="text" name="titulo" id="titulo" required
-                                   class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-                            <textarea name="descripcion" id="descripcion" rows="3"
-                                      class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                                      placeholder="Descripción del banner (opcional)"></textarea>
-                        </div>
-                
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Imagen *</label>
-                            <div class="flex gap-4 mb-4">
-                                <label class="flex items-center">
-                                    <input type="radio" name="tipo_imagen" value="local" checked onchange="cambiarTipoImagen('local')" class="mr-2">
-                                    <span class="text-sm">Subir imagen</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="radio" name="tipo_imagen" value="url" onchange="cambiarTipoImagen('url')" class="mr-2">
-                                    <span class="text-sm">URL externa</span>
-                                </label>
-                            </div>
-                    
-                    <div id="imagenLocal" class="mb-4">
-                        <div class="drag-drop-area" id="dropArea">
-                            <input type="file" name="imagen_local" id="imagenFile" accept="image/*" class="hidden" onchange="previewImagen(this)">
-                            <div class="text-gray-600">
-                                <div class="text-4xl mb-2">📤</div>
-                                <p>Click o arrastra una imagen aquí</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="imagenUrl" class="mb-4 hidden">
-                        <input type="url" name="imagen_url" id="imagenUrlInput" class="w-full px-4 py-2 border rounded-lg" 
-                               placeholder="https://ejemplo.com/imagen.jpg" onchange="previewImagenUrl(this.value)">
-                    </div>
-                    
-                    <div id="previewContainer" class="hidden">
-                        <label class="block text-gray-700 font-semibold mb-2">Vista Previa</label>
-                        <div id="imagePreview" class="w-full h-48 border rounded-lg bg-gray-100 bg-cover bg-center"></div>
-                    </div>
-                </div>
-                
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Posición</label>
-                                <input type="number" name="posicion" id="posicion" min="1" value="1"
-                                       class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                            </div>
-                            <div class="flex items-center">
-                                <label class="flex items-center">
-                                    <input type="checkbox" name="activo" id="activo" checked class="mr-2">
-                                    <span class="text-sm">Banner Activo</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Fechas (opcional) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio (opcional)</label>
-                                <input type="datetime-local" name="fecha_inicio" id="fecha_inicio"
-                                       class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin (opcional)</label>
-                                <input type="datetime-local" name="fecha_fin" id="fecha_fin"
-                                       class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button type="button" onclick="cerrarModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
-                            <i class="fas fa-times mr-2"></i>Cancelar
-                        </button>
-                        <button type="submit" id="submitBtn" class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition" style="background: #C7252B;">
-                            <i class="fas fa-save mr-2"></i>Guardar
-                        </button>
-                    </div>
-                </form>
+            <div class="claut-wizard-head">
+                <h2 id="modalTitulo">Nuevo Banner</h2>
+                <p>Se publica en el carrusel de la landing una vez guardado</p>
+                <button type="button" class="claut-modal-close" onclick="cerrarModal()" aria-label="Cerrar">&times;</button>
             </div>
-        </div>
+
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Información</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Imagen</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="3">
+                        <span class="claut-wizard-step-num">3</span><span>Configuración</span>
+                    </button>
+                </nav>
+
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Información -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 3</p>
+                        <div>
+                            <label>Título *</label>
+                            <input type="text" name="titulo" id="titulo" required placeholder="Ej. Campaña 2026">
+                        </div>
+                        <div>
+                            <label>Descripción</label>
+                            <textarea name="descripcion" id="descripcion" rows="3" placeholder="Descripción del banner (opcional)"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Imagen -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 3</p>
+                        <div>
+                            <label>Origen de la imagen *</label>
+                            <div class="flex gap-4 mb-2" style="color:#cbd5e1;font-size:.85rem;">
+                                <label class="flex items-center" style="width:auto;font-weight:400;">
+                                    <input type="radio" name="tipo_imagen" value="local" checked onchange="cambiarTipoImagen('local')" class="mr-2" style="width:auto;">
+                                    Subir imagen
+                                </label>
+                                <label class="flex items-center" style="width:auto;font-weight:400;">
+                                    <input type="radio" name="tipo_imagen" value="url" onchange="cambiarTipoImagen('url')" class="mr-2" style="width:auto;">
+                                    URL externa
+                                </label>
+                            </div>
+
+                            <div id="imagenLocal" class="mb-4">
+                                <div class="drag-drop-area" id="dropArea">
+                                    <input type="file" name="imagen_local" id="imagenFile" accept="image/*" class="hidden" onchange="previewImagen(this)">
+                                    <div style="color:#94a3b8;">
+                                        <div class="text-4xl mb-2"><i class="fas fa-cloud-upload-alt"></i></div>
+                                        <p>Click o arrastra una imagen aquí</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="imagenUrl" class="mb-4 hidden">
+                                <input type="url" name="imagen_url" id="imagenUrlInput"
+                                       placeholder="https://ejemplo.com/imagen.jpg" onchange="previewImagenUrl(this.value)">
+                            </div>
+
+                            <div id="previewContainer" class="hidden">
+                                <label>Vista previa</label>
+                                <div id="imagePreview" style="width:100%;height:12rem;border-radius:10px;border:1px solid rgba(255,255,255,.12);background-color:rgba(255,255,255,.04);background-size:cover;background-position:center;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Configuración -->
+                    <div class="claut-wizard-panel" data-step="3">
+                        <p class="claut-wizard-panel-eyebrow">Paso 3 de 3</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label>Posición</label>
+                                <input type="number" name="posicion" id="posicion" min="1" value="1">
+                            </div>
+                            <div style="display:flex;align-items:flex-end;padding-bottom:.6rem;">
+                                <label class="flex items-center" style="width:auto;font-weight:400;color:#cbd5e1;">
+                                    <input type="checkbox" name="activo" id="activo" checked class="mr-2" style="width:auto;">
+                                    Banner activo
+                                </label>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label>Fecha inicio (opcional)</label>
+                                <input type="datetime-local" name="fecha_inicio" id="fecha_inicio">
+                            </div>
+                            <div>
+                                <label>Fecha fin (opcional)</label>
+                                <input type="datetime-local" name="fecha_fin" id="fecha_fin">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="cerrarModal()" class="porsche-btn porsche-btn--ghost">Cancelar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" id="submitBtn" data-wizard-submit class="porsche-btn" style="display:none;">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+            </div>
+        </form>
     </div>
 
     <script>
         function abrirModalNuevo() {
-            document.getElementById('modalBanner').classList.remove('hidden');
+            const modal = document.getElementById('modalBanner');
+            modal.classList.add('open');
+            const wizardEl = modal.querySelector('.claut-wizard');
+            if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
             document.getElementById('modalTitulo').textContent = 'Nuevo Banner';
             document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save mr-2"></i>Crear Banner';
             document.getElementById('bannerId').value = '';
@@ -1032,7 +792,10 @@ try {
         }
         
         function editarBanner(banner) {
-            document.getElementById('modalBanner').classList.remove('hidden');
+            const modal = document.getElementById('modalBanner');
+            modal.classList.add('open');
+            const wizardEl = modal.querySelector('.claut-wizard');
+            if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
             document.getElementById('modalTitulo').textContent = 'Editar Banner';
             document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save mr-2"></i>Actualizar Banner';
             document.getElementById('bannerId').value = banner.id;
@@ -1064,7 +827,7 @@ try {
         }
 
         function cerrarModal() {
-            document.getElementById('modalBanner').classList.add('hidden');
+            document.getElementById('modalBanner').classList.remove('open');
         }
 
         // Función para filtrar banners
@@ -1148,204 +911,13 @@ try {
 
         // Cerrar modal con tecla ESC
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && !document.getElementById('modalBanner').classList.contains('hidden')) {
+            if (e.key === 'Escape' && document.getElementById('modalBanner').classList.contains('open')) {
                 cerrarModal();
             }
         });
     </script>
 
-    <!-- Sidebar JavaScript Functionality -->
-    <script>
-        // === SIDEBAR RETRACTABLE FUNCTIONALITY ===
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initializeSidebar, 100); // Pequeño delay para asegurar que el DOM esté listo
-        });
-
-        function initializeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-            const hamburgerBtn = document.querySelector('[sidenav-trigger]');
-            const closeBtn = document.getElementById('sidebarCloseBtn');
-
-            console.log('Sidebar elements:', {
-                sidebar: !!sidebar,
-                overlay: !!overlay,
-                hamburgerBtn: !!hamburgerBtn,
-                closeBtn: !!closeBtn,
-                screenWidth: window.innerWidth,
-                isDesktop: window.innerWidth >= 1280
-            });
-
-            // Log computed styles for debugging
-            if (sidebar) {
-                const styles = window.getComputedStyle(sidebar);
-                console.log('Sidebar computed styles:', {
-                    display: styles.display,
-                    transform: styles.transform,
-                    left: styles.left,
-                    position: styles.position,
-                    zIndex: styles.zIndex
-                });
-            }
-
-            if (!sidebar || !overlay || !hamburgerBtn) {
-                console.error('Sidebar elements not found:', {
-                    sidebar: !!sidebar,
-                    overlay: !!overlay,
-                    hamburgerBtn: !!hamburgerBtn
-                });
-                return;
-            }
-
-            // Toggle sidebar function
-            function toggleSidebar(e) {
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-
-                const isVisible = sidebar.classList.contains('sidenav-show');
-                console.log('Toggle sidebar - currently visible:', isVisible);
-
-                if (!isVisible) {
-                    // Open sidebar
-                    console.log('Opening sidebar');
-                    sidebar.classList.add('sidenav-show');
-                    sidebar.setAttribute('aria-expanded', 'true');
-                    overlay.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-
-                    // Focus management for accessibility
-                    const firstLink = sidebar.querySelector('.porsche-nav-item');
-                    if (firstLink) {
-                        setTimeout(() => firstLink.focus(), 100);
-                    }
-                } else {
-                    // Close sidebar
-                    console.log('Closing sidebar');
-                    closeSidebarInternal();
-                }
-            }
-
-            // Close sidebar function
-            function closeSidebarInternal() {
-                console.log('Executing closeSidebarInternal');
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-
-                // Return focus to hamburger button
-                if (hamburgerBtn) {
-                    hamburgerBtn.focus();
-                }
-            }
-
-            // Event listeners
-            console.log('Adding click event to hamburger button');
-            hamburgerBtn.addEventListener('click', toggleSidebar);
-
-            hamburgerBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleSidebar(e);
-            }, { passive: false });
-
-            if (overlay) {
-                overlay.addEventListener('click', closeSidebarInternal);
-                overlay.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                });
-                closeBtn.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            // Close on escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-            });
-
-            // Handle window resize - Keep sidebar closed on all screen sizes
-            window.addEventListener('resize', function() {
-                // Optional: could add logic here if needed
-            });
-
-            // Swipe to close functionality
-            let touchStartX = 0;
-            let touchStartY = 0;
-
-            sidebar.addEventListener('touchstart', function(e) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-
-            sidebar.addEventListener('touchmove', function(e) {
-                if (!touchStartX) return;
-
-                const currentX = e.touches[0].clientX;
-                const currentY = e.touches[0].clientY;
-                const diffX = touchStartX - currentX;
-                const diffY = Math.abs(touchStartY - currentY);
-
-                // Swipe left to close
-                if (diffX > 50 && diffY < 100) {
-                    closeSidebarInternal();
-                    touchStartX = 0;
-                    touchStartY = 0;
-                }
-            }, { passive: true });
-
-            // Keyboard navigation in sidebar
-            sidebar.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-
-                // Arrow navigation
-                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    const navItems = Array.from(sidebar.querySelectorAll('.porsche-nav-item:not([style*="display: none"])'));
-                    const currentIndex = navItems.indexOf(document.activeElement);
-
-                    if (e.key === 'ArrowDown') {
-                        const nextIndex = (currentIndex + 1) % navItems.length;
-                        navItems[nextIndex].focus();
-                    } else {
-                        const prevIndex = currentIndex <= 0 ? navItems.length - 1 : currentIndex - 1;
-                        navItems[prevIndex].focus();
-                    }
-                }
-            });
-
-            console.log('✅ Sidebar functionality initialized successfully');
-        }
-
-        // Legacy function compatibility
-        function closeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-
-            if (sidebar && overlay) {
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-            }
-        }
-    </script>
+    <script src="../assets/js/claut-admin-sidebar.js?v=20260901c"></script>
+    <script src="../assets/js/claut-wizard.js?v=20260901a"></script>
 </body>
 </html>

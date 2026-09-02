@@ -46,11 +46,15 @@ function validarPassword(string $pass): bool {
  * Busca y valida el token en la BD
  */
 function buscarToken(PDO $db, string $token): ?array {
+    // COLLATE forzado: email_tokens y usuarios_perfil tienen collations distintas
+    // (utf8mb4_unicode_ci vs utf8mb4_uca1400_ai_ci) — sin esto el JOIN dispara error 1267.
     $stmt = $db->prepare(
         "SELECT et.id, et.user_email, et.expires_at, et.usado,
                 up.id AS user_id, up.nombre, up.apellidos
          FROM email_tokens et
-         JOIN usuarios_perfil up ON up.email = et.user_email AND up.activo = 1
+         JOIN usuarios_perfil up
+           ON up.email COLLATE utf8mb4_unicode_ci = et.user_email COLLATE utf8mb4_unicode_ci
+          AND up.activo = 1
          WHERE et.token = :token AND et.tipo = 'password_reset'
          LIMIT 1"
     );

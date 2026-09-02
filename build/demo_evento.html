@@ -6,6 +6,9 @@
     <title>Demo Eventos - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
+    <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
         /* Porsche-inspired Premium Dark Design System */
         :root {
@@ -61,10 +64,15 @@
             transition: all 0.3s ease;
         }
 
-        @media (min-width: 1280px) {
+        @media (min-width: 1025px) {
             .glass-header {
-                padding-left: 280px;
+                padding-left: 260px;
             }
+        }
+
+        .claut-admin-sidebar.collapsed ~ .glass-header,
+        body:has(.claut-admin-sidebar.collapsed) .glass-header {
+            padding-left: 76px;
         }
 
         /* Porsche Typography & Elements */
@@ -136,172 +144,6 @@
         }
 
 
-        /* === RESPONSIVE SIDEBAR FUNCTIONALITY === */
-
-        /* Porsche-inspired Sidebar */
-        .porsche-sidebar {
-            background: linear-gradient(180deg, var(--porsche-black) 0%, var(--porsche-charcoal) 100%) !important;
-            border-radius: var(--porsche-radius-lg) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
-            height: calc(100vh - 2rem) !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            font-family: var(--porsche-font) !important;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-        }
-
-        .porsche-sidebar .porsche-logo {
-            color: var(--porsche-white) !important;
-            font-weight: 700 !important;
-            font-size: 1.5rem !important;
-        }
-
-        .porsche-nav-item {
-            color: rgba(255, 255, 255, 0.8) !important;
-            border-radius: 12px !important;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            font-weight: 500 !important;
-        }
-
-        .porsche-nav-item:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            color: var(--porsche-white) !important;
-            transform: translateX(4px) !important;
-        }
-
-        .porsche-nav-item.active {
-            background: rgba(199, 37, 43, 0.2) !important;
-            color: var(--porsche-white) !important;
-            border-left: 3px solid #C7252B !important;
-        }
-
-        /* Sidebar Overlay */
-        .sidenav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-            backdrop-filter: blur(4px);
-        }
-
-        .sidenav-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            z-index: 998;
-        }
-
-        /* Close button styling */
-        #sidebarCloseBtn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        #sidebarCloseBtn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* Sidebar functionality updated for Porsche layout */
-        .porsche-sidebar {
-            background: linear-gradient(180deg, var(--porsche-black) 0%, var(--porsche-charcoal) 100%) !important;
-            border-radius: 0 !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-            height: 100vh !important;
-            width: 280px !important;
-            position: fixed !important;
-            left: 0 !important;
-            top: 0 !important;
-            z-index: 1000 !important;
-            transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border-right: 1px solid var(--glass-border);
-        }
-
-        .porsche-sidebar.sidenav-show {
-            transform: translateX(0) !important;
-        }
-
-        .main-content {
-            margin-left: 0;
-            transition: margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @media (min-width: 1280px) {
-            .porsche-sidebar:not(.collapsed) {
-                transform: translateX(0) !important;
-            }
-            .main-content:not(.no-sidebar) {
-                margin-left: 280px;
-            }
-        }
-
-
-        .container {
-            margin-left: 0 !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-        }
-
-        /* Desktop adjustments */
-        @media (min-width: 1280px) {
-            .container {
-                padding-left: 2rem !important;
-                padding-right: 2rem !important;
-            }
-        }
-
-        /* Force sidebar behavior on all screens - Override any conflicting styles */
-        .porsche-sidebar.sidebar-enhanced {
-            transform: translateX(-100%) !important;
-        }
-
-        .porsche-sidebar.sidebar-enhanced.sidenav-show {
-            transform: translateX(0) !important;
-        }
-
-        /* Override any Tailwind classes that might interfere */
-        aside.porsche-sidebar {
-            left: 0 !important;
-            margin-left: 0 !important;
-        }
-
-        /* Ensure hamburger button works on all screens */
-        @media (min-width: 1280px) {
-            [sidenav-trigger] {
-                display: block !important;
-                visibility: visible !important;
-            }
-        }
-
-        /* Enhanced sidebar behavior for desktop */
-        @media (min-width: 1280px) {
-            .sidebar-enhanced {
-                transform: translateX(0) !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-        }
-
         /* Responsive grid adjustments */
         @media (max-width: 768px) {
             header .flex {
@@ -329,11 +171,6 @@
         }
 
         @media (max-width: 640px) {
-            .porsche-sidebar {
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-
             header .container {
                 padding-left: 1rem !important;
                 padding-right: 1rem !important;
@@ -358,23 +195,6 @@
             .grid-cols-1 {
                 grid-template-columns: 1fr !important;
             }
-        }
-
-        /* Ensure proper z-index hierarchy */
-        .porsche-sidebar {
-            z-index: 999 !important;
-        }
-
-        .sidenav-overlay {
-            z-index: 998 !important;
-        }
-
-        header {
-            z-index: 997 !important;
-        }
-
-        .main-content {
-            z-index: 1 !important;
         }
 
         /* Hamburger button styling */
@@ -916,7 +736,7 @@
 
         /* Print styles */
         @media print {
-            .porsche-sidebar,
+            .claut-admin-sidebar,
             header button,
             .flex:has(button),
             button {
@@ -943,171 +763,75 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <!-- Sidebar Overlay for Mobile -->
-    <div class="sidenav-overlay" id="sidenavOverlay"></div>
-
-    <!-- Porsche Sidebar -->
-    <aside id="porscheSidebar"
-        class="porsche-sidebar sidebar-enhanced fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 m-0 overflow-y-auto overflow-x-hidden antialiased transition-transform duration-200 border-0 max-w-64 ease-nav-brand z-990"
-        aria-expanded="false">
-        <div class="h-48 py-6 relative mb-4">
-            <!-- Botón de cerrar para todas las pantallas -->
-            <button class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-50 p-3 bg-black/30 rounded-lg hover:bg-black/50 transition-all"
-                    id="sidebarCloseBtn"
-                    sidenav-close
-                    aria-label="Cerrar menú">
-                <i class="fas fa-times"></i>
-            </button>
-
-            <a class="porsche-logo block px-6 py-4 m-0 text-center whitespace-nowrap" href="dashboard.html"
-              target="_blank">
-                <img src="../assets/img/apple-icon.png"
-                  class="block mx-auto h-32 w-32 max-w-full transition-all duration-200 ease-nav-brand mb-4"
-                  alt="main_logo" />
-                <span class="block text-lg transition-all duration-200 ease-nav-brand text-white font-semibold mb-4">Clúster Admin</span>
-            </a>
+<body class="bg-gray-100 claut-dark claut-skin">
+    <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
+        <div class="claut-admin-sidebar-brand">
+            <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
+            <span class="claut-admin-sidebar-title">Clúster Admin</span>
         </div>
+        <div class="claut-admin-sidebar-divider"></div>
 
-        <hr class="h-px mt-4 mb-4 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+        <nav class="claut-admin-nav">
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">General</p>
+                <a href="admin-panel.html?login=success" class="claut-admin-nav-item">
+                    <i class="fas fa-shield-halved"></i><span>Panel Admin</span>
+                </a>
+                <a href="dashboard.html" class="claut-admin-nav-item">
+                    <i class="fas fa-house"></i><span>Dashboard</span>
+                </a>
+            </div>
 
-        <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-            <ul class="flex flex-col pl-0 mb-0 pt-4">
-                <!-- Dashboard -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="dashboard.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Dashboard</span>
-                    </a>
-                </li>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Ecosistema de módulos</p>
+                <a href="admin/banner-admin-mejorado.php" class="claut-admin-nav-item">
+                    <i class="fas fa-images"></i><span>Banners</span>
+                </a>
+                <a href="demo_boletines.html" class="claut-admin-nav-item">
+                    <i class="fas fa-newspaper"></i><span>Boletines</span>
+                </a>
+                <a href="demo_documentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-folder-open"></i><span>Documentos</span>
+                </a>
+                <a href="demo_descuentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-tags"></i><span>Beneficios</span>
+                </a>
+                <a href="demo_comite.html" class="claut-admin-nav-item">
+                    <i class="fas fa-people-group"></i><span>Comités</span>
+                </a>
+                <a href="calendario.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-days"></i><span>Calendario</span>
+                </a>
+                <a href="demo_empresas.html" class="claut-admin-nav-item">
+                    <i class="fas fa-building"></i><span>Socios</span>
+                </a>
+                <a href="demo_evento.html" class="claut-admin-nav-item active">
+                    <i class="fas fa-calendar-check"></i><span>Eventos</span>
+                </a>
+                <a href="gestionar_usuarios.php" class="claut-admin-nav-item">
+                    <i class="fas fa-users"></i><span>Usuarios</span>
+                </a>
+                <a href="demo_visitante.html" class="claut-admin-nav-item">
+                    <i class="fas fa-user-shield"></i><span>Visitantes</span>
+                </a>
+            </div>
 
-                <!-- admin panel -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin-panel.html?login=success">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Panel Administrador</span>
-                    </a>
-                </li>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Sistema</p>
+                <a href="profile.html" class="claut-admin-nav-item">
+                    <i class="fas fa-gear"></i><span>Configuración</span>
+                </a>
+            </div>
+        </nav>
 
-                <!-- Usuarios -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_usuarios.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Usuarios</span>
-                    </a>
-                </li>
-
-                <!-- Empresas -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_empresas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-building text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Empresas</span>
-                    </a>
-                </li>
-
-                <!-- Eventos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg active"
-                        href="demo_evento.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-calendar-alt text-orange-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Eventos</span>
-                    </a>
-                </li>
-
-                <!-- Comités -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_comite.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Comités</span>
-                    </a>
-                </li>
-
-                <!-- Boletines -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_boletines.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-newspaper text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Boletines</span>
-                    </a>
-                </li>
-
-                <!-- Documentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_documentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-file-alt text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Documentos</span>
-                    </a>
-                </li>
-
-                <!-- Banners -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin/banner-admin-mejorado.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-images text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Banners</span>
-                    </a>
-                </li>
-
-                <!-- Descuentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_descuentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tags text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Descuentos</span>
-                    </a>
-                </li>
-
-                <!-- Perfil -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="profile.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-user-cog text-gray-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Perfil</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="mx-4">
-            <button onclick="window.location.href='pages/sign-in.html'"
-                class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors text-red-600 hover:text-red-800">
-                <div
-                    class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                    <i class="fas fa-sign-out-alt text-red-500" style="font-size: 16px;"></i>
-                </div>
-                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Cerrar Sesión</span>
+        <div class="claut-admin-sidebar-foot">
+            <button onclick="window.location.href='pages/sign-in.html'" class="claut-admin-nav-item claut-admin-nav-item--danger">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
             </button>
         </div>
-
     </aside>
+
+    <div class="claut-admin-sidebar-overlay" id="claut-admin-sidebar-overlay"></div>
 
     <!-- Glassmorphic Header -->
     <header class="glass-header animate-fade-in" id="mainHeader">
@@ -1116,8 +840,7 @@
                 <div class="flex items-center space-x-4">
                     <!-- Hamburger Menu Button -->
                     <button class="p-2.5 glass-card text-white hover:text-porsche-accent transition-all focus:outline-none"
-                            id="hamburgerBtn"
-                            sidenav-trigger
+                            id="claut-header-menu-btn"
                             aria-label="Abrir menú">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
@@ -1146,63 +869,51 @@
     </header>
 
     <!-- Main Dashboard Body -->
-    <div class="main-content container mx-auto px-4 pt-32 pb-8 animate-fade-in">
+    <div class="main-content claut-admin-main container mx-auto px-4 pt-32 pb-8 animate-fade-in">
         
         <!-- Premium Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <!-- Total Eventos -->
-            <div class="glass-card p-6 flex items-center space-x-5 relative overflow-hidden group">
-                <div class="absolute -right-4 -top-4 text-white/5 text-6xl group-hover:text-porsche-accent/10 transition-colors">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-                <div class="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                    <i class="fas fa-calendar-alt text-2xl text-blue-400"></i>
-                </div>
-                <div>
-                    <p class="text-porsche-silver text-xs font-semibold uppercase tracking-wider mb-1">Total Eventos</p>
-                    <h3 id="totalEventos" class="text-3xl font-bold">0</h3>
+            <div class="claut-stat-card claut-stat-card--blue">
+                <div class="stat-row">
+                    <div>
+                        <p class="stat-label">Total Eventos</p>
+                        <p id="totalEventos" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
                 </div>
             </div>
 
             <!-- Próximos -->
-            <div class="glass-card p-6 flex items-center space-x-5 relative overflow-hidden group">
-                <div class="absolute -right-4 -top-4 text-white/5 text-6xl group-hover:text-porsche-accent/10 transition-colors">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
-                    <i class="fas fa-hourglass-start text-2xl text-orange-400"></i>
-                </div>
-                <div>
-                    <p class="text-porsche-silver text-xs font-semibold uppercase tracking-wider mb-1">Próximos</p>
-                    <h3 id="proximosEventos" class="text-3xl font-bold text-orange-400">0</h3>
+            <div class="claut-stat-card claut-stat-card--gold">
+                <div class="stat-row">
+                    <div>
+                        <p class="stat-label">Próximos</p>
+                        <p id="proximosEventos" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-hourglass-start"></i></div>
                 </div>
             </div>
 
             <!-- En Curso -->
-            <div class="glass-card p-6 flex items-center space-x-5 relative overflow-hidden group">
-                <div class="absolute -right-4 -top-4 text-white/5 text-6xl group-hover:text-porsche-accent/10 transition-colors">
-                    <i class="fas fa-play"></i>
-                </div>
-                <div class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center border border-green-500/20">
-                    <i class="fas fa-play-circle text-2xl text-green-400"></i>
-                </div>
-                <div>
-                    <p class="text-porsche-silver text-xs font-semibold uppercase tracking-wider mb-1">En Curso</p>
-                    <h3 id="enCursoEventos" class="text-3xl font-bold text-green-400">0</h3>
+            <div class="claut-stat-card claut-stat-card--green">
+                <div class="stat-row">
+                    <div>
+                        <p class="stat-label">En Curso</p>
+                        <p id="enCursoEventos" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-play-circle"></i></div>
                 </div>
             </div>
 
             <!-- Total Registros -->
-            <div class="glass-card p-6 flex items-center space-x-5 relative overflow-hidden group">
-                <div class="absolute -right-4 -top-4 text-white/5 text-6xl group-hover:text-porsche-accent/10 transition-colors">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="w-14 h-14 rounded-xl bg-porsche-accent/10 flex items-center justify-center border border-porsche-accent/20">
-                    <i class="fas fa-users text-2xl text-porsche-accent"></i>
-                </div>
-                <div>
-                    <p class="text-porsche-silver text-xs font-semibold uppercase tracking-wider mb-1">Registros Totales</p>
-                    <h3 id="totalRegistros" class="text-3xl font-bold">0</h3>
+            <div class="claut-stat-card claut-stat-card--red">
+                <div class="stat-row">
+                    <div>
+                        <p class="stat-label">Registros Totales</p>
+                        <p id="totalRegistros" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
                 </div>
             </div>
         </div>
@@ -1385,61 +1096,74 @@
     </div>
 
     <!-- Premium Modal Crear/Editar Evento -->
-    <div id="eventModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-[1000] animate-fade-in">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="porsche-modal rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl relative">
-                <!-- Modal Decoration -->
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-porsche-accent to-transparent"></div>
-                
-                <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
-                    <div>
-                        <h2 class="porsche-title text-2xl text-white" id="modalTitle">Configurar Evento</h2>
-                        <p class="text-porsche-silver text-xs opacity-60">Complete los detalles de la experiencia</p>
-                    </div>
-                    <button onclick="closeModal()" class="text-porsche-silver hover:text-white transition-colors">
-                        <i class="fas fa-times text-xl"></i>
+    <div id="eventModal" class="claut-wizard-backdrop">
+        <div class="claut-wizard" style="max-width:840px;">
+            <div class="claut-wizard-head">
+                <h2 id="modalTitle">Configurar Evento</h2>
+                <p>Complete los detalles de la experiencia</p>
+                <button type="button" class="claut-modal-close" onclick="closeModal()" aria-label="Cerrar">&times;</button>
+            </div>
+
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Información</span>
                     </button>
-                </div>
-                
-                <form id="eventForm" class="p-6 overflow-y-auto" enctype="multipart/form-data">
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Fecha y medios</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="3">
+                        <span class="claut-wizard-step-num">3</span><span>Registro</span>
+                    </button>
+                </nav>
+
+                <form id="eventForm" class="claut-wizard-panels" enctype="multipart/form-data">
                     <input type="hidden" id="eventId" name="eventId">
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="col-span-2">
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Título del Evento *</label>
-                            <input type="text" id="titulo" name="titulo" required 
+
+                    <!-- Paso 1: Información -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 3</p>
+                        <div>
+                            <label>Título del Evento *</label>
+                            <input type="text" id="titulo" name="titulo" required
                                    class="w-full glass-input" placeholder="Ej: Asamblea Anual de Socios">
                         </div>
-                        
-                        <div class="col-span-2">
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Descripción Detallada *</label>
+
+                        <div>
+                            <label>Descripción Detallada *</label>
                             <textarea id="descripcion" name="descripcion" rows="3" required
                                       class="w-full glass-input" placeholder="Describa los objetivos y agenda del evento..."></textarea>
                         </div>
-                        
+
                         <div>
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Fecha de Inicio *</label>
-                            <input type="date" id="fecha_evento" name="fecha_evento" required
-                                   class="w-full glass-input">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Hora de Apertura *</label>
-                            <input type="time" id="hora_evento" name="hora_evento" required
-                                   class="w-full glass-input">
-                        </div>
-                        
-                        <div class="col-span-2">
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Ubicación / Sede *</label>
+                            <label>Ubicación / Sede *</label>
                             <div class="relative">
                                 <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-porsche-accent opacity-50"></i>
                                 <input type="text" id="ubicacion" name="ubicacion" required
                                        class="w-full glass-input pl-10" placeholder="Ej: Hotel Sheraton, Mty">
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Paso 2: Fecha y medios -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 3</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label>Fecha de Inicio *</label>
+                                <input type="date" id="fecha_evento" name="fecha_evento" required
+                                       class="w-full glass-input">
+                            </div>
+
+                            <div>
+                                <label>Hora de Apertura *</label>
+                                <input type="time" id="hora_evento" name="hora_evento" required
+                                       class="w-full glass-input">
+                            </div>
+                        </div>
 
                         <!-- Imagen del Evento Section -->
-                        <div class="col-span-2 bg-white/5 p-4 rounded-xl border border-white/5">
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/5">
                             <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-4">Material Visual</label>
 
                             <div class="flex gap-2 mb-4">
@@ -1476,50 +1200,56 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <div>
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Categoría</label>
-                            <select id="categoria" name="categoria" class="w-full glass-input">
-                                <option value="reunion">Reunión</option>
-                                <option value="capacitacion">Capacitación</option>
-                                <option value="social">Social</option>
-                                <option value="importante">Importante</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Estado Activo</label>
-                            <select id="estado" name="estado" class="w-full glass-input">
-                                <option value="activo">Publicado</option>
-                                <option value="programado">En Preparación</option>
-                                <option value="finalizado">Histórico</option>
-                                <option value="cancelado">Cancelado</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Costo (MXN)</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-porsche-silver opacity-40">$</span>
-                                <input type="number" id="precio" name="precio" min="0" step="0.01" value="0"
-                                       class="w-full glass-input pl-8" placeholder="0.00">
+                    </div>
+
+                    <!-- Paso 3: Registro -->
+                    <div class="claut-wizard-panel" data-step="3">
+                        <p class="claut-wizard-panel-eyebrow">Paso 3 de 3</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label>Categoría</label>
+                                <select id="categoria" name="categoria" class="w-full glass-input">
+                                    <option value="reunion">Reunión</option>
+                                    <option value="capacitacion">Capacitación</option>
+                                    <option value="social">Social</option>
+                                    <option value="importante">Importante</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label>Estado Activo</label>
+                                <select id="estado" name="estado" class="w-full glass-input">
+                                    <option value="activo">Publicado</option>
+                                    <option value="programado">En Preparación</option>
+                                    <option value="finalizado">Histórico</option>
+                                    <option value="cancelado">Cancelado</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label>Costo (MXN)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-porsche-silver opacity-40">$</span>
+                                    <input type="number" id="precio" name="precio" min="0" step="0.01" value="0"
+                                           class="w-full glass-input pl-8" placeholder="0.00">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label>Aforo Máximo</label>
+                                <input type="number" id="capacidad_maxima" name="capacidad_maxima" min="1" value="100"
+                                       class="w-full glass-input" placeholder="100">
                             </div>
                         </div>
-                        
-                        <div>
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Aforo Máximo</label>
-                            <input type="number" id="capacidad_maxima" name="capacidad_maxima" min="1" value="100"
-                                   class="w-full glass-input" placeholder="100">
-                        </div>
 
-                        <div class="col-span-2">
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">URL de Registro <span class="text-gray-500 font-normal normal-case">(Opcional — déjalo vacío para usar el formulario interno)</span></label>
+                        <div>
+                            <label>URL de Registro <span class="text-gray-500 font-normal normal-case">(Opcional — déjalo vacío para usar el formulario interno)</span></label>
                             <input type="url" id="link_evento" name="link_evento"
                                    class="w-full glass-input" placeholder="https://link-externo-de-registro.com (opcional)">
                         </div>
 
-                        <div class="col-span-2">
-                            <label class="block text-xs font-semibold text-porsche-silver uppercase tracking-wider mb-2">Nivel de Interacción</label>
+                        <div>
+                            <label>Nivel de Interacción</label>
                             <div class="bg-white/5 p-4 rounded-xl border border-white/5 flex items-center justify-between">
                                 <div class="flex-1">
                                     <p class="text-xs text-white font-bold mb-1">Cuestionario Previo</p>
@@ -1537,24 +1267,25 @@
                                 </div>
                             </div>
                         </div>
-
-                        <input type="hidden" id="imagen_method" name="imagen_method" value="upload">
-                        <input type="hidden" id="imagen_url_final" name="imagen_url_final" value="">
                     </div>
-                </form>
 
-                <div class="p-6 border-t border-white/5 bg-white/5 flex justify-end space-x-4">
-                    <button type="button" onclick="closeModal()" 
-                            class="px-6 py-2.5 rounded-xl border border-white/10 text-porsche-silver hover:text-white hover:bg-white/5 transition-all font-bold text-sm">
-                        Descartar
-                    </button>
-                    <button type="submit" form="eventForm"
-                            class="px-8 py-2.5 bg-porsche-accent hover:bg-porsche-accent-hover text-white rounded-xl font-bold text-sm shadow-lg shadow-red-900/30 transition-all flex items-center">
-                        <i class="fas fa-save mr-2"></i>Publicar Evento
-                    </button>
-                </div>
+                    <input type="hidden" id="imagen_method" name="imagen_method" value="upload">
+                    <input type="hidden" id="imagen_url_final" name="imagen_url_final" value="">
+                </form>
             </div>
-        </div>
+
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="closeModal()" class="porsche-btn porsche-btn--ghost">Descartar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" form="eventForm" data-wizard-submit
+                        class="px-8 py-2.5 bg-porsche-accent hover:bg-porsche-accent-hover text-white rounded-xl font-bold text-sm shadow-lg shadow-red-900/30 transition-all flex items-center" style="display:none;">
+                    <i class="fas fa-save mr-2"></i>Publicar Evento
+                </button>
             </div>
         </div>
     </div>
@@ -1652,8 +1383,10 @@
     <!-- Notifications System -->
     <div id="notifications" class="fixed top-6 right-6 z-[10001] space-y-3 pointer-events-none"></div>
 
-    <script src="./js/demo-eventos.js"></script>
+    <script src="./js/demo-eventos.js?v=20260901a"></script>
   <script src="./js/auth-session.js"></script>
   <script src="assets/js/loading-screen.js"></script>
+  <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
+  <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
 </body>
 </html>

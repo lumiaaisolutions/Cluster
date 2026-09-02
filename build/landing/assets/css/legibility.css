@@ -1,0 +1,249 @@
+/* ============================================================
+   CLÚSTER INTRANET · Legibility overrides
+   - Texto blanco / bold sobre área del scroll sequence (.stage)
+   - Refuerzo de peso sobre las secciones con fondo sólido
+   ============================================================ */
+
+/* ====== STAGE (sobre frames del coche) — todo blanco bold ====== */
+.stage,
+.stage * {
+  color: #ffffff !important;
+}
+.stage .lead,
+.stage p,
+.stage .meta,
+.stage .stat-label {
+  color: rgba(255,255,255,0.92) !important;
+  font-weight: 500;
+  text-shadow: 0 1px 30px rgba(0,0,0,0.45);
+}
+.stage .kicker,
+.stage .eyebrow-num,
+.stage .hero-meta,
+.stage .stat-meta,
+.stage .hero-bottom-bar,
+.stage .sector-card .num,
+.stage .sector-card .meta,
+.stage .pillar-num {
+  color: rgba(255,255,255,0.85) !important;
+  font-weight: 600;
+  text-shadow: 0 1px 20px rgba(0,0,0,0.5);
+}
+.stage .hero-title,
+.stage .display,
+.stage .stat-num,
+.stage .stat-num .suffix,
+.stage h1, .stage h2, .stage h3,
+.stage .sector-card .name,
+.stage .pillar h3 {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.04em;
+  text-shadow: 0 2px 40px rgba(0,0,0,0.55);
+}
+.stage .display em {
+  color: rgba(255,255,255,0.78) !important;
+  font-weight: 600 !important;
+}
+.stage .stat-num .suffix { color: #ff5b61 !important; }
+
+/* Hero bottom bar contrast */
+.stage .hero-bottom-bar { border-top-color: rgba(255,255,255,0.18) !important; }
+.stage .hero-bottom-bar > div {
+  border-right-color: rgba(255,255,255,0.14) !important;
+  background: rgba(0,0,0,0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.stage .hero-bottom-bar strong { color: #ffffff !important; font-weight: 700 !important; }
+
+/* Stats borders/dividers más visibles sobre canvas */
+.stage .stats-grid,
+.stage .stats-grid .stat { border-color: rgba(255,255,255,0.18) !important; }
+.stage .stat-bar { background: rgba(255,255,255,0.15) !important; }
+.stage .stat-bar::after { background: #ff5b61 !important; }
+
+/* Sectores cards sobre canvas — más sólidos para legibilidad */
+.stage .sector-card {
+  background: rgba(0,0,0,0.42) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+.stage .sector-card:hover { border-color: rgba(255,255,255,0.35) !important; }
+
+/* Search + chips sobre stage */
+.stage .search-input {
+  background: rgba(0,0,0,0.42) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.stage .search-input input { color: #fff !important; font-weight: 500; }
+.stage .search-input input::placeholder { color: rgba(255,255,255,0.55) !important; }
+.stage .chip {
+  border-color: rgba(255,255,255,0.18) !important;
+  background: rgba(0,0,0,0.32) !important;
+  color: rgba(255,255,255,0.85) !important;
+  font-weight: 600;
+}
+.stage .chip:hover { border-color: rgba(255,255,255,0.4) !important; color: #fff !important; }
+.stage .chip.active {
+  background: #ffffff !important;
+  color: #07080A !important;
+  border-color: #ffffff !important;
+  font-weight: 700;
+}
+
+/* Pillar list dividers */
+.stage .pillar-list,
+.stage .pillar { border-color: rgba(255,255,255,0.16) !important; }
+
+/* Scroll hint */
+.stage .scroll-hint { color: rgba(255,255,255,0.85) !important; font-weight: 600; }
+.stage .scroll-hint::before { background: linear-gradient(to top, transparent, #fff) !important; }
+
+/* Nav background slight tint to make logo readable */
+.nav {
+  /* light-glass styles live in responsive.css */
+}
+
+/* Footer smooth invert transitions */
+.footer.invert-on-scroll {
+  transition: background 1.6s cubic-bezier(.4,0,.2,1), border-color 1.6s cubic-bezier(.4,0,.2,1);
+}
+.footer.invert-on-scroll * {
+  transition: color 1.6s cubic-bezier(.4,0,.2,1), border-color 1.6s cubic-bezier(.4,0,.2,1), background 1.6s cubic-bezier(.4,0,.2,1);
+}
+
+/* Footer NEVER gets blur or backdrop-filter */
+.footer, .footer * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+.footer .footer-grid > * {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+.nav .brand,
+.nav .brand em,
+.nav .nav-links a,
+.nav .lang-btn,
+.nav .icon-btn,
+.nav .btn-ghost {
+  color: #ffffff !important;
+}
+.nav .brand { font-weight: 800 !important; }
+.nav .brand em { color: rgba(255,255,255,0.7) !important; }
+.nav .nav-links a {
+  color: rgba(255,255,255,0.82) !important;
+  font-weight: 600;
+}
+.nav .nav-links a:hover {
+  color: #ffffff !important;
+  background: rgba(255,255,255,0.10);
+}
+.nav.scrolled {
+  background: color-mix(in oklab, #07080A 70%, transparent);
+}
+
+/* ====== SOLID-BG SECTIONS — texto blanco bold también ====== */
+section[data-bg="solid"] h1,
+section[data-bg="solid"] h2,
+section[data-bg="solid"] h3,
+section[data-bg="solid"] h4,
+section[data-bg="solid"] .display,
+section[data-bg="solid"] .benefit-num,
+section[data-bg="solid"] .caso .quote,
+section[data-bg="solid"] .evento-date,
+section[data-bg="solid"] .evento h3,
+section[data-bg="solid"] .post h3,
+section[data-bg="solid"] .cert-name,
+section[data-bg="solid"] .faq summary,
+section[data-bg="solid"] .zona h4 {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+section[data-bg="solid"] .display em,
+section[data-bg="solid"] .caso .quote {
+  font-weight: 600 !important;
+}
+section[data-bg="solid"] .display em {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* Footer mega text: Lumia-style — outlined letters with gradient stroke, transparent inside */
+.footer-mega {
+  position: relative;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-text-stroke: 1.5px rgba(99,102,241,0) !important;
+  text-shadow: none !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.05em !important;
+  opacity: 1 !important;
+  text-align: center !important;
+}
+.footer-mega::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: linear-gradient(180deg, #C7252B 0%, #ff5a60 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px transparent;
+  pointer-events: none;
+  text-align: center;
+  font: inherit;
+  letter-spacing: inherit;
+  filter: drop-shadow(0 0 6px rgba(199,37,43,0.45));
+}
+.footer-mega::after { display: none !important; }
+@media (max-width: 880px) {
+  .footer-mega, .footer-mega::before { -webkit-text-stroke-width: 1px; }
+}
+@keyframes glitchA {
+  0%, 92%, 100% { transform: translate(0,0); clip-path: inset(0 0 0 0); }
+  93% { transform: translate(-2px, 1px); clip-path: inset(20% 0 60% 0); }
+  94% { transform: translate(2px, -1px); clip-path: inset(50% 0 20% 0); }
+  95% { transform: translate(-1px, 2px); clip-path: inset(10% 0 70% 0); }
+  96% { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+}
+@keyframes glitchB {
+  0%, 90%, 100% { transform: translate(0,0); opacity: 0; }
+  91% { transform: translate(2px, -1px); clip-path: inset(40% 0 30% 0); opacity: .6; }
+  93% { transform: translate(-2px, 2px); clip-path: inset(70% 0 10% 0); opacity: .5; }
+  95% { transform: translate(1px, 1px); clip-path: inset(15% 0 55% 0); opacity: .4; }
+  97% { opacity: 0; }
+}
+@media (max-width: 880px) {
+  .footer-mega, .footer-mega::before, .footer-mega::after { -webkit-text-stroke-width: 1px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-mega::before, .footer-mega::after { animation: none !important; }
+  .footer-mega::after { opacity: 0; }
+}
+
+/* Marquee */
+.marquee-track { color: #ffffff !important; font-weight: 600; }
+
+/* CTA section */
+.cta-section h2 { color: #ffffff !important; font-weight: 800 !important; }
+.cta-section .field label { color: rgba(255,255,255,0.7) !important; font-weight: 600; }
+.cta-section .field input,
+.cta-section .field select,
+.cta-section .field textarea { color: #ffffff !important; font-weight: 500; }
+
+/* Brand mark italic on white bg */
+.brand em { font-style: normal; }
+
+/* Scroll hint visible only over canvas */
+.scroll-hint { z-index: 5; }

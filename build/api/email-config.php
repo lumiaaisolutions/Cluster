@@ -100,7 +100,7 @@ try {
             $result = EmailService::sendNotification(
                 $adminEmail,
                 'Administrador',
-                '🧪 Correo de prueba — ' . $eventTipo,
+                'Correo de prueba — ' . $eventTipo,
                 "Este es un correo de prueba del sistema de notificaciones de la Intranet del Clúster.\n\n" .
                 "Evento simulado: $eventTipo\n" .
                 "Fecha: " . date('d/m/Y H:i:s') . "\n\n" .
@@ -108,8 +108,8 @@ try {
             );
 
             jsonOut($result['success'], $result['success']
-                ? "✅ Correo de prueba enviado a $adminEmail"
-                : "❌ Error: " . $result['message']
+                ? "Correo de prueba enviado a $adminEmail"
+                : "Error: " . $result['message']
             );
         }
 

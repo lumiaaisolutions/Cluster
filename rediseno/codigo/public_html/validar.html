@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Validación de descuento — CLAUTMET</title>
+  <link rel="icon" href="/assets/img/logo/logo-light.png">
+  <link rel="preload" href="/assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/build.css">
+</head>
+
+<body class="min-h-screen flex items-center justify-center px-4 py-10">
+
+  <div class="w-full max-w-lg text-center">
+    <img src="/assets/img/logo/logo-light.png" alt="CLAUTMET" class="h-10 w-auto mx-auto mb-8">
+
+    <div id="state" class="card py-12">
+      <div class="text-muted text-sm">Validando código…</div>
+    </div>
+
+    <p class="text-xs text-muted mt-6">
+      Este código solo puede usarse una vez. Validación realizada por el comerciante.
+    </p>
+  </div>
+
+  <script>
+    const state = document.getElementById('state');
+    const url = new URLSearchParams(location.search);
+    const codigo = url.get('c');
+
+    const ICON = {
+      valido:    '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>',
+      usado:     '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h0"/></svg>',
+      invalido:  '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#C7252B" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>',
+      expirado:  '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#6E6E73" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+    };
+
+    const TXT = {
+      valido:   ['VÁLIDO',     'El descuento se aplicó correctamente.'],
+      usado:    ['YA USADO',   'Este código ya fue validado anteriormente.'],
+      invalido: ['INVÁLIDO',   'El código no existe o es incorrecto.'],
+      expirado: ['EXPIRADO',   'La promoción terminó.'],
+    };
+
+    if (!codigo) {
+      render('invalido', {});
+    } else {
+      fetch(`/api/descuentos/validar.php?c=${encodeURIComponent(codigo)}`)
+        .then(r => r.json())
+        .then(data => render(data.estado || 'invalido', data))
+        .catch(() => render('invalido', {}));
+    }
+
+    function render(estado, data) {
+      const [t, sub] = TXT[estado] || TXT.invalido;
+      state.innerHTML = `
+        <div class="flex flex-col items-center gap-4">
+          ${ICON[estado] || ICON.invalido}
+          <h1 class="text-3xl font-semibold tracking-tighter mt-2">${t}</h1>
+          <p class="text-muted">${sub}</p>
+          ${data.descuento ? `<div class="mt-6 pt-6 border-t border-border w-full">
+            <div class="text-sm text-muted">Promoción</div>
+            <div class="font-medium mt-1">${escape(data.descuento)}</div>
+            ${data.empresa ? `<div class="text-sm text-muted mt-1">${escape(data.empresa)}</div>` : ''}
+            ${data.porcentaje ? `<div class="text-2xl font-semibold text-brand mt-2">${data.porcentaje}%</div>` : ''}
+            ${data.fecha_validacion ? `<div class="text-xs text-muted mt-2">Validado: ${escape(data.fecha_validacion)}</div>` : ''}
+          </div>` : ''}
+        </div>
+      `;
+    }
+
+    function escape(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  </script>
+</body>
+</html>

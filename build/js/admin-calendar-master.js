@@ -179,11 +179,14 @@ window.openQuickEventModal = function() {
     document.getElementById('quickEventForm').reset();
     document.getElementById('event_id').value = '';
     document.getElementById('btnDeleteEvent').classList.add('hidden');
-    document.getElementById('quickEventModal').classList.remove('hidden');
+    const modal = document.getElementById('quickEventModal');
+    modal.classList.add('open');
+    const wizardEl = modal.querySelector('.claut-wizard');
+    if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
 };
 
 window.closeQuickEventModal = function() {
-    document.getElementById('quickEventModal').classList.add('hidden');
+    document.getElementById('quickEventModal').classList.remove('open');
 };
 
 window.editEvent = function(id) {

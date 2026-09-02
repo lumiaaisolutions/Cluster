@@ -15,7 +15,7 @@ try {
     // Conectar a la base de datos
     $db = Database::getInstance();
     $conn = $db->getConnection();
-    $mensajes[] = "✅ Conexión a base de datos exitosa";
+    $mensajes[] = "<i class=\"fas fa-circle-check\"></i> Conexión a base de datos exitosa";
     
     // Crear tabla si no existe
     $sql = "CREATE TABLE IF NOT EXISTS banner_carrusel (
@@ -33,7 +33,7 @@ try {
     )";
     
     $conn->exec($sql);
-    $mensajes[] = "✅ Tabla banner_carrusel creada/verificada";
+    $mensajes[] = "<i class=\"fas fa-circle-check\"></i> Tabla banner_carrusel creada/verificada";
     
     // Verificar si hay banners
     $stmt = $conn->query("SELECT COUNT(*) as total FROM banner_carrusel");
@@ -73,32 +73,32 @@ try {
             ]);
         }
         
-        $mensajes[] = "✅ Banners de ejemplo insertados";
+        $mensajes[] = "<i class=\"fas fa-circle-check\"></i> Banners de ejemplo insertados";
     } else {
-        $mensajes[] = "ℹ️ Ya existen {$count['total']} banners en el sistema";
+        $mensajes[] = "<i class=\"fas fa-circle-info\"></i> Ya existen {$count['total']} banners en el sistema";
     }
     
     // Crear directorio de uploads
     $directorioUploads = '../uploads/banners/';
     if (!file_exists($directorioUploads)) {
         if (mkdir($directorioUploads, 0755, true)) {
-            $mensajes[] = "✅ Directorio de uploads creado";
+            $mensajes[] = "<i class=\"fas fa-circle-check\"></i> Directorio de uploads creado";
         } else {
-            $mensajes[] = "⚠️ No se pudo crear el directorio de uploads";
+            $mensajes[] = "<i class=\"fas fa-triangle-exclamation\"></i> No se pudo crear el directorio de uploads";
         }
     } else {
-        $mensajes[] = "✅ Directorio de uploads ya existe";
+        $mensajes[] = "<i class=\"fas fa-circle-check\"></i> Directorio de uploads ya existe";
     }
     
     // Verificar permisos
     if (is_writable($directorioUploads)) {
-        $mensajes[] = "✅ Directorio de uploads tiene permisos de escritura";
+        $mensajes[] = "<i class=\"fas fa-circle-check\"></i> Directorio de uploads tiene permisos de escritura";
     } else {
-        $mensajes[] = "⚠️ El directorio de uploads NO tiene permisos de escritura";
+        $mensajes[] = "<i class=\"fas fa-triangle-exclamation\"></i> El directorio de uploads NO tiene permisos de escritura";
     }
     
 } catch (Exception $e) {
-    $mensajes[] = "❌ Error: " . $e->getMessage();
+    $mensajes[] = "<i class=\"fas fa-circle-xmark\"></i> Error: " . $e->getMessage();
 }
 
 ?>
@@ -108,6 +108,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicialización del Sistema de Banners</title>
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -155,7 +156,7 @@ try {
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Inicialización del Sistema de Banners</h1>
+        <h1><i class="fas fa-rocket"></i> Inicialización del Sistema de Banners</h1>
         
         <?php foreach ($mensajes as $mensaje): ?>
             <div class="mensaje"><?= $mensaje ?></div>

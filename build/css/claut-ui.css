@@ -1,0 +1,765 @@
+/* ============================================================================
+   CLAUT UI — Sistema de Diseño Unificado del Clúster Intranet
+   ----------------------------------------------------------------------------
+   Fuente de verdad visual del sistema. Basado en el lenguaje de calendario.html
+   (Porsche dark + glassmorphism + Inter + rojo #C7252B).
+
+   USO:
+     1. <link rel="stylesheet" href="./css/claut-ui.css">  (ANTES del <style>
+        propio de la página, para que los ajustes locales puedan ganar).
+     2. <body class="claut-dark">  activa el tema oscuro base.
+     3. Componentes: .glass-panel, .porsche-btn, .claut-input, .claut-table,
+        .claut-badge, .claut-modal, .porsche-nav-item, .header-console, etc.
+
+   REGLA: no duplicar estos estilos inline en páginas nuevas — enlazar este
+   archivo y usar las clases. Documentación: docs/architecture/DESIGN_SYSTEM.md
+   ============================================================================ */
+
+/* ── 1. TOKENS ──────────────────────────────────────────────────────────── */
+:root {
+    /* Color */
+    --porsche-black: #09090b;
+    --porsche-accent: #C7252B;
+    --porsche-accent-hover: #e02c33;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-bg-strong: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-strong: rgba(255, 255, 255, 0.14);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --state-success: #22c55e;
+    --state-warning: #eab308;
+    --state-danger: #ef4444;
+    --state-info: #3b82f6;
+    --state-gold: #d4a017;          /* acentos destacados (convenios, premium) */
+
+    /* Superficies de estado (fondos translúcidos) */
+    --surface-success: rgba(34, 197, 94, 0.12);
+    --surface-warning: rgba(234, 179, 8, 0.12);
+    --surface-danger: rgba(239, 68, 68, 0.12);
+    --surface-info: rgba(59, 130, 246, 0.12);
+    --surface-accent: rgba(199, 37, 43, 0.12);
+
+    /* Forma y elevación */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 1.5rem;
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-accent: 0 10px 20px -5px rgba(199, 37, 43, 0.3);
+    --shadow-accent-hover: 0 15px 30px -5px rgba(199, 37, 43, 0.5);
+
+    /* Layout */
+    --sidebar-width: 280px;
+    --header-height: 80px;
+
+    /* Motion */
+    --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
+    --t-fast: 0.2s var(--ease-premium);
+    --t-base: 0.3s var(--ease-premium);
+}
+
+/* ── 2. BASE (activada con body.claut-dark) ─────────────────────────────── */
+body.claut-dark {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--porsche-black);
+    background-image: radial-gradient(at 0% 0%, rgba(199, 37, 43, 0.05) 0px, transparent 50%);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+.claut-dark ::selection {
+    background: var(--surface-accent);
+    color: var(--text-primary);
+}
+
+/* Scrollbar unificado */
+.claut-dark ::-webkit-scrollbar { width: 6px; height: 6px; }
+.claut-dark ::-webkit-scrollbar-track { background: transparent; }
+.claut-dark ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+.claut-dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+/* Accesibilidad: foco visible consistente */
+.claut-dark :focus-visible {
+    outline: 2px solid var(--porsche-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ── 3. SUPERFICIES ─────────────────────────────────────────────────────── */
+.glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+}
+
+.glass-panel--hover {
+    transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.glass-panel--hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-float);
+    border-color: var(--glass-border-strong);
+}
+
+/* Tarjeta de estadística / KPI */
+.claut-stat-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.claut-stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+.claut-stat-card .stat-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+}
+.claut-stat-card .stat-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.claut-stat-card .stat-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+
+/* Variantes de acento por tarjeta — mismo fondo oscuro, distinto color de
+   ícono/número, para diferenciar tarjetas de stats en un panel (patrón
+   "una tarjeta, un color" adaptado a la paleta oscura del sistema). */
+.claut-stat-card--red .stat-value, .claut-stat-card--red .stat-icon { color: var(--porsche-accent); }
+.claut-stat-card--red .stat-icon { background: var(--surface-accent); }
+.claut-stat-card--green .stat-value, .claut-stat-card--green .stat-icon { color: var(--state-success); }
+.claut-stat-card--green .stat-icon { background: var(--surface-success); }
+.claut-stat-card--blue .stat-value, .claut-stat-card--blue .stat-icon { color: var(--state-info); }
+.claut-stat-card--blue .stat-icon { background: var(--surface-info); }
+.claut-stat-card--gold .stat-value, .claut-stat-card--gold .stat-icon { color: var(--state-gold); }
+.claut-stat-card--gold .stat-icon { background: rgba(212, 160, 23, 0.14); }
+.claut-stat-card--purple .stat-value, .claut-stat-card--purple .stat-icon { color: #a78bfa; }
+.claut-stat-card--purple .stat-icon { background: rgba(167, 139, 250, 0.14); }
+
+/* ── 4. TIPOGRAFÍA UTILITARIA ───────────────────────────────────────────── */
+/* Micro-etiqueta uppercase — el rasgo tipográfico firma del sistema */
+.claut-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+}
+
+.claut-title {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+.claut-text-muted { color: var(--text-muted); }
+.claut-text-secondary { color: var(--text-secondary); }
+
+/* ── 5. BOTONES ─────────────────────────────────────────────────────────── */
+.porsche-btn {
+    background: var(--porsche-accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all var(--t-base);
+    box-shadow: var(--shadow-accent);
+}
+.porsche-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-accent-hover);
+    filter: brightness(1.1);
+}
+.porsche-btn:active { transform: translateY(0); }
+.porsche-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Variante fantasma: acciones secundarias */
+.porsche-btn--ghost {
+    background: var(--glass-bg-strong);
+    color: var(--text-primary);
+    box-shadow: none;
+    border: 1px solid var(--glass-border);
+}
+.porsche-btn--ghost:hover {
+    box-shadow: none;
+    border-color: var(--glass-border-strong);
+    background: rgba(255, 255, 255, 0.1);
+    filter: none;
+}
+
+/* Variante peligro: borrar / acciones destructivas */
+.porsche-btn--danger {
+    background: transparent;
+    color: var(--state-danger);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    box-shadow: none;
+}
+.porsche-btn--danger:hover {
+    background: var(--surface-danger);
+    box-shadow: none;
+    filter: none;
+}
+
+.porsche-btn--sm { padding: 0.45rem 0.9rem; font-size: 0.7rem; }
+
+/* ── 6. FORMULARIOS ─────────────────────────────────────────────────────── */
+.claut-input,
+.claut-select,
+.claut-textarea {
+    width: 100%;
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.875rem;
+    padding: 0.7rem 1rem;
+    transition: border-color var(--t-fast), background var(--t-fast);
+}
+.claut-input::placeholder,
+.claut-textarea::placeholder { color: var(--text-muted); }
+.claut-input:focus,
+.claut-select:focus,
+.claut-textarea:focus {
+    outline: none;
+    border-color: var(--porsche-accent);
+    background: rgba(255, 255, 255, 0.08);
+}
+.claut-select option { background: var(--porsche-black); color: var(--text-primary); }
+
+.claut-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+}
+
+/* ── 7. TABLAS ──────────────────────────────────────────────────────────── */
+.claut-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.claut-table thead th {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--glass-border);
+}
+.claut-table tbody td {
+    padding: 0.9rem 1rem;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.claut-table tbody tr { transition: background var(--t-fast); }
+.claut-table tbody tr:hover { background: rgba(255, 255, 255, 0.04); }
+
+/* ── 8. BADGES DE ESTADO ────────────────────────────────────────────────── */
+.claut-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.claut-badge--success { background: var(--surface-success); color: var(--state-success); }
+.claut-badge--warning { background: var(--surface-warning); color: var(--state-warning); }
+.claut-badge--danger  { background: var(--surface-danger);  color: var(--state-danger); }
+.claut-badge--info    { background: var(--surface-info);    color: var(--state-info); }
+.claut-badge--accent  { background: var(--surface-accent);  color: var(--porsche-accent-hover); }
+.claut-badge--neutral { background: var(--glass-bg-strong); color: var(--text-secondary); }
+
+/* ── 9. NAVEGACIÓN ──────────────────────────────────────────────────────── */
+.side-nav {
+    width: var(--sidebar-width);
+    height: 100vh;
+    border-right: 1px solid var(--glass-border);
+    background: var(--porsche-black);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 40;
+}
+
+/* Namespaced (no ".main-content" genérico): esa clase ya está en uso en
+   ~15 páginas legacy como utilidad de layout sin relación con .side-nav
+   (colisionaba min-height:100vh/display:flex sobre headers y contenedores
+   que no lo esperaban, dejando huecos negros enormes en demo_documentos,
+   demo_descuentos, demo_comite, demo_empresas, etc). */
+.claut-content-area {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-console {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(9, 9, 11, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.porsche-nav-item {
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    transition: background var(--t-fast), color var(--t-fast);
+}
+.porsche-nav-item:hover {
+    background: var(--glass-bg-strong);
+    color: var(--text-primary);
+}
+.porsche-nav-item.active,
+.porsche-nav-item[aria-current="page"] {
+    background: var(--surface-accent);
+    color: var(--text-primary);
+}
+
+/* ── 10. MODALES ────────────────────────────────────────────────────────── */
+.claut-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.claut-modal {
+    background: #101013;
+    border: 1px solid var(--glass-border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-float);
+    width: 100%;
+    max-width: 640px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.claut-modal__header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+.claut-modal__body { padding: 1.5rem; overflow-y: auto; flex: 1; }
+.claut-modal__footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* ── 11. ESTADOS VACÍOS Y TOASTS ────────────────────────────────────────── */
+.claut-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-muted);
+}
+.claut-empty i { font-size: 2.5rem; margin-bottom: 1rem; display: block; opacity: 0.5; }
+
+.claut-toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    background: #101013;
+    border: 1px solid var(--glass-border-strong);
+    border-left: 3px solid var(--porsche-accent);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-float);
+    padding: 0.9rem 1.25rem;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+.claut-toast--success { border-left-color: var(--state-success); }
+.claut-toast--error   { border-left-color: var(--state-danger); }
+
+/* ── 12. MOTION ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ── 13. SKIN DE CONVERSIÓN — módulos admin con markup Tailwind claro ────
+   Convierte los paneles CRUD (demo_*.html) construidos con utilidades claras
+   (bg-white, bg-gray-100, text-gray-*) al lenguaje oscuro de calendario.html
+   SIN reescribir su markup. Activar con: <body class="claut-dark claut-skin">.
+   Los !important son necesarios: varias utilidades vienen inline o con CDN. */
+
+body.claut-skin {
+    background-color: var(--porsche-black) !important;
+    background-image: radial-gradient(at 0% 0%, rgba(199, 37, 43, 0.05) 0px, transparent 50%);
+    color: var(--text-primary);
+}
+
+/* Header: de banda roja sólida a consola oscura con acento */
+.claut-skin header {
+    background: rgba(9, 9, 11, 0.85) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: none !important;
+    position: relative;
+}
+.claut-skin header::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--porsche-accent), transparent 40%);
+}
+.claut-skin header h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+.claut-skin header p,
+.claut-skin header .text-red-200,
+.claut-skin header .text-red-100 { color: var(--text-secondary) !important; }
+
+/* Superficies: tarjetas blancas → glass panels */
+.claut-skin .bg-white {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+.claut-skin .bg-gray-50,
+.claut-skin .bg-gray-100 { background: rgba(255, 255, 255, 0.02) !important; }
+.claut-skin .shadow,
+.claut-skin .shadow-md,
+.claut-skin .shadow-lg,
+.claut-skin .shadow-sm { box-shadow: var(--shadow-card) !important; }
+
+/* Jerarquía de texto */
+.claut-skin .text-gray-900,
+.claut-skin .text-gray-800,
+.claut-skin .text-black,
+.claut-skin .text-clúster-dark { color: var(--text-primary) !important; }
+.claut-skin .text-gray-700,
+.claut-skin .text-gray-600 { color: var(--text-secondary) !important; }
+.claut-skin .text-gray-500,
+.claut-skin .text-gray-400 { color: var(--text-muted) !important; }
+.claut-skin h1, .claut-skin h2, .claut-skin h3, .claut-skin h4 { color: var(--text-primary); }
+
+/* Números de estado en stat-cards: brillar sobre oscuro */
+.claut-skin .text-green-600 { color: var(--state-success) !important; }
+.claut-skin .text-yellow-600 { color: var(--state-warning) !important; }
+.claut-skin .text-blue-600 { color: var(--state-info) !important; }
+.claut-skin .text-red-600 { color: var(--porsche-accent-hover) !important; }
+
+/* Bordes */
+.claut-skin .border,
+.claut-skin .border-gray-200,
+.claut-skin .border-gray-300,
+.claut-skin .border-b,
+.claut-skin .border-t { border-color: var(--glass-border) !important; }
+.claut-skin .divide-y > * { border-color: var(--glass-border) !important; }
+
+/* Formularios (element-level: los inputs usan border-gray-300 + bg blanco) */
+.claut-skin input:not([type="checkbox"]):not([type="radio"]),
+.claut-skin select,
+.claut-skin textarea {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--radius-md);
+    transition: border-color 160ms ease-out, background 160ms ease-out;
+}
+.claut-skin input::placeholder,
+.claut-skin textarea::placeholder { color: var(--text-muted) !important; }
+.claut-skin input:focus,
+.claut-skin select:focus,
+.claut-skin textarea:focus {
+    border-color: var(--porsche-accent) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(199, 37, 43, 0.15);
+}
+.claut-skin select option { background: #101013; color: var(--text-primary); }
+.claut-skin label { color: var(--text-secondary); }
+
+/* Botones: press feedback + jerarquía */
+.claut-skin button {
+    transition: transform 160ms ease-out, box-shadow 160ms ease-out,
+                background-color 160ms ease-out, border-color 160ms ease-out;
+}
+.claut-skin button:active { transform: scale(0.97); }
+
+.claut-skin .bg-red-600,
+.claut-skin .bg-red-700 {
+    background: var(--porsche-accent) !important;
+    box-shadow: var(--shadow-accent);
+}
+.claut-skin .hover\:bg-red-700:hover,
+.claut-skin .bg-red-600:hover { filter: brightness(1.1); }
+
+/* Botón "volver" blanco del header → ghost glass */
+.claut-skin header .bg-white {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-primary) !important;
+    backdrop-filter: none;
+}
+.claut-skin header .bg-white:hover { border-color: var(--glass-border-strong) !important; }
+
+/* Botones neutros grises → ghost */
+.claut-skin .bg-gray-600,
+.claut-skin .bg-gray-700,
+.claut-skin .bg-gray-500 {
+    background: var(--glass-bg-strong) !important;
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary) !important;
+}
+.claut-skin .hover\:bg-gray-700:hover,
+.claut-skin .hover\:bg-gray-600:hover { background: rgba(255, 255, 255, 0.1) !important; }
+
+/* Botones de estado sólidos → versión translúcida premium */
+.claut-skin .bg-green-600 { background: var(--surface-success) !important; color: var(--state-success) !important; border: 1px solid rgba(34,197,94,.3); }
+.claut-skin .bg-blue-600  { background: var(--surface-info) !important;    color: var(--state-info) !important;    border: 1px solid rgba(59,130,246,.3); }
+.claut-skin .bg-yellow-600{ background: var(--surface-warning) !important; color: var(--state-warning) !important; border: 1px solid rgba(234,179,8,.3); }
+
+/* Badges claros (bg-*-100 text-*-800) → translúcidos */
+.claut-skin .bg-green-100  { background: var(--surface-success) !important; }
+.claut-skin .bg-yellow-100 { background: var(--surface-warning) !important; }
+.claut-skin .bg-red-100    { background: var(--surface-danger) !important; }
+.claut-skin .bg-blue-100   { background: var(--surface-info) !important; }
+.claut-skin .text-green-800,  .claut-skin .text-green-700  { color: var(--state-success) !important; }
+.claut-skin .text-yellow-800, .claut-skin .text-yellow-700 { color: var(--state-warning) !important; }
+.claut-skin .text-red-800,    .claut-skin .text-red-700    { color: #f87171 !important; }
+.claut-skin .text-blue-800,   .claut-skin .text-blue-700   { color: #60a5fa !important; }
+
+/* Tablas */
+.claut-skin thead th, .claut-skin thead td {
+    background: rgba(255, 255, 255, 0.02) !important;
+    color: var(--text-secondary) !important;
+    border-color: var(--glass-border) !important;
+}
+.claut-skin tbody tr { transition: background 160ms ease-out; }
+.claut-skin tbody tr:hover,
+.claut-skin .hover\:bg-gray-50:hover,
+.claut-skin .hover\:bg-gray-100:hover { background: rgba(255, 255, 255, 0.04) !important; }
+
+/* Modales: el contenedor .bg-white ya se convirtió; fondo más sólido */
+.claut-skin .fixed .bg-white,
+.claut-skin [id*="modal"] .bg-white,
+.claut-skin [id*="Modal"] .bg-white {
+    background: #101013 !important;
+    backdrop-filter: none;
+    border: 1px solid var(--glass-border-strong);
+}
+
+/* Contención y ritmo: mismo ancho máximo en todos los módulos */
+.claut-skin .container { max-width: 1280px; }
+
+/* Entrada suave del contenido principal (una sola vez por carga) */
+@media (prefers-reduced-motion: no-preference) {
+    .claut-skin main, .claut-skin .container > section {
+        animation: claut-fade-up 400ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+    @keyframes claut-fade-up {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+}
+
+/* Centrado: las páginas demo arrastran un `.container { margin-left: 0 !important }`
+   de su CSS de sidebar; esta regla (mayor especificidad) restaura el centrado. */
+.claut-skin .container {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Extensión del skin: utilidades Argon/slate usadas por profile/visitante */
+.claut-skin .text-slate-900, .claut-skin .text-slate-800 { color: var(--text-primary) !important; }
+.claut-skin .text-slate-700, .claut-skin .text-slate-600,
+.claut-skin .text-slate-500 { color: var(--text-secondary) !important; }
+.claut-skin .text-slate-400, .claut-skin .text-slate-300 { color: var(--text-muted) !important; }
+.claut-skin .shadow-soft-xl, .claut-skin .shadow-soft-md,
+.claut-skin .shadow-soft-sm { box-shadow: var(--shadow-card) !important; }
+.claut-skin .bg-gray-200 { background: var(--glass-bg-strong) !important; }
+.claut-skin .border-gray-100 { border-color: var(--glass-border) !important; }
+.claut-skin .from-gray-900, .claut-skin .to-slate-800 { --tw-gradient-from: #101013; --tw-gradient-to: #16161a; }
+
+/* ── 14. RESPONSIVE DEL SKIN ────────────────────────────────────────────── */
+/* Tablas anchas: scroll horizontal contenido en su tarjeta, nunca en el body */
+.claut-skin .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+.claut-skin { overflow-x: hidden; }
+
+@media (max-width: 768px) {
+    .claut-skin header h1 { font-size: 1.15rem; }
+    .claut-skin header p { font-size: 0.8rem; }
+    .claut-skin .container { padding-left: 1rem !important; padding-right: 1rem !important; }
+    /* Botones táctiles: mínimo 44px de alto (guía táctil ui-ux-pro-max) */
+    .claut-skin button { min-height: 44px; }
+    .claut-skin .claut-modal { max-width: 100%; border-radius: var(--radius-md); }
+}
+
+@media (max-width: 480px) {
+    .claut-skin header .flex.items-center.space-x-4 > button:not(#hamburgerBtn):not(.hamburger-btn) {
+        padding-left: 0.75rem; padding-right: 0.75rem; font-size: 0.8rem;
+    }
+    .claut-stat-card .stat-value { font-size: 1.5rem; }
+}
+
+/* Avisos informativos ámbar (bg-yellow-50) sin convertir por el skin */
+.claut-skin .bg-yellow-50 {
+    background: var(--surface-warning) !important;
+    border-color: rgba(234, 179, 8, 0.3) !important;
+}
+.claut-skin .text-yellow-800 { color: var(--state-warning) !important; }
+.claut-skin .text-yellow-700 { color: #facc15 !important; }
+
+/* Directorio de socios: la miniatura del logo usaba un degradado claro
+   (from-blue-50 to-indigo-100) pensado para logos con fondo blanco —
+   desentonaba con el resto de tarjetas oscuras. Se homologa a glass oscuro. */
+.claut-skin .from-blue-50.to-indigo-100 {
+    background: linear-gradient(135deg, #16161a 0%, #1e1e24 100%) !important;
+}
+
+/* ============================================================
+   SUB-MÓDULOS / PESTAÑAS — reemplaza el patrón <details> acordeón
+   para separar secciones de un mismo panel (listado / solicitudes /
+   mensajería / admisiones, etc.) en pestañas claramente distinguibles
+   en vez de "todo apilado". Uso:
+     <div class="claut-tabs">
+       <button class="claut-tab-btn active" data-tab="listado">...</button>
+       <button class="claut-tab-btn" data-tab="solicitudes">...</button>
+     </div>
+     <div id="listadoTab" class="claut-tab-pane active">...</div>
+     <div id="solicitudesTab" class="claut-tab-pane">...</div>
+   Requiere el pequeño script de la sección "claut-tabs" en la página.
+   ============================================================ */
+.claut-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+}
+.claut-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-md, 10px);
+    background: var(--glass-bg-strong, rgba(255,255,255,0.05));
+    border: 1px solid var(--glass-border, rgba(255,255,255,0.1));
+    color: var(--text-secondary, #94a3b8);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--t-base, 0.2s ease);
+}
+.claut-tab-btn:hover { background: rgba(255,255,255,0.1); color: #f8fafc; }
+.claut-tab-btn.active {
+    background: linear-gradient(135deg, var(--porsche-accent, #C7252B), #9a1a1f);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: var(--shadow-accent, 0 8px 20px -8px rgba(199,37,43,.6));
+}
+.claut-tab-btn .claut-tab-badge {
+    background: rgba(255,255,255,0.15);
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.7rem;
+}
+.claut-tab-pane { display: none; opacity: 0; }
+.claut-tab-pane.active { display: block; opacity: 1; animation: clautTabFade .25s ease; }
+@keyframes clautTabFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============================================================
+   LUMIA CREDIT BADGE — pastilla "Desarrollado por LUMIA" reutilizable.
+   Uso: <a href="https://lumiaaisolutions.com" target="_blank" class="lumia-badge">
+          <img src="./assets/img/lumia-icon.png" alt="LUMIA"> Desarrollado por <strong>LUMIA</strong>
+        </a>
+   ============================================================ */
+.lumia-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #94a3b8;
+  transition: transform 0.18s cubic-bezier(0.23,1,0.32,1), background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.lumia-badge:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.5);
+}
+.lumia-badge:active { transform: translateY(0) scale(0.97); }
+.lumia-badge img { width: 20px; height: 20px; flex-shrink: 0; }
+.lumia-badge strong {
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}

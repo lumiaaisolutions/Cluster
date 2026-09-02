@@ -1,0 +1,93 @@
+# ============================================================
+# CLAUTMET Intranet — .htaccess para Hostinger Shared (Apache)
+# ============================================================
+
+# --- HTTPS forzado (Let's Encrypt incluido en Hostinger) ---
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- Quitar trailing slash en HTML (excepto raíz) ---
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+# --- index.html como default si existe ---
+DirectoryIndex index.html index.php
+
+# --- Compresión gzip/brotli ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript
+  AddOutputFilterByType DEFLATE application/json application/xml image/svg+xml font/woff2
+</IfModule>
+
+# --- Cache estático agresivo ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                 "access plus 1 year"
+  ExpiresByType application/javascript   "access plus 1 year"
+  ExpiresByType image/webp               "access plus 1 year"
+  ExpiresByType image/png                "access plus 1 year"
+  ExpiresByType image/jpeg               "access plus 1 year"
+  ExpiresByType image/svg+xml            "access plus 1 year"
+  ExpiresByType font/woff2               "access plus 1 year"
+  ExpiresByType application/json         "access plus 1 hour"
+  ExpiresByType text/html                "access plus 0 seconds"
+</IfModule>
+
+# Versionado por query (?v=hash) sirve para invalidar cache cuando despliegues
+<IfModule mod_headers.c>
+  <FilesMatch "\.(woff2|woff|webp|png|jpg|svg|css|js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|php|json)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # Service Worker debe poder controlar todo el origen
+  <Files "service-worker.js">
+    Header set Service-Worker-Allowed "/"
+    Header set Cache-Control "no-cache"
+  </Files>
+
+  # Security headers globales (los middleware PHP los repiten para APIs)
+  Header set X-Frame-Options "DENY"
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# --- MIME para WebP/AVIF si hace falta ---
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/avif .avif
+  AddType font/woff2 .woff2
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# --- Bloquear acceso directo a archivos sensibles ---
+<FilesMatch "\.(env|log|sql|md|bak|json)$">
+  <RequireAll>
+    Require all denied
+  </RequireAll>
+</FilesMatch>
+# Excepción: i18n JSONs accesibles
+<Files "es.json">  Require all granted </Files>
+<Files "en.json">  Require all granted </Files>
+<Files "manifest.json"> Require all granted </Files>
+<Files "manifest.webmanifest"> Require all granted </Files>
+
+# --- Bloquear listado de directorios ---
+Options -Indexes
+
+# --- 404 a página custom (opcional) ---
+ErrorDocument 404 /index.html
+
+# --- Rewrites para "URLs limpias" en /app y /admin (opcional) ---
+# /app/directorio    →    /app/directorio.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^app/([^./]+)$ /app/$1.html [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^admin/([^./]+)$ /admin/$1.html [L]

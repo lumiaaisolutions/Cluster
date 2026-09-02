@@ -126,7 +126,7 @@ try {
         
     } else {
         // Estadísticas generales
-        $empresas = $pdo->query("SELECT COUNT(*) as count FROM empresas WHERE estado = 'activa'")->fetch()['count'] ?? 0;
+        $empresas = $pdo->query("SELECT COUNT(*) as count FROM empresas_convenio WHERE estado = 'activa'")->fetch()['count'] ?? 0;
         $usuarios = $pdo->query("SELECT COUNT(*) as count FROM usuarios WHERE estado = 'activo'")->fetch()['count'] ?? 0;
         $eventos = $pdo->query("SELECT COUNT(*) as count FROM eventos WHERE estado = 'programado'")->fetch()['count'] ?? 0;
         

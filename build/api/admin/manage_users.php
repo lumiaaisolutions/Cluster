@@ -132,6 +132,17 @@ try {
                 $userStmt->execute();
                 $userData = $userStmt->fetch(PDO::FETCH_ASSOC);
 
+                // Auditoría: registrar cambio de estado del usuario
+                $auditPath = dirname(dirname(__DIR__)) . '/utils/AuditLogger.php';
+                if (file_exists($auditPath)) {
+                    require_once $auditPath;
+                    AuditLogger::log('usuario.' . $nuevo_estado, 'usuario', $user_id, [
+                        'email'      => $userData['email'] ?? null,
+                        'nuevo_estado' => $nuevo_estado,
+                        'comentario' => $comentario,
+                    ]);
+                }
+
                 // Registrar la acción en un log (opcional)
                 $admin_id = $_SESSION['user_id'] ?? 0;
                 $logQuery = "INSERT INTO notificaciones (titulo, contenido, tipo, origen_id, fecha_creacion)

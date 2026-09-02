@@ -6,13 +6,10 @@
     <title>Demo Comités - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
+    <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
-        .modal-backdrop { backdrop-filter: blur(5px); }
-        .slide-in { animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
         .comite-logo {
             width: 40px;
             height: 40px;
@@ -21,265 +18,7 @@
             border: 1px solid #e5e7eb;
         }
 
-        /* Porsche-inspired Design System */
-        :root {
-            /* Primary Colors - Inspired by Porsche */
-            --porsche-black: #1a1a1a;
-            --porsche-charcoal: #2d2d2d;
-            --porsche-silver: #8a8a8a;
-            --porsche-white: #ffffff;
-            --porsche-light-gray: #f5f5f5;
-            --porsche-accent: #c9302c;
-            /* Typography */
-            --porsche-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --porsche-radius-lg: 12px;
-        }
-
-        /* === RESPONSIVE SIDEBAR FUNCTIONALITY === */
-
-        /* Porsche-inspired Sidebar */
-        .porsche-sidebar {
-            background: linear-gradient(180deg, var(--porsche-black) 0%, var(--porsche-charcoal) 100%) !important;
-            border-radius: var(--porsche-radius-lg) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
-            height: calc(100vh - 2rem) !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            font-family: var(--porsche-font) !important;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .porsche-sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-        }
-
-        .porsche-sidebar .porsche-logo {
-            color: var(--porsche-white) !important;
-            font-weight: 700 !important;
-            font-size: 1.5rem !important;
-        }
-
-        .porsche-nav-item {
-            color: rgba(255, 255, 255, 0.8) !important;
-            border-radius: 12px !important;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            font-weight: 500 !important;
-        }
-
-        .porsche-nav-item:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-            color: var(--porsche-white) !important;
-            transform: translateX(4px) !important;
-        }
-
-        .porsche-nav-item.active {
-            background: rgba(199, 37, 43, 0.2) !important;
-            color: var(--porsche-white) !important;
-            border-left: 3px solid #C7252B !important;
-        }
-
-        /* Sidebar Overlay */
-        .sidenav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 998;
-            backdrop-filter: blur(4px);
-        }
-
-        .sidenav-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            z-index: 998;
-        }
-
-        /* Close button styling */
-        #sidebarCloseBtn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        #sidebarCloseBtn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* Sidebar always retractable - All screens */
-        .porsche-sidebar {
-            transform: translateX(-100%) !important;
-            z-index: 999 !important;
-            margin: 0 !important;
-            top: 0 !important;
-            left: 0 !important;
-            border-radius: 0 !important;
-            width: 280px !important;
-            max-width: 280px !important;
-            height: 100vh !important;
-            position: fixed !important;
-            display: block !important;
-        }
-
-        .porsche-sidebar.sidenav-show {
-            transform: translateX(0) !important;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Main content always without sidebar margin */
-        .main-content {
-            margin-left: 0 !important;
-            width: 100% !important;
-        }
-
-        .container {
-            margin-left: 0 !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-        }
-
-        /* Desktop adjustments */
-        @media (min-width: 1280px) {
-            .container {
-                padding-left: 2rem !important;
-                padding-right: 2rem !important;
-            }
-        }
-
-        /* Force sidebar behavior on all screens - Override any conflicting styles */
-        .porsche-sidebar.sidebar-enhanced {
-            transform: translateX(-100%) !important;
-        }
-
-        .porsche-sidebar.sidebar-enhanced.sidenav-show {
-            transform: translateX(0) !important;
-        }
-
-        /* Override any Tailwind classes that might interfere */
-        aside.porsche-sidebar {
-            left: 0 !important;
-            margin-left: 0 !important;
-        }
-
-        /* Ensure hamburger button works on all screens */
-        @media (min-width: 1280px) {
-            [sidenav-trigger] {
-                display: block !important;
-                visibility: visible !important;
-            }
-        }
-
-        /* Enhanced sidebar behavior for desktop */
-        @media (min-width: 1280px) {
-            .sidebar-enhanced {
-                transform: translateX(0) !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-        }
-
-        /* Responsive grid adjustments */
-        @media (max-width: 768px) {
-            header .flex {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-            }
-
-            header .flex.items-center.space-x-4 {
-                margin-top: 1rem !important;
-                align-self: flex-end !important;
-            }
-
-            .grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .overflow-x-auto table {
-                font-size: 0.75rem !important;
-            }
-
-            .overflow-x-auto th,
-            .overflow-x-auto td {
-                padding: 0.5rem !important;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .porsche-sidebar {
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-
-            header .container {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-            }
-
-            .flex.flex-wrap {
-                flex-direction: column !important;
-                gap: 1rem !important;
-            }
-
-            .flex.items-center.space-x-4 {
-                flex-direction: column !important;
-                align-items: stretch !important;
-                space-x: 0 !important;
-                gap: 0.5rem !important;
-            }
-
-            .flex.items-center.space-x-4 > * {
-                margin: 0 !important;
-            }
-
-            .grid-cols-1 {
-                grid-template-columns: 1fr !important;
-            }
-
-            .lg\:col-span-1,
-            .lg\:col-span-2 {
-                grid-column: span 1 / span 1 !important;
-            }
-        }
-
-        /* Ensure proper z-index hierarchy */
-        .porsche-sidebar {
-            z-index: 999 !important;
-        }
-
-        .sidenav-overlay {
-            z-index: 998 !important;
-        }
-
-        header {
-            z-index: 997 !important;
-        }
-
-        .main-content {
-            z-index: 1 !important;
-        }
-
-        /* Hamburger button styling */
-        .hamburger-btn {
-            transition: all 0.3s ease;
-        }
-
-        .hamburger-btn:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-        }
+        header.claut-admin-main { position: relative; z-index: 10; }
 
         /* Responsive table improvements */
         @media (max-width: 768px) {
@@ -293,7 +32,7 @@
         }
     </style>
 </head>
-<body class="m-0 font-sans antialiased text-white" style="background: #1f232a;">
+<body class="m-0 font-sans antialiased text-white claut-dark claut-skin" style="background: #1f232a;">
     <!-- Globals JS Toggle -->
     <script>
       window.toggleLinkInput = function() {
@@ -305,7 +44,7 @@
           }
       };
 
-      // Abrir acordeón de formulario en modo CREAR
+      // Abrir modal de comité en modo CREAR
       window.nuevoComite = function() {
           // Limpiar formulario y resetear modo edición
           if (window.adminComites) {
@@ -317,201 +56,113 @@
           if (radioForm) radioForm.checked = true;
           if (typeof window.toggleLinkInput === 'function') window.toggleLinkInput();
 
-          // Actualizar título del acordeón
-          const accordionTitle = document.getElementById('formTitleAccordion');
-          if (accordionTitle) {
-              accordionTitle.innerHTML = '<i class="fas fa-plus-circle mr-2 text-green-500"></i> Nuevo Comité';
+          // Actualizar título del modal
+          const modalTitle = document.getElementById('formTitleAccordion');
+          if (modalTitle) {
+              modalTitle.textContent = 'Nuevo Comité';
           }
 
-          // Abrir el acordeón
-          const acordeon = document.getElementById('acordeonFormulario');
-          if (acordeon) {
-              acordeon.open = true;
-              setTimeout(() => acordeon.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+          // Abrir el modal
+          const modal = document.getElementById('acordeonFormulario');
+          if (modal) {
+              modal.classList.add('open');
+              const wizardEl = modal.querySelector('.claut-wizard');
+              if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
+          }
+      };
+
+      // Cerrar modal de comité
+      window.cerrarModalComite = function() {
+          const modal = document.getElementById('acordeonFormulario');
+          if (modal) {
+              modal.classList.remove('open');
           }
       };
     </script>
-    <!-- Sidebar Overlay for Mobile -->
-    <div class="sidenav-overlay" id="sidenavOverlay"></div>
-
-    <!-- Porsche Sidebar -->
-    <aside id="porscheSidebar"
-        class="porsche-sidebar sidebar-enhanced fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 m-0 overflow-y-auto overflow-x-hidden antialiased transition-transform duration-200 border-0 max-w-64 ease-nav-brand z-990"
-        aria-expanded="false">
-        <div class="h-48 py-6 relative mb-4">
-            <!-- Botón de cerrar para todas las pantallas -->
-            <button class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-50 p-3 bg-black/30 rounded-lg hover:bg-black/50 transition-all"
-                    id="sidebarCloseBtn"
-                    sidenav-close
-                    aria-label="Cerrar menú">
-                <i class="fas fa-times"></i>
-            </button>
-
-            <a class="porsche-logo block px-6 py-4 m-0 text-center whitespace-nowrap" href="dashboard.html"
-              target="_blank">
-                <img src="../assets/img/apple-icon.png"
-                  class="block mx-auto h-32 w-32 max-w-full transition-all duration-200 ease-nav-brand mb-4"
-                  alt="main_logo" />
-                <span class="block text-lg transition-all duration-200 ease-nav-brand text-white font-semibold mb-4">Clúster Admin</span>
-            </a>
+    <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
+        <div class="claut-admin-sidebar-brand">
+            <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
+            <span class="claut-admin-sidebar-title">Clúster Admin</span>
         </div>
+        <div class="claut-admin-sidebar-divider"></div>
 
-        <hr class="h-px mt-4 mb-4 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
+        <nav class="claut-admin-nav">
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">General</p>
+                <a href="admin-panel.html?login=success" class="claut-admin-nav-item">
+                    <i class="fas fa-shield-halved"></i><span>Panel Admin</span>
+                </a>
+                <a href="dashboard.html" class="claut-admin-nav-item">
+                    <i class="fas fa-house"></i><span>Dashboard</span>
+                </a>
+            </div>
 
-        <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
-            <ul class="flex flex-col pl-0 mb-0 pt-4">
-                <!-- Dashboard -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="dashboard.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Dashboard</span>
-                    </a>
-                </li>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Ecosistema de módulos</p>
+                <a href="admin/banner-admin-mejorado.php" class="claut-admin-nav-item">
+                    <i class="fas fa-images"></i><span>Banners</span>
+                </a>
+                <a href="demo_boletines.html" class="claut-admin-nav-item">
+                    <i class="fas fa-newspaper"></i><span>Boletines</span>
+                </a>
+                <a href="demo_documentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-folder-open"></i><span>Documentos</span>
+                </a>
+                <a href="demo_descuentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-tags"></i><span>Beneficios</span>
+                </a>
+                <a href="demo_comite.html" class="claut-admin-nav-item active">
+                    <i class="fas fa-people-group"></i><span>Comités</span>
+                </a>
+                <a href="calendario.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-days"></i><span>Calendario</span>
+                </a>
+                <a href="demo_empresas.html" class="claut-admin-nav-item">
+                    <i class="fas fa-building"></i><span>Socios</span>
+                </a>
+                <a href="demo_evento.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-check"></i><span>Eventos</span>
+                </a>
+                <a href="gestionar_usuarios.php" class="claut-admin-nav-item">
+                    <i class="fas fa-users"></i><span>Usuarios</span>
+                </a>
+                <a href="demo_visitante.html" class="claut-admin-nav-item">
+                    <i class="fas fa-user-shield"></i><span>Visitantes</span>
+                </a>
+            </div>
 
-                <!-- admin panel -->
-                <li class="mt-2 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin-panel.html?login=success">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tachometer-alt text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Panel Administrador</span>
-                    </a>
-                </li>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Sistema</p>
+                <a href="profile.html" class="claut-admin-nav-item">
+                    <i class="fas fa-gear"></i><span>Configuración</span>
+                </a>
+            </div>
+        </nav>
 
-                <!-- Usuarios -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_usuarios.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-green-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Usuarios</span>
-                    </a>
-                </li>
-
-                <!-- Empresas -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_empresas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-building text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Empresas</span>
-                    </a>
-                </li>
-
-                <!-- Eventos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_evento.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-calendar-alt text-orange-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Eventos</span>
-                    </a>
-                </li>
-
-                <!-- Comités -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg active"
-                        href="demo_comite.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-users text-blue-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Comités</span>
-                    </a>
-                </li>
-
-                <!-- Boletines -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_boletines.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-newspaper text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Boletines</span>
-                    </a>
-                </li>
-
-                <!-- Documentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_documentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-file-alt text-purple-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Documentos</span>
-                    </a>
-                </li>
-
-                <!-- Banners -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="admin/banner-admin-mejorado.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-images text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Banners</span>
-                    </a>
-                </li>
-
-                <!-- Descuentos -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="demo_descuentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-tags text-red-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Descuentos</span>
-                    </a>
-                </li>
-
-                <!-- Perfil -->
-                <li class="mt-0.5 w-full">
-                    <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
-                        href="profile.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
-                            <i class="fas fa-user-cog text-gray-500"></i>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100">Perfil</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="mx-4">
-            <button onclick="window.location.href='pages/sign-in.html'"
-                class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors text-red-600 hover:text-red-800">
-                <div
-                    class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                    <i class="fas fa-sign-out-alt text-red-500" style="font-size: 16px;"></i>
-                </div>
-                <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Cerrar Sesión</span>
+        <div class="claut-admin-sidebar-foot">
+            <button onclick="window.location.href='pages/sign-in.html'" class="claut-admin-nav-item claut-admin-nav-item--danger">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
             </button>
         </div>
-
     </aside>
 
+    <div class="claut-admin-sidebar-overlay" id="claut-admin-sidebar-overlay"></div>
+
     <!-- Header -->
-    <header class="main-content bg-white/5 border-b border-white/10 shadow-lg backdrop-blur-md">
+    <header class="claut-admin-main bg-white/5 border-b border-white/10 shadow-lg backdrop-blur-md">
         <div class="container mx-auto px-4 py-6">
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <!-- Hamburger Menu Button for All Screens -->
-                    <button class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md hamburger-btn"
-                            id="hamburgerBtn"
-                            sidenav-trigger
+                    <button class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
+                            id="claut-header-menu-btn"
                             aria-label="Abrir menú de navegación">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                     <div>
-                        <h1 class="text-3xl font-bold">👥 Administrador de Comités</h1>
+                        <h1 class="text-3xl font-bold">Administrador de Comités</h1>
                         <p class="text-red-200 mt-1">CRUD Completo - Gestión de Comités</p>
                     </div>
                 </div>
@@ -526,7 +177,7 @@
     </header>
 
     <!-- Main Content -->
-    <div class="main-content container mx-auto px-4 py-6">
+    <div class="claut-admin-main container mx-auto px-4 py-6">
         <!-- Controls -->
         <div class="glass-panel bg-black/20 border border-white/10 p-4 mb-6 text-white">
             <div class="flex flex-wrap items-center justify-between gap-4">
@@ -546,16 +197,19 @@
             </div>
         </div>
 
-        <!-- Accordion Container -->
-        <div class="space-y-4">
-            
-            <!-- ACORDEÓN 1: LISTADO DE COMITÉS (ABIERTO POR DEFECTO) -->
-            <details class="glass-panel bg-black/20 border border-white/10 rounded-xl group text-white" open>
-                <summary class="flex cursor-pointer items-center justify-between p-5 text-lg font-semibold list-none hover:bg-white/5 transition-colors [&::-webkit-details-marker]:hidden">
-                    <span><i class="fas fa-list mr-2 text-blue-400"></i> Base de Datos de Comités</span>
-                    <i class="fas fa-chevron-down shrink-0 transition duration-300 group-open:-rotate-180"></i>
-                </summary>
-                <div class="border-t border-white/10 p-6">
+        <!-- Sub-módulos -->
+        <div class="claut-tabs">
+            <button type="button" class="claut-tab-btn active" data-tab="comitesListado"><i class="fas fa-list mr-1"></i> Comités</button>
+            <button type="button" class="claut-tab-btn" data-tab="comitesSolicitudes"><i class="fas fa-clock mr-1"></i> Solicitudes Pendientes</button>
+            <button type="button" class="claut-tab-btn" data-tab="comitesMensajeria"><i class="fas fa-paper-plane mr-1"></i> Centro de Comunicación</button>
+            <button type="button" class="claut-tab-btn" data-tab="comitesAdmisiones"><i class="fas fa-user-check mr-1"></i> Panel de Admisiones</button>
+        </div>
+
+        <div class="claut-tab-panes">
+
+            <!-- SUB-MÓDULO 1: LISTADO DE COMITÉS -->
+            <div id="comitesListadoTab" class="claut-tab-pane active glass-panel bg-black/20 border border-white/10 rounded-xl text-white">
+                <div class="p-6">
                     <!-- Loading State -->
                     <div id="loadingComites" class="hidden p-8 text-center text-white">
                         <div class="inline-block w-8 h-8 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
@@ -576,140 +230,11 @@
                         <!-- Los comités se cargarán aquí dinámicamente -->
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <!-- ACORDEÓN 2: FORMULARIO DE CREACIÓN / EDICIÓN -->
-            <details id="acordeonFormulario" class="glass-panel bg-black/20 border border-white/10 rounded-xl group text-white">
-                <summary class="flex cursor-pointer items-center justify-between p-5 text-lg font-semibold list-none hover:bg-white/5 transition-colors [&::-webkit-details-marker]:hidden">
-                    <span id="formTitleAccordion"><i class="fas fa-plus-circle mr-2 text-green-500"></i> Editor de Comité</span>
-                    <i class="fas fa-chevron-down shrink-0 transition duration-300 group-open:-rotate-180"></i>
-                </summary>
-                <div class="border-t border-white/10 p-6">
-
-                    <form id="comiteForm" class="space-y-4">
-                        <div>
-                            <label for="nombre" class="block text-sm font-medium text-gray-400 mb-1">Nombre *</label>
-                            <input type="text" id="nombre" name="nombre" required
-                                   class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white">
-                        </div>
-
-                        <div>
-                            <label for="descripcion" class="block text-sm font-medium text-gray-400 mb-1">Descripción *</label>
-                            <textarea id="descripcion" name="descripcion" rows="3" required
-                                      class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white"></textarea>
-                        </div>
-
-                        <div>
-                            <label for="objetivo" class="block text-sm font-medium text-gray-400 mb-1">Objetivo *</label>
-                            <textarea id="objetivo" name="objetivo" rows="3" required
-                                      class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white"></textarea>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label for="periodicidad" class="block text-sm font-medium text-gray-400 mb-1">Periodicidad</label>
-                                <select id="periodicidad" name="periodicidad"
-                                        class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white">
-                                    <option value="Semanal" class="text-black">Semanal</option>
-                                    <option value="Quincenal" class="text-black">Quincenal</option>
-                                    <option value="Mensual" selected class="text-black">Mensual</option>
-                                    <option value="Bimestral" class="text-black">Bimestral</option>
-                                    <option value="Trimestral" class="text-black">Trimestral</option>
-                                    <option value="Semestral" class="text-black">Semestral</option>
-                                    <option value="Anual" class="text-black">Anual</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="miembros_activos" class="block text-sm font-medium text-gray-400 mb-1">Miembros Activos</label>
-                                <input type="number" id="miembros_activos" name="miembros_activos" min="0" value="0"
-                                       class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="organizacion" class="block text-sm font-medium text-gray-400 mb-1">Organización</label>
-                            <input type="text" id="organizacion" name="organizacion"
-                                   class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white">
-                        </div>
-
-                        <div>
-                            <label for="estado" class="block text-sm font-medium text-gray-400 mb-1">Estado</label>
-                            <select id="estado" name="estado"
-                                    class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white">
-                                <option value="activo" selected class="text-black">Activo</option>
-                                <option value="inactivo" class="text-black">Inactivo</option>
-                                <option value="suspendido" class="text-black">Suspendido</option>
-                            </select>
-                        </div>
-
-                        <!-- Configuración de Registro -->
-                        <div class="mt-4 p-4 border border-white/10 rounded-lg bg-black/20">
-                            <label class="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">Flujo de Registro</label>
-                            <div class="flex items-center space-x-6 mb-4">
-                                <label class="flex items-center text-gray-300 cursor-pointer">
-                                    <input type="radio" name="tipo_registro" id="tipo_registro_formulario" value="formulario" checked class="mr-2 accent-red-500" onclick="window.toggleLinkInput()">
-                                    <span>Formulario Interno</span>
-                                </label>
-                                <label class="flex items-center text-gray-300 cursor-pointer">
-                                    <input type="radio" name="tipo_registro" id="tipo_registro_link" value="link" class="mr-2 accent-red-500" onclick="window.toggleLinkInput()">
-                                    <span>Redirigir a URL Externa</span>
-                                </label>
-                            </div>
-                            
-                            <div id="linkRegistroContainer" class="hidden mt-2">
-                                <label for="link_registro" class="block text-sm font-medium text-gray-400 mb-1">URL (Ej. Google Forms)</label>
-                                <input type="url" id="link_registro" name="link_registro" placeholder="https://forms.gle/..."
-                                       class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white">
-                                <p class="text-xs text-gray-500 mt-1">El alumno abrirá este link directamente desde la plataforma pública.</p>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-1">Imagen del Comité (Opcional)</label>
-                            <div class="space-y-3">
-                                <!-- Subir archivo -->
-                                <div>
-                                    <label class="text-sm font-medium text-gray-500">Subir imagen:</label>
-                                    <input type="file" id="imagen_file" accept="image/*"
-                                           class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-gray-300">
-                                </div>
-                                <!-- O usar URL -->
-                                <div>
-                                    <label class="text-sm font-medium text-gray-500">O usar URL:</label>
-                                    <input type="url" id="imagen_url" name="imagen_url"
-                                           placeholder="https://ejemplo.com/imagen.jpg"
-                                           class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-white">
-                                </div>
-                            </div>
-                            <div id="imagenPreview" class="mt-3 hidden">
-                                <img id="imagenImg" src="" alt="Preview" class="h-24 w-auto border border-white/10 rounded-lg shadow-sm">
-                            </div>
-                        </div>
-
-                        <div class="flex space-x-4 pt-4">
-                            <button type="submit" id="submitBtn"
-                                    class="flex-1 text-white px-4 py-2 rounded-lg hover:opacity-90 transition flex items-center justify-center border border-white/10 shadow-lg hover:shadow-red-500/20"
-                                    style="background: #C7252B;">
-                                <span id="submitSpinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
-                                <span id="submitText">Guardar Comité</span>
-                            </button>
-                            <button type="button" id="cancelBtn"
-                                    class="px-4 py-2 bg-white/10 text-white border border-white/10 rounded-lg hover:bg-white/20 transition">
-                                Cancelar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </details>
-
-            <!-- ACORDEÓN 3: SOLICITUDES PENDIENTES -->
-            <details class="glass-panel bg-black/20 border border-white/10 rounded-xl group text-white">
-                <summary class="flex cursor-pointer items-center justify-between p-5 text-lg font-semibold list-none hover:bg-white/5 transition-colors [&::-webkit-details-marker]:hidden">
-                    <span><i class="fas fa-clock mr-2 text-yellow-500"></i> Solicitudes Pendientes</span>
-                    <i class="fas fa-chevron-down shrink-0 transition duration-300 group-open:-rotate-180"></i>
-                </summary>
-                <div class="border-t border-white/10 p-6">
+            <!-- SUB-MÓDULO 2: SOLICITUDES PENDIENTES -->
+            <div id="comitesSolicitudesTab" class="claut-tab-pane glass-panel bg-black/20 border border-white/10 rounded-xl text-white">
+                <div class="p-6">
                     <div class="flex space-x-4 mb-4">
                         <button onclick="if(window.adminComites) window.adminComites.cargarSolicitudesPendientes()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                             <i class="fas fa-inbox mr-2"></i>Ver Solicitudes Pendientes
@@ -721,15 +246,11 @@
                         </div>
                     </div>
                 </div>
-            </details>
+            </div>
 
-            <!-- ACORDEÓN 4: MÓDULO DE MENSAJERÍA -->
-            <details class="glass-panel bg-black/20 border border-white/10 rounded-xl group text-white">
-                <summary class="flex cursor-pointer items-center justify-between p-5 text-lg font-semibold list-none hover:bg-white/5 transition-colors [&::-webkit-details-marker]:hidden">
-                    <span><i class="fas fa-paper-plane mr-2 text-green-500"></i> Centro de Comunicación</span>
-                    <i class="fas fa-chevron-down shrink-0 transition duration-300 group-open:-rotate-180"></i>
-                </summary>
-                <div class="border-t border-white/10">
+            <!-- SUB-MÓDULO 3: MÓDULO DE MENSAJERÍA -->
+            <div id="comitesMensajeriaTab" class="claut-tab-pane glass-panel bg-black/20 border border-white/10 rounded-xl text-white overflow-hidden">
+                <div>
                     <div class="bg-black/30 border-b border-white/10 px-6 py-4 flex flex-wrap justify-between items-center gap-4">
                         <h2 class="text-lg font-bold text-white">
                             <i class="fas fa-history mr-2"></i>Historial de Mensajes Enviados
@@ -744,35 +265,33 @@
                         </div>
                     </div>
 
-                <div class="inline-block w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                <p class="mt-2 text-gray-600">Cargando mensajes enviados...</p>
-            </div>
-
-            <!-- Empty State para mensajes -->
-            <div id="emptyMensajes" class="hidden p-8 text-center">
-                <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-paper-plane text-2xl text-gray-400"></i>
+                <div id="loadingMensajes" class="p-8 text-center">
+                    <div class="inline-block w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                    <p class="mt-2 text-gray-400">Cargando mensajes enviados...</p>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No hay mensajes enviados</h3>
-                <p class="text-gray-500">Envía tu primer mensaje a los miembros del comité.</p>
-                <button onclick="abrirModalMensajeria()" class="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition">
-                    <i class="fas fa-plus mr-2"></i>Enviar Primer Mensaje
-                </button>
+
+                <!-- Empty State para mensajes -->
+                <div id="emptyMensajes" class="hidden p-8 text-center">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-paper-plane text-2xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No hay mensajes enviados</h3>
+                    <p class="text-gray-500">Envía tu primer mensaje a los miembros del comité.</p>
+                    <button onclick="abrirModalMensajeria()" class="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition">
+                        <i class="fas fa-plus mr-2"></i>Enviar Primer Mensaje
+                    </button>
+                </div>
+
+                <!-- Lista de mensajes -->
+                <div id="mensajesContainer" class="divide-y divide-gray-200">
+                    <!-- Los mensajes se cargarán aquí dinámicamente -->
+                </div>
+                </div>
             </div>
 
-            <!-- Lista de mensajes -->
-            <div id="mensajesContainer" class="divide-y divide-gray-200">
-                <!-- Los mensajes se cargarán aquí dinámicamente -->
-            </div>
-        </div>
-
-            <!-- ACORDEÓN 5: REGISTROS DE USUARIOS -->
-            <details class="glass-panel bg-black/20 border border-white/10 rounded-xl group text-white mb-6">
-                <summary class="flex cursor-pointer items-center justify-between p-5 text-lg font-semibold list-none hover:bg-white/5 transition-colors [&::-webkit-details-marker]:hidden">
-                    <span><i class="fas fa-user-check mr-2 text-blue-500"></i> Panel de Admisiones (Comite_Registros)</span>
-                    <i class="fas fa-chevron-down shrink-0 transition duration-300 group-open:-rotate-180"></i>
-                </summary>
-                <div class="border-t border-white/10">
+            <!-- SUB-MÓDULO 4: REGISTROS DE USUARIOS -->
+            <div id="comitesAdmisionesTab" class="claut-tab-pane glass-panel bg-black/20 border border-white/10 rounded-xl text-white overflow-hidden">
+                <div>
                     <div class="bg-black/30 border-b border-white/10 px-6 py-4 flex flex-wrap justify-between items-center gap-4">
                         <h2 class="text-lg font-bold text-white">
                             <i class="fas fa-table mr-2"></i>Inscripciones Históricas
@@ -836,310 +355,403 @@
                         <p>No hay registros para mostrar</p>
                     </div>
                 </div>
-            </details>
+            </div>
+
         </div>
 
     <!-- Notifications Container -->
     <div id="notifications" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
-    <!-- Modal de Mensajería -->
-    <div id="modalMensajeria" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <!-- Header del Modal -->
-            <div class="border-b border-gray-200 p-6">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        <i class="fas fa-envelope mr-2 text-blue-600"></i>
-                        Enviar Mensaje a Comité
-                    </h3>
-                    <button onclick="cerrarModalMensajeria()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times text-xl"></i>
+    <!-- Modal Crear/Editar Comité -->
+    <div id="acordeonFormulario" class="claut-wizard-backdrop">
+        <form id="comiteForm" class="claut-wizard" style="max-width:760px;">
+            <div class="claut-wizard-head">
+                <h2 id="formTitleAccordion">Nuevo Comité</h2>
+                <p>Configura la información, periodicidad y flujo de registro del comité</p>
+                <button type="button" class="claut-modal-close" onclick="cerrarModalComite()" aria-label="Cerrar">&times;</button>
+            </div>
+
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Información</span>
                     </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Configuración</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="3">
+                        <span class="claut-wizard-step-num">3</span><span>Registro e imagen</span>
+                    </button>
+                </nav>
+
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Información -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 3</p>
+                        <div>
+                            <label for="nombre">Nombre *</label>
+                            <input type="text" id="nombre" name="nombre" required placeholder="Ej. Comité de Innovación">
+                        </div>
+                        <div>
+                            <label for="descripcion">Descripción *</label>
+                            <textarea id="descripcion" name="descripcion" rows="3" required></textarea>
+                        </div>
+                        <div>
+                            <label for="objetivo">Objetivo *</label>
+                            <textarea id="objetivo" name="objetivo" rows="3" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Configuración -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 3</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="periodicidad">Periodicidad</label>
+                                <select id="periodicidad" name="periodicidad">
+                                    <option value="Semanal">Semanal</option>
+                                    <option value="Quincenal">Quincenal</option>
+                                    <option value="Mensual" selected>Mensual</option>
+                                    <option value="Bimestral">Bimestral</option>
+                                    <option value="Trimestral">Trimestral</option>
+                                    <option value="Semestral">Semestral</option>
+                                    <option value="Anual">Anual</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="miembros_activos">Miembros Activos</label>
+                                <input type="number" id="miembros_activos" name="miembros_activos" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="organizacion">Organización</label>
+                                <input type="text" id="organizacion" name="organizacion">
+                            </div>
+                            <div>
+                                <label for="estado">Estado</label>
+                                <select id="estado" name="estado">
+                                    <option value="activo" selected>Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                    <option value="suspendido">Suspendido</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Registro e imagen -->
+                    <div class="claut-wizard-panel" data-step="3">
+                        <p class="claut-wizard-panel-eyebrow">Paso 3 de 3</p>
+
+                        <!-- Configuración de Registro -->
+                        <div style="border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;background:rgba(255,255,255,.03);margin-bottom:1rem;">
+                            <label style="font-weight:700;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em;color:#cbd5e1;">Flujo de Registro</label>
+                            <div class="flex items-center space-x-6 mt-2 mb-2" style="color:#cbd5e1;font-size:.9rem;">
+                                <label class="flex items-center" style="width:auto;font-weight:400;cursor:pointer;">
+                                    <input type="radio" name="tipo_registro" id="tipo_registro_formulario" value="formulario" checked class="mr-2" style="width:auto;" onclick="window.toggleLinkInput()">
+                                    <span>Formulario Interno</span>
+                                </label>
+                                <label class="flex items-center" style="width:auto;font-weight:400;cursor:pointer;">
+                                    <input type="radio" name="tipo_registro" id="tipo_registro_link" value="link" class="mr-2" style="width:auto;" onclick="window.toggleLinkInput()">
+                                    <span>Redirigir a URL Externa</span>
+                                </label>
+                            </div>
+
+                            <div id="linkRegistroContainer" class="hidden mt-2">
+                                <label for="link_registro">URL (Ej. Google Forms)</label>
+                                <input type="url" id="link_registro" name="link_registro" placeholder="https://forms.gle/...">
+                                <p style="font-size:.75rem;color:#94a3b8;margin-top:.25rem;">El alumno abrirá este link directamente desde la plataforma pública.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label>Imagen del Comité (Opcional)</label>
+                            <div class="space-y-3">
+                                <div>
+                                    <label style="font-weight:400;color:#94a3b8;font-size:.85rem;">Subir imagen:</label>
+                                    <input type="file" id="imagen_file" accept="image/*">
+                                </div>
+                                <div>
+                                    <label style="font-weight:400;color:#94a3b8;font-size:.85rem;">O usar URL:</label>
+                                    <input type="url" id="imagen_url" name="imagen_url" placeholder="https://ejemplo.com/imagen.jpg">
+                                </div>
+                            </div>
+                            <div id="imagenPreview" class="mt-3 hidden">
+                                <img id="imagenImg" src="" alt="Preview" class="h-24 w-auto border border-white/10 rounded-lg shadow-sm">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Contenido del Modal -->
-            <div class="p-6">
-                <form id="mensajeriaForm" class="space-y-6">
-                    <!-- Selección de Comité -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="comiteSelect" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-users mr-1 text-blue-600"></i>
-                                Comité Destinatario *
-                            </label>
-                            <select id="comiteSelect" name="comite_id" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                                <option value="">Selecciona un comité...</option>
-                            </select>
-                        </div>
+            <div class="claut-wizard-foot">
+                <button type="button" id="cancelBtn" onclick="cerrarModalComite()" class="porsche-btn porsche-btn--ghost">Cancelar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" id="submitBtn" data-wizard-submit class="porsche-btn" style="display:none;">
+                    <span id="submitSpinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" style="display:inline-block;"></span>
+                    <span id="submitText">Guardar Comité</span>
+                </button>
+            </div>
+        </form>
+    </div>
 
-                        <!-- Selección de Destinatarios -->
-                        <div>
-                            <label for="destinatarioSelect" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-user-friends mr-1 text-green-600"></i>
-                                Destinatarios *
-                            </label>
-                            <select id="destinatarioSelect" name="destinatario" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                                <option value="">Primero selecciona un comité</option>
-                            </select>
-                        </div>
-                    </div>
+    <!-- Modal de Mensajería -->
+    <div id="modalMensajeria" class="claut-wizard-backdrop">
+        <form id="mensajeriaForm" class="claut-wizard" style="max-width:760px;">
+            <div class="claut-wizard-head">
+                <h2>Enviar Mensaje a Comité</h2>
+                <p>Elige destinatarios y redacta el contenido del mensaje</p>
+                <button type="button" class="claut-modal-close" onclick="cerrarModalMensajeria()" aria-label="Cerrar">&times;</button>
+            </div>
 
-                    <!-- Tipo de Mensaje -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-3">
-                            <i class="fas fa-list mr-1 text-purple-600"></i>
-                            Tipo de Mensaje *
-                        </label>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <label class="flex items-center p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
-                                <input type="radio" name="tipo_mensaje" value="texto" checked class="mr-2">
-                                <i class="fas fa-comment-alt text-blue-600 mr-2"></i>
-                                <span class="text-sm">Texto</span>
-                            </label>
-                            <label class="flex items-center p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
-                                <input type="radio" name="tipo_mensaje" value="link" class="mr-2">
-                                <i class="fas fa-link text-green-600 mr-2"></i>
-                                <span class="text-sm">Link</span>
-                            </label>
-                            <label class="flex items-center p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
-                                <input type="radio" name="tipo_mensaje" value="imagen" class="mr-2">
-                                <i class="fas fa-image text-yellow-600 mr-2"></i>
-                                <span class="text-sm">Imagen</span>
-                            </label>
-                            <label class="flex items-center p-3 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer">
-                                <input type="radio" name="tipo_mensaje" value="documento" class="mr-2">
-                                <i class="fas fa-file-alt text-red-600 mr-2"></i>
-                                <span class="text-sm">Documento</span>
-                            </label>
-                        </div>
-                    </div>
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Destinatarios</span>
+                    </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Mensaje</span>
+                    </button>
+                </nav>
 
-                    <!-- Asunto -->
-                    <div>
-                        <label for="asuntoMensaje" class="block text-sm font-medium text-gray-700 mb-1">
-                            <i class="fas fa-heading mr-1 text-indigo-600"></i>
-                            Asunto *
-                        </label>
-                        <input type="text" id="asuntoMensaje" name="asunto" required maxlength="200"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                               placeholder="Escribe el asunto del mensaje...">
-                    </div>
-
-                    <!-- Contenido del Mensaje - Texto -->
-                    <div id="contenidoTexto" class="mensaje-content">
-                        <label for="mensajeTexto" class="block text-sm font-medium text-gray-700 mb-1">
-                            <i class="fas fa-edit mr-1 text-blue-600"></i>
-                            Mensaje
-                        </label>
-                        <textarea id="mensajeTexto" name="contenido_texto" rows="4"
-                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                  placeholder="Escribe tu mensaje aquí..."></textarea>
-                    </div>
-
-                    <!-- Contenido del Mensaje - Link -->
-                    <div id="contenidoLink" class="mensaje-content hidden">
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Destinatarios -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 2</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label for="linkUrl" class="block text-sm font-medium text-gray-700 mb-1">
-                                    <i class="fas fa-link mr-1 text-green-600"></i>
-                                    URL *
-                                </label>
-                                <input type="url" id="linkUrl" name="link_url"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                       placeholder="https://ejemplo.com">
+                                <label for="comiteSelect">Comité Destinatario *</label>
+                                <select id="comiteSelect" name="comite_id" required>
+                                    <option value="">Selecciona un comité...</option>
+                                </select>
                             </div>
                             <div>
-                                <label for="linkTexto" class="block text-sm font-medium text-gray-700 mb-1">
-                                    <i class="fas fa-tag mr-1 text-green-600"></i>
-                                    Texto del enlace
-                                </label>
-                                <input type="text" id="linkTexto" name="link_texto"
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                       placeholder="Haz clic aquí">
+                                <label for="destinatarioSelect">Destinatarios *</label>
+                                <select id="destinatarioSelect" name="destinatario" required>
+                                    <option value="">Primero selecciona un comité</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <label for="linkDescripcion" class="block text-sm font-medium text-gray-700 mb-1">
-                                Descripción
-                            </label>
-                            <textarea id="linkDescripcion" name="link_descripcion" rows="2"
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                      placeholder="Describe brevemente el enlace..."></textarea>
-                        </div>
                     </div>
 
-                    <!-- Contenido del Mensaje - Imagen -->
-                    <div id="contenidoImagen" class="mensaje-content hidden">
-                        <label for="imagenFile" class="block text-sm font-medium text-gray-700 mb-1">
-                            <i class="fas fa-image mr-1 text-yellow-600"></i>
-                            Seleccionar Imagen *
-                        </label>
-                        <input type="file" id="imagenFile" name="imagen_archivo" accept="image/*"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                        <div class="mt-3">
-                            <label for="imagenDescripcion" class="block text-sm font-medium text-gray-700 mb-1">
-                                Descripción de la imagen
-                            </label>
-                            <textarea id="imagenDescripcion" name="imagen_descripcion" rows="2"
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                      placeholder="Describe la imagen..."></textarea>
-                        </div>
-                        <div id="imagenPreview" class="mt-3 hidden">
-                            <img id="imagenPreviewImg" src="" alt="Preview" class="max-w-xs h-auto border rounded-lg">
-                        </div>
-                    </div>
+                    <!-- Paso 2: Mensaje -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 2</p>
 
-                    <!-- Contenido del Mensaje - Documento -->
-                    <div id="contenidoDocumento" class="mensaje-content hidden">
-                        <label for="documentoFile" class="block text-sm font-medium text-gray-700 mb-1">
-                            <i class="fas fa-file-alt mr-1 text-red-600"></i>
-                            Seleccionar Documento *
-                        </label>
-                        <input type="file" id="documentoFile" name="documento_archivo"
-                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                        <div class="mt-3">
-                            <label for="documentoDescripcion" class="block text-sm font-medium text-gray-700 mb-1">
-                                Descripción del documento
-                            </label>
-                            <textarea id="documentoDescripcion" name="documento_descripcion" rows="2"
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                      placeholder="Describe el contenido del documento..."></textarea>
+                        <!-- Tipo de Mensaje -->
+                        <div>
+                            <label>Tipo de Mensaje *</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" style="color:#cbd5e1;">
+                                <label class="flex items-center" style="width:auto;font-weight:400;cursor:pointer;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.6rem;">
+                                    <input type="radio" name="tipo_mensaje" value="texto" checked class="mr-2" style="width:auto;">
+                                    <i class="fas fa-comment-alt text-blue-400 mr-2"></i>
+                                    <span class="text-sm">Texto</span>
+                                </label>
+                                <label class="flex items-center" style="width:auto;font-weight:400;cursor:pointer;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.6rem;">
+                                    <input type="radio" name="tipo_mensaje" value="link" class="mr-2" style="width:auto;">
+                                    <i class="fas fa-link text-green-400 mr-2"></i>
+                                    <span class="text-sm">Link</span>
+                                </label>
+                                <label class="flex items-center" style="width:auto;font-weight:400;cursor:pointer;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.6rem;">
+                                    <input type="radio" name="tipo_mensaje" value="imagen" class="mr-2" style="width:auto;">
+                                    <i class="fas fa-image text-yellow-400 mr-2"></i>
+                                    <span class="text-sm">Imagen</span>
+                                </label>
+                                <label class="flex items-center" style="width:auto;font-weight:400;cursor:pointer;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.6rem;">
+                                    <input type="radio" name="tipo_mensaje" value="documento" class="mr-2" style="width:auto;">
+                                    <i class="fas fa-file-alt text-red-400 mr-2"></i>
+                                    <span class="text-sm">Documento</span>
+                                </label>
+                            </div>
                         </div>
-                        <p class="text-xs text-gray-500 mt-2">
-                            Formatos permitidos: PDF, Word, Excel, PowerPoint, TXT. Máximo 10MB.
-                        </p>
-                    </div>
 
-                    <!-- Botones -->
-                    <div class="flex justify-end space-x-4 pt-4 border-t border-gray-200">
-                        <button type="button" onclick="cerrarModalMensajeria()"
-                                class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">
-                            <i class="fas fa-times mr-2"></i>Cancelar
-                        </button>
-                        <button type="submit" id="enviarMensajeBtn"
-                                class="px-6 py-2 text-white rounded-lg hover:opacity-90 transition flex items-center"
-                                style="background: #C7252B;">
-                            <span id="mensajeSpinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
-                            <i id="mensajeIcon" class="fas fa-paper-plane mr-2"></i>
-                            <span id="mensajeText">Enviar Mensaje</span>
-                        </button>
+                        <!-- Asunto -->
+                        <div>
+                            <label for="asuntoMensaje">Asunto *</label>
+                            <input type="text" id="asuntoMensaje" name="asunto" required maxlength="200"
+                                   placeholder="Escribe el asunto del mensaje...">
+                        </div>
+
+                        <!-- Contenido del Mensaje - Texto -->
+                        <div id="contenidoTexto" class="mensaje-content">
+                            <label for="mensajeTexto">Mensaje</label>
+                            <textarea id="mensajeTexto" name="contenido_texto" rows="4"
+                                      placeholder="Escribe tu mensaje aquí..."></textarea>
+                        </div>
+
+                        <!-- Contenido del Mensaje - Link -->
+                        <div id="contenidoLink" class="mensaje-content hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="linkUrl">URL *</label>
+                                    <input type="url" id="linkUrl" name="link_url" placeholder="https://ejemplo.com">
+                                </div>
+                                <div>
+                                    <label for="linkTexto">Texto del enlace</label>
+                                    <input type="text" id="linkTexto" name="link_texto" placeholder="Haz clic aquí">
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <label for="linkDescripcion">Descripción</label>
+                                <textarea id="linkDescripcion" name="link_descripcion" rows="2"
+                                          placeholder="Describe brevemente el enlace..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Contenido del Mensaje - Imagen -->
+                        <div id="contenidoImagen" class="mensaje-content hidden">
+                            <label for="imagenFile">Seleccionar Imagen *</label>
+                            <input type="file" id="imagenFile" name="imagen_archivo" accept="image/*">
+                            <div class="mt-3">
+                                <label for="imagenDescripcion">Descripción de la imagen</label>
+                                <textarea id="imagenDescripcion" name="imagen_descripcion" rows="2"
+                                          placeholder="Describe la imagen..."></textarea>
+                            </div>
+                            <div id="imagenPreview" class="mt-3 hidden">
+                                <img id="imagenPreviewImg" src="" alt="Preview" class="max-w-xs h-auto border rounded-lg">
+                            </div>
+                        </div>
+
+                        <!-- Contenido del Mensaje - Documento -->
+                        <div id="contenidoDocumento" class="mensaje-content hidden">
+                            <label for="documentoFile">Seleccionar Documento *</label>
+                            <input type="file" id="documentoFile" name="documento_archivo"
+                                   accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt">
+                            <div class="mt-3">
+                                <label for="documentoDescripcion">Descripción del documento</label>
+                                <textarea id="documentoDescripcion" name="documento_descripcion" rows="2"
+                                          placeholder="Describe el contenido del documento..."></textarea>
+                            </div>
+                            <p style="font-size:.75rem;color:#94a3b8;margin-top:.5rem;">
+                                Formatos permitidos: PDF, Word, Excel, PowerPoint, TXT. Máximo 10MB.
+                            </p>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="cerrarModalMensajeria()" class="porsche-btn porsche-btn--ghost">Cancelar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" id="enviarMensajeBtn" data-wizard-submit class="porsche-btn" style="display:none;">
+                    <span id="mensajeSpinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" style="display:inline-block;"></span>
+                    <i id="mensajeIcon" class="fas fa-paper-plane mr-2"></i>
+                    <span id="mensajeText">Enviar Mensaje</span>
+                </button>
+            </div>
+        </form>
     </div>
 
     <!-- Modal para editar mensaje -->
-    <div id="modalEditarMensaje" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <!-- Header del Modal -->
-            <div class="border-b border-gray-200 p-6">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        <i class="fas fa-edit mr-2 text-blue-600"></i>
-                        Editar Mensaje
-                    </h3>
-                    <button onclick="cerrarModalEditarMensaje()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times text-xl"></i>
+    <div id="modalEditarMensaje" class="claut-wizard-backdrop">
+        <form id="formEditarMensaje" class="claut-wizard" style="max-width:700px;">
+            <input type="hidden" id="editMensajeId">
+
+            <div class="claut-wizard-head">
+                <h2>Editar Mensaje</h2>
+                <p>Actualiza el asunto, tipo y contenido del mensaje</p>
+                <button type="button" class="claut-modal-close" onclick="cerrarModalEditarMensaje()" aria-label="Cerrar">&times;</button>
+            </div>
+
+            <div class="claut-wizard-body">
+                <nav class="claut-wizard-steps">
+                    <button type="button" class="claut-wizard-step-btn active" data-step="1">
+                        <span class="claut-wizard-step-num">1</span><span>Información</span>
                     </button>
+                    <button type="button" class="claut-wizard-step-btn" data-step="2">
+                        <span class="claut-wizard-step-num">2</span><span>Mensaje</span>
+                    </button>
+                </nav>
+
+                <div class="claut-wizard-panels">
+                    <!-- Paso 1: Información -->
+                    <div class="claut-wizard-panel active" data-step="1">
+                        <p class="claut-wizard-panel-eyebrow">Paso 1 de 2</p>
+
+                        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:1rem;">
+                            <h4 style="font-size:.8rem;font-weight:600;color:#cbd5e1;margin-bottom:.5rem;">Información del Mensaje</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" style="font-size:.85rem;color:#94a3b8;">
+                                <div>
+                                    <span>Fecha de envío:</span>
+                                    <span id="editFechaEnvio" style="margin-left:.4rem;font-weight:600;color:#e2e8f0;"></span>
+                                </div>
+                                <div>
+                                    <span>Destinatarios:</span>
+                                    <span id="editDestinatarios" style="margin-left:.4rem;font-weight:600;color:#e2e8f0;"></span>
+                                </div>
+                                <div>
+                                    <span>Estado:</span>
+                                    <span id="editEstado" style="margin-left:.4rem;font-weight:600;color:#e2e8f0;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="editAsunto">Asunto *</label>
+                            <input type="text" id="editAsunto" name="asunto" required placeholder="Asunto del mensaje">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="editTipoMensaje">Tipo de Mensaje</label>
+                                <select id="editTipoMensaje" name="tipo_mensaje">
+                                    <option value="informativo">Informativo</option>
+                                    <option value="urgente">Urgente</option>
+                                    <option value="recordatorio">Recordatorio</option>
+                                    <option value="convocatoria">Convocatoria</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="editPrioridad">Prioridad</label>
+                                <select id="editPrioridad" name="prioridad">
+                                    <option value="normal">Normal</option>
+                                    <option value="alta">Alta</option>
+                                    <option value="urgente">Urgente</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paso 2: Mensaje -->
+                    <div class="claut-wizard-panel" data-step="2">
+                        <p class="claut-wizard-panel-eyebrow">Paso 2 de 2</p>
+                        <div>
+                            <label for="editMensajeTexto">Mensaje *</label>
+                            <textarea id="editMensajeTexto" name="mensaje" required rows="8"
+                                      placeholder="Escriba su mensaje aquí..."></textarea>
+                            <p style="font-size:.8rem;color:#94a3b8;margin-top:.4rem;">
+                                <i class="fas fa-info-circle mr-1"></i>Puede usar texto plano o formato básico.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Contenido del Modal -->
-            <div class="p-6">
-                <form id="formEditarMensaje" class="space-y-6">
-                    <input type="hidden" id="editMensajeId">
-
-                    <!-- Información del mensaje -->
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <h4 class="text-sm font-medium text-gray-700 mb-2">Información del Mensaje</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <div>
-                                <span class="text-gray-500">Fecha de envío:</span>
-                                <span id="editFechaEnvio" class="ml-2 font-medium"></span>
-                            </div>
-                            <div>
-                                <span class="text-gray-500">Destinatarios:</span>
-                                <span id="editDestinatarios" class="ml-2 font-medium"></span>
-                            </div>
-                            <div>
-                                <span class="text-gray-500">Estado:</span>
-                                <span id="editEstado" class="ml-2 font-medium"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Asunto -->
-                    <div>
-                        <label for="editAsunto" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-heading mr-2"></i>Asunto *
-                        </label>
-                        <input type="text" id="editAsunto" name="asunto" required
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                               placeholder="Asunto del mensaje">
-                    </div>
-
-                    <!-- Mensaje -->
-                    <div>
-                        <label for="editMensajeTexto" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-comment-alt mr-2"></i>Mensaje *
-                        </label>
-                        <textarea id="editMensajeTexto" name="mensaje" required rows="8"
-                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
-                                  placeholder="Escriba su mensaje aquí..."></textarea>
-                        <div class="mt-2 text-sm text-gray-500">
-                            <i class="fas fa-info-circle mr-1"></i>
-                            Puede usar texto plano o formato básico.
-                        </div>
-                    </div>
-
-                    <!-- Tipo de mensaje -->
-                    <div>
-                        <label for="editTipoMensaje" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-tag mr-2"></i>Tipo de Mensaje
-                        </label>
-                        <select id="editTipoMensaje" name="tipo_mensaje"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="informativo">Informativo</option>
-                            <option value="urgente">Urgente</option>
-                            <option value="recordatorio">Recordatorio</option>
-                            <option value="convocatoria">Convocatoria</option>
-                        </select>
-                    </div>
-
-                    <!-- Prioridad -->
-                    <div>
-                        <label for="editPrioridad" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-flag mr-2"></i>Prioridad
-                        </label>
-                        <select id="editPrioridad" name="prioridad"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <option value="normal">Normal</option>
-                            <option value="alta">Alta</option>
-                            <option value="urgente">Urgente</option>
-                        </select>
-                    </div>
-
-                    <!-- Botones -->
-                    <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-                        <button type="button" onclick="cerrarModalEditarMensaje()"
-                                class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">
-                            <i class="fas fa-times mr-2"></i>Cancelar
-                        </button>
-                        <button type="submit" id="guardarCambiosBtn"
-                                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
-                            <i class="fas fa-spinner fa-spin mr-2 hidden" id="editSpinner"></i>
-                            <i class="fas fa-save mr-2" id="editIcon"></i>
-                            Guardar Cambios
-                        </button>
-                    </div>
-                </form>
+            <div class="claut-wizard-foot">
+                <button type="button" onclick="cerrarModalEditarMensaje()" class="porsche-btn porsche-btn--ghost">Cancelar</button>
+                <button type="button" data-wizard-prev class="porsche-btn porsche-btn--ghost">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="button" data-wizard-next class="porsche-btn">
+                    Siguiente <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="submit" id="guardarCambiosBtn" data-wizard-submit class="porsche-btn" style="display:none;">
+                    <i class="fas fa-spinner fa-spin mr-2 hidden" id="editSpinner"></i>
+                    <i class="fas fa-save mr-2" id="editIcon"></i>
+                    Guardar Cambios
+                </button>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Modal para ver mensaje completo -->
@@ -1211,9 +823,10 @@
             </div>
         </div>
     </div>
+    </div><!-- cierra .claut-admin-main (Main Content) -->
 
     <!-- Incluir el administrador de comités -->
-    <script src="./js/admin-comites.js"></script>
+    <script src="./js/admin-comites.js?v=20260901a"></script>
 
     <script>
         // Inicializar el administrador de comités siguiendo el patrón de demo_empresas.html
@@ -1266,13 +879,10 @@
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
                 initializeAdminComites();
-                // Initialize sidebar functionality
-                setTimeout(initializeSidebar, 100);
             });
         } else {
             // DOM ya está listo
             initializeAdminComites();
-            setTimeout(initializeSidebar, 100);
         }
 
         // ======== FUNCIONES DEL MODAL DE MENSAJERÍA ========
@@ -1280,7 +890,9 @@
         function abrirModalMensajeria() {
             const modal = document.getElementById('modalMensajeria');
             if (modal) {
-                modal.classList.remove('hidden');
+                modal.classList.add('open');
+                const wizardEl = modal.querySelector('.claut-wizard');
+                if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
                 cargarComitesParaMensajeria();
                 configurarTiposMensaje();
             }
@@ -1289,7 +901,7 @@
         function cerrarModalMensajeria() {
             const modal = document.getElementById('modalMensajeria');
             if (modal) {
-                modal.classList.add('hidden');
+                modal.classList.remove('open');
                 limpiarFormularioMensajeria();
             }
         }
@@ -1325,13 +937,13 @@
                 .then(response => response.json())
                 .then(data => {
                     const destinatarioSelect = document.getElementById('destinatarioSelect');
-                    destinatarioSelect.innerHTML = '<option value="todos">📧 Todos los miembros del comité</option>';
+                    destinatarioSelect.innerHTML = '<option value="todos">Todos los miembros del comité</option>';
 
                     if (data.success && data.miembros) {
                         data.miembros.forEach(miembro => {
                             const option = document.createElement('option');
                             option.value = miembro.email_contacto;
-                            option.textContent = `👤 ${miembro.nombre_usuario} (${miembro.nombre_empresa})`;
+                            option.textContent = `${miembro.nombre_usuario} (${miembro.nombre_empresa})`;
                             destinatarioSelect.appendChild(option);
                         });
                     }
@@ -1680,180 +1292,6 @@
             document.getElementById('noRegistros').classList.remove('hidden');
         }
 
-        // === SIDEBAR RETRACTABLE FUNCTIONALITY ===
-        function initializeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-            const hamburgerBtn = document.querySelector('[sidenav-trigger]');
-            const closeBtn = document.getElementById('sidebarCloseBtn');
-
-            console.log('Sidebar elements:', {
-                sidebar: !!sidebar,
-                overlay: !!overlay,
-                hamburgerBtn: !!hamburgerBtn,
-                closeBtn: !!closeBtn,
-                screenWidth: window.innerWidth,
-                isDesktop: window.innerWidth >= 1280
-            });
-
-            // Log computed styles for debugging
-            if (sidebar) {
-                const styles = window.getComputedStyle(sidebar);
-                console.log('Sidebar computed styles:', {
-                    display: styles.display,
-                    transform: styles.transform,
-                    left: styles.left,
-                    position: styles.position,
-                    zIndex: styles.zIndex
-                });
-            }
-
-            if (!sidebar || !overlay || !hamburgerBtn) {
-                console.error('Sidebar elements not found:', {
-                    sidebar: !!sidebar,
-                    overlay: !!overlay,
-                    hamburgerBtn: !!hamburgerBtn
-                });
-                return;
-            }
-
-            // Toggle sidebar function
-            function toggleSidebar(e) {
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-
-                const isVisible = sidebar.classList.contains('sidenav-show');
-                console.log('Toggle sidebar - currently visible:', isVisible);
-
-                if (!isVisible) {
-                    // Open sidebar
-                    console.log('Opening sidebar');
-                    sidebar.classList.add('sidenav-show');
-                    sidebar.setAttribute('aria-expanded', 'true');
-                    overlay.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-
-                    // Focus management for accessibility
-                    const firstLink = sidebar.querySelector('.porsche-nav-item');
-                    if (firstLink) {
-                        setTimeout(() => firstLink.focus(), 100);
-                    }
-                } else {
-                    // Close sidebar
-                    console.log('Closing sidebar');
-                    closeSidebarInternal();
-                }
-            }
-
-            // Close sidebar function
-            function closeSidebarInternal() {
-                console.log('Executing closeSidebarInternal');
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-
-                // Return focus to hamburger button
-                if (hamburgerBtn) {
-                    hamburgerBtn.focus();
-                }
-            }
-
-            // Event listeners
-            console.log('Adding click event to hamburger button');
-            hamburgerBtn.addEventListener('click', toggleSidebar);
-
-            hamburgerBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleSidebar(e);
-            }, { passive: false });
-
-            if (overlay) {
-                overlay.addEventListener('click', closeSidebarInternal);
-                overlay.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                });
-                closeBtn.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeSidebarInternal();
-                }, { passive: false });
-            }
-
-            // Close on escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-            });
-
-            // Handle window resize - Keep sidebar closed on all screen sizes
-            window.addEventListener('resize', function() {
-                // Optional: could add logic here if needed
-            });
-
-            // Swipe to close functionality
-            let touchStartX = 0;
-            let touchStartY = 0;
-
-            sidebar.addEventListener('touchstart', function(e) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-
-            sidebar.addEventListener('touchmove', function(e) {
-                if (!touchStartX) return;
-
-                const currentX = e.touches[0].clientX;
-                const currentY = e.touches[0].clientY;
-                const diffX = touchStartX - currentX;
-                const diffY = Math.abs(touchStartY - currentY);
-
-                // Swipe left to close
-                if (diffX > 50 && diffY < 100) {
-                    closeSidebarInternal();
-                    touchStartX = 0;
-                    touchStartY = 0;
-                }
-            }, { passive: true });
-
-            // Keyboard navigation in sidebar
-            sidebar.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeSidebarInternal();
-                }
-
-                // Arrow navigation
-                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    const navItems = Array.from(sidebar.querySelectorAll('.porsche-nav-item:not([style*="display: none"])'));
-                    const currentIndex = navItems.indexOf(document.activeElement);
-
-                    if (e.key === 'ArrowDown') {
-                        const nextIndex = (currentIndex + 1) % navItems.length;
-                        navItems[nextIndex].focus();
-                    } else {
-                        const prevIndex = currentIndex <= 0 ? navItems.length - 1 : currentIndex - 1;
-                        navItems[prevIndex].focus();
-                    }
-                }
-            });
-
-            console.log('✅ Sidebar functionality initialized successfully');
-        }
-
         // === FUNCIONALIDAD DE GESTIÓN DE MENSAJES ENVIADOS ===
 
         // Variables globales para mensajes
@@ -1865,6 +1303,21 @@
         document.addEventListener('DOMContentLoaded', function() {
             cargarMensajesEnviados();
             configurarEventosMensajes();
+        });
+
+        // Cerrar modal de comité al hacer clic fuera o con ESC
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalComite = document.getElementById('acordeonFormulario');
+            if (modalComite) {
+                modalComite.addEventListener('click', function(e) {
+                    if (e.target === this) window.cerrarModalComite();
+                });
+            }
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalComite && modalComite.classList.contains('open')) {
+                    window.cerrarModalComite();
+                }
+            });
         });
 
         function configurarEventosMensajes() {
@@ -2157,7 +1610,10 @@
             document.getElementById('editPrioridad').value = mensaje.prioridad || 'normal';
 
             // Mostrar modal
-            document.getElementById('modalEditarMensaje').classList.remove('hidden');
+            const modalEditar = document.getElementById('modalEditarMensaje');
+            modalEditar.classList.add('open');
+            const wizardEditar = modalEditar.querySelector('.claut-wizard');
+            if (wizardEditar && wizardEditar.__clautWizardReset) wizardEditar.__clautWizardReset();
         }
 
         // Editar desde el modal de ver
@@ -2208,7 +1664,7 @@
                     if (window.adminComites) {
                         window.adminComites.mostrarExito('Mensaje actualizado correctamente');
                     } else {
-                        alert('✅ Mensaje actualizado correctamente');
+                        alert('Mensaje actualizado correctamente');
                     }
 
                     // Cerrar modal y recargar lista
@@ -2223,7 +1679,7 @@
                 if (window.adminComites) {
                     window.adminComites.mostrarError('Error al actualizar mensaje: ' + error.message);
                 } else {
-                    alert('❌ Error al actualizar mensaje: ' + error.message);
+                    alert('Error al actualizar mensaje: ' + error.message);
                 }
             } finally {
                 // Restaurar UI
@@ -2269,7 +1725,7 @@
                     if (window.adminComites) {
                         window.adminComites.mostrarExito('Mensaje eliminado correctamente');
                     } else {
-                        alert('✅ Mensaje eliminado correctamente');
+                        alert('Mensaje eliminado correctamente');
                     }
 
                     // Recargar lista
@@ -2283,7 +1739,7 @@
                 if (window.adminComites) {
                     window.adminComites.mostrarError('Error al eliminar mensaje: ' + error.message);
                 } else {
-                    alert('❌ Error al eliminar mensaje: ' + error.message);
+                    alert('Error al eliminar mensaje: ' + error.message);
                 }
             }
         }
@@ -2314,7 +1770,7 @@
 
         // Cerrar modales
         function cerrarModalEditarMensaje() {
-            document.getElementById('modalEditarMensaje').classList.add('hidden');
+            document.getElementById('modalEditarMensaje').classList.remove('open');
             document.getElementById('formEditarMensaje').reset();
             mensajeActual = null;
         }
@@ -2324,20 +1780,13 @@
             mensajeActual = null;
         }
 
-        // Legacy function compatibility
-        function closeSidebar() {
-            const sidebar = document.querySelector('.porsche-sidebar');
-            const overlay = document.getElementById('sidenavOverlay');
-
-            if (sidebar && overlay) {
-                sidebar.classList.remove('sidenav-show');
-                sidebar.setAttribute('aria-expanded', 'false');
-                overlay.classList.remove('show');
-                document.body.style.overflow = '';
-            }
-        }
+        // Legacy function compatibility (no-op: el sidebar ahora es manejado por claut-admin-sidebar.js)
+        function closeSidebar() {}
     </script>
   <script src="./js/auth-session.js"></script>
   <script src="assets/js/loading-screen.js"></script>
+  <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
+  <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
+  <script src="./assets/js/claut-tabs.js?v=20260901a"></script>
 </body>
 </html>

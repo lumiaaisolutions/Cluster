@@ -989,7 +989,12 @@ function editEvento(eventoId) {
         }
     }
 
-    document.getElementById('eventModal').classList.remove('hidden');
+    const eventModalEl = document.getElementById('eventModal');
+    if (eventModalEl) {
+        eventModalEl.classList.add('open');
+        const wizardEl = eventModalEl.querySelector('.claut-wizard');
+        if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
+    }
 }
 
 // Eliminar evento
@@ -1058,7 +1063,9 @@ function showCreateModal() {
     }
 
     if (modal) {
-        modal.classList.remove('hidden');
+        modal.classList.add('open');
+        const wizardEl = modal.querySelector('.claut-wizard');
+        if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
     }
 
     // console.log('Modal de creación abierto - eventId limpiado');
@@ -1124,7 +1131,7 @@ function closeModal() {
     const eventIdField = document.getElementById('eventId');
 
     if (modal) {
-        modal.classList.add('hidden');
+        modal.classList.remove('open');
     }
 
     if (form) {
@@ -1675,10 +1682,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Cerrar modales al hacer clic fuera
-    ['eventModal', 'registrosModal', 'detalleRegistroModal'].forEach(id => {
+    ['registrosModal', 'detalleRegistroModal'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('click', e => { if (e.target === el) el.classList.add('hidden'); });
     });
+    const eventModalBackdrop = document.getElementById('eventModal');
+    if (eventModalBackdrop) {
+        eventModalBackdrop.addEventListener('click', e => {
+            if (e.target === eventModalBackdrop) eventModalBackdrop.classList.remove('open');
+        });
+    }
     
     // Inicializar todo
     // (Movido al inicio del DOMContentLoaded para evitar ejecuciones parciales)

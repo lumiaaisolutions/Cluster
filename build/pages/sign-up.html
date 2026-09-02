@@ -29,10 +29,12 @@
         }
 
         .split-layout-signup {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
             min-height: 100vh;
+            height: 100vh;
             background-color: #ffffff;
+            overflow: hidden;
         }
 
         .signup-form-container {
@@ -41,26 +43,66 @@
             flex-direction: column;
             justify-content: center;
             overflow-y: auto;
+            height: 100vh;
             max-height: 100vh;
+            width: 100%;
+            min-width: 0;
         }
 
+        /* Banner — imagen automotriz + gradientes overlay para legibilidad */
         .signup-banner-container {
             position: relative;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            display: flex;
+            background-color: #0a0e1a !important;
+            background-image:
+                linear-gradient(135deg, rgba(10, 14, 26, 0.78) 0%, rgba(30, 12, 28, 0.55) 50%, rgba(199, 37, 43, 0.32) 100%),
+                url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80') !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            display: flex !important;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background-image: url('../assets/img/banner-login-premium.png');
-            background-size: cover;
-            background-position: center;
+            min-height: 100vh;
+            height: 100vh;
+        }
+        /* Patrón de grid técnico sutil */
+        .signup-banner-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 56px 56px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        /* Orbe luminoso animado */
+        .signup-banner-container::after {
+            content: '';
+            position: absolute;
+            top: 18%;
+            right: 14%;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(199, 37, 43, 0.45) 0%, rgba(199, 37, 43, 0) 70%);
+            filter: blur(40px);
+            animation: orb-float 9s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes orb-float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.85; }
+            50%      { transform: translate(-30px, 30px) scale(1.12); opacity: 1; }
         }
 
         .banner-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
-            backdrop-filter: blur(2px);
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 100%);
+            pointer-events: none;
         }
 
         .porsche-input-group {
@@ -170,17 +212,20 @@
             transform: translateY(20px);
         }
 
-        @media (max-width: 1024px) {
-            .split-layout-signup {
-                grid-template-columns: 1fr;
+        @media (max-width: 900px) {
+            /* Sobrescribir inline styles via attribute selectors + !important */
+            main.split-layout-signup[style] {
+                flex-direction: column !important;
+                height: auto !important;
+                overflow: visible !important;
             }
-
-            .signup-banner-container {
-                display: none;
+            .signup-banner-container[style] {
+                display: none !important;
             }
-
-            .signup-form-container {
-                padding: 3rem 1.5rem;
+            .signup-form-container[style] {
+                height: auto !important;
+                max-height: none !important;
+                padding: 3rem 1.5rem !important;
             }
         }
 
@@ -191,6 +236,33 @@
             margin-top: 0.25rem;
             margin-left: 0.5rem;
         }
+
+        /* Botón "Volver al sitio" */
+        .back-to-site {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 0.75rem;
+            margin-left: -0.75rem;
+            border-radius: 8px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .back-to-site:hover {
+            color: var(--porsche-accent);
+            background: rgba(199, 37, 43, 0.06);
+        }
+        .back-to-site i {
+            font-size: 10px;
+            transition: transform 0.25s ease;
+        }
+        .back-to-site:hover i { transform: translateX(-3px); }
 
         /* Custom Scrollbar */
         .signup-form-container::-webkit-scrollbar {
@@ -214,14 +286,21 @@
 
 <body class="m-0 font-sans antialiased font-normal text-start text-base leading-default text-slate-500 bg-white">
 
-    <main class="split-layout-signup">
+    <!-- BUILD VERSION 20260512-v3 — si ves un punto verde abajo a la izquierda, esta versión SÍ cargó -->
+    <div id="__build_marker" style="position:fixed;bottom:6px;left:6px;width:8px;height:8px;background:#22c55e;border-radius:50%;z-index:99999;opacity:0.7;" title="build v3"></div>
+
+    <main class="split-layout-signup" style="display: flex !important; flex-direction: row !important; min-height: 100vh !important; height: 100vh !important; width: 100% !important; overflow: hidden !important;">
 
         <!-- LADO IZQUIERDO: Formulario -->
-        <div class="signup-form-container" id="signupContent">
+        <div class="signup-form-container" id="signupContent" style="flex: 1 1 0; min-width: 0; height: 100vh; overflow-y: auto;">
 
             <div class="max-w-md mx-auto w-full">
                 <!-- Branding -->
                 <div class="mb-10 text-center lg:text-left reveal-anim">
+                    <a href="/" class="back-to-site" aria-label="Volver al sitio">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver al sitio</span>
+                    </a>
                     <img src="../assets/img/logo-ct-dark.png" alt="Logo Claut" class="h-10 mb-8 mx-auto lg:mx-0">
                     <h1 class="text-3xl font-black text-slate-900 leading-tight mb-2">Únete al Clúster</h1>
                     <p class="text-slate-500 font-medium">Expande tu red profesional en el sector automotriz.</p>
@@ -320,20 +399,60 @@
 
                             <!-- Campos Condicionales de Empresa -->
                             <div id="empresaFields" class="hidden space-y-4 mb-6">
-                                <div class="porsche-input-group">
-                                    <i class="fas fa-building porsche-input-icon"></i>
-                                    <select name="empresa_id" id="empresa_id" class="porsche-input appearance-none">
-                                        <option value="">Cargando empresas...</option>
-                                    </select>
-                                    <i
-                                        class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
-                                    <div class="error-field" id="empresa_id-error"></div>
+                                <!-- MODO 1: Selección de empresa existente -->
+                                <div id="empresaSelectMode">
+                                    <div class="porsche-input-group">
+                                        <i class="fas fa-building porsche-input-icon"></i>
+                                        <select name="empresa_id" id="empresa_id" class="porsche-input appearance-none">
+                                            <option value="">Cargando empresas...</option>
+                                        </select>
+                                        <i
+                                            class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                                        <div class="error-field" id="empresa_id-error"></div>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mt-2 px-2">
+                                        ¿No encuentras tu empresa?
+                                        <a href="#" class="text-porsche-accent font-bold hover:underline"
+                                            onclick="event.preventDefault(); toggleNuevaEmpresaMode(true);">Regístrala aquí</a>
+                                    </p>
                                 </div>
-                                <p class="text-[10px] text-slate-400 mt-2 px-2">
-                                    ¿No encuentras tu empresa?
-                                    <a href="#" class="text-porsche-accent font-bold hover:underline"
-                                        onclick="showNuevaEmpresaForm()">Regístrala aquí</a>
-                                </p>
+
+                                <!-- MODO 2: Registrar nueva empresa inline -->
+                                <div id="empresaNuevaMode" class="hidden space-y-3">
+                                    <div class="porsche-input-group">
+                                        <i class="fas fa-building porsche-input-icon"></i>
+                                        <input type="text" id="nueva_empresa_nombre" name="nueva_empresa_nombre"
+                                            placeholder="Nombre de tu empresa *" class="porsche-input"
+                                            autocomplete="organization">
+                                        <div class="error-field" id="nueva_empresa_nombre-error"></div>
+                                    </div>
+                                    <div class="porsche-input-group">
+                                        <i class="fas fa-industry porsche-input-icon"></i>
+                                        <select id="nueva_empresa_sector" name="nueva_empresa_sector"
+                                            class="porsche-input appearance-none">
+                                            <option value="Automotriz">Automotriz</option>
+                                            <option value="Servicios">Servicios</option>
+                                            <option value="Academia">Academia</option>
+                                            <option value="Gobierno">Gobierno</option>
+                                            <option value="Otros">Otros</option>
+                                        </select>
+                                        <i
+                                            class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                                    </div>
+                                    <div class="bg-amber-50/70 px-4 py-3 rounded-xl border border-amber-200/70">
+                                        <p class="text-[10px] text-amber-800 leading-relaxed">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            Tu empresa quedará en estado <strong>pendiente</strong> hasta que un
+                                            administrador valide los datos y la integre al padrón oficial.
+                                        </p>
+                                    </div>
+                                    <div class="px-2">
+                                        <a href="#" class="text-[10px] text-slate-400 hover:text-slate-600"
+                                            onclick="event.preventDefault(); toggleNuevaEmpresaMode(false);">
+                                            <i class="fas fa-arrow-left mr-1"></i>Volver al listado de empresas
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -423,8 +542,9 @@
                                         class="w-4 h-4 rounded text-porsche-accent border-slate-300 focus:ring-porsche-accent">
                                 </div>
                                 <span class="text-xs text-slate-500 leading-tight">
-                                    Acepto los <a href="#" class="text-slate-900 font-bold hover:underline"
-                                        onclick="alert('Políticas de Privacidad Clúster'); return false;">Términos y
+                                    Acepto los <a href="/assets/Aviso%20de%20Privacidad%20230426.pdf"
+                                        target="_blank" rel="noopener noreferrer"
+                                        class="text-slate-900 font-bold hover:underline">Términos y
                                         Condiciones</a> y la Política de Privacidad del Clúster.
                                 </span>
                             </label>
@@ -455,7 +575,7 @@
         </div>
 
         <!-- LADO DERECHO: Banner -->
-        <div class="signup-banner-container">
+        <div class="signup-banner-container" style="flex: 1 1 0; min-width: 0; height: 100vh; position: relative;">
             <div class="banner-overlay"></div>
 
             <div class="banner-content-card reveal-anim">
@@ -481,8 +601,6 @@
 
     </main>
 
-    <script src="../assets/js/loading-screen.js"></script>
-
     <!-- Core Scripts -->
     <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="../assets/js/argon-dashboard-tailwind.js?v=1.0.1"></script>
@@ -502,17 +620,92 @@
                     ease: "power3.out"
                 });
 
-                // Scroll parallax para el fondo
-                document.addEventListener('mousemove', (e) => {
-                    const x = (e.clientX / window.innerWidth - 0.5) * 30;
-                    const y = (e.clientY / window.innerHeight - 0.5) * 30;
-                    gsap.to("#bg-visuals", { x: x, y: y, duration: 2, ease: "power2.out" });
-                });
+                // Parallax sutil del orbe del banner según el cursor
+                const banner = document.querySelector('.signup-banner-container');
+                if (banner) {
+                    document.addEventListener('mousemove', (e) => {
+                        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+                        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                        banner.style.setProperty('--orb-x', x + 'px');
+                        banner.style.setProperty('--orb-y', y + 'px');
+                    });
+                }
             }
         }
 
+        // === FORCE LAYOUT — INYECCIÓN DESDE JS ===
+        // Si por cualquier razón (CSS, cache, JS rompiendo el DOM) el banner del HTML
+        // no es visible, lo INYECTAMOS directamente al body con position:fixed.
+        console.log('[BUILD] sign-up.html v.20260512-v4 — INJECTED banner mode');
+
+        function applySignupLayout() {
+            var form = document.querySelector('.signup-form-container');
+            var origBanner = document.querySelector('.signup-banner-container');
+            var injected = document.getElementById('__injected_signup_banner');
+
+            // ----- DESKTOP -----
+            if (window.innerWidth >= 900) {
+                // 1. Reset body/html para evitar scroll global
+                document.documentElement.style.cssText = 'margin:0;padding:0;height:100%;overflow:hidden;';
+                document.body.style.cssText = 'margin:0;padding:0;height:100vh;overflow:hidden;background:#fff;';
+
+                // 2. Form fixed al 50% izquierdo del viewport
+                if (form) {
+                    form.setAttribute('style',
+                        'position:fixed!important;top:0!important;left:0!important;bottom:0!important;' +
+                        'width:50vw!important;height:100vh!important;' +
+                        'overflow-y:auto!important;padding:4rem 6rem!important;' +
+                        'display:flex!important;flex-direction:column;justify-content:center;' +
+                        'box-sizing:border-box!important;background:#fff!important;z-index:5!important;'
+                    );
+                }
+
+                // 3. Ocultar el banner original (si existe en HTML)
+                if (origBanner) origBanner.style.cssText = 'display:none!important;';
+
+                // 4. Crear banner inyectado si no existe
+                if (!injected) {
+                    injected = document.createElement('div');
+                    injected.id = '__injected_signup_banner';
+                    injected.innerHTML =
+                        '<div style="position:relative;z-index:2;max-width:480px;padding:3rem;background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:2.5rem;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);">' +
+                            '<div style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border-radius:99px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:0.75rem;font-weight:600;margin-bottom:2rem;">' +
+                                '<span style="color:#C7252B;">●</span> Validación Institucional' +
+                            '</div>' +
+                            '<h2 style="font-size:2.25rem;font-weight:900;color:#fff;line-height:1.15;margin:0 0 1.5rem;">Forma parte del ecosistema <span style="color:#C7252B;">Automotriz</span> más grande de México.</h2>' +
+                            '<p style="color:rgba(255,255,255,0.85);font-size:1.05rem;line-height:1.6;margin:0;">Accede a beneficios exclusivos, eventos de alto impacto y una red de socios estratégicos en la industria.</p>' +
+                        '</div>';
+                    document.body.appendChild(injected);
+                }
+                injected.setAttribute('style',
+                    'position:fixed!important;top:0!important;right:0!important;bottom:0!important;' +
+                    'width:50vw!important;height:100vh!important;overflow:hidden!important;' +
+                    'background-color:#0a0e1a!important;' +
+                    "background-image:linear-gradient(135deg,rgba(10,14,26,0.78) 0%,rgba(30,12,28,0.55) 50%,rgba(199,37,43,0.32) 100%),url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80')!important;" +
+                    'background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;' +
+                    'display:flex!important;align-items:center;justify-content:center;padding:2rem!important;' +
+                    'box-sizing:border-box!important;z-index:4!important;'
+                );
+            }
+            // ----- MOBILE -----
+            else {
+                document.documentElement.style.cssText = '';
+                document.body.style.cssText = '';
+                if (form) form.setAttribute('style', 'position:static;width:100%;height:auto;max-height:none;padding:3rem 1.5rem;display:flex;flex-direction:column;');
+                if (origBanner) origBanner.style.cssText = 'display:none!important;';
+                if (injected) injected.style.cssText = 'display:none!important;';
+            }
+        }
+
+        // Ejecutar inmediatamente y en cada momento clave
+        applySignupLayout();
+        document.addEventListener('DOMContentLoaded', applySignupLayout);
+        window.addEventListener('load', applySignupLayout);
+        window.addEventListener('resize', applySignupLayout);
+
         // Logic Initialization
         document.addEventListener('DOMContentLoaded', function () {
+            applySignupLayout(); // re-aplicar tras DOM listo
             initPremiumAnimations();
 
             // Custom checkbox logic
@@ -551,7 +744,7 @@
 
             // Manejar envío del formulario
             if (registerForm) {
-                registerForm.addEventListener('submit', function (e) {
+                registerForm.addEventListener('submit', async function (e) {
                     e.preventDefault();
                     clearErrors();
                     const formData = new FormData(registerForm);
@@ -559,6 +752,22 @@
 
                     if (!validateForm(data)) return;
                     setLoadingState(true);
+
+                    // Si el usuario eligió "Registrar nueva empresa", crearla primero y usar su ID
+                    if (data.rol === 'empresa' && isNuevaEmpresaMode()) {
+                        const nuevaEmpresa = await crearEmpresaPendiente({
+                            nombre_empresa: (data.nueva_empresa_nombre || '').trim(),
+                            categoria: data.nueva_empresa_sector || 'Otros'
+                        });
+                        if (!nuevaEmpresa || !nuevaEmpresa.id) {
+                            setLoadingState(false);
+                            return;
+                        }
+                        data.empresa_id = nuevaEmpresa.id;
+                    }
+                    // Limpiar campos auxiliares antes de enviar al endpoint de registro
+                    delete data.nueva_empresa_nombre;
+                    delete data.nueva_empresa_sector;
 
                     console.log('--- Intentando Registro ---');
                     fetch('../api/auth/register.php', {
@@ -580,22 +789,22 @@
                         })
                         .then(data => {
                             if (data.success) {
-                                showMessage('✅ Cuenta creada exitosamente. Redirigiendo...', 'success');
+                                showMessage('<i class="fas fa-circle-check"></i> Cuenta creada exitosamente. Redirigiendo...', 'success');
                                 setTimeout(() => { window.location.href = './sign-in.html?success=1'; }, 2000);
                             } else {
                                 // Soporte para múltiples formatos de errores (legacy, API Validator, custom)
                                 const errors = data.validation_errors || data.errors;
                                 if (errors) {
                                     Object.keys(errors).forEach(field => showFieldError(field, errors[field]));
-                                    showMessage('❌ Falta información obligatoria o hay errores en el formulario.', 'error');
+                                    showMessage('<i class="fas fa-circle-xmark"></i> Falta información obligatoria o hay errores en el formulario.', 'error');
                                 } else {
-                                    showMessage(data.message || data.error || '❌ Error al crear la cuenta.', 'error');
+                                    showMessage(data.message || data.error || '<i class="fas fa-circle-xmark"></i> Error al crear la cuenta.', 'error');
                                 }
                             }
                         })
                         .catch(error => {
                             console.error('Error completo:', error);
-                            showMessage(error.message || '❌ Error de conexión. Intenta nuevamente.', 'error');
+                            showMessage(error.message || '<i class="fas fa-circle-xmark"></i> Error de conexión. Intenta nuevamente.', 'error');
                         })
                         .finally(() => setLoadingState(false));
                 });
@@ -608,8 +817,28 @@
                 if (!data.apellidos || data.apellidos.length < 2) { showFieldError('apellidos', 'Mínimo 2 caracteres'); isValid = false; }
                 if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { showFieldError('email', 'Email inválido'); isValid = false; }
                 if (!data.rol) { showFieldError('rol', 'Selecciona un tipo'); isValid = false; }
-                if (data.rol === 'empresa' && !data.empresa_id) { showFieldError('empresa_id', 'Selecciona empresa'); isValid = false; }
-                if (!data.password || data.password.length < 8) { showFieldError('password', 'Mínimo 8 caracteres, letras y números'); isValid = false; }
+                if (data.rol === 'empresa') {
+                    if (isNuevaEmpresaMode()) {
+                        const nombreNueva = (data.nueva_empresa_nombre || '').trim();
+                        if (nombreNueva.length < 2) {
+                            showFieldError('nueva_empresa_nombre', 'Mínimo 2 caracteres');
+                            isValid = false;
+                        }
+                    } else if (!data.empresa_id) {
+                        showFieldError('empresa_id', 'Selecciona empresa');
+                        isValid = false;
+                    }
+                }
+                // Política de contraseña fuerte (alineada con backend register.php)
+                if (!data.password || data.password.length < 8) {
+                    showFieldError('password', 'Mínimo 8 caracteres'); isValid = false;
+                } else if (!/[A-Z]/.test(data.password)) {
+                    showFieldError('password', 'Debe incluir al menos 1 mayúscula'); isValid = false;
+                } else if (!/[a-z]/.test(data.password)) {
+                    showFieldError('password', 'Debe incluir al menos 1 minúscula'); isValid = false;
+                } else if (!/[0-9]/.test(data.password)) {
+                    showFieldError('password', 'Debe incluir al menos 1 número'); isValid = false;
+                }
                 if (data.password !== data.confirm_password) { showFieldError('confirm_password', 'Las contraseñas no coinciden'); isValid = false; }
                 if (!data.accept_terms) { showFieldError('accept_terms', 'Debes aceptar los términos'); isValid = false; }
                 return isValid;
@@ -689,93 +918,83 @@
             if (!select) return;
             select.innerHTML = '<option value="">Cargando empresas...</option>';
             try {
-                const response = await fetch('../api/empresas-simple.php?action=listar');
+                // Endpoint público dedicado (no requiere sesión)
+                const response = await fetch('../api/empresas-publicas.php');
                 const result = await response.json();
-                if (result.success && result.data && result.data.empresas) {
+                if (result.success && result.data && Array.isArray(result.data.empresas)) {
                     select.innerHTML = '<option value="">Selecciona tu empresa</option>';
                     result.data.empresas.forEach(emp => {
                         const opt = document.createElement('option');
                         opt.value = emp.id;
-                        opt.textContent = emp.nombre || emp.nombre_mostrar || `ID ${emp.id}`;
+                        opt.textContent = emp.nombre || `Empresa #${emp.id}`;
                         select.appendChild(opt);
                     });
+                    console.log(`[loadEmpresas] ${result.data.total || result.data.empresas.length} empresas cargadas`);
+                } else {
+                    select.innerHTML = '<option value="">No hay empresas disponibles</option>';
                 }
-            } catch (e) { console.error('Error cargando empresas:', e); }
+            } catch (e) {
+                console.error('Error cargando empresas:', e);
+                select.innerHTML = '<option value="">Error al cargar empresas</option>';
+            }
         }
 
-        // Funion para nueva empresa modal
-        function showNuevaEmpresaForm() {
-            const modalHtml = `
-                <div id="modalNuevaEmpresa" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
-                    <div class="bg-white w-full max-w-lg rounded-[2rem] p-8 shadow-2xl reveal-anim" style="opacity: 1; transform: translateY(0);">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-xl font-bold text-slate-900">Registrar Nueva Empresa</h2>
-                            <button onclick="closeNuevaEmpresaForm()" class="text-slate-400 hover:text-slate-600"><i class="fas fa-times"></i></button>
-                        </div>
-                        <form id="formNuevaEmpresa" class="space-y-4">
-                            <input type="text" name="nombre" placeholder="Nombre de la Empresa *" required class="porsche-input w-full p-4 rounded-xl outline-none">
-                            <div class="grid grid-cols-2 gap-4">
-                                <select name="sector" class="porsche-input w-full p-4 rounded-xl outline-none">
-                                    <option value="Automotriz">Automotriz</option>
-                                    <option value="Servicios">Servicios</option>
-                                    <option value="Academia">Academia</option>
-                                    <option value="Gobierno">Gobierno</option>
-                                    <option value="Otros">Otros</option>
-                                </select>
-                            </div>
-                            <textarea name="descripcion" placeholder="Descripción de la empresa..." rows="3" class="porsche-input w-full p-4 rounded-xl outline-none"></textarea>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input type="email" name="email" placeholder="Email de contacto" class="porsche-input w-full p-4 rounded-xl outline-none">
-                                <input type="tel" name="telefono" placeholder="Teléfono" class="porsche-input w-full p-4 rounded-xl outline-none">
-                            </div>
-
-                            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200">
-                                <p class="text-[11px] text-amber-700 leading-relaxed font-medium">
-                                    <i class="fas fa-info-circle mr-2"></i>
-                                    La empresa quedará en estado "pendiente" hasta que un administrador valide los datos y autorice su ingreso al padrón oficial.
-                                </p>
-                            </div>
-
-                            <div class="flex gap-4 pt-4">
-                                <button type="button" onclick="closeNuevaEmpresaForm()" class="flex-1 py-4 text-slate-500 font-bold hover:text-slate-700 transition-colors border border-slate-200 rounded-xl">Cancelar</button>
-                                <button type="submit" class="flex-1 py-4 bg-porsche-accent text-white font-bold rounded-xl shadow-lg shadow-porsche-accent/20">Registrar Empresa</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-            document.getElementById('formNuevaEmpresa').addEventListener('submit', handleNuevaEmpresaSubmit);
+        // Alternar entre seleccionar empresa existente y registrar una nueva (inline)
+        function isNuevaEmpresaMode() {
+            const nuevaMode = document.getElementById('empresaNuevaMode');
+            return !!(nuevaMode && !nuevaMode.classList.contains('hidden'));
         }
 
-        function closeNuevaEmpresaForm() {
-            const m = document.getElementById('modalNuevaEmpresa');
-            if (m) m.remove();
+        function toggleNuevaEmpresaMode(active) {
+            const selectMode = document.getElementById('empresaSelectMode');
+            const nuevaMode = document.getElementById('empresaNuevaMode');
+            const empresaSelect = document.getElementById('empresa_id');
+            const nombreInput = document.getElementById('nueva_empresa_nombre');
+            if (!selectMode || !nuevaMode) return;
+
+            if (active) {
+                selectMode.classList.add('hidden');
+                nuevaMode.classList.remove('hidden');
+                if (empresaSelect) empresaSelect.value = '';
+                const errSelect = document.getElementById('empresa_id-error');
+                if (errSelect) errSelect.textContent = '';
+                if (nombreInput) setTimeout(() => nombreInput.focus(), 50);
+            } else {
+                nuevaMode.classList.add('hidden');
+                selectMode.classList.remove('hidden');
+                if (nombreInput) nombreInput.value = '';
+                const errNueva = document.getElementById('nueva_empresa_nombre-error');
+                if (errNueva) errNueva.textContent = '';
+            }
         }
 
-        async function handleNuevaEmpresaSubmit(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData.entries());
-            data.activo = 0;
-            data.destacado = 0;
-
+        // Crear empresa pendiente y devolver objeto con su ID para enlazar al registro
+        async function crearEmpresaPendiente(payload) {
             try {
                 const response = await fetch('../api/empresas_convenio.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify({
+                        nombre_empresa: payload.nombre_empresa,
+                        categoria: payload.categoria || 'Otros',
+                        activo: 0,
+                        destacado: 0
+                    })
                 });
                 const res = await response.json();
-                if (res.success) {
-                    alert('✅ Empresa registrada con éxito. Pendiente de validación administrativa.');
-                    closeNuevaEmpresaForm();
-                    loadEmpresas();
-                } else {
-                    alert('❌ Error: ' + (res.message || 'No se pudo completar el registro'));
+                if (res && res.success && res.data && res.data.id) {
+                    return { id: res.data.id, nombre: res.data.nombre_empresa };
                 }
-            } catch (err) { alert('❌ Error de red al registrar empresa'); }
+                const msg = (res && (res.message || res.error)) || 'No se pudo registrar la empresa';
+                const errDiv = document.getElementById('nueva_empresa_nombre-error');
+                if (errDiv) { errDiv.textContent = msg; errDiv.style.color = '#ef4444'; }
+                return null;
+            } catch (err) {
+                console.error('Error creando empresa pendiente:', err);
+                const errDiv = document.getElementById('nueva_empresa_nombre-error');
+                if (errDiv) { errDiv.textContent = 'Error de red al registrar la empresa'; errDiv.style.color = '#ef4444'; }
+                return null;
+            }
         }
     </script>
 </body>

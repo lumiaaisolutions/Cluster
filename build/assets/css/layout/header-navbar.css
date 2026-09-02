@@ -2,12 +2,12 @@
 
 /* Professional Slate Premium with Claut Red Theme Variables */
 :root {
-  --claut-bg-main: #1f232a;
-  --claut-bg-surface: #252a32;
-  --claut-bg-secondary: #2d333b;
-  --claut-bg-tertiary: #363d47;
-  --claut-bg-header: rgba(31, 35, 42, 0.96);
-  --claut-bg-nav: rgba(37, 42, 50, 0.99);
+  --claut-bg-main: #09090b;
+  --claut-bg-surface: #101013;
+  --claut-bg-secondary: #16161a;
+  --claut-bg-tertiary: #1e1e24;
+  --claut-bg-header: rgba(9, 9, 11, 0.92);
+  --claut-bg-nav: rgba(16, 16, 19, 0.98);
 
   --claut-text-primary: #f8fafc;
   --claut-text-secondary: #cbd5e1;
@@ -21,11 +21,11 @@
   --claut-red-dark: #A01E23;
   --claut-red-rgb: 199, 37, 43;
 
-  --claut-border-light: rgba(15, 23, 42, 0.06);
-  --claut-border-medium: rgba(15, 23, 42, 0.12);
-  --claut-divider: rgba(15, 23, 42, 0.08);
+  --claut-border-light: rgba(255, 255, 255, 0.08);
+  --claut-border-medium: rgba(255, 255, 255, 0.14);
+  --claut-divider: rgba(255, 255, 255, 0.08);
 
-  --header-height: 64px;
+  --header-height: 80px;
 }
 
 /* Header Horizontal Premium con Menú Integrado */
@@ -75,11 +75,31 @@
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   padding: var(--space-2);
-  border-radius: 12px;
+  border-radius: 0;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
-  overflow: hidden;
+  z-index: 1;
+  overflow: visible;
 }
+
+/* Difuminado blanco→negro detrás del logo — se ancla a .claut-header
+   (altura completa del header) y no a .claut-header-logo (más bajo por
+   el padding del botón), para que el degradado llegue de borde a borde
+   sin dejar un filo/línea horizontal contra el fondo oscuro. Ancho fijo
+   en px, no depende del contenido ni del viewport. Ver dashboard.html
+   (mismo componente, duplicado ahí por ser un archivo monolítico aparte). */
+.claut-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 340px;
+  z-index: 0;
+  background: linear-gradient(90deg, #ffffff 0%, #d4d4d8 14%, #52525b 32%, #18181b 55%, transparent 78%);
+  pointer-events: none;
+}
+.claut-header-nav, .claut-header-actions { position: relative; z-index: 1; }
 
 .claut-header-logo:hover {
   color: var(--claut-red);
@@ -94,9 +114,9 @@
 }
 
 .claut-header-logo img {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -416,11 +436,14 @@
 
 /* Logo pulse ring on hover */
 .claut-header-logo {
-  gap: 10px !important;
+  gap: 0.85rem !important;
+  padding: 0.35rem 0.35rem !important;
 }
 
 .claut-header-logo img {
-  border-radius: 10px !important;
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 50% !important;
   box-shadow: 0 0 0 0 rgba(199, 37, 43, 0.4) !important;
   transition: box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.3s ease !important;
 }
@@ -565,4 +588,18 @@
   #adminPanelButton a {
     padding: 0.5rem !important;
   }
+}
+
+/* =====================================================
+   CLAUT ICON RAIL — hueco para el riel vertical (escritorio)
+   En páginas que cargan claut-icon-rail.css, el contenido
+   necesita respirar a la izquierda para no quedar debajo del
+   riel flotante. En móvil el riel se vuelve tab-bar inferior
+   y no ocupa espacio horizontal, por eso el padding es solo
+   ≥1025px (mismo breakpoint que usa el propio riel).
+   .claut-main es el contenedor que las 7 páginas comparten
+   siempre (algunas además anidan .main-content-wrapper adentro,
+   por eso NO se aplica ahí también — duplicaría el padding). */
+@media (min-width: 1025px) {
+  .claut-main { padding-left: 134px; }
 }

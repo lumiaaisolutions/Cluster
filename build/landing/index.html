@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clúster Metropolitano — CDMX · EDOMEX · HGO</title>
+<meta name="description" content="Motor de vinculación de la industria automotriz en el centro de México. EDOMEX · CDMX · Hidalgo.">
+<meta name="theme-color" content="#07080A">
+<link rel="icon" type="image/png" href="/landing/assets/img/logo.png">
+<link rel="apple-touch-icon" href="/landing/assets/img/logo.png">
+<meta property="og:title" content="Clúster Metropolitano">
+<meta property="og:description" content="Motor de vinculación de la industria automotriz en el centro de México.">
+<meta property="og:image" content="/landing/assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/landing/assets/css/tokens.css">
+<link rel="stylesheet" href="/landing/assets/css/layout.css">
+<link rel="stylesheet" href="/landing/assets/css/sections.css">
+<link rel="stylesheet" href="/landing/assets/css/legibility.css">
+<link rel="stylesheet" href="/landing/assets/css/extras.css">
+<link rel="stylesheet" href="/landing/assets/css/cta-pro.css">
+<link rel="stylesheet" href="/landing/assets/css/scrollfx.css">
+<link rel="stylesheet" href="/landing/assets/css/responsive.css">
+<link rel="stylesheet" href="/landing/assets/css/footer-light.css?v=20260901a">
+<link rel="stylesheet" href="/landing/assets/css/menu-overlay.css?v=20260831i">
+</head>
+<body>
+
+<!-- Scroll progress bar -->
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<canvas id="sequence-canvas" aria-hidden="true"></canvas>
+<div class="canvas-stars" aria-hidden="true"></div>
+<div class="canvas-vignette" aria-hidden="true"></div>
+
+<header class="nav" data-screen-label="Nav">
+  <div class="wrap nav-row">
+    <a href="#top" class="brand" aria-label="Clúster Metropolitano">
+      <img src="/landing/assets/img/logo.png" alt="Clúster Metropolitano" class="brand-logo">
+    </a>
+    <div class="nav-actions">
+      <button id="lang-toggle" class="lang-btn" aria-label="Idioma"><span data-lang-current>ES</span></button>
+      <a href="/pages/sign-in.html" class="btn btn-ghost" style="padding:10px 18px;font-size:13px;" data-i18n="nav.login">Iniciar sesión</a>
+      <a href="#contacto" class="btn btn-red" style="padding:10px 18px;font-size:13px;" data-magnetic data-i18n="nav.join">Únete</a>
+      <button id="menu-toggle" class="menu-btn" aria-haspopup="true" aria-expanded="false" aria-controls="menu-overlay">
+        <span class="menu-btn-label" data-i18n="nav.menu">Menú</span>
+        <span class="menu-btn-icon"><span class="bar"></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Menú overlay full-screen -->
+<div class="menu-overlay" id="menu-overlay" role="dialog" aria-modal="true" aria-label="Menú principal">
+  <div class="menu-overlay-visual" aria-hidden="true">
+    <div class="menu-col up">
+      <div class="menu-col-track">
+        <img src="/landing/assets/sequence/ezgif-frame-002.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-011.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-020.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-029.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-038.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-047.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-056.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-065.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-074.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-002.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-011.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-020.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-029.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-038.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-047.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-056.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-065.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-074.jpg" alt="" loading="lazy">
+      </div>
+    </div>
+    <div class="menu-col down">
+      <div class="menu-col-track">
+        <img src="/landing/assets/sequence/ezgif-frame-155.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-146.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-137.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-128.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-119.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-110.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-101.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-092.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-083.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-155.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-146.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-137.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-128.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-119.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-110.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-101.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-092.jpg" alt="" loading="lazy">
+        <img src="/landing/assets/sequence/ezgif-frame-083.jpg" alt="" loading="lazy">
+      </div>
+    </div>
+  </div>
+  <nav class="menu-overlay-nav">
+    <button class="menu-close" id="menu-close" aria-label="Cerrar menú">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="menu-eyebrow">Clúster Metropolitano · CDMX · EDOMEX · Hidalgo</div>
+    <ul class="menu-links">
+      <li style="--md:.05s"><a href="#top" data-menu-link><span class="n">01</span> <span data-i18n="nav.home">Inicio</span></a></li>
+      <li style="--md:.09s"><a href="#about" data-menu-link><span class="n">02</span> <span data-i18n="nav.about">Nosotros</span></a></li>
+      <li style="--md:.13s"><a href="#sectores" data-menu-link><span class="n">03</span> <span data-i18n="nav.sectors">Sectores</span></a></li>
+      <li style="--md:.17s"><a href="#beneficios" data-menu-link><span class="n">04</span> <span data-i18n="nav.benefits">Beneficios</span></a></li>
+      <li style="--md:.21s"><a href="#eventos" data-menu-link><span class="n">05</span> <span data-i18n="nav.events">Eventos</span></a></li>
+      <li style="--md:.25s"><a href="#contacto" data-menu-link><span class="n">06</span> <span data-i18n="nav.contact">Contacto</span></a></li>
+    </ul>
+    <div class="menu-foot">
+      <a href="/pages/sign-in.html" class="btn btn-ghost" data-i18n="nav.login">Iniciar sesión</a>
+      <a href="#contacto" class="btn btn-red" data-magnetic data-menu-link data-i18n="nav.join">Únete al clúster</a>
+      <div class="menu-foot-social">
+        <a href="mailto:atencion@clautmetropolitano.mx">Contacto</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<main id="main">
+
+  <!-- ============== STAGE: hero + stats + sectores tienen secuencia detrás ============== -->
+  <div class="stage">
+
+    <!-- HERO -->
+    <section id="top" class="hero" data-screen-label="01 Hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-meta" data-reveal>
+              <span><span class="pip"></span> <span data-i18n="hero.kicker">Clúster Automotriz Metropolitano</span></span>
+            </div>
+            <h1 class="hero-title">
+              <span class="line"><span style="--rd:.05s" data-i18n="hero.title1">Motor de</span></span>
+              <span class="line"><span style="--rd:.18s" data-i18n="hero.title2"><em>vinculación</em></span></span>
+              <span class="line"><span style="--rd:.32s" data-i18n="hero.title3">automotriz.</span></span>
+            </h1>
+          </div>
+          <div class="hero-side" data-reveal style="--rd:.5s">
+            <p class="lead" data-i18n="hero.lead">Conectamos empresas, talento y tecnología en la zona metropolitana del Valle de México, CDMX e Hidalgo. La red más sólida de la industria, una sola plataforma.</p>
+            <div class="hero-cta">
+              <a href="#contacto" class="btn btn-red btn-lg" data-magnetic>
+                <span data-i18n="hero.cta1">Únete al clúster</span>
+                <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </a>
+              <a href="/pages/sign-in.html" class="btn btn-ghost btn-lg" data-i18n="hero.cta2">Iniciar sesión</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-hint">scroll · ensambla</div>
+      <div class="hero-bottom-bar">
+        <div><strong data-i18n="hero.bar1">Estado de México</strong></div>
+        <div><strong data-i18n="hero.bar2">Ciudad de México</strong></div>
+        <div><strong data-i18n="hero.bar3">Hidalgo</strong></div>
+        <div><span data-i18n="hero.bar4">A.C. 501(c)</span></div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats section tight" id="stats" data-screen-label="02 Stats">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <div>
+            <div class="kicker"><span class="num">01</span> <span data-i18n="stats.kicker">Por los números</span></div>
+            <h2 class="display md" style="margin-top:18px" data-i18n="stats.title">Una red que mueve la industria.</h2>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat" data-reveal>
+            <div class="stat-num"><span data-counter="300">0</span><span class="suffix">+</span></div>
+            <p class="stat-label" data-i18n="stats.l1">Empresas asociadas a la red activa del clúster.</p>
+            <div class="stat-meta"><span class="tabular">↗ +18% YoY</span><span class="stat-bar" style="--bar-empty:10%"></span></div>
+          </div>
+          <div class="stat" data-reveal style="--rd:.12s">
+            <div class="stat-num"><span data-counter="13">0</span><span class="suffix">M</span></div>
+            <p class="stat-label" data-i18n="stats.l2">Fuerza laboral calificada en la zona metropolitana.</p>
+            <div class="stat-meta"><span class="tabular">47% del país</span><span class="stat-bar" style="--bar-empty:53%"></span></div>
+          </div>
+          <div class="stat" data-reveal style="--rd:.24s">
+            <div class="stat-num"><span data-counter="11">0</span></div>
+            <p class="stat-label" data-i18n="stats.l3">Años conectando proveedores Tier 1, 2 y 3.</p>
+            <div class="stat-meta"><span class="tabular">Desde 2014</span><span class="stat-bar" style="--bar-empty:40%"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT / QUIENES -->
+    <section class="section" id="about" data-screen-label="03 About">
+      <div class="wrap">
+        <div class="section-head">
+          <div data-reveal>
+            <div class="kicker"><span class="num">02</span> <span data-i18n="about.kicker">Quiénes somos</span></div>
+            <h2 class="display lg" style="margin-top:24px" data-i18n="about.title">El nodo central del ecosistema automotriz mexicano.</h2>
+          </div>
+          <div class="meta" data-reveal style="--rd:.15s">
+            <p class="lead" data-i18n="about.lead">Organización civil con 11 años vinculando OEMs, proveedores, gobierno y academia.</p>
+          </div>
+        </div>
+        <div class="quienes-content">
+          <div data-reveal>
+            <div class="kicker no-line mono">PILARES</div>
+          </div>
+          <div class="pillar-list">
+            <div class="pillar" data-reveal>
+              <div class="pillar-num">P/01</div>
+              <div>
+                <h3 data-i18n="about.p1.h">Vinculación estratégica</h3>
+                <p data-i18n="about.p1.p">OEMs, proveedores, gobierno y academia bajo un solo techo.</p>
+              </div>
+            </div>
+            <div class="pillar" data-reveal style="--rd:.08s">
+              <div class="pillar-num">P/02</div>
+              <div>
+                <h3 data-i18n="about.p2.h">Inteligencia de mercado</h3>
+                <p data-i18n="about.p2.p">Reportes sectoriales y análisis de competitividad regional.</p>
+              </div>
+            </div>
+            <div class="pillar" data-reveal style="--rd:.16s">
+              <div class="pillar-num">P/03</div>
+              <div>
+                <h3 data-i18n="about.p3.h">Desarrollo de capital humano</h3>
+                <p data-i18n="about.p3.p">Programas certificados para el talento de Industria 4.0.</p>
+              </div>
+            </div>
+            <div class="pillar" data-reveal style="--rd:.24s">
+              <div class="pillar-num">P/04</div>
+              <div>
+                <h3 data-i18n="about.p4.h">Misiones comerciales</h3>
+                <p data-i18n="about.p4.p">Ferias internacionales y misiones B2B para abrir mercados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTORES -->
+    <section class="section" id="sectores" data-screen-label="04 Sectores">
+      <div class="wrap">
+        <div class="section-head">
+          <div data-reveal>
+            <div class="kicker"><span class="num">03</span> <span data-i18n="sectors.kicker">Cadena de valor</span></div>
+            <h2 class="display lg" style="margin-top:24px" data-i18n="sectors.title">Toda la industria, en un solo ecosistema.</h2>
+          </div>
+          <div class="meta" data-reveal style="--rd:.15s">
+            <p class="lead" data-i18n="sectors.lead">Desde la materia prima hasta el ensamble final, los servicios postventa y la electromovilidad. 24 sectores conectados.</p>
+          </div>
+        </div>
+
+        <div class="sectores-bar" data-reveal>
+          <div class="search-input">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="sector-search" type="text" placeholder="Buscar sector…" data-i18n-attr="placeholder:sectors.search" />
+          </div>
+          <button class="chip active" data-filter="all">Todos</button>
+          <button class="chip" data-filter="manuf">Manufactura</button>
+          <button class="chip" data-filter="elec">Electrónica</button>
+          <button class="chip" data-filter="serv">Servicios</button>
+        </div>
+
+        <div class="sectores-grid">
+          <div class="sector-card" data-cat="manuf" data-reveal><div class="num">01</div><div class="name">Estampado y forja</div><div class="meta">42 empresas</div></div>
+          <div class="sector-card" data-cat="manuf" data-reveal style="--rd:.04s"><div class="num">02</div><div class="name">Inyección de plásticos</div><div class="meta">38 empresas</div></div>
+          <div class="sector-card" data-cat="elec" data-reveal style="--rd:.08s"><div class="num">03</div><div class="name">Arneses y conectores</div><div class="meta">26 empresas</div></div>
+          <div class="sector-card" data-cat="manuf" data-reveal style="--rd:.12s"><div class="num">04</div><div class="name">Fundición de aluminio</div><div class="meta">19 empresas</div></div>
+          <div class="sector-card" data-cat="elec" data-reveal style="--rd:.04s"><div class="num">05</div><div class="name">Sensores e IoT</div><div class="meta">21 empresas</div></div>
+          <div class="sector-card" data-cat="manuf" data-reveal style="--rd:.08s"><div class="num">06</div><div class="name">Tratamiento térmico</div><div class="meta">14 empresas</div></div>
+          <div class="sector-card" data-cat="manuf" data-reveal style="--rd:.12s"><div class="num">07</div><div class="name">Mecanizado CNC</div><div class="meta">35 empresas</div></div>
+          <div class="sector-card" data-cat="serv" data-reveal style="--rd:.16s"><div class="num">08</div><div class="name">Logística y aduanas</div><div class="meta">22 empresas</div></div>
+          <div class="sector-card" data-cat="manuf" data-reveal><div class="num">09</div><div class="name">Pintura y recubrimientos</div><div class="meta">18 empresas</div></div>
+          <div class="sector-card" data-cat="elec" data-reveal style="--rd:.04s"><div class="num">10</div><div class="name">Electromovilidad</div><div class="meta">12 empresas</div></div>
+          <div class="sector-card" data-cat="manuf" data-reveal style="--rd:.08s"><div class="num">11</div><div class="name">Sistemas de frenado</div><div class="meta">16 empresas</div></div>
+          <div class="sector-card" data-cat="serv" data-reveal style="--rd:.12s"><div class="num">12</div><div class="name">Ingeniería y diseño</div><div class="meta">29 empresas</div></div>
+          <div class="sector-card" data-cat="manuf" data-reveal><div class="num">13</div><div class="name">Asientos e interiores</div><div class="meta">17 empresas</div></div>
+          <div class="sector-card" data-cat="elec" data-reveal style="--rd:.04s"><div class="num">14</div><div class="name">Iluminación LED</div><div class="meta">11 empresas</div></div>
+          <div class="sector-card" data-cat="manuf" data-reveal style="--rd:.08s"><div class="num">15</div><div class="name">Suspensión y chasis</div><div class="meta">23 empresas</div></div>
+          <div class="sector-card" data-cat="serv" data-reveal style="--rd:.12s"><div class="num">16</div><div class="name">Calidad y certificación</div><div class="meta">15 empresas</div></div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /stage -->
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>300+ empresas asociadas <em class="dot">●</em> EDOMEX · CDMX · HIDALGO <em class="dot">●</em> 11 años de operación <em class="dot">●</em> 13M de fuerza laboral <em class="dot">●</em> IATF 16949 · ISO 9001 · VDA 6.3 <em class="dot">●</em></span>
+      <span>300+ empresas asociadas <em class="dot">●</em> EDOMEX · CDMX · HIDALGO <em class="dot">●</em> 11 años de operación <em class="dot">●</em> 13M de fuerza laboral <em class="dot">●</em> IATF 16949 · ISO 9001 · VDA 6.3 <em class="dot">●</em></span>
+    </div>
+  </div>
+
+  <!-- UNIVERSO CLAUTMET -->
+  <section class="section" id="beneficios" data-bg="solid" data-screen-label="05 Universo">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <div class="kicker"><span class="num">04</span> <span data-i18n="univ.kicker">Universo Clúster Intranet</span></div>
+          <h2 class="display lg" style="margin-top:24px" data-i18n="univ.title">Plataforma de contactos con empresas del ámbito nacional e internacional.</h2>
+        </div>
+        <div class="meta" data-reveal style="--rd:.15s">
+          <p class="lead" data-i18n="univ.lead">Seis áreas operativas, un solo acceso.</p>
+        </div>
+      </div>
+
+      <div class="beneficios-grid">
+        <article class="benefit" data-tilt data-reveal>
+          <div class="benefit-num">01</div>
+          <h3 data-i18n="univ.b1.t">Ingeniería</h3>
+          <p data-i18n="univ.b1.d">Acompañamiento técnico en proyectos de mejora y transferencia tecnológica.</p>
+          <div class="benefit-tags"><span class="benefit-tag">Técnica</span><span class="benefit-tag">Movilidad</span></div>
+        </article>
+        <article class="benefit" data-tilt data-reveal style="--rd:.1s">
+          <div class="benefit-num">02</div>
+          <h3 data-i18n="univ.b2.t">Cooperación internacional</h3>
+          <p data-i18n="univ.b2.d">Vínculo con gobiernos, academias y entidades globales.</p>
+          <div class="benefit-tags"><span class="benefit-tag">Global</span><span class="benefit-tag">Vinculación</span></div>
+        </article>
+        <article class="benefit" data-tilt data-reveal style="--rd:.2s">
+          <div class="benefit-num">03</div>
+          <h3 data-i18n="univ.b3.t">Mejora y calidad</h3>
+          <p data-i18n="univ.b3.d">Mejores prácticas y auditorías cruzadas en la cadena de valor.</p>
+          <div class="benefit-tags"><span class="benefit-tag">Calidad</span><span class="benefit-tag">Auditoría</span></div>
+        </article>
+        <article class="benefit" data-tilt data-reveal>
+          <div class="benefit-num">04</div>
+          <h3 data-i18n="univ.b4.t">Procesos de fabricación</h3>
+          <p data-i18n="univ.b4.d">Espacios de trabajo entre OEMs y proveedores Tier 1, 2 y 3.</p>
+          <div class="benefit-tags"><span class="benefit-tag">OEM</span><span class="benefit-tag">Tier 1·2·3</span></div>
+        </article>
+        <article class="benefit" data-tilt data-reveal style="--rd:.1s">
+          <div class="benefit-num">05</div>
+          <h3 data-i18n="univ.b5.t">Capacitación</h3>
+          <p data-i18n="univ.b5.d">Mesas de trabajo con academias para formar talento automotriz.</p>
+          <div class="benefit-tags"><span class="benefit-tag">Talento</span><span class="benefit-tag">Academia</span></div>
+        </article>
+        <article class="benefit" data-tilt data-reveal style="--rd:.2s">
+          <div class="benefit-num">06</div>
+          <h3 data-i18n="univ.b6.t">Afiliación</h3>
+          <p data-i18n="univ.b6.d">Afilia tu empresa a la red automotriz del centro del país.</p>
+          <div class="benefit-tags"><span class="benefit-tag">Membresía</span><span class="benefit-tag">Red</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLAUT METROPOLITANO -->
+  <section class="section invert-on-scroll" data-bg="solid" data-screen-label="06 ClautMet">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <div class="kicker"><span class="num">05</span> <span data-i18n="clautmet.kicker">ClautMetropolitano</span></div>
+          <h2 class="display lg" style="margin-top:24px" data-i18n="clautmet.title">Conócenos mejor.</h2>
+        </div>
+        <div class="meta" data-reveal style="--rd:.15s">
+          <p class="lead">ClautMetropolitano · ClautEdoMex · ClautMéxico · ClautHgo</p>
+        </div>
+      </div>
+      <div class="clautmet" data-reveal>
+        <p class="clautmet-lead" data-i18n="clautmet.lead" data-i18n-html><strong>11 años de experiencia</strong> ensamblando a los principales actores de la industria automotriz del centro del país.</p>
+        <div class="clautmet-grid">
+          <div class="clautmet-cell"><div class="k">11+</div><div class="l" data-i18n="clautmet.s1">Años de experiencia</div></div>
+          <div class="clautmet-cell"><div class="k">4</div><div class="l" data-i18n="clautmet.s2">Capítulos regionales</div></div>
+          <div class="clautmet-cell"><div class="k">A.C.</div><div class="l" data-i18n="clautmet.s3">Organización civil</div></div>
+          <div class="clautmet-cell"><div class="k">MX</div><div class="l" data-i18n="clautmet.s4">Centro del país</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTOS -->
+  <section class="section" id="eventos" data-bg="solid" data-screen-label="06 Eventos">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <div class="kicker"><span class="num">06</span> <span data-i18n="events.kicker">Próximos encuentros</span></div>
+          <h2 class="display lg" style="margin-top:24px" data-i18n="events.title">Agenda 2026.</h2>
+        </div>
+      </div>
+      <div class="eventos-list">
+        <a class="evento" data-reveal>
+          <div class="evento-date">14<span class="month">Feb · 2026</span></div>
+          <div>
+            <h3>Foro de proveeduría Tier 2 — Toluca</h3>
+            <p>Encuentro de matchmaking con compradores de OEMs alemanas y japonesas instaladas en EDOMEX.</p>
+          </div>
+          <div class="evento-meta">Toluca · Híbrido</div>
+          <div class="evento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+        </a>
+        <a class="evento" data-reveal>
+          <div class="evento-date">22<span class="month">Mar · 2026</span></div>
+          <div>
+            <h3>Cumbre de electromovilidad CDMX</h3>
+            <p>Plan estatal de transición a flotas eléctricas y el rol de la cadena de proveeduría regional.</p>
+          </div>
+          <div class="evento-meta">CDMX · Presencial</div>
+          <div class="evento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+        </a>
+        <a class="evento" data-reveal>
+          <div class="evento-date">09<span class="month">May · 2026</span></div>
+          <div>
+            <h3>Misión comercial — Hannover Messe</h3>
+            <p>Stand del clúster + agendas B2B con primer círculo de la industria europea.</p>
+          </div>
+          <div class="evento-meta">Hannover, DE · Misión</div>
+          <div class="evento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+        </a>
+        <a class="evento" data-reveal>
+          <div class="evento-date">18<span class="month">Jun · 2026</span></div>
+          <div>
+            <h3>Asamblea anual de socios</h3>
+            <p>Informe ejecutivo, votación de comités, y presentación del plan estratégico 2026–2030.</p>
+          </div>
+          <div class="evento-meta">Pachuca · Privado</div>
+          <div class="evento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAPA -->
+  <section class="section" data-bg="solid" data-screen-label="07 Mapa">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <div class="kicker"><span class="num">07</span> <span data-i18n="map.kicker">Presencia regional</span></div>
+          <h2 class="display lg" style="margin-top:24px" data-i18n="map.title">Tres estados, un solo motor.</h2>
+        </div>
+        <div class="meta" data-reveal style="--rd:.15s">
+          <p class="lead" data-i18n="map.lead">La región concentra el 47% de la actividad automotriz de México y la mayor densidad logística del país.</p>
+        </div>
+      </div>
+      <div class="mapa-wrap">
+        <div class="states-stack" data-reveal>
+          <button class="state-card" data-zona="edomex" type="button" aria-label="Estado de México">
+            <img src="/landing/assets/img/edomex.png" alt="Estado de México" loading="lazy">
+            <div class="state-card-meta">
+              <span class="k">EDOMEX</span>
+              <span class="l">Estado de México · Núcleo manufacturero</span>
+            </div>
+          </button>
+          <button class="state-card" data-zona="cdmx" type="button" aria-label="Ciudad de México">
+            <img src="/landing/assets/img/cdmx.png" alt="Ciudad de México" loading="lazy">
+            <div class="state-card-meta">
+              <span class="k">CDMX</span>
+              <span class="l">Ciudad de México · Sede operativa</span>
+            </div>
+          </button>
+          <button class="state-card" data-zona="hgo" type="button" aria-label="Hidalgo">
+            <img src="/landing/assets/img/hidalgo.png" alt="Hidalgo" loading="lazy">
+            <div class="state-card-meta">
+              <span class="k">HIDALGO</span>
+              <span class="l">Hidalgo · Logística y ensamble</span>
+            </div>
+          </button>
+        </div>
+        <div class="zona-list">
+          <div class="zona active" data-zona="cdmx" data-reveal>
+            <div class="zona-pin">CX</div>
+            <div>
+              <h4>Ciudad de México</h4>
+              <p>Sede operativa, oficinas centrales y centro de inteligencia.</p>
+            </div>
+            <div class="zona-stat">120+</div>
+          </div>
+          <div class="zona" data-zona="edomex" data-reveal style="--rd:.05s">
+            <div class="zona-pin">MX</div>
+            <div>
+              <h4>Estado de México</h4>
+              <p>Núcleo manufacturero — Toluca, Lerma, Atlacomulco, Cuautitlán.</p>
+            </div>
+            <div class="zona-stat">160+</div>
+          </div>
+          <div class="zona" data-zona="hgo" data-reveal style="--rd:.1s">
+            <div class="zona-pin">HG</div>
+            <div>
+              <h4>Hidalgo</h4>
+              <p>Logística, ensamble y crecimiento estratégico — Tula, Pachuca.</p>
+            </div>
+            <div class="zona-stat">42+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section class="section" data-bg="solid" data-screen-label="08 Blog">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <div class="kicker"><span class="num">08</span> <span data-i18n="blog.kicker">Inteligencia</span></div>
+          <h2 class="display lg" style="margin-top:24px" data-i18n="blog.title">Lo último de la industria.</h2>
+        </div>
+      </div>
+      <div class="blog-grid">
+        <article class="post featured" data-reveal>
+          <div class="post-cover"></div>
+          <div class="post-meta"><span class="cat">Reporte</span><span>14 min</span><span>Feb 2026</span></div>
+          <h3>Nearshoring 2.0: cómo el centro de México captará 40% del nuevo CapEx automotriz</h3>
+          <p>Análisis trimestral de inversión, tendencias de localización y benchmarks vs. Bajío y Norte.</p>
+        </article>
+        <article class="post" data-reveal style="--rd:.08s">
+          <div class="post-cover"></div>
+          <div class="post-meta"><span class="cat">Análisis</span><span>6 min</span></div>
+          <h3>Electromovilidad y la nueva proveeduría Tier 2</h3>
+          <p>Qué capacidades técnicas son críticas en los próximos 36 meses.</p>
+        </article>
+        <article class="post" data-reveal style="--rd:.16s">
+          <div class="post-cover"></div>
+          <div class="post-meta"><span class="cat">Caso</span><span>4 min</span></div>
+          <h3>Cómo MetalForge cerró su primer contrato OEM japonés</h3>
+          <p>El playbook de matchmaking del clúster, paso a paso.</p>
+        </article>
+        <article class="post" data-reveal style="--rd:.24s">
+          <div class="post-cover"></div>
+          <div class="post-meta"><span class="cat">Política</span><span>8 min</span></div>
+          <h3>Reglas de origen T-MEC: lo que cambia en 2026</h3>
+          <p>Implicaciones para contenido regional y proveeduría Tier 2.</p>
+        </article>
+        <article class="post" data-reveal style="--rd:.32s">
+          <div class="post-cover"></div>
+          <div class="post-meta"><span class="cat">Tech</span><span>5 min</span></div>
+          <h3>Gemelos digitales en planta: del piloto a la producción</h3>
+          <p>Lecciones de cinco implementaciones reales en el clúster.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FAQ -->
+  <section class="section" data-bg="solid" data-screen-label="09 FAQ">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <div class="kicker"><span class="num">09</span> <span data-i18n="faq.kicker">Preguntas frecuentes</span></div>
+          <h2 class="display lg" style="margin-top:24px" data-i18n="faq.title">¿Aún tienes dudas?</h2>
+        </div>
+      </div>
+      <div class="faq" data-reveal>
+        <details>
+          <summary><span><span class="faq-num">01</span>¿Quién puede asociarse al clúster?</span><div class="faq-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></summary>
+          <div class="faq-body">Cualquier empresa de la cadena de valor automotriz constituida en México: OEMs, Tier 1, 2 y 3, proveedores de servicios técnicos, logística, academia y centros de innovación.</div>
+        </details>
+        <details>
+          <summary><span><span class="faq-num">02</span>¿Cuál es el costo anual de membresía?</span><div class="faq-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></summary>
+          <div class="faq-body">La cuota se calcula según facturación anual y tier en la cadena. Solicita una propuesta a tu medida vía el formulario de contacto.</div>
+        </details>
+        <details>
+          <summary><span><span class="faq-num">03</span>¿Cómo funcionan los comités?</span><div class="faq-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></summary>
+          <div class="faq-body">Cada comité sesiona mensualmente. Tu empresa puede integrarse a uno o varios. La participación es libre para todos los socios y la minuta es compartida en la intranet.</div>
+        </details>
+        <details>
+          <summary><span><span class="faq-num">04</span>¿Cuánto tarda el proceso de afiliación?</span><div class="faq-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></summary>
+          <div class="faq-body">Entre 7 y 14 días hábiles desde el primer contacto hasta el alta en la intranet, dependiendo de la documentación.</div>
+        </details>
+        <details>
+          <summary><span><span class="faq-num">05</span>¿Qué reciben los socios además de los comités?</span><div class="faq-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div></summary>
+          <div class="faq-body">Acceso a la intranet con directorio interactivo, RFQs cerradas, reportes mensuales, descuentos en capacitación y representación en misiones internacionales.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA + FORM -->
+  <section class="cta-section invert-on-scroll" id="contacto" data-bg="solid" data-screen-label="10 CTA">
+    <div class="wrap">
+      <div class="cta-head" data-reveal>
+        <div class="kicker"><span class="num">10</span> <span data-i18n="cta.kicker">Listo para conectar</span></div>
+        <h2 class="display xl cta-title" data-i18n="cta.title">Forma parte del clúster automotriz más grande del centro de México.</h2>
+      </div>
+
+      <div class="cta-pro-grid">
+        <aside class="cta-pillars" data-reveal style="--rd:.05s">
+          <div class="cta-pillar">
+            <div class="cta-pillar-num">300<span>+</span></div>
+            <div class="cta-pillar-label" data-i18n="cta.p1">Empresas en la red</div>
+          </div>
+          <div class="cta-pillar">
+            <div class="cta-pillar-num">11<span>yr</span></div>
+            <div class="cta-pillar-label" data-i18n="cta.p2">Trayectoria</div>
+          </div>
+          <div class="cta-pillar">
+            <div class="cta-pillar-num">3<span>edo</span></div>
+            <div class="cta-pillar-label" data-i18n="cta.p3">EDOMEX · CDMX · HGO</div>
+          </div>
+          <div class="cta-pillar">
+            <div class="cta-pillar-num">&lt;24<span>h</span></div>
+            <div class="cta-pillar-label" data-i18n="cta.p4">Tiempo de respuesta</div>
+          </div>
+        </aside>
+
+        <article class="cta-card-pro" data-reveal style="--rd:.15s">
+          <div class="cta-card-pro-head">
+            <span class="cta-card-tag" data-i18n="cta.tag">Afiliación 2026</span>
+            <h3 class="cta-card-pro-title" data-i18n="cta.card.title">Inicia tu proceso de afiliación.</h3>
+            <p class="cta-card-pro-sub" data-i18n="cta.card.sub">Cuéntanos sobre tu empresa. Un asesor te contactará en menos de 24 horas con un plan a la medida según tu tier en la cadena.</p>
+          </div>
+          <ul class="cta-card-features">
+            <li data-i18n="cta.card.f1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acceso a la red activa de 300+ empresas</li>
+            <li data-i18n="cta.card.f2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Reportes mensuales e inteligencia de mercado</li>
+            <li data-i18n="cta.card.f3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Misiones B2B internacionales</li>
+            <li data-i18n="cta.card.f4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>6 comités técnicos especializados</li>
+          </ul>
+          <div class="cta-card-pro-actions">
+            <a href="/pages/sign-up.html" class="btn btn-red btn-lg cta-card-btn" data-magnetic>
+              <span data-i18n="cta.card.cta">Iniciar registro</span>
+              <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+            <a href="mailto:atencion@clautmetropolitano.mx" class="btn btn-ghost btn-lg cta-card-secondary" data-i18n="cta.card.contact">Hablar con un asesor</a>
+          </div>
+          <div class="cta-card-foot" data-i18n="cta.card.privacy">Aviso de privacidad · datos protegidos bajo LFPDPPP</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer footer--light">
+  <div class="wrap">
+    <div class="footer-lead">
+      <div class="footer-lead__brand">
+        <img src="/landing/assets/img/logo.png" alt="Clúster Metropolitano" class="brand-logo brand-logo-footer">
+        <div class="footer-lead__title">
+          <span class="footer-lead__eyebrow">Clúster Automotriz Metropolitano A.C.</span>
+          <h2 class="footer-lead__headline" data-i18n="foot.lead">Motor de vinculación entre los actores de la industria.</h2>
+        </div>
+      </div>
+      <div class="footer-lead__regions" aria-label="Regiones">
+        <span class="footer-region">EDOMEX</span>
+        <span class="footer-region__sep">·</span>
+        <span class="footer-region">CDMX</span>
+        <span class="footer-region__sep">·</span>
+        <span class="footer-region">HGO</span>
+      </div>
+    </div>
+
+    <div class="footer-grid">
+      <div class="footer-col footer-col--about">
+        <p class="footer-about" data-i18n="foot.tag">Portal del Clúster Automotriz Metropolitano A.C. — vinculación, talento e innovación para la industria automotriz de la región central de México.</p>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="foot.contact">Contacto</h5>
+        <ul class="footer-links">
+          <li><a href="mailto:atencion@clautmetropolitano.mx">atencion@clautmetropolitano.mx</a></li>
+          <li><a href="tel:+525500000000">+52 55 0000 0000</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="foot.access">Acceso</h5>
+        <ul class="footer-links">
+          <li><a href="/pages/sign-in.html" data-i18n="foot.signin">Iniciar sesión</a></li>
+          <li><a href="/pages/sign-up.html" data-i18n="foot.register">Registro</a></li>
+          <li><a href="/index.php?dashboard=1" data-i18n="foot.intranet">Intranet</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5 data-i18n="foot.legal">Legal</h5>
+        <ul class="footer-links">
+          <li><a href="/assets/Aviso%20de%20Privacidad%20230426.pdf" target="_blank" rel="noopener noreferrer" data-i18n="foot.privacy">Aviso de privacidad</a></li>
+          <li><a href="/landing/terminos.html" data-i18n="foot.terms">Términos</a></li>
+          <li><a href="/landing/cookies.html" data-i18n="foot.cookies">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© <span id="year"></span> <span data-i18n="foot.copy">Clúster Metropolitano — Todos los derechos reservados.</span></span>
+      <a href="https://lumiaaisolutions.com" target="_blank" rel="noopener noreferrer" class="footer-dev-badge">
+        <img src="/landing/assets/img/lumia-icon.png" alt="LUMIA"> Desarrollado por <strong>LUMIA</strong>
+      </a>
+      <span class="footer-meta mono">CLÚSTER INTRANET · MX</span>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/landing/assets/js/i18n.js?v=20260831i"></script>
+<script src="/landing/assets/js/sequence.js?v=20260831i"></script>
+<script src="/landing/assets/js/ui.js?v=20260831i"></script>
+<script src="/landing/assets/js/scrollfx.js?v=20260831i"></script>
+<!-- Pantalla de carga unificada del sistema (intercepta clicks en links internos) -->
+<script src="/assets/js/loading-screen.js"></script>
+<script>
+/* Scroll progress + invert-on-scroll observer */
+(function () {
+  const bar = document.querySelector('.scroll-progress');
+  function onScroll() {
+    if (!bar) return;
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const p = max > 0 ? (h.scrollTop / max) * 100 : 0;
+    bar.style.setProperty('--p', p.toFixed(2) + '%');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const invertEls = document.querySelectorAll('.invert-on-scroll');
+  if (invertEls.length) {
+    function checkInvert() {
+      const vh = window.innerHeight;
+      invertEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        // Activate when the section's top has crossed 60% of the viewport
+        // and its bottom hasn't yet left the top 20%.
+        const active = r.top < vh * 0.6 && r.bottom > vh * 0.2;
+        el.classList.toggle('is-inverted', active);
+      });
+    }
+    window.addEventListener('scroll', checkInvert, { passive: true });
+    window.addEventListener('resize', checkInvert);
+    checkInvert();
+  }
+})();
+</script>
+</body>
+</html>

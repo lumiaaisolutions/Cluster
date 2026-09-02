@@ -212,16 +212,19 @@ try {
         responderJSON(false, null, 'El email ya está registrado');
     }
     
-    // Verificar que la empresa existe si se proporcionó
+    // Verificar que la empresa existe si se proporcionó.
+    // Se permiten también empresas con activo=0 (recién registradas por el propio socio,
+    // pendientes de validación administrativa). El estado_usuario también queda 'pendiente',
+    // por lo que ambos serán aprobados en bloque por un administrador.
     if ($user_id) {
-        $empresaQuery = "SELECT id, nombre_empresa FROM empresas_convenio WHERE id = :empresa_id AND activo = 1";
+        $empresaQuery = "SELECT id, nombre_empresa, activo FROM empresas_convenio WHERE id = :empresa_id";
         $empresaStmt = $conn->prepare($empresaQuery);
         $empresaStmt->bindParam(':empresa_id', $user_id);
         $empresaStmt->execute();
-        
+
         $empresa = $empresaStmt->fetch(PDO::FETCH_ASSOC);
         if (!$empresa) {
-            responderJSON(false, null, 'La empresa seleccionada no existe o no está activa');
+            responderJSON(false, null, 'La empresa seleccionada no existe');
         }
         // Asignar nombre_empresa dinámicamente desde el socio vinculado
         $nombre_empresa = $empresa['nombre_empresa'] ?? $empresa['nombre'] ?? '';

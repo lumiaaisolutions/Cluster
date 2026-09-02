@@ -272,6 +272,36 @@
             .right-panel { display: none; }
             .left-panel  { width: 100%; }
         }
+
+        /* Botón "Volver al sitio" */
+        .back-to-site {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            color: #475569;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .back-to-site:hover {
+            color: var(--porsche-accent);
+            border-color: rgba(199, 37, 43, 0.35);
+            background: rgba(255, 255, 255, 0.85);
+        }
+        .back-to-site i {
+            font-size: 9px;
+            transition: transform 0.25s ease;
+        }
+        .back-to-site:hover i { transform: translateX(-3px); }
     </style>
 </head>
 
@@ -281,6 +311,10 @@
         <div class="left-panel">
             <div class="glass-card">
                 <div class="text-center mb-10 reveal-up">
+                    <a href="/" class="back-to-site" aria-label="Volver al sitio">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver al sitio</span>
+                    </a>
                     <img src="../assets/img/logo-ct-dark.png" alt="Logo Claut" class="w-44 mx-auto mb-6">
                     <h1 class="text-3xl font-black text-slate-800 tracking-tightest">Intranet</h1>
                     <p class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mt-1">Gestión
@@ -343,19 +377,35 @@
             
             <!-- Footer leyenda Lumia AI Solutions -->
             <style>
-              @keyframes lumiaPulseLight {
-                0% { text-shadow: 0 0 4px rgba(199,37,43,0.1); }
-                50% { text-shadow: 0 0 8px rgba(199,37,43,0.5); }
-                100% { text-shadow: 0 0 4px rgba(199,37,43,0.1); }
+              .lumia-badge-light {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.55rem 1.15rem;
+                border-radius: 999px;
+                background: #ffffff;
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                box-shadow: 0 4px 16px -4px rgba(15, 23, 42, 0.12);
+                text-decoration: none;
+                font-size: 0.8rem;
+                font-weight: 500;
+                color: #64748b;
+                pointer-events: auto;
+                transition: transform 0.18s cubic-bezier(0.23,1,0.32,1), box-shadow 0.2s ease;
               }
-              .lumia-glow-light {
+              .lumia-badge-light:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -6px rgba(15, 23, 42, 0.18); }
+              .lumia-badge-light img { width: 18px; height: 18px; }
+              .lumia-badge-light strong {
+                background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
                 font-weight: 800;
-                animation: lumiaPulseLight 2.5s infinite;
               }
             </style>
-            <div style="position: fixed; bottom: 1.5rem; left: 0; right: 0; text-align: center; font-size: 0.7rem; opacity: 0.7; letter-spacing: 0.5px; z-index: 50; pointer-events: none;">
-                <a href="https://lumiaaisolutions.com" target="_blank" class="lumia-glow-light" style="color: #475569; text-decoration: none; transition: all 0.3s ease; pointer-events: auto;" onmouseover="this.style.color='#C7252B'" onmouseout="this.style.color='#475569'">
-                    Desarrollado por Lumia AI Solutions
+            <div style="margin-top: 1.75rem; text-align: center;">
+                <a href="https://lumiaaisolutions.com" target="_blank" rel="noopener noreferrer" class="lumia-badge-light">
+                    <img src="../assets/img/lumia-icon.png" alt="LUMIA"> Desarrollado por <strong>LUMIA</strong>
                 </a>
             </div>
         </div>
@@ -567,10 +617,10 @@
         // Mensajes de verificación de cuenta
         const verifyBanner   = document.getElementById('verify-banner');
         const verifyMessages = {
-            success: '✅ ¡Correo verificado! Tu cuenta está pendiente de aprobación por un administrador.',
-            used:    '⚠️ Este enlace de verificación ya fue utilizado.',
-            expired: '⚠️ El enlace de verificación expiró. Inicia sesión para solicitar uno nuevo.',
-            invalid: '❌ Enlace de verificación inválido.'
+            success: '¡Correo verificado! Tu cuenta está pendiente de aprobación por un administrador.',
+            used:    'Este enlace de verificación ya fue utilizado.',
+            expired: 'El enlace de verificación expiró. Inicia sesión para solicitar uno nuevo.',
+            invalid: 'Enlace de verificación inválido.'
         };
 
         if (verifyParam && verifyMessages[verifyParam]) {
@@ -704,7 +754,7 @@
 
                 if (data.success) {
                     showMessage(msgEl,
-                        '✅ Si el correo está registrado, recibirás las instrucciones en breve. Revisa tu bandeja (y la carpeta de spam).',
+                        '<i class="fas fa-circle-check"></i> Si el correo está registrado, recibirás las instrucciones en breve. Revisa tu bandeja (y la carpeta de spam).',
                         'success'
                     );
                     // Ocultar el form para evitar reenvíos
@@ -734,7 +784,7 @@
                     window.history.replaceState({}, document.title, window.location.pathname);
                 } else {
                     showMessage(messageContainer,
-                        '❌ El enlace de recuperación no es válido o ha expirado. Solicita uno nuevo.',
+                        '<i class="fas fa-circle-xmark"></i> El enlace de recuperación no es válido o ha expirado. Solicita uno nuevo.',
                         'error'
                     );
                 }
@@ -756,9 +806,21 @@
             const password    = document.getElementById('newPassword').value;
             const confirm     = document.getElementById('confirmPassword').value;
 
+            // Política de contraseña fuerte (alineada con backend)
+            if (password.length < 8) {
+                showMessage(msgEl, '<i class="fas fa-circle-xmark"></i> La contraseña debe tener al menos 8 caracteres.', 'error'); return;
+            }
+            if (!/[A-Z]/.test(password)) {
+                showMessage(msgEl, '<i class="fas fa-circle-xmark"></i> Debe incluir al menos 1 mayúscula.', 'error'); return;
+            }
+            if (!/[a-z]/.test(password)) {
+                showMessage(msgEl, '<i class="fas fa-circle-xmark"></i> Debe incluir al menos 1 minúscula.', 'error'); return;
+            }
+            if (!/[0-9]/.test(password)) {
+                showMessage(msgEl, '<i class="fas fa-circle-xmark"></i> Debe incluir al menos 1 número.', 'error'); return;
+            }
             if (password !== confirm) {
-                showMessage(msgEl, '❌ Las contraseñas no coinciden.', 'error');
-                return;
+                showMessage(msgEl, '<i class="fas fa-circle-xmark"></i> Las contraseñas no coinciden.', 'error'); return;
             }
 
             resetBtn.disabled = true;
@@ -774,7 +836,7 @@
                 const data = await res.json();
 
                 if (data.success) {
-                    showMessage(msgEl, '✅ ¡Contraseña actualizada! Ahora puedes iniciar sesión.', 'success');
+                    showMessage(msgEl, '<i class="fas fa-circle-check"></i> ¡Contraseña actualizada! Ahora puedes iniciar sesión.', 'success');
                     document.getElementById('resetForm').style.display = 'none';
                     setTimeout(() => closeModal(modalReset), 2500);
                 } else {

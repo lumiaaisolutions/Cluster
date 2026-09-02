@@ -28,6 +28,10 @@ RewriteRule .* - [L]
 RewriteCond %{REQUEST_URI} ^/(api|assets|js|css|uploads)/
 RewriteRule .* - [L]
 
+# Permitir acceso directo a la landing pública (assets, uploads, index.html)
+RewriteCond %{REQUEST_URI} ^/landing/
+RewriteRule .* - [L]
+
 # Permitir acceso a archivos específicos del sistema
 RewriteCond %{REQUEST_URI} ^/(404\.html|robots\.txt|favicon\.ico|sitemap\.xml)$
 RewriteRule .* - [L]
@@ -37,10 +41,11 @@ RewriteRule .* - [L]
 RewriteCond %{REQUEST_URI} ^/admin/
 RewriteRule .* - [L]
 
-# ==== PÁGINAS DEMO PÚBLICAS ====
-# Permitir acceso a páginas demo sin autenticación
-RewriteCond %{REQUEST_URI} ^/demo_
-RewriteRule .* - [L]
+# ==== PÁGINAS DEMO (PANELES ADMIN) — PROTEGIDAS POR SESIÓN ====
+# Las demo_*.html son paneles administrativos. Se sirven a través de
+# auth-gate.php, que valida la sesión PHP del lado servidor y redirige a
+# sign-in si no hay sesión. NO restaurar el acceso directo sin autenticación.
+RewriteRule ^demo_([a-z_]+)\.html$ /auth-gate.php?page=demo_$1.html [L,QSA]
 
 # ==== CONFIGURACIONES DE RENDIMIENTO ====
 # Configuraciones de cache para optimizar rendimiento
@@ -74,6 +79,16 @@ RewriteRule .* - [L]
     Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
     Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
     Header always set Access-Control-Allow-Credentials "true"
+
+    # Content-Security-Policy — antes solo la enviaba api/upload-image.php
+    # (el resto del sitio no tenía CSP en absoluto). unsafe-inline/unsafe-eval
+    # se mantienen porque casi todos los HTML del sitio usan <script> inline
+    # y atributos onclick="" extensivamente — quitarlos exige externalizar ese
+    # JS/CSS en decenas de archivos grandes, un refactor aparte (ver
+    # docs/architecture/BACKLOG_2026-08.md), no algo seguro de hacer sin
+    # suite de pruebas. Lo que sí se endureció sin tocar código: img-src ya
+    # no acepta cualquier origen https, object-src bloqueado.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://kit.fontawesome.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com https://kit.fontawesome.com; img-src 'self' data: blob: https://cdnjs.cloudflare.com; connect-src 'self' https://ka-f.fontawesome.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'"
 </IfModule>
 
 # ==== REGLAS PARA PRETTY URLs ====

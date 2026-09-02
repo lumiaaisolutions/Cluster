@@ -1,0 +1,190 @@
+/* ============================================================
+   CLAUT WIZARD — modal de formulario multi-paso reutilizable
+   ----------------------------------------------------------------------------
+   Patrón: sidebar izquierdo con pasos numerados + línea conectora,
+   panel derecho con el contenido del paso activo. Dark theme.
+
+   USO:
+     <div class="claut-modal-backdrop claut-wizard-backdrop" id="...">
+       <div class="claut-modal claut-wizard" style="max-width:760px;">
+         <div class="claut-wizard-head">
+           <h2>Título</h2><p>Subtítulo</p>
+           <button class="claut-modal-close">×</button>
+         </div>
+         <div class="claut-wizard-body">
+           <nav class="claut-wizard-steps">
+             <button class="claut-wizard-step-btn active" data-step="1">
+               <span class="claut-wizard-step-num">1</span>
+               <span>Nombre del paso</span>
+             </button>
+             ...
+           </nav>
+           <div class="claut-wizard-panels">
+             <div class="claut-wizard-panel active" data-step="1">...</div>
+             <div class="claut-wizard-panel" data-step="2">...</div>
+           </div>
+         </div>
+         <div class="claut-wizard-foot">
+           <button class="porsche-btn porsche-btn--ghost" data-wizard-prev>Atrás</button>
+           <button class="porsche-btn" data-wizard-next>Siguiente</button>
+           <button class="porsche-btn" data-wizard-submit type="submit" hidden>Guardar</button>
+         </div>
+       </div>
+     </div>
+   Requiere assets/js/claut-wizard.js
+   ============================================================ */
+
+.claut-wizard-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.claut-wizard-backdrop.open { display: flex; }
+
+.claut-wizard {
+  background: #101013;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 1.25rem;
+  box-shadow: 0 30px 80px -12px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: clautWizardIn 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes clautWizardIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.claut-wizard-head {
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+.claut-wizard-head h2 { margin: 0; font-size: 1.15rem; font-weight: 800; color: #f8fafc; }
+.claut-wizard-head p { margin: 0.25rem 0 0; font-size: 0.8rem; color: #64748b; }
+.claut-modal-close {
+  position: absolute; top: 1.1rem; right: 1.25rem;
+  width: 32px; height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #94a3b8;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.claut-modal-close:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+.claut-wizard-body {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  flex: 1;
+  min-height: 0;
+}
+.claut-wizard-steps {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.25rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+.claut-wizard-step-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+}
+.claut-wizard-step-btn:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 1.1rem; top: 2rem; bottom: -0.9rem;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.claut-wizard-step-num {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: grid; place-items: center;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  z-index: 1;
+}
+.claut-wizard-step-btn.active { color: #f8fafc; }
+.claut-wizard-step-btn.active .claut-wizard-step-num { background: #C7252B; border-color: #C7252B; color: #fff; }
+.claut-wizard-step-btn.done .claut-wizard-step-num { background: rgba(34, 197, 94, 0.15); border-color: rgba(34,197,94,.4); color: #22c55e; }
+.claut-wizard-step-btn.done .claut-wizard-step-num::before { content: '✓'; }
+.claut-wizard-step-btn:disabled { cursor: default; opacity: 0.5; }
+
+.claut-wizard-panels { padding: 1.5rem 1.75rem; overflow-y: auto; }
+.claut-wizard-panel { display: none; flex-direction: column; gap: 1rem; }
+.claut-wizard-panel.active { display: flex; }
+.claut-wizard-panel-eyebrow {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #C7252B;
+}
+
+/* Inputs dentro del wizard (dark, reutiliza tokens ya definidos) */
+.claut-wizard label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+.claut-wizard input:not([type="checkbox"]):not([type="radio"]),
+.claut-wizard select,
+.claut-wizard textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #f8fafc;
+  font-size: 0.875rem;
+  padding: 0.65rem 0.85rem;
+}
+.claut-wizard input::placeholder, .claut-wizard textarea::placeholder { color: #64748b; }
+.claut-wizard input:focus, .claut-wizard select:focus, .claut-wizard textarea:focus {
+  outline: none; border-color: #C7252B; background: rgba(255, 255, 255, 0.08);
+}
+.claut-wizard select option { background: #101013; }
+
+.claut-wizard-foot {
+  padding: 1rem 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .claut-wizard-body { grid-template-columns: 1fr; }
+  .claut-wizard-steps { flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .claut-wizard-step-btn::after { display: none; }
+  .claut-wizard-step-btn span:last-child { display: none; }
+}

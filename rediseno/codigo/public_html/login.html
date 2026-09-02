@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="">
+  <title>Iniciar sesión — CLAUTMET</title>
+  <link rel="icon" href="/assets/img/logo/logo-light.png">
+  <link rel="preload" href="/assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/build.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+  <script>
+    var saved = localStorage.getItem('theme');
+    var prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefers ? 'dark' : 'light'));
+  </script>
+</head>
+
+<body data-density="app" class="min-h-screen flex items-center justify-center px-4 py-10">
+
+  <a href="/" class="absolute top-6 left-6 flex items-center gap-2 text-sm text-muted hover:text-text transition">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <span data-i18n="auth.back">Volver al sitio</span>
+  </a>
+
+  <div class="w-full max-w-md">
+    <div class="text-center mb-10">
+      <img src="/assets/img/logo/logo-light.png" alt="CLAUTMET" class="h-12 w-auto mx-auto mb-6">
+      <h1 class="text-3xl font-semibold tracking-tight" data-i18n="auth.welcome">Bienvenido</h1>
+      <p class="text-muted mt-2" data-i18n="auth.welcome_sub">Inicia sesión con tu cuenta CLAUTMET</p>
+    </div>
+
+    <form id="login-form" class="card space-y-5" novalidate>
+      <div>
+        <label class="block text-sm font-medium mb-2" data-i18n="auth.email">Correo electrónico</label>
+        <input type="email" name="email" required autocomplete="email" class="input"
+               data-i18n-attr="placeholder:auth.email_placeholder"
+               placeholder="tu@empresa.mx">
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label class="block text-sm font-medium" data-i18n="auth.password">Contraseña</label>
+          <a href="/recuperar.html" class="text-xs text-brand hover:underline" data-i18n="auth.forgot">¿Olvidaste tu contraseña?</a>
+        </div>
+        <input type="password" name="password" required autocomplete="current-password" class="input"
+               placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary w-full" data-magnetic>
+        <span data-i18n="auth.signin">Iniciar sesión</span>
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-muted mt-8">
+      <span data-i18n="auth.no_account">¿No tienes cuenta?</span>
+      <a href="/registro.html" class="text-brand hover:underline ml-1" data-i18n="auth.create">Crear cuenta</a>
+    </p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <script type="module">
+    import { bootstrapCsrf } from '/assets/js/core/api.js';
+    import { login, getUser } from '/assets/js/core/auth.js';
+    import { loadLang } from '/assets/js/core/i18n.js';
+    import { toast } from '/assets/js/core/toast.js';
+    import { initMagnetic } from '/assets/js/components/card-tilt.js';
+
+    (async () => {
+      await Promise.all([bootstrapCsrf(), loadLang()]);
+      initMagnetic();
+
+      // Si ya hay sesión, redirigir
+      const u = await getUser();
+      if (u) location.href = '/app/dashboard.html';
+
+      // Mensaje según querystring
+      const reason = new URLSearchParams(location.search).get('reason');
+      if (reason === 'expired') toast.info('Tu sesión expiró. Inicia de nuevo.');
+      if (reason === 'auth')    toast.info('Necesitas iniciar sesión.');
+    })();
+
+    document.getElementById('login-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      if (e.target.dataset.busy === '1') return;
+      e.target.dataset.busy = '1';
+
+      const fd = new FormData(e.target);
+      const email = (fd.get('email') || '').trim();
+      const password = fd.get('password') || '';
+
+      if (!email || !password) {
+        toast.error('Completa todos los campos.');
+        e.target.dataset.busy = '0';
+        return;
+      }
+
+      const r = await login(email, password);
+      if (r?.success) {
+        toast.success('Bienvenido.');
+        setTimeout(() => location.href = '/app/dashboard.html', 600);
+      } else {
+        toast.error(r?.message || 'No pudimos iniciar sesión. Verifica tus datos.');
+        e.target.dataset.busy = '0';
+      }
+    });
+  </script>
+</body>
+</html>

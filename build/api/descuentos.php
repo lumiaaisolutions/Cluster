@@ -515,7 +515,7 @@ try {
 
                     NotificationMailer::dispatch(
                         'nuevo_descuento',
-                        "🏷️ Nuevo descuento disponible: $descNombre",
+                        "Nuevo descuento disponible: $descNombre",
                         "La empresa «$empNombre» ha publicado un nuevo descuento.\n\n" .
                         "Descuento: $descNombre\n" .
                         ($porcentaje ? "Beneficio: $porcentaje% de descuento\n" : '') .

@@ -23,7 +23,7 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
     
-    echo "<p>✓ Conexión establecida correctamente</p>";
+    echo "<p><i class=\"fas fa-check\"></i> Conexión establecida correctamente</p>";
     
     // Leer y ejecutar el script SQL
     $sqlFile = __DIR__ . '/install_database.sql';
@@ -52,7 +52,7 @@ try {
         }
     }
     
-    echo "<p>✓ Script SQL ejecutado correctamente</p>";
+    echo "<p><i class=\"fas fa-check\"></i> Script SQL ejecutado correctamente</p>";
     
     // Verificar que las tablas se crearon correctamente
     $pdo->exec("USE {$config['database']}");
@@ -68,9 +68,9 @@ try {
             // Contar registros
             $countStmt = $pdo->query("SELECT COUNT(*) as count FROM $table");
             $count = $countStmt->fetch()['count'];
-            echo "<li>✓ Tabla <strong>$table</strong>: $count registros</li>";
+            echo "<li><i class=\"fas fa-check\"></i> Tabla <strong>$table</strong>: $count registros</li>";
         } else {
-            echo "<li>✗ Tabla <strong>$table</strong>: NO ENCONTRADA</li>";
+            echo "<li><i class=\"fas fa-xmark\"></i> Tabla <strong>$table</strong>: NO ENCONTRADA</li>";
         }
     }
     
@@ -81,24 +81,24 @@ try {
     $adminCount = $adminStmt->fetch()['count'];
     
     if ($adminCount > 0) {
-        echo "<p>✓ Usuario administrador creado correctamente</p>";
+        echo "<p><i class=\"fas fa-check\"></i> Usuario administrador creado correctamente</p>";
         echo "<p><strong>Credenciales de administrador:</strong></p>";
         echo "<ul>";
         echo "<li>Email: admin@clúster.com</li>";
         echo "<li>Contraseña: password</li>";
         echo "</ul>";
     } else {
-        echo "<p style='color: red;'>✗ No se encontró usuario administrador</p>";
+        echo "<p style='color: red;'><i class=\"fas fa-xmark\"></i> No se encontró usuario administrador</p>";
     }
-    
+
     echo "<hr>";
-    echo "<h3>✅ Base de datos inicializada correctamente</h3>";
+    echo "<h3><i class=\"fas fa-circle-check\"></i> Base de datos inicializada correctamente</h3>";
     echo "<p>La aplicación está lista para usar.</p>";
-    echo "<p><a href='../index.html' style='background: #3B82F6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Ir al Dashboard</a></p>";
+    echo "<p><a href='../index.php' style='background: #3B82F6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Ir al Dashboard</a></p>";
     echo "<p><a href='../pages/sign-in.html' style='background: #10B981; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Iniciar Sesión</a></p>";
     
 } catch (Exception $e) {
-    echo "<p style='color: red;'>❌ Error: " . $e->getMessage() . "</p>";
+    echo "<p style='color: red;'><i class=\"fas fa-circle-xmark\"></i> Error: " . $e->getMessage() . "</p>";
     echo "<p>Por favor, verifica la configuración de la base de datos en includes/config.php</p>";
 }
 ?>

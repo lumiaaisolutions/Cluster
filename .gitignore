@@ -27,6 +27,7 @@ temp/
 
 # Rate limiting data
 /tmp/rate_limits/
+build/storage/rate-limit/
 
 # Backups
 *.backup

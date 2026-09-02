@@ -26,6 +26,8 @@
     <!-- FullCalendar v6 -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/locales/es.global.min.js'></script>
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
     <style>
         /* 
         =================================================================
@@ -1043,91 +1045,99 @@
     </style>
 </head>
 
-<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default text-slate-500">
+<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default text-slate-500 claut-dark claut-skin">
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidenav-overlay" id="sidenavOverlay"></div>
 
     <!-- Sidebar Elite -->
-    <aside class="porsche-sidebar fixed inset-y-0 flex flex-col justify-between" id="sidebar">
-        <div>
-            <div class="px-8 py-10 flex flex-col gap-6">
-                <div class="flex items-center gap-4">
-                    <div class="relative group">
-                        <div
-                            class="absolute -inset-1 bg-gradient-to-r from-orange-600 to-orange-400 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200">
-                        </div>
-                        <div
-                            class="relative w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 shadow-2xl overflow-hidden">
-                            <img src="./assets/img/logo-ct.png" alt="Logo" class="w-8 h-8 object-contain">
-                        </div>
-                    </div>
-                    <div>
-                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-1.5 text-white">
-                            Intranet Admin
-                        </p>
-                    </div>
-                </div>
-                <div class="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+    <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
+        <div class="claut-admin-sidebar-brand">
+            <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
+            <span class="claut-admin-sidebar-title">Clúster Admin</span>
+        </div>
+        <div class="claut-admin-sidebar-divider"></div>
+
+        <nav class="claut-admin-nav">
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">General</p>
+                <a href="admin-panel.html?login=success" class="claut-admin-nav-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-shield-halved"></i><span>Panel Admin</span>
+                </a>
+                <a href="dashboard.html" class="claut-admin-nav-item">
+                    <i class="fas fa-house"></i><span>Dashboard</span>
+                </a>
             </div>
 
-            <nav class="mt-4">
-                <a href="admin-panel.html" class="porsche-nav-item active" onclick="showSection('dashboard')">
-                    <i class="fas fa-home"></i>
-                    <span>Panel Admin</span>
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Ecosistema de módulos</p>
+                <a href="admin/banner-admin-mejorado.php" class="claut-admin-nav-item">
+                    <i class="fas fa-images"></i><span>Banners</span>
                 </a>
-                <a href="dashboard.html" class="porsche-nav-item" onclick="showSection('Admin')">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
+                <a href="demo_boletines.html" class="claut-admin-nav-item">
+                    <i class="fas fa-newspaper"></i><span>Boletines</span>
                 </a>
-                <a href="gestionar_usuarios.php" class="porsche-nav-item" onclick="showSection('users')">
-                    <i class="fas fa-users"></i>
-                    <span>Usuarios</span>
+                <a href="demo_documentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-folder-open"></i><span>Documentos</span>
                 </a>
-                <a href="demo_empresas.html" class="porsche-nav-item" onclick="showSection('companies')">
-                    <i class="fas fa-building"></i>
-                    <span>Empresas</span>
+                <a href="demo_descuentos.html" class="claut-admin-nav-item">
+                    <i class="fas fa-tags"></i><span>Beneficios</span>
                 </a>
-                <a href="demo_evento.html" class="porsche-nav-item" onclick="showSection('events')">
-                    <i class="fas fa-calendar-check"></i>
-                    <span>Eventos</span>
+                <a href="demo_comite.html" class="claut-admin-nav-item">
+                    <i class="fas fa-people-group"></i><span>Comités</span>
                 </a>
-                <a href="demo_boletines.html" class="porsche-nav-item" onclick="showSection('bulletins')">
-                    <i class="fas fa-newspaper"></i>
-                    <span>Boletines</span>
+                <a href="calendario.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-days"></i><span>Calendario</span>
                 </a>
-                <a href="demo_descuentos.html" class="porsche-nav-item" onclick="showSection('discounts')">
-                    <i class="fas fa-tags"></i>
-                    <span>Descuentos</span>
+                <a href="demo_empresas.html" class="claut-admin-nav-item">
+                    <i class="fas fa-building"></i><span>Socios</span>
                 </a>
-                <a href="profile.html" class="porsche-nav-item" onclick="showSection('system')">
-                    <i class="fas fa-gear"></i>
-                    <span>Configuración</span>
+                <a href="demo_evento.html" class="claut-admin-nav-item">
+                    <i class="fas fa-calendar-check"></i><span>Eventos</span>
                 </a>
-                <a href="#" class="porsche-nav-item" onclick="showSection('email-control'); loadEmailConfig(); return false;" id="nav-email-control">
-                    <i class="fas fa-envelope-open-text"></i>
-                    <span>Correos</span>
+                <a href="gestionar_usuarios.php" class="claut-admin-nav-item">
+                    <i class="fas fa-users"></i><span>Usuarios</span>
                 </a>
-            </nav>
-        </div>
+                <a href="demo_visitante.html" class="claut-admin-nav-item">
+                    <i class="fas fa-user-shield"></i><span>Visitantes</span>
+                </a>
+            </div>
 
-        <div class="p-6">
-            <button onclick="logout()"
-                class="w-full flex items-center justify-center gap-3 p-4 rounded-2xl bg-white/5 text-red-400 hover:bg-neutral-900 transition-all font-bold text-sm">
-                <i class="fas fa-sign-out-alt"></i>
-                Cerrar Sesión
+            <div class="claut-admin-nav-group">
+                <p class="claut-admin-nav-label">Sistema</p>
+                <a href="profile.html" class="claut-admin-nav-item">
+                    <i class="fas fa-gear"></i><span>Configuración</span>
+                </a>
+                <a href="#" class="claut-admin-nav-item" onclick="showSection('email-control'); loadEmailConfig(); return false;" id="nav-email-control">
+                    <i class="fas fa-envelope-open-text"></i><span>Correos</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="claut-admin-sidebar-foot">
+            <button onclick="logout()" class="claut-admin-nav-item claut-admin-nav-item--danger">
+                <i class="fas fa-sign-out-alt"></i><span>Cerrar sesión</span>
             </button>
         </div>
     </aside>
 
-    <!-- Sidebar overlay for mobile -->
-    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+    <div class="claut-admin-sidebar-overlay" id="claut-admin-sidebar-overlay"></div>
+    <style>
+        /* Gana sobre las ~10 reglas dispersas de .main-content margin-left
+           preexistentes en este archivo (deuda histórica) — última en cascada. */
+        @media (min-width: 1025px) {
+            .claut-admin-main { margin-left: 260px !important; }
+        }
+        @media (max-width: 1024px) {
+            .claut-admin-main { margin-left: 0 !important; }
+        }
+    </style>
 
     <!-- Main content -->
-    <main class="main-content ease-soft-in-out relative rounded-xl transition-all duration-200">
+    <main class="main-content claut-admin-main ease-soft-in-out relative rounded-xl transition-all duration-200">
         <!-- Top Navbar Elite -->
         <nav class="top-navbar px-8 py-3 flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <button class="xl:hidden p-2 text-slate-800" onclick="openSidebar()">
+                <button class="p-2 text-white hover:text-gray-300" id="claut-header-menu-btn" aria-label="Abrir menú de navegación">
                     <i class="fas fa-bars"></i>
                 </button>
                 <div>
@@ -1327,7 +1337,7 @@
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Socios</h4>
                             <p class="text-slate-400 text-sm mb-6">Manten un control de tus socios y sus datos.</p>
-                            <button onclick="window.location.href='../demo_empresas.html'"
+                            <button onclick="window.location.href='./demo_empresas.html'"
                                 class="porsche-btn w-full justify-center">
                                 <i class="fas fa-building"></i> Gestionar Socios
                             </button>
@@ -1698,22 +1708,22 @@
             <!-- Scripts -->
             <script src="./js/auth-session.js"></script>
             <script>
-                // === PORSCHE ELITE - SIDEBAR CORE CONTROLS ===
+                // === SIDEBAR CORE CONTROLS (claut-admin-sidebar) ===
                 function openSidebar() {
-                    const sidebar = document.getElementById('sidebar');
-                    const overlay = document.getElementById('sidenavOverlay');
+                    const sidebar = document.getElementById('claut-admin-sidebar');
+                    const overlay = document.getElementById('claut-admin-sidebar-overlay');
                     if (sidebar && overlay) {
-                        sidebar.classList.add('sidenav-show');
+                        sidebar.classList.add('show');
                         overlay.classList.add('show');
                         document.body.style.overflow = 'hidden';
                     }
                 }
 
                 function closeSidebar() {
-                    const sidebar = document.getElementById('sidebar');
-                    const overlay = document.getElementById('sidenavOverlay');
+                    const sidebar = document.getElementById('claut-admin-sidebar');
+                    const overlay = document.getElementById('claut-admin-sidebar-overlay');
                     if (sidebar && overlay) {
-                        sidebar.classList.remove('sidenav-show');
+                        sidebar.classList.remove('show');
                         overlay.classList.remove('show');
                         document.body.style.overflow = '';
                     }
@@ -1875,7 +1885,7 @@
                         'events': 'Calendario de Eventos',
                         'bulletins': 'Boletines Informativos',
                         'discounts': 'Benefits & Perks',
-                        'email-control': '📧 Control de Correos',
+                        'email-control': 'Control de Correos',
                         'system': 'Configuración del Sistema'
                     };
                     document.getElementById('sectionIndicator').textContent = indicatorMap[section] || 'Administración';
@@ -3091,7 +3101,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                     });
                     const data = await res.json();
                     if (data.success) {
-                        showEmailStatus('ok', `Notificación "${eventoTipo}" ${nuevoEstado ? 'activada ✅' : 'desactivada'}.`);
+                        showEmailStatus('ok', `Notificación "${eventoTipo}" ${nuevoEstado ? 'activada' : 'desactivada'}.`);
                         await loadEmailConfig();
                     } else {
                         track.classList.toggle('on', !nuevoEstado);
@@ -3281,6 +3291,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                     </form>
                 </div>
             </div>
+    <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
 </body>
 
 </html>

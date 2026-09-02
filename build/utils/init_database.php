@@ -22,7 +22,7 @@ try {
     ]);
     
     // Verificar si ya existen datos
-    $empresasExistentes = $db->selectOne("SELECT COUNT(*) as total FROM empresas WHERE estado = 'activa'");
+    $empresasExistentes = $db->selectOne("SELECT COUNT(*) as total FROM empresas_convenio WHERE estado = 'activa'");
     
     if ($empresasExistentes['total'] == 0) {
         echo json_encode([
@@ -60,7 +60,7 @@ try {
                 'status' => 'success',
                 'message' => 'Base de datos inicializada correctamente',
                 'data' => [
-                    'empresas_creadas' => $db->selectOne("SELECT COUNT(*) as total FROM empresas WHERE estado = 'activa'")['total'],
+                    'empresas_creadas' => $db->selectOne("SELECT COUNT(*) as total FROM empresas_convenio WHERE estado = 'activa'")['total'],
                     'usuarios_creados' => $db->selectOne("SELECT COUNT(*) as total FROM usuarios_perfil WHERE estado = 'activo'")['total']
                 ]
             ]);

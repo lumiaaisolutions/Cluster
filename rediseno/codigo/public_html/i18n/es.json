@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "description": "Clúster Automotriz Metropolitano — Motor de vinculación de la industria automotriz en Estado de México, CDMX e Hidalgo."
+  },
+  "a11y": {
+    "skip_to_content": "Saltar al contenido"
+  },
+  "nav": {
+    "home": "Inicio",
+    "directorio": "Directorio",
+    "eventos": "Eventos",
+    "comites": "Comités",
+    "boletines": "Boletines",
+    "documentos": "Documentos",
+    "descuentos": "Descuentos",
+    "buzon": "Buzón",
+    "profile": "Mi perfil",
+    "logout": "Cerrar sesión",
+    "about": "Quiénes somos",
+    "sectors": "Sectores",
+    "benefits": "Beneficios",
+    "contact": "Contacto",
+    "login": "Iniciar sesión",
+    "register": "Únete"
+  },
+  "hero": {
+    "kicker": "CLÚSTER AUTOMOTRIZ METROPOLITANO",
+    "title_1": "Motor de vinculación",
+    "title_2": "de la industria automotriz.",
+    "subtitle": "Conectamos empresas, talento y tecnología en la zona metropolitana del Valle de México, CDMX e Hidalgo.",
+    "cta_primary": "Únete al clúster",
+    "cta_secondary": "Conoce más",
+    "scroll_hint": "DESLIZA"
+  },
+  "about": {
+    "kicker": "QUIÉNES SOMOS",
+    "title": "300+ empresas. 3 entidades. Un solo motor.",
+    "body": "Somos organización civil con impacto internacional. Once años potenciando oportunidades de desarrollo, crecimiento y negocios en Estado de México, Ciudad de México e Hidalgo.",
+    "stat_companies": "Empresas asociadas",
+    "stat_workforce": "Millones en fuerza laboral",
+    "stat_export": "USD en exportaciones",
+    "stat_years": "Años de experiencia"
+  },
+  "sectors": {
+    "kicker": "ECOSISTEMA",
+    "title": "Toda la cadena de valor automotriz."
+  },
+  "benefits": {
+    "kicker": "SER MIEMBRO",
+    "title": "Beneficios que aceleran tu operación.",
+    "b1_title": "Networking estratégico",
+    "b1_body": "Acceso al directorio interactivo de socios y conexiones B2B verificadas.",
+    "b2_title": "Comités especializados",
+    "b2_body": "Manufactura, Desarrollo Tecnológico, Capital Humano, Cooperación Internacional, Calidad y Cadena de Suministro.",
+    "b3_title": "Eventos y capacitación",
+    "b3_body": "Foros técnicos, misiones comerciales y programas de desarrollo de habilidades para la industria 4.0."
+  },
+  "cta": {
+    "title": "Listos para conectar tu empresa al ecosistema.",
+    "body": "Forma parte de la red más sólida de la industria automotriz metropolitana.",
+    "button": "Registra tu empresa",
+    "login": "Ya soy miembro"
+  },
+  "footer": {
+    "tagline": "Clúster Automotriz Metropolitano A.C. — Motor de vinculación entre los actores de la industria.",
+    "contact": "CONTACTO",
+    "quick": "ACCESO RÁPIDO",
+    "login": "Iniciar sesión",
+    "register": "Registro",
+    "register_company": "Registrar empresa"
+  },
+  "auth": {
+    "back": "Volver al sitio",
+    "welcome": "Bienvenido",
+    "welcome_sub": "Inicia sesión con tu cuenta CLAUTMET",
+    "email": "Correo electrónico",
+    "email_placeholder": "tu@empresa.mx",
+    "password": "Contraseña",
+    "forgot": "¿Olvidaste tu contraseña?",
+    "signin": "Iniciar sesión",
+    "no_account": "¿No tienes cuenta?",
+    "create": "Crear cuenta"
+  },
+  "dashboard": {
+    "kpi_eventos": "Eventos próximos",
+    "kpi_comites": "Comités activos",
+    "kpi_descuentos": "Descuentos vigentes",
+    "kpi_boletines": "Boletines",
+    "upcoming": "Próximas sesiones",
+    "notifications": "Notificaciones",
+    "see_all": "Ver todas"
+  },
+  "casual": {
+    "saved": "Cambios aplicados.",
+    "deleted": "Eliminado.",
+    "error_generic": "No pudimos completar la acción. Reintenta en un momento.",
+    "empty_directory": "Aún no hay empresas en este filtro.",
+    "empty_events": "No hay eventos próximos.",
+    "empty_comites": "Sin sesiones programadas."
+  }
+}

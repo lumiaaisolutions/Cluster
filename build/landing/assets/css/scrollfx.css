@@ -1,0 +1,150 @@
+/* ============================================================
+   CLAUTMET · Scroll FX styles
+   Pairs with assets/js/scrollfx.js
+   ============================================================ */
+
+/* Direction-aware reveal primitives */
+[data-reveal-fx] {
+  --rd: 0s;
+  --fx-dist: 36px;
+  opacity: 0;
+  transform: translate3d(0, var(--fx-dist), 0);
+  transition:
+    opacity .85s cubic-bezier(.22,.61,.36,1) var(--rd),
+    transform .95s cubic-bezier(.22,.61,.36,1) var(--rd),
+    filter .95s ease var(--rd);
+  filter: blur(6px);
+  will-change: transform, opacity, filter;
+}
+[data-reveal-fx][data-fx-dir="left"]  { transform: translate3d(calc(var(--fx-dist) * -1.2), 0, 0); }
+[data-reveal-fx][data-fx-dir="right"] { transform: translate3d(var(--fx-dist), 0, 0); }
+[data-reveal-fx][data-fx-dir="up"]    { transform: translate3d(0, var(--fx-dist), 0); }
+[data-reveal-fx].fx-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
+}
+
+/* Subtle on-cards lift modifier (set by JS via --liftY) */
+.benefit, .sector-card, .post, .evento, .state-card {
+  --liftY: 0px;
+}
+.benefit.fx-in, .sector-card.fx-in, .post.fx-in, .evento.fx-in, .state-card.fx-in {
+  transform: translate3d(0, var(--liftY), 0);
+  transition: transform .9s cubic-bezier(.22,.61,.36,1), background .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
+/* Word-by-word display reveal */
+.display .fx-word,
+.hero .display .fx-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 0.6em, 0) rotate(2deg);
+  filter: blur(8px);
+  transition:
+    opacity .7s cubic-bezier(.22,.61,.36,1),
+    transform .9s cubic-bezier(.22,.61,.36,1),
+    filter .8s ease;
+  transition-delay: calc(var(--wi, 0) * 60ms);
+  will-change: transform, opacity, filter;
+}
+.display.fx-words-in .fx-word,
+.hero .display.fx-words-in .fx-word {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(0);
+  filter: blur(0);
+}
+
+/* Hero subtle mouse parallax driven by JS vars */
+.hero {
+  --mx-h: 0px;
+  --my-h: 0px;
+}
+.hero .display {
+  transform: translate3d(var(--mx-h), var(--my-h), 0);
+  transition: transform .6s cubic-bezier(.2,.7,.2,1);
+}
+.hero .hero-side {
+  transform: translate3d(calc(var(--mx-h) * -.4), calc(var(--my-h) * -.4), 0);
+  transition: transform .6s cubic-bezier(.2,.7,.2,1);
+}
+
+/* Stronger scroll-driven backgrounds */
+@supports (animation-timeline: view()) {
+  /* Each section gets a soft top-fade as it enters */
+  section.section, .cta-section {
+    animation: sectionEnter linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+  @keyframes sectionEnter {
+    from { background-position: 0 -120px; opacity: .94; }
+    to   { background-position: 0 0;     opacity: 1; }
+  }
+
+  /* Stats counter group rises in tightly */
+  .stats-grid {
+    animation: statsRise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+  }
+  @keyframes statsRise {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* Section heads parallax-glide */
+  .section-head {
+    animation: headGlide linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+  @keyframes headGlide {
+    from { transform: translateY(28px); opacity: .55; letter-spacing: 0; }
+    to   { transform: translateY(0);    opacity: 1;   letter-spacing: -.005em; }
+  }
+
+  /* CTA section pulls forward */
+  .cta-section .cta-grid {
+    animation: ctaForward linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+  @keyframes ctaForward {
+    from { transform: translateY(60px) scale(.98); opacity: 0; }
+    to   { transform: translateY(0)    scale(1);    opacity: 1; }
+  }
+
+  /* Logo cells do a wave */
+  .logos-grid .logo-cell {
+    animation: logoWave linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+  @keyframes logoWave {
+    from { transform: translateY(20px) scale(.95); opacity: 0; }
+    to   { transform: translateY(0)    scale(1);   opacity: 1; }
+  }
+
+  /* Footer mega type has a gentle horizontal sweep already set; reinforce with a vertical lift */
+  .footer-mega {
+    animation: megaLift linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 60%;
+  }
+  @keyframes megaLift {
+    from { transform: translateY(40px); opacity: .5; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal-fx],
+  .display .fx-word {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}

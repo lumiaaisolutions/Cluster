@@ -51,7 +51,7 @@ function mostrarBanners(banners) {
         <div class="banner-card bg-white rounded-lg shadow-sm overflow-hidden">
             <div class="relative">
                 <img src="${banner.imagen_url}" alt="${banner.titulo}" 
-                     class="w-full h-48 object-cover" onerror="this.src='../assets/img/placeholder.jpg';">
+                     class="w-full h-48 object-cover" onerror="this.src='../assets/img/placeholder.svg';">
                 <div class="absolute top-2 right-2">
                     <span class="status-badge ${banner.activo == 1 ? 'status-active' : 'status-inactive'}">
                         ${banner.activo == 1 ? 'Activo' : 'Inactivo'}

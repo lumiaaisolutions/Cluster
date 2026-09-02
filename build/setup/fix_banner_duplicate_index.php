@@ -8,7 +8,7 @@ require_once '../config/database.php';
 
 function solucionarIndiceDuplicado() {
     try {
-        echo "<h2>🔧 Solucionando Error de Índice Duplicado</h2>\n";
+        echo "<h2><i class=\"fas fa-wrench\"></i> Solucionando Error de Índice Duplicado</h2>\n";
         
         $db = Database::getInstance();
         $conn = $db->getConnection();
@@ -19,12 +19,12 @@ function solucionarIndiceDuplicado() {
         foreach ($indices as $indice) {
             try {
                 $conn->exec("ALTER TABLE banner_carrusel DROP INDEX $indice");
-                echo "<p style='color: green;'>✓ Índice '$indice' eliminado exitosamente</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-check\"></i> Índice '$indice' eliminado exitosamente</p>\n";
             } catch (PDOException $e) {
                 if (strpos($e->getMessage(), "Can't DROP") !== false) {
-                    echo "<p style='color: orange;'>⚠ Índice '$indice' no existía</p>\n";
+                    echo "<p style='color: orange;'><i class=\"fas fa-triangle-exclamation\"></i> Índice '$indice' no existía</p>\n";
                 } else {
-                    echo "<p style='color: red;'>✗ Error al eliminar índice '$indice': " . $e->getMessage() . "</p>\n";
+                    echo "<p style='color: red;'><i class=\"fas fa-xmark\"></i> Error al eliminar índice '$indice': " . $e->getMessage() . "</p>\n";
                 }
             }
         }
@@ -39,13 +39,13 @@ function solucionarIndiceDuplicado() {
         foreach ($nuevosIndices as $query => $descripcion) {
             try {
                 $conn->exec($query);
-                echo "<p style='color: green;'>✓ Índice creado: $descripcion</p>\n";
+                echo "<p style='color: green;'><i class=\"fas fa-check\"></i> Índice creado: $descripcion</p>\n";
             } catch (PDOException $e) {
-                echo "<p style='color: red;'>✗ Error al crear índice ($descripcion): " . $e->getMessage() . "</p>\n";
+                echo "<p style='color: red;'><i class=\"fas fa-xmark\"></i> Error al crear índice ($descripcion): " . $e->getMessage() . "</p>\n";
             }
         }
-        
-        echo "<h3 style='color: green;'>✓ Problema de índice duplicado solucionado</h3>\n";
+
+        echo "<h3 style='color: green;'><i class=\"fas fa-check\"></i> Problema de índice duplicado solucionado</h3>\n";
         
         // Verificar la estructura actual
         verificarEstructuraBanners($conn);
@@ -53,7 +53,7 @@ function solucionarIndiceDuplicado() {
         return true;
         
     } catch (Exception $e) {
-        echo "<h3 style='color: red;'>✗ Error al solucionar índices:</h3>\n";
+        echo "<h3 style='color: red;'><i class=\"fas fa-xmark\"></i> Error al solucionar índices:</h3>\n";
         echo "<p style='color: red;'>" . htmlspecialchars($e->getMessage()) . "</p>\n";
         return false;
     }
@@ -61,12 +61,12 @@ function solucionarIndiceDuplicado() {
 
 function verificarEstructuraBanners($conn) {
     try {
-        echo "<h3>📊 Verificando Estructura de la Tabla</h3>\n";
+        echo "<h3><i class=\"fas fa-chart-column\"></i> Verificando Estructura de la Tabla</h3>\n";
         
         // Verificar que la tabla existe
         $stmt = $conn->query("SHOW TABLES LIKE 'banner_carrusel'");
         if ($stmt->rowCount() == 0) {
-            echo "<p style='color: red;'>⚠ La tabla banner_carrusel no existe</p>\n";
+            echo "<p style='color: red;'><i class=\"fas fa-triangle-exclamation\"></i> La tabla banner_carrusel no existe</p>\n";
             return;
         }
         
@@ -130,7 +130,7 @@ function verificarEstructuraBanners($conn) {
 
 function inicializarBannersCompleto() {
     try {
-        echo "<h2>🎨 Inicialización Completa del Sistema de Banners</h2>\n";
+        echo "<h2><i class=\"fas fa-palette\"></i> Inicialización Completa del Sistema de Banners</h2>\n";
         
         $db = Database::getInstance();
         $conn = $db->getConnection();
@@ -156,7 +156,7 @@ function inicializarBannersCompleto() {
             )";
             
             $conn->exec($createTable);
-            echo "<p style='color: green;'>✓ Tabla banner_carrusel creada</p>\n";
+            echo "<p style='color: green;'><i class=\"fas fa-check\"></i> Tabla banner_carrusel creada</p>\n";
         }
         
         // Verificar si hay banners, si no, insertar algunos de ejemplo
@@ -201,7 +201,7 @@ function inicializarBannersCompleto() {
                 ]);
             }
             
-            echo "<p style='color: green;'>✓ Banners de ejemplo insertados</p>\n";
+            echo "<p style='color: green;'><i class=\"fas fa-check\"></i> Banners de ejemplo insertados</p>\n";
         }
         
         // Ahora solucionar el problema de índices
@@ -330,7 +330,7 @@ function inicializarBannersCompleto() {
 </head>
 <body>
     <div class="header">
-        <h1>🛠️ Reparación Sistema de Banners</h1>
+        <h1><i class="fas fa-screwdriver-wrench"></i> Reparación Sistema de Banners</h1>
         <p>Solución para el error de índice duplicado 'idx_banner_fechas'</p>
     </div>
     
@@ -344,7 +344,7 @@ function inicializarBannersCompleto() {
             inicializarBannersCompleto();
         } else {
         ?>
-            <h2>🚨 Error Detectado: Índice Duplicado</h2>
+            <h2><i class="fas fa-triangle-exclamation"></i> Error Detectado: Índice Duplicado</h2>
             
             <div class="alert alert-warning">
                 <strong>Error:</strong> SQLSTATE[42000]: Syntax error or access violation: 1061 Duplicate key name 'idx_banner_fechas'
@@ -353,18 +353,18 @@ function inicializarBannersCompleto() {
             </div>
             
             <div class="alert alert-info">
-                <strong>💡 Solución:</strong> Este script eliminará los índices duplicados y los recreará correctamente.
+                <strong><i class="fas fa-lightbulb"></i> Solución:</strong> Este script eliminará los índices duplicados y los recreará correctamente.
             </div>
             
             <h3>Opciones de Reparación:</h3>
             
             <div style="text-align: center; margin: 30px 0;">
                 <a href="?action=fix" class="btn btn-success">
-                    🔧 Solucionar Solo Índices
+                    <i class="fas fa-wrench"></i> Solucionar Solo Índices
                 </a>
-                
+
                 <a href="?action=init" class="btn btn-warning">
-                    🎨 Inicialización Completa
+                    <i class="fas fa-palette"></i> Inicialización Completa
                 </a>
             </div>
             
@@ -372,7 +372,7 @@ function inicializarBannersCompleto() {
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
                 <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; background: #f8f9fa;">
-                    <h5>🔧 Solucionar Solo Índices</h5>
+                    <h5><i class="fas fa-wrench"></i> Solucionar Solo Índices</h5>
                     <ul>
                         <li>Elimina índices duplicados</li>
                         <li>Recrea los índices necesarios</li>
@@ -382,7 +382,7 @@ function inicializarBannersCompleto() {
                 </div>
                 
                 <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; background: #f8f9fa;">
-                    <h5>🎨 Inicialización Completa</h5>
+                    <h5><i class="fas fa-palette"></i> Inicialización Completa</h5>
                     <ul>
                         <li>Crea la tabla si no existe</li>
                         <li>Inserta banners de ejemplo</li>
@@ -396,9 +396,9 @@ function inicializarBannersCompleto() {
             
             <h3>Enlaces Útiles:</h3>
             <div style="text-align: center;">
-                <a href="../admin/banner-admin.php" class="btn">📊 Panel de Admin</a>
-                <a href="../pages/sign-in.html" class="btn">🔐 Ver Login</a>
-                <a href="../api/banners.php" class="btn">🔗 API Banners</a>
+                <a href="../admin/banner-admin.php" class="btn"><i class="fas fa-chart-column"></i> Panel de Admin</a>
+                <a href="../pages/sign-in.html" class="btn"><i class="fas fa-lock"></i> Ver Login</a>
+                <a href="../api/banners.php" class="btn"><i class="fas fa-link"></i> API Banners</a>
             </div>
         <?php
         }

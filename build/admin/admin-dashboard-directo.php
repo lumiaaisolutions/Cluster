@@ -186,35 +186,35 @@ try {
         </div>
 
         <div class="success">
-            <strong>✅ ¡Acceso exitoso!</strong> Estás usando el panel de administración en modo directo.
+            <strong><i class="fas fa-circle-check"></i> ¡Acceso exitoso!</strong> Estás usando el panel de administración en modo directo.
         </div>
 
         <?php if (isset($error)): ?>
-            <div class="alert">⚠️ <?php echo $error; ?></div>
+            <div class="alert"><i class="fas fa-triangle-exclamation"></i> <?php echo $error; ?></div>
         <?php endif; ?>
 
         <!-- Estadísticas -->
         <div class="stats">
             <div class="stat-card">
-                <h3>👥 Usuarios</h3>
+                <h3><i class="fas fa-users"></i> Usuarios</h3>
                 <div class="stat-number"><?php echo $totalUsuarios; ?></div>
                 <p><?php echo $usuariosActivos; ?> activos, <?php echo $usuariosPendientes; ?> pendientes</p>
             </div>
             
             <div class="stat-card">
-                <h3>🖼️ Banners</h3>
+                <h3><i class="fas fa-image"></i> Banners</h3>
                 <div class="stat-number"><?php echo $totalBanners; ?></div>
                 <p><?php echo $bannersActivos; ?> activos</p>
             </div>
             
             <div class="stat-card">
-                <h3>📄 Contenido</h3>
+                <h3><i class="fas fa-file-lines"></i> Contenido</h3>
                 <div class="stat-number"><?php echo $totalBoletines + $totalEventos; ?></div>
                 <p><?php echo $totalBoletines; ?> boletines, <?php echo $totalEventos; ?> eventos</p>
             </div>
             
             <div class="stat-card">
-                <h3>🏢 Empresas</h3>
+                <h3><i class="fas fa-building"></i> Empresas</h3>
                 <div class="stat-number"><?php echo $totalEmpresas; ?></div>
                 <p>convenios activos</p>
             </div>
@@ -281,13 +281,13 @@ try {
 
         <!-- Enlaces de diagnóstico -->
         <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 10px;">
-            <h3>🛠️ Herramientas de Diagnóstico</h3>
+            <h3><i class="fas fa-screwdriver-wrench"></i> Herramientas de Diagnóstico</h3>
             <p>Enlaces útiles para debugging y mantenimiento:</p>
             <div style="margin-top: 15px;">
-                <a href="verificar-admin.php" class="btn" style="margin-right: 10px;">🔍 Verificar Admin BD</a>
-                <a href="diagnostico-rutas.php" class="btn" style="margin-right: 10px;">📂 Diagnóstico Rutas</a>
-                <a href="login-debug.html" class="btn" style="margin-right: 10px;">🐛 Login Debug</a>
-                <a href="../pages/sign-in.html" class="btn">🔐 Login Normal</a>
+                <a href="verificar-admin.php" class="btn" style="margin-right: 10px;"><i class="fas fa-magnifying-glass"></i> Verificar Admin BD</a>
+                <a href="diagnostico-rutas.php" class="btn" style="margin-right: 10px;"><i class="fas fa-folder-open"></i> Diagnóstico Rutas</a>
+                <a href="login-debug.html" class="btn" style="margin-right: 10px;"><i class="fas fa-bug"></i> Login Debug</a>
+                <a href="../pages/sign-in.html" class="btn"><i class="fas fa-lock"></i> Login Normal</a>
             </div>
         </div>
 

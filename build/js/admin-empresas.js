@@ -663,14 +663,15 @@ class AdminEmpresasManager {
 
     mostrarModal() {
         const modal = document.getElementById('modalEmpresa');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
+        modal.classList.add('open');
+        const wizardEl = modal.querySelector('.claut-wizard');
+        if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
         document.body.style.overflow = 'hidden';
     }
 
     cerrarModal() {
         const modal = document.getElementById('modalEmpresa');
-        modal.classList.add('hidden');
+        modal.classList.remove('open');
         document.body.style.overflow = 'auto';
         this.empresaEditando = null;
     }

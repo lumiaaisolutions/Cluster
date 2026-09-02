@@ -63,17 +63,17 @@ try {
         
         // Determinar el ícono
         $iconos = [
-            'pdf' => '📄',
-            'doc' => '📝', 'docx' => '📝',
-            'xls' => '📊', 'xlsx' => '📊',
-            'ppt' => '📽️', 'pptx' => '📽️',
-            'txt' => '📄', 'csv' => '📊',
-            'jpg' => '🖼️', 'jpeg' => '🖼️', 'png' => '🖼️', 'gif' => '🖼️',
-            'mp4' => '🎥',
-            'mp3' => '🎵'
+            'pdf' => '<i class="fas fa-file-pdf"></i>',
+            'doc' => '<i class="fas fa-file-word"></i>', 'docx' => '<i class="fas fa-file-word"></i>',
+            'xls' => '<i class="fas fa-file-excel"></i>', 'xlsx' => '<i class="fas fa-file-excel"></i>',
+            'ppt' => '<i class="fas fa-file-powerpoint"></i>', 'pptx' => '<i class="fas fa-file-powerpoint"></i>',
+            'txt' => '<i class="fas fa-file-lines"></i>', 'csv' => '<i class="fas fa-file-excel"></i>',
+            'jpg' => '<i class="fas fa-file-image"></i>', 'jpeg' => '<i class="fas fa-file-image"></i>', 'png' => '<i class="fas fa-file-image"></i>', 'gif' => '<i class="fas fa-file-image"></i>',
+            'mp4' => '<i class="fas fa-file-video"></i>',
+            'mp3' => '<i class="fas fa-file-audio"></i>'
         ];
-        
-        $icono = $iconos[$extension] ?? '📎';
+
+        $icono = $iconos[$extension] ?? '<i class="fas fa-paperclip"></i>';
         
         // Obtener tamaño del archivo si existe
         $fileSize = 0;

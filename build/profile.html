@@ -19,7 +19,7 @@
   <!-- Nucleo Icons -->
   <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/css/layout/header-navbar.css" />
+  <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a" />
   <!-- Popper -->
   <script src="https://unpkg.com/@popperjs/core@2"></script>
     
@@ -39,6 +39,7 @@
             }
         }
     </script>
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
     <style>
         .tab-pane {
             display: none;
@@ -266,10 +267,32 @@
             .claut-nav-link   { width: 55px; height: 55px; }
             .claut-nav-link i { font-size: 20px; }
         }
+
+        /* Fix: la barra "Cuenta / Perfil — Bienvenido, Fernando" y el bloque
+           de acciones (nombre/rol, Admin Panel, menú de usuario) comparten
+           fila sin wrap en pantallas angostas y se superponen. Se fuerza el
+           apilado vertical por debajo de 768px. */
+        @media (max-width: 768px) {
+            nav[navbar-main] .flex.items-center.justify-between.w-full {
+                flex-wrap: wrap !important;
+            }
+            nav[navbar-main] .flex.items-center.justify-between.w-full > div:last-child {
+                margin-top: 0.75rem !important;
+                width: 100%;
+                justify-content: flex-start !important;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="./assets/css/layout/claut-icon-rail.css?v=20260901g">
+    <style>
+        @media (min-width: 1025px) {
+            main.claut-main { padding-left: 134px !important; }
+        }
     </style>
 </head>
 
-<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default">
+<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default claut-dark claut-skin">
 
   <!-- Header Horizontal Premium - igual a descuentos.html -->
   <header class="claut-header">
@@ -296,6 +319,16 @@
     </div>
   </header>
   <!-- end header -->
+
+  <nav class="claut-icon-rail">
+    <a href="dashboard.html" class="claut-icon-rail-item" data-label="Inicio"><i class="fas fa-home"></i></a>
+    <a href="./descuentos.html" class="claut-icon-rail-item" data-label="Descuentos"><i class="fas fa-tags"></i></a>
+    <a href="./boletines.html" class="claut-icon-rail-item" data-label="Boletines"><i class="fas fa-newspaper"></i></a>
+    <a href="./comites.html" class="claut-icon-rail-item" data-label="Comités"><i class="fas fa-users"></i></a>
+    <a href="./contacto.html" class="claut-icon-rail-item" data-label="Contacto"><i class="fas fa-headset"></i></a>
+    <a href="./eventos.html" class="claut-icon-rail-item" data-label="Eventos"><i class="fas fa-calendar-alt"></i></a>
+    <a href="./empresas-convenio.html" class="claut-icon-rail-item" data-label="Socios"><i class="fas fa-handshake"></i></a>
+  </nav>
 
     <main class="claut-main relative transition-all duration-200 ease-in-out z-10" style="margin-left: 0; overflow-x: hidden;">
         <!-- Navbar matching dashboard.html exactly -->
@@ -362,30 +395,6 @@
                             </div>
                         </li>
 
-                        <!-- Perfil de Usuario -->
-                        <li class="flex items-center pl-4 xl:hidden" id="userMenuContainer">
-                            <a href="javascript:void(0);" id="userMenuToggle"
-                                class="porsche-nav-user-avatar p-0 text-sm text-white transition-all ease-nav-brand">
-                                <i class="fa fa-user text-sm opacity-75"></i>
-                            </a>
-                            <!-- Menú desplegable del usuario -->
-                            <div id="userMenuContent"
-                                class="z-50 hidden absolute top-full right-0 mt-2 bg-gray-900 shadow-xl rounded-lg p-3 min-w-48 border border-gray-700">
-                                <div class="flex flex-col space-y-2">
-                                    <div class="text-gray-100 font-medium border-b border-gray-600 pb-2">
-                                        <span id="userNameDisplay">Usuario</span>
-                                        <div class="text-xs text-gray-400" id="userRoleDisplay">Cargando...</div>
-                                    </div>
-                                    <a href="./profile.html" class="text-gray-300 hover:text-white py-1">
-                                        <i class="fas fa-user-circle mr-2"></i>Mi Perfil
-                                    </a>
-                                    <a href="javascript:void(0);" onclick="logoutUser()"
-                                        class="text-red-600 hover:text-red-700 py-1">
-                                        <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -1746,7 +1755,7 @@
                         const result = await response.json();
                         if (result.success) {
                             if (result.pending_review) {
-                                this.showMessage('✅ Solicitud enviada. Los cambios serán revisados por un administrador.', 'success');
+                                this.showMessage('Solicitud enviada. Los cambios serán revisados por un administrador.', 'success');
                                 const badge = document.getElementById('empresaBadge');
                                 if (badge) {
                                     badge.innerHTML = '<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"><i class="fas fa-clock"></i> Solicitud Enviada</span>';
@@ -1844,36 +1853,36 @@
                 
                 // Mapeo exhaustivo de nombres de campo para mostrar (29 campos)
                 const campoLabels = {
-                    'nombre_empresa': '🏢 Nombre de la Empresa',
-                    'nombre': '🏢 Nombre Comercial',
-                    'sector': '🔧 Sector Industrial',
-                    'sitio_web': '🌐 Sitio Web',
-                    'descripcion': '📝 Descripción',
-                    'direccion': '📍 Dirección',
-                    'entidad_federativa': '🗺️ Estado/Entidad',
-                    'municipio': '🏘️ Municipio',
-                    'exporta': '🚢 ¿Exporta?',
-                    'certificaciones': '📜 Certificaciones',
-                    'email': '📧 Email General',
-                    'telefono': '📞 Teléfono General',
-                    'contacto_persona': '👤 Persona Contacto',
-                    'contacto_nombre': '👤 Nombre de Contacto',
-                    'contacto_cargo': '💼 Cargo',
-                    'contacto_email': '✉️ Email Contacto',
-                    'contacto_movil': '📱 WhatsApp/Móvil',
-                    'contacto_telefono': '📞 Teléfono Directo',
-                    'beneficios': '🎁 Beneficios Socios',
-                    'convenio_descripcion': '🎁 Descripción Convenio',
-                    'descuento_porcentaje': '🏷️ % Descuento',
-                    'codigo_cupon': '🎟️ Código Cupón',
-                    'fecha_convenio': '📅 Inicio Vigencia',
-                    'redes_fb': '🔵 Facebook',
-                    'redes_linkedin': '🔵 LinkedIn',
-                    'redes_instagram': '🟣 Instagram',
-                    'logo_url': '🖼️ URL Logo',
-                    'categoria': '📁 Categoría',
-                    'keywords': '🔍 Palabras Clave',
-                    'autoriza_directorio': '👁️ Autoriza Directorio'
+                    'nombre_empresa': '<i class="fas fa-building"></i> Nombre de la Empresa',
+                    'nombre': '<i class="fas fa-building"></i> Nombre Comercial',
+                    'sector': '<i class="fas fa-wrench"></i> Sector Industrial',
+                    'sitio_web': '<i class="fas fa-globe"></i> Sitio Web',
+                    'descripcion': '<i class="fas fa-pen-to-square"></i> Descripción',
+                    'direccion': '<i class="fas fa-location-dot"></i> Dirección',
+                    'entidad_federativa': '<i class="fas fa-map"></i> Estado/Entidad',
+                    'municipio': '<i class="fas fa-city"></i> Municipio',
+                    'exporta': '<i class="fas fa-ship"></i> ¿Exporta?',
+                    'certificaciones': '<i class="fas fa-certificate"></i> Certificaciones',
+                    'email': '<i class="fas fa-envelope"></i> Email General',
+                    'telefono': '<i class="fas fa-phone"></i> Teléfono General',
+                    'contacto_persona': '<i class="fas fa-user"></i> Persona Contacto',
+                    'contacto_nombre': '<i class="fas fa-user"></i> Nombre de Contacto',
+                    'contacto_cargo': '<i class="fas fa-briefcase"></i> Cargo',
+                    'contacto_email': '<i class="fas fa-envelope"></i> Email Contacto',
+                    'contacto_movil': '<i class="fas fa-mobile-screen"></i> WhatsApp/Móvil',
+                    'contacto_telefono': '<i class="fas fa-phone"></i> Teléfono Directo',
+                    'beneficios': '<i class="fas fa-gift"></i> Beneficios Socios',
+                    'convenio_descripcion': '<i class="fas fa-gift"></i> Descripción Convenio',
+                    'descuento_porcentaje': '<i class="fas fa-tag"></i> % Descuento',
+                    'codigo_cupon': '<i class="fas fa-ticket"></i> Código Cupón',
+                    'fecha_convenio': '<i class="fas fa-calendar-days"></i> Inicio Vigencia',
+                    'redes_fb': '<i class="fab fa-facebook"></i> Facebook',
+                    'redes_linkedin': '<i class="fab fa-linkedin"></i> LinkedIn',
+                    'redes_instagram': '<i class="fab fa-instagram"></i> Instagram',
+                    'logo_url': '<i class="fas fa-image"></i> URL Logo',
+                    'categoria': '<i class="fas fa-folder"></i> Categoría',
+                    'keywords': '<i class="fas fa-magnifying-glass"></i> Palabras Clave',
+                    'autoriza_directorio': '<i class="fas fa-eye"></i> Autoriza Directorio'
                 };
 
                 for (const [key, value] of Object.entries(datosNuevos)) {
@@ -1939,7 +1948,7 @@
 
                     const result = await response.json();
                     if (result.success) {
-                        this.showMessage(`✅ Solicitud ${action === 'aprobar' ? 'procesada' : 'rechazada'} correctamente.`, 'success');
+                        this.showMessage(`Solicitud ${action === 'aprobar' ? 'procesada' : 'rechazada'} correctamente.`, 'success');
                         document.getElementById('reviewFrame').classList.add('hidden');
                         document.getElementById('reviewFrame').classList.remove('flex');
                         this.loadAdminSolicitudes();
@@ -2219,23 +2228,6 @@
     <!-- Message Center and User Management Scripts -->
     <script>
 
-
-        // User Menu Functionality
-        function toggleUserMenu() {
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('hidden');
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function (event) {
-            const userMenu = document.getElementById('userMenuBtn');
-            const dropdown = document.getElementById('userDropdown');
-
-            if (!userMenu.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.add('hidden');
-            }
-        });
-
         // Logout functionality
         function handleLogout() {
             if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
@@ -2489,6 +2481,7 @@
   <script src="./assets/js/layout/header-navbar.js"></script>
   <script src="assets/js/loading-screen.js"></script>
 <script type="module" src="dist/claut-core.min.js"></script>
+<script src="./assets/js/claut-icon-rail.js?v=20260901c"></script>
 </body>
 
 </html>

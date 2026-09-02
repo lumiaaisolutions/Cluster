@@ -412,17 +412,12 @@ class AdminComitesManager {
             accordionTitle.innerHTML = '<i class="fas fa-edit mr-2 text-blue-500"></i> Editando Comité';
         }
 
-        // AUTO-EXPANDIR EL ACORDEÓN SI ESTÁ CERRADO
-        const acordeonFormulario = document.getElementById('acordeonFormulario');
-        if (acordeonFormulario) {
-            acordeonFormulario.open = true;
-        }
-
-        // Scroll al formulario
-        if (acordeonFormulario) {
-            acordeonFormulario.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else {
-            document.getElementById('comiteForm').scrollIntoView({ behavior: 'smooth' });
+        // ABRIR EL MODAL DEL COMITÉ (wizard) EN MODO EDICIÓN
+        const modalComite = document.getElementById('acordeonFormulario');
+        if (modalComite) {
+            modalComite.classList.add('open');
+            const wizardEl = modalComite.querySelector('.claut-wizard');
+            if (wizardEl && wizardEl.__clautWizardReset) wizardEl.__clautWizardReset();
         }
     }
 
@@ -663,7 +658,7 @@ class AdminComitesManager {
         // Disparar reseteo visual de enlace
         const radioForm = document.getElementById('tipo_registro_formulario');
         if (radioForm) radioForm.checked = true;
-        
+
         if (typeof window.toggleLinkInput === 'function') {
             window.toggleLinkInput();
         }
@@ -672,6 +667,11 @@ class AdminComitesManager {
         const submitText = document.getElementById('submitText');
         if (submitText) {
             submitText.textContent = 'Guardar Comité';
+        }
+
+        // Cerrar el modal del comité (cancelar edición o tras guardar exitosamente)
+        if (typeof window.cerrarModalComite === 'function') {
+            window.cerrarModalComite();
         }
     }
 

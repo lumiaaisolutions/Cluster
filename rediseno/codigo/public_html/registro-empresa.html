@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="">
+  <title>Registrar empresa — CLAUTMET</title>
+  <link rel="icon" href="/assets/img/logo/logo-light.png">
+  <link rel="preload" href="/assets/fonts/inter/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/build.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+</head>
+
+<body data-density="app" class="min-h-screen px-4 py-12">
+  <div class="container-app max-w-2xl">
+
+    <a href="/" class="text-sm text-muted hover:text-text transition flex items-center gap-2 mb-8">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Volver al sitio
+    </a>
+
+    <h1 class="text-4xl font-semibold tracking-tighter mb-2">Registra tu empresa</h1>
+    <p class="text-muted mb-8">Una vez aprobada por el clúster, aparecerá en el directorio público de socios.</p>
+
+    <form id="empresa-form" class="card space-y-5" novalidate>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Nombre de la empresa *</label>
+          <input type="text" name="nombre" required class="input">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Sector *</label>
+          <select name="categoria" required class="input" id="sector-select">
+            <option value="">— Selecciona —</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Estado</label>
+          <select name="entidad_federativa" class="input" id="entidad-select">
+            <option value="">— Selecciona —</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Municipio / Alcaldía</label>
+          <select name="municipio" class="input" id="municipio-select">
+            <option value="">— Selecciona estado primero —</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2">Descripción de productos y servicios</label>
+        <textarea name="descripcion" rows="3" class="input" placeholder="¿Qué hace tu empresa?"></textarea>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Email de contacto *</label>
+          <input type="email" name="contacto_email" required class="input">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Teléfono</label>
+          <input type="tel" name="contacto_movil" class="input">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2">Sitio web</label>
+        <input type="url" name="sitio_web" class="input" placeholder="https://...">
+      </div>
+
+      <div class="border-t border-border pt-5">
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="checkbox" name="autoriza_directorio" value="1" class="mt-1">
+          <span class="text-sm text-muted">
+            Autorizo que estos datos aparezcan en el directorio CLAUTMET, compartido con socios miembros activos.
+          </span>
+        </label>
+      </div>
+
+      <!-- Math captcha -->
+      <div data-math-captcha class="border-t border-border pt-5">
+        <label class="block text-sm font-medium mb-2" data-captcha-label>¿Cuánto es ? + ?</label>
+        <input type="number" data-captcha-input class="input max-w-[200px]" required>
+        <input type="hidden" data-captcha-token name="captcha_token">
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full" data-magnetic>Enviar solicitud</button>
+    </form>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <script type="module">
+    import { api, bootstrapCsrf } from '/assets/js/core/api.js';
+    import { loadLang } from '/assets/js/core/i18n.js';
+    import { toast } from '/assets/js/core/toast.js';
+    import { initMathCaptcha, validateMathCaptchaSync } from '/assets/js/components/math-captcha.js';
+    import { initMagnetic } from '/assets/js/components/card-tilt.js';
+
+    let entidadesById = {};
+
+    (async () => {
+      await Promise.all([bootstrapCsrf(), loadLang()]);
+      await initMathCaptcha();
+      initMagnetic();
+
+      // Sectores
+      const sectores = await api('catalogos.php?tipo=sector');
+      if (sectores?.success) {
+        document.getElementById('sector-select').insertAdjacentHTML('beforeend',
+          sectores.data.map(s => `<option value="${escape(s.valor)}">${escape(s.valor)}</option>`).join(''));
+      }
+
+      // Entidades
+      const ents = await api('catalogos.php?tipo=entidad');
+      if (ents?.success) {
+        ents.data.forEach(e => entidadesById[e.id] = e);
+        document.getElementById('entidad-select').insertAdjacentHTML('beforeend',
+          ents.data.map(e => `<option value="${e.id}">${escape(e.valor)}</option>`).join(''));
+      }
+    })();
+
+    // Cuando cambia entidad, recargar municipios
+    document.getElementById('entidad-select').addEventListener('change', async e => {
+      const select = document.getElementById('municipio-select');
+      select.innerHTML = '<option value="">— Cargando —</option>';
+      const r = await api('catalogos.php?tipo=municipio');
+      if (r?.success) {
+        const filtered = r.data.filter(m => String(m.parent_id) === String(e.target.value));
+        select.innerHTML = '<option value="">— Selecciona —</option>' +
+          filtered.map(m => `<option value="${escape(m.valor)}">${escape(m.valor)}</option>`).join('');
+      }
+    });
+
+    document.getElementById('empresa-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      if (e.target.dataset.busy === '1') return;
+
+      if (!validateMathCaptchaSync()) {
+        toast.error('La verificación es incorrecta. Intenta de nuevo.');
+        return;
+      }
+
+      e.target.dataset.busy = '1';
+      const fd = new FormData(e.target);
+      const payload = Object.fromEntries(fd.entries());
+      payload.autoriza_directorio = fd.get('autoriza_directorio') ? 1 : 0;
+      payload.es_socio = 0;
+      payload.estado = 'pausado'; // pendiente de aprobación admin
+      payload.activo = 0;
+
+      const r = await api('empresas-convenio.php', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      if (r?.success) {
+        toast.success('Solicitud enviada. Te contactaremos pronto.');
+        setTimeout(() => location.href = '/', 1500);
+      } else {
+        toast.error(r?.message || 'No pudimos procesar tu solicitud.');
+        e.target.dataset.busy = '0';
+      }
+    });
+
+    function escape(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  </script>
+</body>
+</html>

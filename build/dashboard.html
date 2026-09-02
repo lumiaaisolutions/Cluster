@@ -42,6 +42,8 @@
   <link href="./assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
 
   <!-- Fix para evitar scaling de contenido y proteger diseño centrado -->
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+  <link rel="stylesheet" href="./assets/css/layout/claut-icon-rail.css?v=20260901g">
   <style>
     /* CSS Fix para evitar que el contenido se "agrande" por animaciones GSAP */
 
@@ -123,17 +125,17 @@
     /* Tema Profesional Slate Premium con Rojo Claut */
     :root {
       /* Tema Oscuro Pálido (Pale Dark Theme) con acentos Rojos */
-      --claut-bg-main: #1f232a;
+      --claut-bg-main: #09090b;
       /* Fondo principal: oscuro pálido / slate dark */
-      --claut-bg-surface: #252a32;
+      --claut-bg-surface: #101013;
       /* Cards/tarjetas: un poco más claro que el fondo */
-      --claut-bg-secondary: #2d333b;
+      --claut-bg-secondary: #16161a;
       /* Superficie secundaria */
-      --claut-bg-tertiary: #363d47;
+      --claut-bg-tertiary: #1e1e24;
       /* Superficie hover */
-      --claut-bg-header: rgba(31, 35, 42, 0.96);
+      --claut-bg-header: rgba(9, 9, 11, 0.92);
       /* Header oscuro a juego con blur */
-      --claut-bg-nav: rgba(37, 42, 50, 0.99);
+      --claut-bg-nav: rgba(16, 16, 19, 0.98);
       /* Nav superior oscuro a juego */
 
       /* Colores de texto - alta legibilidad para tema oscuro */
@@ -168,11 +170,11 @@
       /* Rosa-rojo para información (en lugar de azul) */
 
       /* Bordes: grises sutiles */
-      --claut-border-light: rgba(15, 23, 42, 0.06);
+      --claut-border-light: rgba(255, 255, 255, 0.08);
       /* Bordes sutiles */
-      --claut-border-medium: rgba(15, 23, 42, 0.12);
+      --claut-border-medium: rgba(255, 255, 255, 0.14);
       /* Bordes más visibles */
-      --claut-divider: rgba(15, 23, 42, 0.08);
+      --claut-divider: rgba(255, 255, 255, 0.08);
       /* Líneas divisorias */
 
       /* Sombras elegantes */
@@ -1942,7 +1944,7 @@
 
     /* Admin Panel Button Styles */
     #adminPanelButton a {
-      background: linear-gradient(135deg, #c9302c, #a02622);
+      background: linear-gradient(135deg, #C7252B, #a02622);
       box-shadow: 0 2px 8px rgba(201, 48, 44, 0.3);
       transition: all 0.3s ease;
     }
@@ -1953,14 +1955,31 @@
       transform: translateY(-1px);
     }
 
-    /* Responsive design for admin button */
+    /* Responsive design for admin button — colapsa a solo ícono en pantallas
+       angostas. Antes quedaba un cuadrito apretado de ~32px con el ícono
+       descentrado (el mr-2 del <i> pensado para cuando había texto al lado
+       seguía empujándolo) — mal target táctil y sin relación visual con el
+       resto de los círculos del sistema (riel, logo). Ahora es un círculo
+       de 44px (mínimo táctil), ícono centrado, mismo lenguaje que
+       .claut-icon-rail-item.active. */
     @media (max-width: 1023px) {
       #adminPanelButton span {
         display: none !important;
       }
 
       #adminPanelButton a {
-        padding: 0.5rem !important;
+        width: 44px !important;
+        height: 44px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 50% !important;
+      }
+
+      #adminPanelButton a i {
+        margin: 0 !important;
+        font-size: 1.05rem !important;
       }
     }
 
@@ -3611,7 +3630,6 @@
        ===================================================== */
     .claut-hero {
       position: relative !important;
-      overflow: hidden !important;
       min-height: 55vh !important;
     }
 
@@ -4708,6 +4726,8 @@
       max-width: 100% !important;
       overflow-x: hidden !important;
     }
+
+    @media (min-width: 1025px) { .claut-header-nav { display: none !important; } }
   </style>
 </head>
 
@@ -4932,6 +4952,12 @@
     <!-- Actions area -->
     <div class="claut-header-actions">
 
+      <!-- Búsqueda global (mount point para js/global-search.js) -->
+      <div id="global-search-mount"></div>
+
+      <!-- Notificaciones (mount point para js/notification-bell.js) -->
+      <div id="notification-bell-mount"></div>
+
       <!-- Botón mensajes -->
       <button class="claut-header-btn" id="headerMessagesBtn" title="Centro de Mensajes">
         <i class="fas fa-envelope"></i>
@@ -4953,16 +4979,27 @@
     </div>
   </header>
 
+  <!-- Riel de íconos flotante — reemplaza el menú horizontal en escritorio -->
+  <nav class="claut-icon-rail">
+    <a href="dashboard.html" class="claut-icon-rail-item" data-label="Inicio"><i class="fas fa-home"></i></a>
+    <a href="./descuentos.html" class="claut-icon-rail-item" data-label="Descuentos"><i class="fas fa-tags"></i></a>
+    <a href="./boletines.html" class="claut-icon-rail-item" data-label="Boletines"><i class="fas fa-newspaper"></i></a>
+    <a href="./comites.html" class="claut-icon-rail-item" data-label="Comités"><i class="fas fa-users"></i></a>
+    <a href="./contacto.html" class="claut-icon-rail-item" data-label="Contacto"><i class="fas fa-headset"></i></a>
+    <a href="./eventos.html" class="claut-icon-rail-item" data-label="Eventos"><i class="fas fa-calendar-alt"></i></a>
+    <a href="./empresas-convenio.html" class="claut-icon-rail-item" data-label="Socios"><i class="fas fa-handshake"></i></a>
+  </nav>
+
   <!-- end header -->
 
   <!-- Background Scroll Image - Fixed position behind everything -->
   <section class="scroll-image-section"
     style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; background: var(--claut-bg-main); overflow: hidden;">
-    <div class="image-motion" style="transform-origin: 50% 0; transform: rotateX(90deg); width: 100%; height: 100%;">
-      <picture>
-        <img src="./css/moveimage.png" alt="Colaboración empresarial"
-          style="width: 100%; height: 100%; object-fit: cover;">
-      </picture>
+    <div class="image-motion" style="transform-origin: 50% 0; transform: rotateX(90deg); width: 100%; height: 100%;
+      background:
+        radial-gradient(ellipse 65% 55% at 50% 15%, rgba(199, 37, 43, 0.38) 0%, transparent 62%),
+        radial-gradient(ellipse 90% 60% at 50% 100%, rgba(199, 37, 43, 0.22) 0%, transparent 70%),
+        var(--claut-bg-main, #09090b);">
     </div>
   </section>
 
@@ -5035,10 +5072,13 @@
         <!-- Hero Section Premium Tema Oscuro -->
         <section class="claut-hero claut-scroll-reveal"
           style="margin: var(--space-8) 0 var(--space-16) 0; min-height: 60vh; display: flex; align-items: center; justify-content: center; position: relative;">
-          <!-- Efectos de fondo premium -->
-          <div
-            style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(199, 37, 43, 0.1) 0%, transparent 50%);">
-          </div>
+          <!-- El glow radial que tenía esta sección estaba acotado al
+               cuadro del <section> (inset:0), así que donde el degradado
+               llegaba a "transparent" se veía un filo recto contra el
+               fondo de la página — exactamente la "caja"/línea que se
+               seguía reportando. El fondo rojo/negro ya lo aporta
+               .unified-gradient-background de forma continua para toda
+               la página, así que este glow extra sobraba. -->
 
           <div class="text-center max-w-4xl mx-auto" style="z-index: 1;">
             <h1 class="claut-title-hero mb-6" style="margin-top: 30px;">
@@ -5221,23 +5261,16 @@
         </div>
       </div>
 
-      <!-- Footer leyenda Lumia AI Solutions -->
-      <style>
-        @keyframes lumiaPulse {
-          0% { text-shadow: 0 0 4px rgba(199,37,43,0.2); }
-          50% { text-shadow: 0 0 10px rgba(199,37,43,0.6); }
-          100% { text-shadow: 0 0 4px rgba(199,37,43,0.2); }
-        }
-        .lumia-glow {
-          font-weight: 800;
-          animation: lumiaPulse 2.5s infinite;
-        }
-      </style>
-      <div style="text-align: center; padding: 30px 0 20px 0; font-size: 0.75rem; opacity: 0.5; width: 100%; letter-spacing: 0.5px;">
-        <a href="https://lumiaaisolutions.com" target="_blank" class="lumia-glow" style="color: inherit; text-decoration: none; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
-          Desarrollado por Lumia AI Solutions
+      <!-- Footer -->
+      <footer style="width: 100%; margin-top: 2rem; padding: 2rem 1.5rem 2.25rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center; gap: 0.9rem;">
+        <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" style="width: 34px; height: 34px; border-radius: 50%; opacity: 0.85;">
+        <p style="font-size: 0.72rem; color: #64748b; text-align: center; margin: 0; letter-spacing: 0.02em;">© <span id="footerYear"></span> Clúster Metropolitano — Todos los derechos reservados.</p>
+        <a href="https://lumiaaisolutions.com" target="_blank" rel="noopener noreferrer" class="lumia-badge">
+          <img src="./assets/img/lumia-icon.png" alt="LUMIA">
+          Desarrollado por <strong>LUMIA</strong>
         </a>
-      </div>
+      </footer>
+      <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
       <!-- end cards -->
     </div> <!-- end unified-gradient-container -->
     </div> <!-- end main-content-wrapper -->
@@ -8314,9 +8347,6 @@
     .main-content-wrapper {
       position: relative;
       z-index: 10;
-      background: rgba(15, 22, 35, 0.45);
-      /* Slate-azul para ver el efecto de scroll */
-      backdrop-filter: blur(2px);
     }
 
     .main-particles-overlay {
@@ -9599,7 +9629,9 @@
     }
 
     .expanding-card::before {
-      content: '🔍';
+      content: '\f002';
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
       position: absolute;
       top: 20px;
       right: 20px;
@@ -10142,6 +10174,22 @@
       .expanding-card:hover {
         transform: none !important;
       }
+    }
+
+    /* Fix de distribución: con un solo banner activo, el contenedor fijo de
+       700-750px del carrusel dejaba un vacío enorme antes de "Agenda".
+       Cuando solo hay una tarjeta, la altura se ajusta al contenido. */
+    .glass-card.shadow-2xl:has(#expandingCardsContainer > .expanding-card:only-child) {
+      height: auto !important;
+      min-height: 0 !important;
+    }
+    .glass-card.shadow-2xl:has(#expandingCardsContainer > .expanding-card:only-child) .expanding-options {
+      height: auto !important;
+      min-height: 0 !important;
+    }
+    .glass-card.shadow-2xl:has(#expandingCardsContainer > .expanding-card:only-child) .expanding-card {
+      height: clamp(280px, 40vw, 480px) !important;
+      min-height: 0 !important;
     }
   </style>
 
@@ -11075,7 +11123,7 @@
                       ${message.titulo}
                       ${isUnread ? '<span class="ml-2 inline-block w-2 h-2 bg-red-500 rounded-full"></span>' : ''}
                     </p>
-                    ${isComiteMessage ? `<p class="text-xs text-gray-300 mt-1">📧 Comité: ${message.comite_nombre || 'Sin nombre'}</p>` : ''}
+                    ${isComiteMessage ? `<p class="text-xs text-gray-300 mt-1"><i class="fas fa-envelope"></i> Comité: ${message.comite_nombre || 'Sin nombre'}</p>` : ''}
                   </div>
                   <span class="text-xs text-gray-300">${timeAgo}</span>
                 </div>
@@ -11717,7 +11765,7 @@
         metaInfo.push(`Comité: ${message.comite_nombre}`);
       }
       if (message.importante) {
-        metaInfo.push('⭐ Importante');
+        metaInfo.push('Importante');
       }
       document.getElementById('messageDetailMeta').textContent = metaInfo.join(' • ') || 'Información del mensaje';
 
@@ -12906,7 +12954,7 @@
 
         try {
           console.log('🔄 Cargando estadísticas desde API...');
-          const response = await fetch('./api/estadisticas-simple.php');
+          const response = await fetch('./api/estadisticas_simple.php');
 
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -14664,6 +14712,133 @@
   </script>
 
   <script src="assets/js/loading-screen.js"></script>
+  <script src="assets/js/claut-icon-rail.js?v=20260901c"></script>
+  <!-- Campana de notificaciones y búsqueda global se montan en #notification-bell-mount
+       y #global-search-mount dentro de .claut-header-actions (ver <header>). -->
+  <script src="js/notification-bell.js?v=20260831e" defer></script>
+
+  <!-- Búsqueda global — atajos / o Ctrl+K -->
+  <script src="js/global-search.js?v=20260831e" defer></script>
+
+  <!-- ============================================================
+       REDISEÑO HEADER/RIEL — al final del documento a propósito: el resto
+       del <head> tiene múltiples bloques "FORCE OVERRIDE" con !important
+       sobre .main-content-wrapper y .porsche-navbar (misma especificidad),
+       y en CSS gana la última regla declarada. Poniendo este bloque al
+       final garantizamos que estas reglas ganen sin tener que tocar/borrar
+       el resto del CSS legacy disperso en 14 mil líneas.
+       ============================================================ -->
+  <style>
+    :root { --header-height: 80px !important; }
+    .claut-header { height: 80px !important; }
+    .claut-header-logo img { width: 58px !important; height: 58px !important; border-radius: 50% !important; }
+    .claut-header-logo {
+      gap: 0.85rem !important;
+      padding: 0.35rem 0.35rem !important;
+      border-radius: 0 !important;
+      position: relative !important;
+      z-index: 1;
+    }
+    /* Difuminado blanco→negro detrás del logo. Se ancla a .claut-header
+       (no a .claut-header-logo) y cubre TODA la altura del header de
+       borde a borde — si solo cubriera la altura del botón del logo
+       (más bajo que el header por el padding), quedaría un filo duro
+       arriba y abajo del degradado contra el fondo oscuro del header,
+       que es exactamente la "línea"/"caja" que se seguía viendo.
+       Ancho fijo en px (no depende del contenido ni del viewport) para
+       que SIEMPRE termine de fundirse con el negro, sin importar el
+       tamaño de pantalla. */
+    .claut-header::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 340px;
+      z-index: 0;
+      background: linear-gradient(90deg, #ffffff 0%, #d4d4d8 14%, #52525b 32%, #18181b 55%, transparent 78%);
+      pointer-events: none;
+    }
+    .claut-header-logo, .claut-header-nav, .claut-header-actions { position: relative; z-index: 1; }
+    .claut-header-logo span, .claut-header-logo strong { position: relative; z-index: 1; }
+
+    @media (min-width: 1025px) {
+      .main-content-wrapper { padding-left: 134px !important; }
+    }
+
+    /* Suaviza la tarjeta "Bienvenido" para que fluya con el resto de la
+       página en vez de verse como una caja aparte con borde marcado —
+       sin borde de 1px (se ve como línea dura); solo una sombra muy
+       difuminada para dar profundidad sin marcar un límite recto. */
+    .porsche-navbar {
+      background: rgba(255, 255, 255, 0.025) !important;
+      border: none !important;
+      box-shadow: 0 12px 40px -16px rgba(0, 0, 0, 0.55) !important;
+      backdrop-filter: blur(12px) !important;
+    }
+
+    /* Quita líneas duras que marcan límites de sección */
+    .claut-header { border-bottom: none !important; box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.6) !important; }
+
+    /* Otra regla legacy ("aside, .sidebar, nav { display: block !important }")
+       forzaba el riel a display:block, rompiendo el centrado vertical flex
+       (los íconos quedaban apilados arriba con un vacío enorme abajo). */
+    .claut-icon-rail { display: flex !important; }
+    @media (max-width: 1024px) { .claut-icon-rail { display: flex !important; flex-direction: row !important; } }
+
+    /* Único menú móvil permitido: .claut-icon-rail (tab bar circular).
+       Una regla legacy más arriba en este mismo archivo reactivaba el
+       menú curvo antiguo (.claut-bottom-nav) con display:flex !important
+       en móvil, produciendo doble menú + un círculo activo "flotante"
+       en medio de la pantalla. Se oculta aquí, al final del documento,
+       para ganar el empate de !important por orden de aparición. */
+    .claut-bottom-nav { display: none !important; }
+
+    /* Botón Admin Panel: el <span>"Admin Panel"</span> usa la clase Tailwind
+       "lg:inline" para mostrarse en escritorio, pero este archivo NO carga
+       Tailwind (usa el CSS compilado assets/css/argon-dashboard-tailwind.css)
+       y esa utilidad nunca se generó ahí — el texto no aparece en NINGÚN
+       ancho de pantalla, siempre fue un botón solo-ícono. Antes quedaba sin
+       estilo propio para ese caso: un rectángulo apretado de ~27px con
+       border-radius:10px heredado de la regla pensada para el texto+ícono.
+       Se vuelve círculo de 44px (mínimo táctil) siempre, mismo lenguaje
+       visual que .claut-icon-rail-item.active — sin depender de un media
+       query, porque el texto nunca compite por el espacio. */
+    #adminPanelButton a {
+      width: 44px !important;
+      height: 44px !important;
+      padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 50% !important;
+    }
+
+    #adminPanelButton a i {
+      margin: 0 !important;
+      font-size: 1.05rem !important;
+    }
+
+    /* Tarjeta "Bienvenido" separada del header por casi el doble de lo
+       necesario y descentrada. Causa: una regla legacy de escritorio
+       ("FORZAR POSICIÓN FIJA DEL NAVBAR") le pone a .porsche-navbar
+       margin-top:80px !important — que se SUMA al padding-top:80px que
+       ya trae main.claut-main para no quedar bajo el header fijo (total
+       160px de hueco). La misma regla también le agrega margin-left/
+       right:120px, que se suma al padding-left:134px que main.claut-main
+       ya tiene reservado para el riel — dejando 254px a la izquierda
+       contra solo 120px a la derecha, visiblemente descentrado. */
+    @media (min-width: 1025px) {
+      .porsche-navbar[navbar-main],
+      nav[navbar-main][navbar-scroll="false"] {
+        margin-top: 24px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+  </style>
 </body>
 
 </html>
