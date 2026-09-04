@@ -25,25 +25,25 @@ if (window.sistemaEmergencia) {
                 z-index: 9999;
             ">
                 <div style="
-                    background: white;
+                    background: #16161a;
                     padding: 30px;
                     border-radius: 12px;
                     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
                     max-width: 400px;
                     width: 90%;
                 ">
-                    <h3 style="margin: 0 0 20px 0; color: #1f2937; font-size: 20px;">
+                    <h3 style="margin: 0 0 20px 0; color: #f8fafc; font-size: 20px;">
                         💾 Guardar Configuración
                     </h3>
                     
                     <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; color: #374151; font-weight: 500;">
+                        <label style="display: block; margin-bottom: 5px; color: #f8fafc; font-weight: 500;">
                             Nombre de la configuración:
                         </label>
                         <input type="text" id="nombreConfig" placeholder="Mi configuración" style="
                             width: 100%;
                             padding: 10px;
-                            border: 2px solid #d1d5db;
+                            border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #f8fafc;
                             border-radius: 6px;
                             font-size: 14px;
                             box-sizing: border-box;
@@ -51,13 +51,13 @@ if (window.sistemaEmergencia) {
                     </div>
                     
                     <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 5px; color: #374151; font-weight: 500;">
+                        <label style="display: block; margin-bottom: 5px; color: #f8fafc; font-weight: 500;">
                             Descripción (opcional):
                         </label>
                         <textarea id="descripcionConfig" placeholder="Descripción de la configuración..." style="
                             width: 100%;
                             padding: 10px;
-                            border: 2px solid #d1d5db;
+                            border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #f8fafc;
                             border-radius: 6px;
                             font-size: 14px;
                             height: 60px;
@@ -67,12 +67,12 @@ if (window.sistemaEmergencia) {
                     </div>
                     
                     <div id="infoGuardado" style="
-                        background: #f3f4f6;
+                        background: rgba(255,255,255,0.04);
                         padding: 12px;
                         border-radius: 6px;
                         margin-bottom: 20px;
                         font-size: 12px;
-                        color: #6b7280;
+                        color: #94a3b8;
                     ">
                         📊 Datos: ${this.currentData.length} registros<br>
                         🎨 Tipo: ${this.config.type}<br>
@@ -248,8 +248,8 @@ if (window.sistemaEmergencia) {
         
         container.innerHTML = `
             <div style="padding: 10px;">
-                <h4 style="margin: 0 0 10px 0; color: #374151;">📊 Vista Previa</h4>
-                <div style="background: #f9fafb; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto;">
+                <h4 style="margin: 0 0 10px 0; color: #f8fafc;">📊 Vista Previa</h4>
+                <div style="background: rgba(255,255,255,0.04); padding: 10px; border-radius: 6px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto;">
                     ${data.slice(0, 5).map(item => {
                         const label = item.mes || item.label || item.etiqueta;
                         const value = item.valor || item.empresas || item.count;
@@ -369,7 +369,7 @@ if (window.sistemaEmergencia) {
         const stats = document.getElementById('dataStats');
         
         if (editor) editor.value = '';
-        if (preview) preview.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 40px;">Los datos validados aparecerán aquí</p>';
+        if (preview) preview.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 40px;">Los datos validados aparecerán aquí</p>';
         if (stats) stats.style.display = 'none';
         
         this.mostrarNotificacion('Editor limpiado', 'info');
@@ -387,7 +387,7 @@ if (window.sistemaEmergencia) {
         let listaHTML = '<h3>📚 Configuraciones Guardadas:</h3><ul>';
         configs.forEach((config, index) => {
             listaHTML += `
-                <li style="margin: 10px 0; padding: 10px; background: #f3f4f6; border-radius: 6px;">
+                <li style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.04); border-radius: 6px;">
                     <strong>${config.name}</strong><br>
                     <small>Guardado: ${new Date(config.timestamp).toLocaleString()}</small><br>
                     <small>Datos: ${config.data.length} registros</small>
@@ -402,7 +402,7 @@ if (window.sistemaEmergencia) {
         const modal = document.createElement('div');
         modal.innerHTML = `
             <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; max-height: 70vh; overflow-y: auto;">
+                <div style="background: #16161a; padding: 30px; border-radius: 12px; max-width: 500px; max-height: 70vh; overflow-y: auto;">
                     ${listaHTML}
                     <button onclick="this.parentElement.parentElement.remove()" style="margin-top: 20px; padding: 10px 20px; background: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer;">
                         Cerrar

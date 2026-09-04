@@ -50,7 +50,7 @@
   </script>
 
   <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a" />
-  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
   <style>
     :root {
       /* Primary Colors - Inspired by Porsche */
@@ -606,8 +606,9 @@
     }
   </style>
 
+  <link rel="stylesheet" href="./css/claut-panel.css?v=20260903a">
 <body
-  class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default text-slate-500 overflow-x-hidden claut-dark claut-skin">
+  class="m-0 font-sans text-base antialiased font-normal leading-default overflow-x-hidden claut-dark">
   <!-- Header Horizontal con Navegación Premium -->
   <!-- Header Horizontal Premium con Menú Integrado -->
   <header class="claut-header">
@@ -715,65 +716,10 @@
   <main class="claut-main claut-main-responsive relative transition-all duration-200 ease-in-out main-scroll-container" style="margin-left: 0; overflow: hidden; z-index: 1; position: relative;">
     <!-- Contenido principal con restricción de autenticación -->
     <div id="mainContent" class="">
-      <!-- Navbar -->
-        <nav
-          class="porsche-navbar porsche-navbar-responsive relative flex flex-wrap items-center justify-between px-0 py-1 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start"
-          navbar-main navbar-scroll="false"
-          style="display: flex; z-index: 999999; position: relative;">
-        <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
-          <nav>
-            <!-- breadcrumb -->
-            <ol class="breadcrumb flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-              <li class="text-sm leading-normal">
-                <a class="text-white opacity-50" href="javascript:;">Intranet</a>
-              </li>
-              <li
-                class="text-sm pl-2 capitalize leading-normal text-white before:float-left before:pr-2 before:text-white before:content-['/']"
-                aria-current="page">Comités</li>
-            </ol>
-            <h6 class="breadcrumb-title mb-0 font-bold text-white capitalize">Comités</h6>
-          </nav>
-
-          <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-            <div class="flex items-center md:ml-auto md:pr-4">
-              <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                <!-- User Dropdown Menu -->
-                <li class="flex items-center relative">
-                  <div class="relative">
-                    <button
-                      class="flex items-center px-3 py-1 text-sm font-bold text-white transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro ease-soft-in border-white/20 bg-white/10 hover:scale-102 hover:border-white/40 active:opacity-85"
-                      onclick="toggleUserMenu()" id="userMenuBtn">
-                      <i class="fas fa-user text-white mr-2"></i>
-                      <span class="hidden sm:inline text-white" id="userDisplayName">Usuario</span>
-                      <i class="fas fa-chevron-down text-white ml-2 text-xs"></i>
-                    </button>
-                    <!-- User Dropdown -->
-                    <div
-                      class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 hidden"
-                      id="userDropdown" style="top: 100%;">
-                      <div class="px-4 py-2 border-b border-gray-200">
-                        <p class="text-sm font-medium text-gray-900" id="dropdownUserName">Usuario</p>
-                        <p class="text-xs text-gray-500" id="dropdownUserRole">Rol</p>
-                      </div>
-                      <a href="profile.html"
-                        class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <i class="fas fa-user-circle mr-3 text-gray-400"></i>
-                        Mi Perfil
-                      </a>
-                      <button onclick="handleLogout()"
-                        class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                        <i class="fas fa-sign-out-alt mr-3 text-red-500"></i>
-                        Cerrar Sesión
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+      <!-- Navbar interno (breadcrumb + usuario) — componente reutilizable -->
+      <script src="./assets/js/claut-page-header.js?v=20260903b" data-breadcrumb="Comités" data-welcome="Comités"></script>
+      <!-- Hero del rediseño 2026 (componente compartido) -->
+      <script src="./js/claut-panel.js?v=20260903a" data-eyebrow="Colaboración estratégica" data-title="Comités" data-tagline="Grupos de trabajo del <strong>Clúster</strong> — participa y colabora" data-reveal="#comitesContainer"></script>
       <!-- end Navbar -->
 
       <!-- Sección de Comités Mejorada -->
@@ -782,70 +728,65 @@
         <div id="comitesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           <!-- Los comités se cargarán dinámicamente desde la BD -->
           <div class="col-span-full text-center py-8">
-            <i class="fas fa-spinner fa-spin text-2xl text-gray-400 mb-2"></i>
-            <p class="text-gray-500">Cargando comités...</p>
+            <i class="fas fa-spinner fa-spin text-2xl claut-text-muted mb-2"></i>
+            <p class="claut-text-muted">Cargando comités...</p>
           </div>
         </div>
       </div>
 
       <!-- Modal de Registro -->
       <div id="registroModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="rounded-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto" style="background:#101013; border:1px solid rgba(255,255,255,0.1);">
           <div class="p-6">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-2xl font-bold text-gray-800">Registro al Comité</h2>
-              <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+              <h2 class="text-2xl font-bold claut-text-primary">Registro al Comité</h2>
+              <button onclick="closeModal()" class="claut-text-muted hover:claut-text-secondary">
                 <i class="fas fa-times text-xl"></i>
               </button>
             </div>
 
-            <div id="comiteInfo" class="mb-6 p-4 bg-gray-50 rounded-lg">
+            <div id="comiteInfo" class="mb-6 p-4 rounded-lg" style="background: rgba(255,255,255,0.04);">
               <!-- Información del comité se carga dinámicamente -->
             </div>
 
             <form id="registroForm" class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
-                <input type="text" id="nombre" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-clúster-red">
+                <label class="block text-sm font-medium claut-text-secondary mb-1">Nombre completo</label>
+                <input type="text" id="nombre" required class="claut-input">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
-                <input type="email" id="email" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-clúster-red">
+                <label class="block text-sm font-medium claut-text-secondary mb-1">Correo electrónico</label>
+                <input type="email" id="email" required class="claut-input">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Cargo</label>
-                <input type="text" id="cargo" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-clúster-red">
+                <label class="block text-sm font-medium claut-text-secondary mb-1">Cargo</label>
+                <input type="text" id="cargo" required class="claut-input">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Organización</label>
-                <input type="text" id="organizacion" required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-clúster-red">
+                <label class="block text-sm font-medium claut-text-secondary mb-1">Organización</label>
+                <input type="text" id="organizacion" required class="claut-input">
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">¿Quieres formar parte del grupo de WhatsApp
+                <label class="block text-sm font-medium claut-text-secondary mb-1">¿Quieres formar parte del grupo de WhatsApp
                   del Comité? Comparte tu número celular</label>
-                <input type="tel" id="telefono" placeholder="Ej: 8112345678"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-clúster-red">
+                <input type="tel" id="telefono" placeholder="Ej: 8112345678" class="claut-input">
               </div>
 
               <div class="flex items-center">
                 <input type="checkbox" id="terminos" required
-                  class="h-4 w-4 text-clúster-red focus:ring-clúster-red border-gray-300 rounded">
-                <label for="terminos" class="ml-2 block text-sm text-gray-700">
+                  class="h-4 w-4 text-clúster-red focus:ring-clúster-red rounded" style="border-color: rgba(255,255,255,0.2);">
+                <label for="terminos" class="ml-2 block text-sm claut-text-secondary">
                   Acepto los términos y condiciones de participación
                 </label>
               </div>
 
               <div class="flex space-x-3 pt-4">
                 <button type="button" onclick="closeModal()"
-                  class="flex-1 px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors">
+                  class="flex-1 px-4 py-2 claut-text-secondary rounded-lg transition-colors" style="background:rgba(255,255,255,0.08);" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
                   Cancelar
                 </button>
                 <button type="submit"
@@ -909,23 +850,23 @@
           if (comiteInfo) {
             comiteInfoDiv.innerHTML = `
             <h3 class="text-lg font-semibold text-clúster-red mb-2">${comiteInfo.nombre}</h3>
-            <p class="text-gray-600 mb-3">${comiteInfo.descripcion || 'Sin descripción'}</p>
+            <p class="claut-text-secondary mb-3">${comiteInfo.descripcion || 'Sin descripción'}</p>
             <div class="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                    <strong class="text-gray-700">Organización:</strong>
-                    <p class="text-gray-600">${comiteInfo.organizacion || 'CLAUT'}</p>
+                    <strong class="claut-text-secondary">Organización:</strong>
+                    <p class="claut-text-secondary">${comiteInfo.organizacion || 'CLAUT'}</p>
                 </div>
                 <div>
-                    <strong class="text-gray-700">Periodicidad:</strong>
-                    <p class="text-gray-600">${comiteInfo.periodicidad || 'Mensual'}</p>
+                    <strong class="claut-text-secondary">Periodicidad:</strong>
+                    <p class="claut-text-secondary">${comiteInfo.periodicidad || 'Mensual'}</p>
                 </div>
                 <div>
-                    <strong class="text-gray-700">Objetivo:</strong>
-                    <p class="text-gray-600">${comiteInfo.objetivo || 'Sin objetivo definido'}</p>
+                    <strong class="claut-text-secondary">Objetivo:</strong>
+                    <p class="claut-text-secondary">${comiteInfo.objetivo || 'Sin objetivo definido'}</p>
                 </div>
                 <div>
-                    <strong class="text-gray-700">Miembros:</strong>
-                    <p class="text-gray-600">${comiteInfo.miembros_activos || 0} activos</p>
+                    <strong class="claut-text-secondary">Miembros:</strong>
+                    <p class="claut-text-secondary">${comiteInfo.miembros_activos || 0} activos</p>
                 </div>
             </div>
           `;
@@ -1218,8 +1159,8 @@
           if (comites.length === 0) {
             container.innerHTML = `
             <div class="col-span-full text-center py-8">
-              <i class="fas fa-exclamation-circle text-4xl text-gray-400 mb-3"></i>
-              <p class="text-gray-500">No hay comités disponibles</p>
+              <i class="fas fa-exclamation-circle text-4xl claut-text-muted mb-3"></i>
+              <p class="claut-text-muted">No hay comités disponibles</p>
             </div>
           `;
             return;
@@ -1228,18 +1169,18 @@
           let html = '';
           comites.forEach(comite => {
             html += `
-            <div class="porsche-card bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition duration-300 card-hover card-animate" data-comite-id="${comite.id}">
+            <div class="porsche-card rounded-2xl overflow-hidden transform hover:scale-105 transition duration-300 card-hover card-animate" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); box-shadow:0 20px 40px -12px rgba(0,0,0,0.4);" data-comite-id="${comite.id}">
               <div class="relative w-full h-56 overflow-hidden rounded-2xl shadow-xl group" style="background: linear-gradient(135deg, #16161a 0%, #1e1e24 100%);">
                 <!-- Enhanced image container will be inserted here -->
                 <div class="relative z-20 flex flex-col justify-end h-full p-4">
                 </div>
               </div>
               <div class="p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">${comite.nombre}</h3>
-                <p class="text-gray-600 text-sm mb-4">${comite.descripcion || 'Sin descripción'}</p>
+                <h3 class="text-xl font-bold claut-text-primary mb-2">${comite.nombre}</h3>
+                <p class="claut-text-secondary text-sm mb-4">${comite.descripcion || 'Sin descripción'}</p>
                 <div class="flex items-center mb-4">
                   <div class="w-2 h-2 bg-clúster-red rounded-full mr-2"></div>
-                  <span class="text-gray-700 text-sm font-medium">${comite.organizacion || 'CLAUT'}</span>
+                  <span class="claut-text-secondary text-sm font-medium">${comite.organizacion || 'CLAUT'}</span>
                 </div>
                 <div class="mb-4">
                   <span class="inline-block bg-gradient-to-r from-clúster-red to-clúster-red-light text-white px-4 py-2 rounded-full text-sm font-medium">
@@ -1247,7 +1188,7 @@
                   </span>
                 </div>
                 <div class="flex justify-between items-center">
-                  <span class="text-sm text-gray-500">${comite.miembros_activos || 0} miembros activos</span>
+                  <span class="text-sm claut-text-muted">${comite.miembros_activos || 0} miembros activos</span>
                   ${comite.tipo_registro === 'link' && comite.link_registro ? `
                   <button onclick="window.open('${comite.link_registro}', '_blank')"
                     class="bg-clúster-red hover:bg-clúster-red-dark text-white px-5 py-2 rounded-lg transition transform hover:scale-105 text-sm whitespace-nowrap">
@@ -1371,13 +1312,13 @@
     <div id="restrictedOverlay" class="restricted-overlay hidden">
       <div class="restricted-message">
         <div class="mb-4">
-          <i class="fas fa-lock text-4xl text-gray-500 mb-3"></i>
-          <h3 class="text-lg font-semibold text-gray-800 mb-2">Acceso Restringido</h3>
-          <p class="text-sm text-gray-600 mb-4">
+          <i class="fas fa-lock text-4xl claut-text-muted mb-3"></i>
+          <h3 class="text-lg font-semibold claut-text-primary mb-2">Acceso Restringido</h3>
+          <p class="text-sm claut-text-secondary mb-4">
             Debes iniciar sesión para acceder a este contenido
           </p>
           <button onclick="window.location.href='./pages/sign-in.html'"
-            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+            class="px-4 py-2 text-white rounded-lg transition-colors" style="background:var(--state-info);" onmouseover="this.style.filter='brightness(1.15)'" onmouseout="this.style.filter='none'">
             Iniciar Sesión
           </button>
         </div>

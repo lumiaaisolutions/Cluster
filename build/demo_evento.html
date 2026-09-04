@@ -6,7 +6,7 @@
     <title>Demo Eventos - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
     <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
@@ -296,7 +296,7 @@
             overflow: hidden;
         }
 
-        .border.border-gray-200.rounded-lg.p-4.hover\:shadow-md .text-sm.text-gray-500.truncate {
+        .border.border-gray-200.rounded-lg.p-4.hover\:shadow-md .text-sm.claut-text-muted.truncate {
             white-space: normal !important;
             line-height: 1.4;
             max-height: calc(1.4em * 2);
@@ -316,7 +316,7 @@
 
         /* Responsive adjustments for the specific structure */
         @media (max-width: 768px) {
-            .border.border-gray-200.rounded-lg.p-4.hover\:shadow-md .text-sm.text-gray-500.truncate {
+            .border.border-gray-200.rounded-lg.p-4.hover\:shadow-md .text-sm.claut-text-muted.truncate {
                 max-height: calc(1.4em * 3);
                 -webkit-line-clamp: 3;
             }
@@ -363,7 +363,7 @@
             overflow-wrap: break-word;
         }
 
-        #eventosContainer .text-sm.text-gray-500 {
+        #eventosContainer .text-sm.claut-text-muted {
             overflow: hidden !important;
         }
 
@@ -763,7 +763,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 claut-dark claut-skin">
+<body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
         <div class="claut-admin-sidebar-brand">
             <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
@@ -948,15 +948,15 @@
                     </div>
                     <div>
                         <h2 class="text-xl font-black text-white tracking-tighter">Directorio de Eventos</h2>
-                        <p class="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">Gestión y Sincronización</p>
+                        <p class="claut-text-muted text-[10px] font-black uppercase tracking-[0.2em]">Gestión y Sincronización</p>
                     </div>
                 </div>
                 
                 <div class="flex flex-col md:flex-row gap-4 flex-1 max-w-4xl justify-end">
                     <div class="relative group flex-1">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-porsche-accent transition-colors"></i>
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 claut-text-muted group-focus-within:text-porsche-accent transition-colors"></i>
                         <input type="text" id="searchInput" 
-                               class="w-full pl-11 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-porsche-accent/50 focus:border-porsche-accent transition-all placeholder:text-gray-600" 
+                               class="w-full pl-11 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-porsche-accent/50 focus:border-porsche-accent transition-all placeholder:claut-text-secondary" 
                                placeholder="Filtrar por título, ubicación o descripción...">
                     </div>
                     
@@ -1243,7 +1243,7 @@
                         </div>
 
                         <div>
-                            <label>URL de Registro <span class="text-gray-500 font-normal normal-case">(Opcional — déjalo vacío para usar el formulario interno)</span></label>
+                            <label>URL de Registro <span class="claut-text-muted font-normal normal-case">(Opcional — déjalo vacío para usar el formulario interno)</span></label>
                             <input type="url" id="link_evento" name="link_evento"
                                    class="w-full glass-input" placeholder="https://link-externo-de-registro.com (opcional)">
                         </div>
@@ -1383,7 +1383,7 @@
     <!-- Notifications System -->
     <div id="notifications" class="fixed top-6 right-6 z-[10001] space-y-3 pointer-events-none"></div>
 
-    <script src="./js/demo-eventos.js?v=20260901a"></script>
+    <script src="./js/demo-eventos.js?v=20260903a"></script>
   <script src="./js/auth-session.js"></script>
   <script src="assets/js/loading-screen.js"></script>
   <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>

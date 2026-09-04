@@ -7,7 +7,7 @@
     <title>Demo Descuentos - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
     <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
@@ -75,7 +75,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 claut-dark claut-skin">
+<body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
         <div class="claut-admin-sidebar-brand">
             <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
@@ -153,7 +153,7 @@
                 <div class="flex items-center">
                     <!-- Hamburger Menu Button for All Screens -->
                     <button
-                        class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
+                        class="mr-3 p-2 text-white hover:claut-text-secondary focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
                         id="claut-header-menu-btn" aria-label="Abrir menú de navegación">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -168,7 +168,7 @@
                 <div class="flex items-center space-x-4">
                     <span id="userInfo" class="text-sm"></span>
                     <button onclick="location.href='descuentos.html'"
-                        class="bg-white text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 transition">
+                        class="px-4 py-2 rounded-lg transition" style="background:rgba(255,255,255,0.1); color:#fff;" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
                         <i class="fas fa-arrow-left mr-2"></i>Volver a Descuentos
                     </button>
                 </div>
@@ -218,7 +218,7 @@
         </div>
 
         <!-- Controles -->
-        <div class="bg-white rounded-lg shadow p-4 mb-6">
+        <div class="rounded-lg p-4 mb-6" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center space-x-4">
                     <button onclick="showCreateModal()"
@@ -234,10 +234,10 @@
 
                 <div class="flex items-center space-x-4">
                     <input type="text" id="searchInput" placeholder="Buscar descuentos..."
-                        class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        class="claut-input" style="width:auto;">
 
                     <select id="filterEstado"
-                        class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        class="claut-select" style="width:auto; padding:0.6rem 1rem;">
                         <option value="">Todos los estados</option>
                         <option value="activo">Activo</option>
                         <option value="inactivo">Inactivo</option>
@@ -245,7 +245,7 @@
                     </select>
 
                     <select id="filterEmpresa"
-                        class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                        class="claut-select" style="width:auto; padding:0.6rem 1rem;">
                         <option value="">Todas las empresas</option>
                     </select>
                 </div>
@@ -253,32 +253,32 @@
         </div>
 
         <!-- Tabla de Descuentos -->
-        <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="rounded-lg overflow-hidden" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-gray-50">
+                    <thead style="background: rgba(255,255,255,0.04);">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 Título</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 Empresa</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 Descuento</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 Código</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 Vigencia</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 Estado</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 Usos</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                 Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="descuentosTableBody" class="bg-white divide-y divide-gray-200">
+                    <tbody id="descuentosTableBody" class="divide-y divide-white/5">
                         <!-- Los descuentos se cargarán aquí dinámicamente -->
                     </tbody>
                 </table>
@@ -464,18 +464,18 @@
     <!-- Modal de Confirmación de Eliminación -->
     <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden z-50">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg shadow-xl max-w-sm w-full">
+            <div class="rounded-lg max-w-sm w-full" style="background:#101013; border:1px solid rgba(255,255,255,0.1); box-shadow:0 25px 60px rgba(0,0,0,0.5);">
                 <div class="px-6 py-4">
                     <div class="flex items-center mb-4">
                         <i class="fas fa-exclamation-triangle text-red-500 text-2xl mr-3"></i>
-                        <h3 class="text-lg font-semibold text-gray-900">Confirmar Eliminación</h3>
+                        <h3 class="text-lg font-semibold claut-text-primary">Confirmar Eliminación</h3>
                     </div>
-                    <p class="text-gray-600 mb-4">¿Estás seguro de que deseas eliminar este descuento?</p>
-                    <p class="text-sm text-gray-500">Esta acción no se puede deshacer.</p>
+                    <p class="claut-text-secondary mb-4">¿Estás seguro de que deseas eliminar este descuento?</p>
+                    <p class="text-sm claut-text-muted">Esta acción no se puede deshacer.</p>
                 </div>
                 <div class="px-6 py-4 border-t flex justify-end space-x-3">
                     <button onclick="hideDeleteModal()"
-                        class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+                        class="px-4 py-2 claut-text-secondary rounded-lg transition" style="background:rgba(255,255,255,0.08);" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
                         Cancelar
                     </button>
                     <button onclick="confirmDelete()"
@@ -903,8 +903,8 @@
             if (!descuentos || descuentos.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="9" class="px-6 py-8 text-center text-gray-500">
-                            <i class="fas fa-tags text-4xl text-gray-300 mb-2"></i>
+                        <td colspan="9" class="px-6 py-8 text-center claut-text-muted">
+                            <i class="fas fa-tags text-4xl claut-text-secondary mb-2"></i>
                             <p>No hay descuentos registrados</p>
                         </td>
                     </tr>
@@ -923,15 +923,15 @@
                     : `${descuento.usos_actuales || 0}/∞`;
 
                 return `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${descuento.id}</td>
+                    <tr style="transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm claut-text-primary">${descuento.id}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">${descuento.titulo}</div>
-                            <div class="text-sm text-gray-500">${descuento.descripcion || 'Sin descripción'}</div>
+                            <div class="text-sm font-medium claut-text-primary">${descuento.titulo}</div>
+                            <div class="text-sm claut-text-muted">${descuento.descripcion || 'Sin descripción'}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">${descuento.empresa_nombre}</div>
-                            <div class="text-sm text-gray-500">${descuento.sector || 'General'}</div>
+                            <div class="text-sm font-medium claut-text-primary">${descuento.empresa_nombre}</div>
+                            <div class="text-sm claut-text-muted">${descuento.sector || 'General'}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="text-lg font-bold text-red-600">${descuentoTexto}</span>
@@ -939,12 +939,12 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="font-mono text-sm">${descuento.codigo_descuento || 'N/A'}</span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm claut-text-primary">
                             <div>${new Date(descuento.fecha_inicio).toLocaleDateString('es-MX')}</div>
-                            <div class="text-gray-500">al ${new Date(descuento.fecha_fin).toLocaleDateString('es-MX')}</div>
+                            <div class="claut-text-muted">al ${new Date(descuento.fecha_fin).toLocaleDateString('es-MX')}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">${estadoBadge}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${usosTexto}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm claut-text-primary">${usosTexto}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button onclick="editDescuento(${descuento.id})" class="text-indigo-600 hover:text-indigo-900 mr-3">
                                 <i class="fas fa-edit"></i>
@@ -961,10 +961,10 @@
         // Obtener badge de estado
         function getEstadoBadge(estado) {
             const badges = {
-                'activo': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Activo</span>',
-                'inactivo': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Inactivo</span>',
-                'expirado': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Expirado</span>',
-                'agotado': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Agotado</span>'
+                'activo': '<span class="claut-badge claut-badge--success">Activo</span>',
+                'inactivo': '<span class="claut-badge claut-badge--neutral">Inactivo</span>',
+                'expirado': '<span class="claut-badge claut-badge--danger">Expirado</span>',
+                'agotado': '<span class="claut-badge claut-badge--warning">Agotado</span>'
             };
             return badges[estado] || badges['inactivo'];
         }

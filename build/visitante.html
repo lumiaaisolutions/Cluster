@@ -13,7 +13,7 @@
   <link href="./assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
   <style>
     /* Estilos personalizados para visitante */
     .visitante-card {
@@ -73,7 +73,7 @@
   </style>
 </head>
 
-<body class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500 claut-dark claut-skin">
+<body class="m-0 font-sans text-base antialiased font-normal leading-default claut-dark">
   <!-- Header -->
   <header class="header-visitante shadow-lg">
     <div class="container mx-auto px-6 py-4">
@@ -113,9 +113,9 @@
 
     <!-- Información Adicional -->
     <div class="mt-8 text-center">
-      <div class="bg-white rounded-lg p-6 shadow-md">
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Información Importante</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+      <div class="glass-panel rounded-lg p-6">
+        <h3 class="text-xl font-semibold claut-text-primary mb-3">Información Importante</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm claut-text-secondary">
           <div>
             <i class="fas fa-eye text-blue-500 mb-2"></i>
             <p><strong>Solo Lectura:</strong> Puedes visualizar información pero no modificarla</p>
@@ -134,9 +134,9 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-white shadow-lg mt-12">
+  <footer class="glass-panel mt-12" style="border-radius: 0;">
     <div class="container mx-auto px-6 py-4">
-      <div class="text-center text-gray-600">
+      <div class="text-center claut-text-secondary">
         <p>© <span id="currentYear"></span> Clúster Metropolitano. Portal Visitante.</p>
       </div>
     </div>
@@ -205,10 +205,10 @@
       const html = paginasPermitidas.filter(pagina => pagina.activo).map(pagina => `
         <div class="nav-card" onclick="navegarA('${pagina.url}', '${pagina.titulo}')">
           <i class="${pagina.icono}"></i>
-          <h3 class="text-xl font-semibold text-gray-800 mb-2">${pagina.titulo}</h3>
-          <p class="text-gray-600">${pagina.descripcion}</p>
+          <h3 class="text-xl font-semibold claut-text-primary mb-2">${pagina.titulo}</h3>
+          <p class="claut-text-secondary">${pagina.descripcion}</p>
           <div class="mt-4">
-            <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+            <span class="claut-badge claut-badge--success">
               <i class="fas fa-database mr-1"></i>Datos Reales
             </span>
           </div>

@@ -316,7 +316,8 @@ class AdminComitesManager {
 
     createComiteCard(comite) {
         const card = document.createElement('div');
-        card.className = 'bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow';
+        card.className = 'rounded-lg transition-shadow';
+        card.style.cssText = 'background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); box-shadow:0 4px 12px rgba(0,0,0,0.2);';
 
         // Determinar URL de imagen
         let imageUrl = '';
@@ -337,8 +338,8 @@ class AdminComitesManager {
 
         const imageHTML = imageUrl ?
             `<div class="h-48 bg-cover bg-center rounded-t-lg" style="background-image: url('${imageUrl}')"></div>` :
-            `<div class="h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
-                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            `<div class="h-48 rounded-t-lg flex items-center justify-center" style="background:rgba(255,255,255,0.05);">
+                <svg class="w-12 h-12 claut-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 715.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
             </div>`;
@@ -346,9 +347,9 @@ class AdminComitesManager {
         card.innerHTML = `
             ${imageHTML}
             <div class="p-4">
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">${this.escapeHtml(comite.nombre)}</h3>
-                <p class="text-gray-600 text-sm mb-2">${this.escapeHtml(comite.descripcion || 'Sin descripción')}</p>
-                <p class="text-gray-500 text-xs mb-4">${this.escapeHtml(comite.objetivo || 'Sin objetivo definido')}</p>
+                <h3 class="text-lg font-semibold claut-text-primary mb-2">${this.escapeHtml(comite.nombre)}</h3>
+                <p class="claut-text-secondary text-sm mb-2">${this.escapeHtml(comite.descripcion || 'Sin descripción')}</p>
+                <p class="claut-text-muted text-xs mb-4">${this.escapeHtml(comite.objetivo || 'Sin objetivo definido')}</p>
                 <div class="flex space-x-2">
                     <button onclick="window.adminComites.editComite(${comite.id})"
                             class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">
@@ -802,22 +803,22 @@ class AdminComitesManager {
         solicitudesSection.classList.remove('hidden');
 
         if (solicitudes.length === 0) {
-            solicitudesList.innerHTML = '<p class="text-gray-500 text-center">No hay solicitudes pendientes</p>';
+            solicitudesList.innerHTML = '<p class="claut-text-muted text-center">No hay solicitudes pendientes</p>';
             return;
         }
 
         let html = '<div class="space-y-4">';
         solicitudes.forEach(solicitud => {
             html += `
-                <div class="border border-gray-200 rounded-lg p-4">
+                <div class="rounded-lg p-4" style="border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02);">
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
-                            <h4 class="font-semibold text-gray-800">${this.escapeHtml(solicitud.nombre_empresa)}</h4>
-                            <p class="text-sm text-gray-600">${this.escapeHtml(solicitud.nombre_usuario)} - ${this.escapeHtml(solicitud.cargo)}</p>
-                            <p class="text-sm text-gray-500">${this.escapeHtml(solicitud.email_contacto)}</p>
-                            <p class="text-xs text-gray-400">Comité: ${this.escapeHtml(solicitud.comite_nombre)}</p>
-                            <p class="text-xs text-gray-400">Fecha: ${new Date(solicitud.fecha_registro).toLocaleDateString()}</p>
-                            ${solicitud.comentarios ? `<p class="text-sm text-gray-600 mt-2"><strong>Comentarios:</strong> ${this.escapeHtml(solicitud.comentarios)}</p>` : ''}
+                            <h4 class="font-semibold claut-text-primary">${this.escapeHtml(solicitud.nombre_empresa)}</h4>
+                            <p class="text-sm claut-text-secondary">${this.escapeHtml(solicitud.nombre_usuario)} - ${this.escapeHtml(solicitud.cargo)}</p>
+                            <p class="text-sm claut-text-muted">${this.escapeHtml(solicitud.email_contacto)}</p>
+                            <p class="text-xs claut-text-muted">Comité: ${this.escapeHtml(solicitud.comite_nombre)}</p>
+                            <p class="text-xs claut-text-muted">Fecha: ${new Date(solicitud.fecha_registro).toLocaleDateString()}</p>
+                            ${solicitud.comentarios ? `<p class="text-sm claut-text-secondary mt-2"><strong>Comentarios:</strong> ${this.escapeHtml(solicitud.comentarios)}</p>` : ''}
                         </div>
                         <div class="flex space-x-2 ml-4">
                             <button onclick="window.adminComites.aprobarSolicitud(${solicitud.id})"

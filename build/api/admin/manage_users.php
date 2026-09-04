@@ -3,11 +3,14 @@
  * API para gestión de usuarios - Aprobación, rechazo, lista de espera
  */
 
-// Configuración de sesión segura
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 0); // Cambiar a 1 en HTTPS
-session_start();
+// Configuración de sesión segura — antes usaba ini_set()+session_start()
+// a secas, con nombre de cookie por defecto de PHP ("PHPSESSID") en vez
+// del "CLAUT_SESSION" que fija el login real vía SessionConfig — la
+// sesión de un admin real nunca se veía aquí (mismo bug que BUG-035 en
+// api/notificaciones.php).
+define('CLAUT_ACCESS', true);
+require_once __DIR__ . '/../../config/session-config.php';
+SessionConfig::init();
 
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Origin: https://intranet.clautmetropolitano.mx');
@@ -45,7 +48,12 @@ function responderJSON($success, $data = null, $message = '', $extra = []) {
  * Verificar que el usuario es administrador
  */
 function verificarAdmin() {
-    if (!isset($_SESSION['user_id']) || !isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+    // Antes comparaba $_SESSION['user_id']/['rol'], claves que el login
+    // real nunca escribe (solo fija 'user_email' y 'user_rol' — ver
+    // api/auth/login-compatible.php) — esta función SIEMPRE denegaba el
+    // acceso a un admin real, sin importar el fix de nombre de cookie.
+    $rol = strtolower($_SESSION['user_rol'] ?? '');
+    if (!isset($_SESSION['user_email']) || !in_array($rol, ['admin', 'administrador', 'root'], true)) {
         responderJSON(false, null, 'Acceso denegado. Se requieren permisos de administrador.');
     }
 }

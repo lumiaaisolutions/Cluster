@@ -42,7 +42,7 @@
   <link href="./assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
 
   <!-- Fix para evitar scaling de contenido y proteger diseño centrado -->
-  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
   <link rel="stylesheet" href="./assets/css/layout/claut-icon-rail.css?v=20260901g">
   <style>
     /* CSS Fix para evitar que el contenido se "agrande" por animaciones GSAP */
@@ -4729,6 +4729,515 @@
 
     @media (min-width: 1025px) { .claut-header-nav { display: none !important; } }
   </style>
+
+  <!-- ============================================================
+       Panel principal — rediseño 2026 (FEATURE-030)
+       Prefijo "dph-" (Dashboard Panel Home) para no colisionar con las
+       +10 definiciones legacy de nombres genéricos (.stat-card,
+       .glass-card, etc.) ya dispersas en este archivo de 14 mil líneas.
+       ============================================================ -->
+  <style>
+    .dph-hook {
+      max-width: 1400px;
+      margin: var(--space-6, 1.5rem) auto var(--space-10, 2.5rem);
+      padding: 0 clamp(0.5rem, 2vw, 1rem);
+    }
+
+    /* --- Hero con secuencia scrubbed --- */
+    .dph-hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(120deg, rgba(199, 37, 43, 0.10), rgba(9, 9, 11, 0.4) 45%);
+      min-height: clamp(300px, 42vh, 430px);
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 1.5rem;
+      isolation: isolate;
+    }
+    .dph-hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      filter: saturate(0.7) brightness(0.8);
+    }
+    /* Veladura: garantiza legibilidad del texto sobre cualquier frame */
+    .dph-hero-veil {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(100deg, rgba(9, 9, 11, 0.92) 0%, rgba(9, 9, 11, 0.72) 38%, rgba(9, 9, 11, 0.25) 70%, rgba(9, 9, 11, 0.55) 100%),
+        radial-gradient(ellipse 70% 90% at 8% 100%, rgba(199, 37, 43, 0.22), transparent 60%);
+    }
+    .dph-hero-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      width: 100%;
+      padding: clamp(1.5rem, 4vw, 3rem);
+    }
+    .dph-hero-copy { max-width: 640px; min-width: 0; }
+    .dph-greet-eyebrow-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .dph-greet-rule {
+      width: 34px;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #C7252B, transparent);
+      flex-shrink: 0;
+    }
+    .dph-greet-eyebrow {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: #e8969a;
+    }
+    .dph-greet-title {
+      margin: 0 0 0.6rem;
+      font-size: clamp(2rem, 4.4vw, 3.4rem);
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      line-height: 1.04;
+      background: linear-gradient(115deg, #ffffff 30%, #fca5a5 65%, #C7252B 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .dph-hero-tagline {
+      margin: 0 0 1.4rem;
+      font-size: clamp(0.85rem, 1.4vw, 1rem);
+      font-weight: 500;
+      color: #a1a1aa;
+      line-height: 1.5;
+    }
+    .dph-hero-tagline strong { color: #e4e4e7; font-weight: 700; }
+    .dph-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+    }
+    .dph-greet-date {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      text-transform: capitalize;
+      padding: 0.55rem 1.05rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+    }
+    .dph-social-row { display: flex; gap: 0.5rem; }
+    .dph-social-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #d4d4d8;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      text-decoration: none;
+      transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1), background 180ms ease, border-color 180ms ease, color 180ms ease;
+    }
+    .dph-social-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(199, 37, 43, 0.85);
+      border-color: rgba(199, 37, 43, 0.9);
+      color: #fff;
+    }
+    .dph-social-btn:active { transform: scale(0.94); }
+
+    /* Sello de marca (logo rojo/negro) */
+    .dph-hero-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      flex-shrink: 0;
+    }
+    /* Logo flotante sin bordes ni contenedor visible: el PNG ya trae
+       transparencia; detrás solo hay un resplandor difuminado que se
+       desvanece sin filos (radial que muere en transparent). */
+    .dph-hero-logo-ring {
+      position: relative;
+      width: clamp(110px, 13vw, 170px);
+      height: clamp(110px, 13vw, 170px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 260ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .dph-hero-logo-ring::before {
+      content: '';
+      position: absolute;
+      inset: -45%;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(199, 37, 43, 0.32) 0%, rgba(199, 37, 43, 0.14) 34%, transparent 62%),
+        radial-gradient(circle at 42% 58%, rgba(255, 255, 255, 0.07) 0%, transparent 48%);
+      filter: blur(14px);
+      pointer-events: none;
+      transition: opacity 260ms ease;
+    }
+    .dph-hero-brand:hover .dph-hero-logo-ring { transform: scale(1.05); }
+    .dph-hero-brand:hover .dph-hero-logo-ring::before { opacity: 1.35; }
+    .dph-hero-logo {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 22px rgba(0, 0, 0, 0.55));
+      animation: dph-logo-float 7s ease-in-out infinite;
+    }
+    @keyframes dph-logo-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+    .dph-hero-brand-caption {
+      font-size: 0.62rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      color: #71717a;
+      white-space: nowrap;
+    }
+
+    /* Pista de scroll (el scrub de la secuencia responde al scroll) */
+    .dph-hero-scrollhint {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 32px;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      display: flex;
+      justify-content: center;
+      padding-top: 6px;
+    }
+    .dph-hero-scrollhint span {
+      width: 3px;
+      height: 7px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.6);
+      animation: dph-scrollhint 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    @keyframes dph-scrollhint {
+      0% { transform: translateY(0); opacity: 1; }
+      70% { transform: translateY(10px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 0; }
+    }
+
+    /* --- Gauges (métricas tipo tablero) --- */
+    .dph-gauge-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .dph-gauge {
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-width: 0; /* permite encoger dentro del grid; sin esto la fila desborda en móvil */
+      gap: 0.9rem;
+      padding: 1.1rem 1.25rem;
+      border-radius: 1.25rem;
+      background: linear-gradient(135deg, rgba(199, 37, 43, 0.06), rgba(255, 255, 255, 0.025));
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(14px);
+      transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1), border-color 220ms ease, background 220ms ease;
+    }
+    .dph-gauge:hover {
+      transform: translateY(-3px);
+      border-color: rgba(199, 37, 43, 0.35);
+      background: linear-gradient(135deg, rgba(199, 37, 43, 0.12), rgba(255, 255, 255, 0.03));
+    }
+    .dph-gauge-ring {
+      position: absolute;
+      inset: 0;
+      width: 56px;
+      height: 56px;
+      transform: rotate(-90deg);
+    }
+    .dph-gauge-track {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.08);
+      stroke-width: 3;
+    }
+    .dph-gauge-fill {
+      fill: none;
+      stroke: #C7252B;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 169.6;
+      stroke-dashoffset: 169.6;
+      transition: stroke-dashoffset 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 0 6px rgba(199, 37, 43, 0.55));
+    }
+    .dph-gauge-icon {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      color: #f8fafc;
+    }
+    .dph-gauge-body {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .dph-gauge-value {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .dph-gauge-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* --- Grid principal: gráfico + accesos --- */
+    .dph-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 1rem;
+    }
+    .dph-card {
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      padding: 1.5rem;
+    }
+    .dph-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .dph-card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: -0.01em;
+    }
+    .dph-card-sub {
+      margin: 0.15rem 0 0;
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .dph-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+    .dph-chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+      animation: dph-pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes dph-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .dph-chart-wrap { position: relative; }
+    .dph-chart-svg { width: 100%; height: 180px; display: block; }
+    .dph-chart-line {
+      stroke: #C7252B;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1400;
+      stroke-dashoffset: 1400;
+      transition: stroke-dashoffset 1400ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dph-chart-area { opacity: 0; transition: opacity 600ms ease 600ms; }
+    .dph-chart-months {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #52525b;
+    }
+
+    .dph-links-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+    }
+    .dph-link-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.9rem 0.85rem;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1), border-color 180ms ease, background 180ms ease;
+    }
+    .dph-link-tile:hover {
+      transform: translateY(-2px) scale(0.99);
+      border-color: rgba(199, 37, 43, 0.4);
+      background: rgba(199, 37, 43, 0.08);
+      color: #fff;
+    }
+    .dph-link-tile:active { transform: scale(0.97); }
+    .dph-link-tile i {
+      font-size: 1.1rem;
+      color: #C7252B;
+    }
+
+    .dph-section-head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .dph-section-title {
+      margin: 0;
+      font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #f8fafc;
+    }
+
+    /* --- Hover refinado en gauges: ícono crece, anillo se ilumina --- */
+    .dph-gauge-icon { transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+    .dph-gauge:hover .dph-gauge-icon { transform: scale(1.12); }
+    .dph-gauge:hover .dph-gauge-fill { filter: drop-shadow(0 0 10px rgba(199, 37, 43, 0.9)); }
+    .dph-gauge:active { transform: scale(0.985); }
+
+    /* --- Hover refinado en tiles: ícono se desliza, flecha fantasma --- */
+    .dph-link-tile { position: relative; overflow: hidden; }
+    .dph-link-tile i { transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+    .dph-link-tile:hover i { transform: translateX(3px) scale(1.1); }
+    .dph-link-tile::after {
+      content: '\f061';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 0.8rem;
+      top: 50%;
+      translate: 6px -50%;
+      font-size: 0.7rem;
+      color: rgba(199, 37, 43, 0.9);
+      opacity: 0;
+      transition: opacity 180ms ease, translate 180ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .dph-link-tile:hover::after { opacity: 1; translate: 0 -50%; }
+
+    /* --- Entrada escalonada --- */
+    .dph-hook .dph-hero,
+    .dph-hook .dph-gauge,
+    .dph-hook .dph-card {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: dph-rise 640ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .dph-hook .dph-hero { animation-delay: 40ms; }
+    .dph-hook .dph-gauge:nth-child(1) { animation-delay: 140ms; }
+    .dph-hook .dph-gauge:nth-child(2) { animation-delay: 200ms; }
+    .dph-hook .dph-gauge:nth-child(3) { animation-delay: 260ms; }
+    .dph-hook .dph-gauge:nth-child(4) { animation-delay: 320ms; }
+    .dph-hook .dph-chart-card { animation-delay: 390ms; }
+    .dph-hook .dph-links-card { animation-delay: 450ms; }
+    @keyframes dph-rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .dph-hook .dph-hero, .dph-hook .dph-gauge, .dph-hook .dph-card { animation: none; opacity: 1; transform: none; }
+      .dph-gauge-fill, .dph-chart-line, .dph-chart-area { transition: none; }
+      .dph-hero-logo, .dph-hero-scrollhint span, .dph-chip-dot { animation: none; }
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 1180px) {
+      .dph-hero-brand-caption { display: none; }
+    }
+    @media (max-width: 1024px) {
+      .dph-gauge-row { grid-template-columns: repeat(2, 1fr); }
+      .dph-grid { grid-template-columns: 1fr; }
+      .dph-hero { min-height: clamp(280px, 38vh, 380px); }
+    }
+    @media (max-width: 768px) {
+      .dph-hero-brand { display: none; }
+      .dph-hero-inner { padding: 1.5rem 1.25rem; }
+      .dph-hero { min-height: 260px; }
+      .dph-hero-scrollhint { display: none; }
+    }
+    @media (max-width: 560px) {
+      .dph-gauge-row { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+      .dph-gauge { padding: 0.85rem; gap: 0.6rem; }
+      .dph-gauge-ring, .dph-gauge-icon { width: 42px; height: 42px; }
+      .dph-gauge-value { font-size: 1.15rem; }
+      .dph-gauge-label { font-size: 0.62rem; white-space: normal; line-height: 1.25; }
+      .dph-links-grid { grid-template-columns: repeat(2, 1fr); }
+      .dph-hero-meta { gap: 0.6rem; }
+      .dph-greet-date { padding: 0.45rem 0.8rem; font-size: 0.7rem; }
+      .dph-social-btn { width: 42px; height: 42px; } /* mínimo táctil 44 aprox con borde */
+      .dph-card { padding: 1.1rem; }
+      .dph-chart-svg { height: 140px; }
+    }
+    @media (max-width: 380px) {
+      .dph-gauge-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 
 <body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default"
@@ -5006,60 +5515,8 @@
   <main class="claut-main relative transition-all duration-200 ease-in-out main-scroll-container"
     style="overflow: hidden; z-index: 1; position: relative;">
     <div class="main-content-wrapper relative z-10">
-      <!-- Navbar (Sub-header Glassmorphism) -->
-      <nav
-        class="porsche-navbar relative flex flex-wrap items-center justify-between transition-all ease-in duration-250 lg:flex-nowrap lg:justify-start w-full"
-        navbar-main navbar-scroll="false" style="display: flex;">
-        <div class="flex items-center justify-between w-full px-6 py-0 mx-auto flex-wrap-inherit">
-          <nav>
-            <!-- breadcrumb -->
-            <ol class="porsche-breadcrumb flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-              <li class="text-sm leading-normal">
-                <a class="opacity-60" href="javascript:;">Intranet</a>
-              </li>
-              <li class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/']"
-                aria-current="page">Inicio</li>
-            </ol>
-            <!-- Mostrar saludo con usuario logueado -->
-            <div id="welcomeMessage" class="mb-2">
-              <h6 class="porsche-welcome mb-0 capitalize" id="welcomeText">Bienvenido a Clúster Intranet</h6>
-            </div>
-          </nav>
-
-          <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-            <div class="flex items-center md:ml-auto md:pr-4">
-              <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
-                <!-- Mostrar información del usuario autenticado -->
-                <div id="userInfo" class="apple-user-info text-white text-sm mr-4 hidden items-center">
-                  <div class="flex flex-col">
-                    <span id="userName" class="text-sm font-semibold"></span>
-                    <span id="userRole" class="text-xs opacity-75"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-              <!-- Menú para usuarios no autenticados -->
-              <li class="flex items-center" id="loginMenuItem">
-                <a href="./pages/sign-in.html"
-                  class="apple-nav-link block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75">
-                  <i class="fa fa-user sm:mr-1"></i>
-                  <span class="hidden sm:inline">Iniciar Sesión</span>
-                </a>
-              </li>
-              <!-- Botón Panel de Administración (solo para admins) -->
-              <li class="flex items-center pl-4 hidden" id="adminPanelButton">
-                <a href="./admin-panel.html?login=success"
-                  class="block px-3 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75 hover:bg-gray-800 hover:bg-opacity-20 rounded-lg"
-                  title="Panel de Administración">
-                  <i class="fas fa-cogs mr-2"></i>
-                  <span class="hidden lg:inline">Admin Panel</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <!-- Navbar interno (breadcrumb + usuario) — componente reutilizable -->
+      <script src="./assets/js/claut-page-header.js?v=20260903b" data-breadcrumb="Inicio" data-welcome="Bienvenido a Clúster Intranet"></script>
 
       <!-- end Navbar -->
 
@@ -5069,62 +5526,146 @@
         <!-- Unified gradient background for seamless transitions -->
         <div class="unified-gradient-background"></div>
 
-        <!-- Hero Section Premium Tema Oscuro -->
-        <section class="claut-hero claut-scroll-reveal"
-          style="margin: var(--space-8) 0 var(--space-16) 0; min-height: 60vh; display: flex; align-items: center; justify-content: center; position: relative;">
-          <!-- El glow radial que tenía esta sección estaba acotado al
-               cuadro del <section> (inset:0), así que donde el degradado
-               llegaba a "transparent" se veía un filo recto contra el
-               fondo de la página — exactamente la "caja"/línea que se
-               seguía reportando. El fondo rojo/negro ya lo aporta
-               .unified-gradient-background de forma continua para toda
-               la página, así que este glow extra sobraba. -->
+        <!-- ============================================================
+             PROPUESTA DE REDISEÑO — Panel principal (Septiembre 2026)
+             Reemplaza el hero genérico (logo + redes sociales + banner
+             gigante) por un panel de control: saludo contextual, métricas
+             reales del clúster (gauges), curva de actividad y accesos
+             rápidos — todo visible en los primeros 3 segundos sin scroll.
+             El widget de galería (expandingCardsContainer) y la agenda
+             (dashboard-preview-calendar) se conservan intactos, solo se
+             les da un encabezado más compacto.
+             ============================================================ -->
+        <!-- Sin claut-scroll-reveal a propósito: ese hook lo anima el GSAP
+             legacy con toggleActions "reverse" (re-oculta al subir), lo que
+             chocaba con la entrada propia del panel y hacía desaparecer el
+             saludo/gauges durante el scroll. -->
+        <section class="dph-hook">
 
-          <div class="text-center max-w-4xl mx-auto" style="z-index: 1;">
-            <h1 class="claut-title-hero mb-6" style="margin-top: 30px;">
-              Bienvenido a
-              <span
-                style="background: linear-gradient(135deg, #C7252B 0%, #C7252B 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">
-                Clúster Intranet
-              </span>
-            </h1>
+          <!-- Hero: saludo + secuencia rayos-X del vehículo (scrub por scroll) -->
+          <div class="dph-hero">
+            <canvas class="dph-hero-canvas" id="dphHeroCanvas" aria-hidden="true"></canvas>
+            <div class="dph-hero-veil" aria-hidden="true"></div>
 
-            <!-- Logo Claut con animaciones profesionales -->
-            <div class="claut-hero-logo-container mb-8" style="margin-top: 30px;">
-              <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano Logo" class="claut-hero-logo">
+            <div class="dph-hero-inner">
+              <div class="dph-hero-copy">
+                <div class="dph-greet-eyebrow-row">
+                  <span class="dph-greet-rule" aria-hidden="true"></span>
+                  <p class="dph-greet-eyebrow" id="dphGreetEyebrow">Bienvenido de vuelta</p>
+                </div>
+                <h1 class="dph-greet-title" id="dphGreetTitle">Hola, Fernando</h1>
+                <p class="dph-hero-tagline">Tu centro de operación del <strong>Clúster Automotriz Metropolitano</strong></p>
+
+                <div class="dph-hero-meta">
+                  <div class="dph-greet-date" id="dphGreetDate">—</div>
+                  <div class="dph-social-row">
+                    <a href="https://www.linkedin.com/company/clusterautomotrizmetropolitano" target="_blank" rel="noopener noreferrer" class="dph-social-btn" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/claumetro" target="_blank" rel="noopener noreferrer" class="dph-social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/Clautmet/" target="_blank" rel="noopener noreferrer" class="dph-social-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dph-hero-brand" aria-hidden="true">
+                <div class="dph-hero-logo-ring">
+                  <img src="./assets/img/apple-icon.png" alt="" class="dph-hero-logo">
+                </div>
+                <span class="dph-hero-brand-caption">Clúster Intranet</span>
+              </div>
             </div>
-            <!-- Social Media Icons -->
-            <div class="social-media-container">
 
-              <div class="icon-box">
-                <a href="https://www.linkedin.com/company/clusterautomotrizmetropolitano" target="_blank"
-                  class="icon-link">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                    class="bi bi-linkedin" viewBox="0 0 16 16">
-                    <path
-                      d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
-                  </svg>
-                </a>
+            <div class="dph-hero-scrollhint" aria-hidden="true">
+              <span></span>
+            </div>
+          </div>
+
+          <!-- Fila de métricas (gauges) -->
+          <div class="dph-gauge-row" id="dphGaugeRow">
+            <div class="dph-gauge" data-stat="empresas">
+              <svg class="dph-gauge-ring" viewBox="0 0 64 64" aria-hidden="true">
+                <circle class="dph-gauge-track" cx="32" cy="32" r="27"></circle>
+                <circle class="dph-gauge-fill" cx="32" cy="32" r="27"></circle>
+              </svg>
+              <i class="fas fa-building dph-gauge-icon"></i>
+              <div class="dph-gauge-body">
+                <span class="dph-gauge-value" data-value="0">—</span>
+                <span class="dph-gauge-label">Empresas del convenio</span>
               </div>
-
-              <div class="icon-box">
-                <a href="https://www.instagram.com/claumetro" target="_blank" class="icon-link">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                    class="bi bi-instagram" viewBox="0 0 16 16">
-                    <path
-                      d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
-                  </svg>
-                </a>
+            </div>
+            <div class="dph-gauge" data-stat="usuarios">
+              <svg class="dph-gauge-ring" viewBox="0 0 64 64" aria-hidden="true">
+                <circle class="dph-gauge-track" cx="32" cy="32" r="27"></circle>
+                <circle class="dph-gauge-fill" cx="32" cy="32" r="27"></circle>
+              </svg>
+              <i class="fas fa-users dph-gauge-icon"></i>
+              <div class="dph-gauge-body">
+                <span class="dph-gauge-value" data-value="0">—</span>
+                <span class="dph-gauge-label">Miembros activos</span>
               </div>
+            </div>
+            <div class="dph-gauge" data-stat="eventos">
+              <svg class="dph-gauge-ring" viewBox="0 0 64 64" aria-hidden="true">
+                <circle class="dph-gauge-track" cx="32" cy="32" r="27"></circle>
+                <circle class="dph-gauge-fill" cx="32" cy="32" r="27"></circle>
+              </svg>
+              <i class="fas fa-calendar-check dph-gauge-icon"></i>
+              <div class="dph-gauge-body">
+                <span class="dph-gauge-value" data-value="0">—</span>
+                <span class="dph-gauge-label">Eventos programados</span>
+              </div>
+            </div>
+            <div class="dph-gauge" data-stat="descuentos">
+              <svg class="dph-gauge-ring" viewBox="0 0 64 64" aria-hidden="true">
+                <circle class="dph-gauge-track" cx="32" cy="32" r="27"></circle>
+                <circle class="dph-gauge-fill" cx="32" cy="32" r="27"></circle>
+              </svg>
+              <i class="fas fa-tags dph-gauge-icon"></i>
+              <div class="dph-gauge-body">
+                <span class="dph-gauge-value" data-value="0">—</span>
+                <span class="dph-gauge-label">Beneficios activos</span>
+              </div>
+            </div>
+          </div>
 
-              <div class="icon-box">
-                <a href="https://www.facebook.com/Clautmet/" target="_blank" class="icon-link">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                    class="bi bi-facebook" viewBox="0 0 16 16">
-                    <path
-                      d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
-                  </svg>
-                </a>
+          <!-- Curva de actividad + accesos rápidos -->
+          <div class="dph-grid">
+            <div class="dph-card dph-chart-card">
+              <div class="dph-card-head">
+                <div>
+                  <h2 class="dph-card-title">Actividad del Clúster</h2>
+                  <p class="dph-card-sub">Altas de socios registradas por mes</p>
+                </div>
+                <span class="dph-chip"><span class="dph-chip-dot"></span>En vivo</span>
+              </div>
+              <div class="dph-chart-wrap">
+                <svg id="dphChartSvg" class="dph-chart-svg" viewBox="0 0 560 200" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="dphChartFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#C7252B" stop-opacity="0.35"></stop>
+                      <stop offset="100%" stop-color="#C7252B" stop-opacity="0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path id="dphChartArea" class="dph-chart-area" fill="url(#dphChartFill)"></path>
+                  <path id="dphChartLine" class="dph-chart-line" fill="none"></path>
+                </svg>
+                <div class="dph-chart-months" id="dphChartMonths"></div>
+              </div>
+            </div>
+
+            <div class="dph-card dph-links-card">
+              <div class="dph-card-head">
+                <div>
+                  <h2 class="dph-card-title">Accesos rápidos</h2>
+                  <p class="dph-card-sub">Tus módulos</p>
+                </div>
+              </div>
+              <div class="dph-links-grid">
+                <a href="./descuentos.html" class="dph-link-tile"><i class="fas fa-tags"></i><span>Descuentos</span></a>
+                <a href="./boletines.html" class="dph-link-tile"><i class="fas fa-newspaper"></i><span>Boletines</span></a>
+                <a href="./comites.html" class="dph-link-tile"><i class="fas fa-users"></i><span>Comités</span></a>
+                <a href="./eventos.html" class="dph-link-tile"><i class="fas fa-calendar-alt"></i><span>Eventos</span></a>
+                <a href="./empresas-convenio.html" class="dph-link-tile"><i class="fas fa-handshake"></i><span>Socios</span></a>
+                <a href="./contacto.html" class="dph-link-tile"><i class="fas fa-headset"></i><span>Contacto</span></a>
               </div>
             </div>
           </div>
@@ -5156,32 +5697,17 @@
         </div>
 
         <!-- Showcase Banners Section -->
-        <div class="max-w-7xl mx-auto px-6 lg:px-8"
-          style="margin-top: 40px; margin-bottom: 30px; transform: none !important; transition: none !important;">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 dph-showcase-wrap"
+          style="margin-top: 24px; margin-bottom: 30px; transform: none !important; transition: none !important;">
 
           <!-- Section Header -->
-          <div class="text-center mb-8">
-            <div
-              class="inline-flex items-center px-6 py-2 bg-white/[0.03] border border-white/5 rounded-full text-zinc-300 text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-md shadow-sm">
-              <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse mr-3"></span>
-              Conoce los servicios y productos que tenemos para ti
-            </div>
-            <h2
-              class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight tracking-tighter uppercase drop-shadow-md">
-              Centro de <span
-                class="bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent">INFORMACIÓN, EVENTOS Y
-                PROMOCIONES</span>
-            </h2>
-            <div class="max-w-4xl mx-auto">
-              <p class="text-lg md:text-xl text-zinc-400 font-medium leading-relaxed mb-4">
-                Servicio exclusivo para socios miembros activos de <span class="text-white font-bold">Clúster
-                  Automotriz Metropolitano </span>
-              </p>
-            </div>
+          <div class="dph-section-head">
+            <span class="dph-chip"><span class="dph-chip-dot"></span>Novedades</span>
+            <h2 class="dph-section-title">Centro de información y promociones</h2>
           </div>
 
           <!-- Expanding Cards Banner Showcase -->
-          <div class="glass-card shadow-2xl h-[700px] lg:h-[750px] relative overflow-hidden rounded-3xl border-0"
+          <div class="glass-card shadow-2xl h-[560px] lg:h-[600px] relative overflow-hidden rounded-3xl border-0"
             style="transform: none !important; will-change: auto !important;">
 
             <!-- Expanding Cards Container with Enhanced Scroll Effects -->
@@ -5271,6 +5797,240 @@
         </a>
       </footer>
       <script>document.getElementById('footerYear').textContent = new Date().getFullYear();</script>
+
+      <!-- ============================================================
+           Lógica del panel principal (saludo, gauges, gráfico)
+           ============================================================ -->
+      <script>
+      (function () {
+        'use strict';
+
+        function getUserData() {
+          const sources = [
+            localStorage.getItem('userData'),
+            localStorage.getItem('currentUser'),
+            sessionStorage.getItem('userSession'),
+            localStorage.getItem('userInfo'),
+            sessionStorage.getItem('loginData')
+          ];
+          for (const source of sources) {
+            if (!source) continue;
+            try {
+              const parsed = JSON.parse(source);
+              if (parsed && (parsed.nombre || parsed.name || parsed.email)) return parsed;
+            } catch (e) { /* no era JSON */ }
+          }
+          return null;
+        }
+
+        function renderGreeting() {
+          const hour = new Date().getHours();
+          const eyebrow = hour < 12 ? 'Buenos días' : hour < 19 ? 'Buenas tardes' : 'Buenas noches';
+          const userData = getUserData();
+          const nombre = userData ? (userData.nombre || userData.name || 'socio').split(' ')[0] : 'de vuelta';
+
+          const eyebrowEl = document.getElementById('dphGreetEyebrow');
+          const titleEl = document.getElementById('dphGreetTitle');
+          const dateEl = document.getElementById('dphGreetDate');
+
+          if (eyebrowEl) eyebrowEl.textContent = eyebrow;
+          if (titleEl) titleEl.textContent = userData ? `Hola, ${nombre}` : 'Bienvenido a Clúster Intranet';
+          if (dateEl) {
+            const fmt = new Intl.DateTimeFormat('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
+            dateEl.textContent = fmt.format(new Date());
+          }
+        }
+
+        function animateGaugeValue(el, target) {
+          const duration = 900;
+          const start = performance.now();
+          function step(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(target * eased).toLocaleString('es-MX');
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+
+        function setGauge(statKey, value) {
+          const card = document.querySelector('.dph-gauge[data-stat="' + statKey + '"]');
+          if (!card) return;
+          const valueEl = card.querySelector('.dph-gauge-value');
+          const fillEl = card.querySelector('.dph-gauge-fill');
+          const circumference = 169.6;
+          if (fillEl) {
+            requestAnimationFrame(() => { fillEl.style.strokeDashoffset = String(circumference * 0.08); });
+          }
+          if (valueEl) animateGaugeValue(valueEl, value);
+        }
+
+        async function loadStats() {
+          try {
+            const res = await fetch('./api/estadisticas_simple.php?action=general', { credentials: 'include' });
+            const json = await res.json();
+            if (!json.success) throw new Error('sin datos');
+            setGauge('empresas', json.data.empresas?.total ?? 0);
+            setGauge('usuarios', json.data.usuarios?.total ?? 0);
+            setGauge('eventos', json.data.eventos?.total ?? 0);
+            setGauge('descuentos', json.data.descuentos?.total ?? 0);
+          } catch (e) {
+            console.warn('[dashboard-preview] No se pudieron cargar estadísticas en vivo:', e);
+            ['empresas', 'usuarios', 'eventos', 'descuentos'].forEach(k => setGauge(k, 0));
+          }
+        }
+
+        function drawChart(meses, valores) {
+          const svg = document.getElementById('dphChartSvg');
+          const line = document.getElementById('dphChartLine');
+          const area = document.getElementById('dphChartArea');
+          const monthsEl = document.getElementById('dphChartMonths');
+          if (!svg || !line || !area) return;
+
+          const W = 560, H = 180, PAD = 10;
+          const max = Math.max(...valores, 1);
+          const stepX = valores.length > 1 ? (W - PAD * 2) / (valores.length - 1) : 0;
+
+          const points = valores.map((v, i) => {
+            const x = PAD + i * stepX;
+            const y = H - PAD - ((v / max) * (H - PAD * 2));
+            return [x, y];
+          });
+
+          const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0] + ',' + p[1]).join(' ');
+          const areaPath = linePath + ` L${points[points.length - 1][0]},${H} L${points[0][0]},${H} Z`;
+
+          line.setAttribute('d', linePath);
+          area.setAttribute('d', areaPath);
+
+          const len = line.getTotalLength();
+          line.style.strokeDasharray = String(len);
+          line.style.strokeDashoffset = String(len);
+          requestAnimationFrame(() => {
+            line.style.strokeDashoffset = '0';
+            area.style.opacity = '1';
+          });
+
+          if (monthsEl) monthsEl.innerHTML = meses.map(m => `<span>${m}</span>`).join('');
+        }
+
+        async function loadActivityChart() {
+          try {
+            const res = await fetch('./api/estadisticas_simple.php?action=usuarios_historico', { credentials: 'include' });
+            const json = await res.json();
+            if (!json.success || !Array.isArray(json.data) || !json.data.length) throw new Error('sin datos');
+            const meses = json.data.map(d => d.mes);
+            const valores = json.data.map(d => d.usuarios ?? d.total ?? 0);
+            drawChart(meses, valores);
+          } catch (e) {
+            console.warn('[dashboard-preview] No se pudo cargar la curva de actividad:', e);
+            drawChart(['—', '—', '—', '—', '—'], [1, 1, 1, 1, 1]);
+          }
+        }
+
+        /* ------------------------------------------------------------
+           Secuencia rayos-X (scrub por scroll) — reutiliza los frames
+           de la landing (/landing/assets/sequence/, 168 jpg). Aquí se
+           carga 1 de cada 2 (84 frames, ~2 MB) para no penalizar el
+           peso del dashboard; el scrub interpola sobre los cargados.
+           ------------------------------------------------------------ */
+        function initHeroSequence() {
+          const canvas = document.getElementById('dphHeroCanvas');
+          const hero = canvas ? canvas.closest('.dph-hero') : null;
+          if (!canvas || !hero) return;
+
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          const FRAME_COUNT = 168;
+          const STEP = 2;
+          const FRAME_PATH = './landing/assets/sequence/ezgif-frame-';
+          const ctx = canvas.getContext('2d', { alpha: false });
+          const frames = new Array(FRAME_COUNT);
+          let renderedIdx = -1;
+          let targetIdx = 0;
+          let rafPending = false;
+
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          function resize() {
+            const rect = hero.getBoundingClientRect();
+            canvas.width = Math.max(1, Math.round(rect.width * dpr));
+            canvas.height = Math.max(1, Math.round(rect.height * dpr));
+            renderedIdx = -1;
+            draw();
+          }
+
+          function paint(img) {
+            const cw = canvas.width, ch = canvas.height;
+            const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+            const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
+            ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+          }
+
+          function nearestLoaded(idx) {
+            for (let d = 0; d < FRAME_COUNT; d++) {
+              for (const j of [idx - d, idx + d]) {
+                if (j >= 0 && j < FRAME_COUNT && frames[j] && frames[j].complete && frames[j].naturalWidth) return j;
+              }
+            }
+            return -1;
+          }
+
+          function draw() {
+            const j = nearestLoaded(targetIdx);
+            if (j === -1 || j === renderedIdx) return;
+            paint(frames[j]);
+            renderedIdx = j;
+          }
+
+          function loadFrame(i, onload) {
+            if (frames[i]) return;
+            const img = new Image();
+            img.decoding = 'async';
+            img.src = FRAME_PATH + String(i + 1).padStart(3, '0') + '.jpg';
+            if (onload) img.onload = onload;
+            frames[i] = img;
+          }
+
+          // Primer frame de inmediato; el resto en orden de prioridad
+          loadFrame(0, draw);
+          if (!reduceMotion) {
+            let queued = 0;
+            for (let i = STEP; i < FRAME_COUNT; i += STEP) {
+              setTimeout(() => loadFrame(i, draw), 40 * (queued++));
+            }
+          }
+
+          function onScroll() {
+            if (reduceMotion || rafPending) return;
+            rafPending = true;
+            requestAnimationFrame(() => {
+              rafPending = false;
+              const rect = hero.getBoundingClientRect();
+              const range = rect.height + window.innerHeight * 0.35;
+              const progress = Math.min(Math.max((window.innerHeight * 0.2 - rect.top) / range, 0), 1);
+              targetIdx = Math.round(progress * (FRAME_COUNT - 1));
+              draw();
+            });
+          }
+
+          // capture:true — atrapa el scroll aunque ocurra en un contenedor
+          // interno con overflow y no en window.
+          document.addEventListener('scroll', onScroll, { capture: true, passive: true });
+          let resizeTimer;
+          window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(resize, 120);
+          });
+
+          resize();
+          onScroll();
+        }
+
+        renderGreeting();
+        loadStats();
+        loadActivityChart();
+        initHeroSequence();
+      })();
+      </script>
       <!-- end cards -->
     </div> <!-- end unified-gradient-container -->
     </div> <!-- end main-content-wrapper -->
@@ -10674,70 +11434,21 @@
           position: getComputedStyle(modal).position
         });
 
-        // Mostrar modal conservando el diseño iOS 26
+        // Mostrar modal — se apoya en el CSS ya definido para
+        // #messageModal / #messageContainer (bottom-sheet responsive).
+        // Antes había aquí un bloque "FORZAR DIMENSIONES" que sobrescribía
+        // el panel con estilos inline (position:absolute, width:400px,
+        // background:white, anclado arriba-derecha) — restos de una
+        // sesión de depuración vieja que nunca se limpiaron. Eso ganaba
+        // sobre TODO el CSS del bottom-sheet premium (el que sí está bien
+        // diseñado, ver bloque "#messageModal — BOTTOM-SHEET PREMIUM" más
+        // abajo en este archivo) porque un estilo inline le gana a
+        // cualquier regla de hoja de estilos que no tenga !important en
+        // esa misma propiedad. Resultado: una caja blanca de 400px
+        // flotando arriba a la derecha en vez del panel diseñado.
         modal.classList.remove('hidden');
-
-        // Aplicar estilos inmediatamente
         container.style.transform = 'translateY(0)';
         container.style.opacity = '1';
-
-        // Forzar visibilidad si está oculto
-        if (getComputedStyle(modal).display === 'none') {
-          console.log('🔧 Forzando display: block');
-          modal.style.display = 'block';
-        }
-
-        if (getComputedStyle(modal).visibility === 'hidden') {
-          console.log('🔧 Forzando visibility: visible');
-          modal.style.visibility = 'visible';
-        }
-
-        // Asegurar z-index alto
-        modal.style.zIndex = '9999';
-        console.log('🔧 Z-index establecido a 9999');
-
-        // FORZAR DIMENSIONES DEL MODAL (problema principal)
-        modal.style.position = 'fixed';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.width = '100vw';
-        modal.style.height = '100vh';
-        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-
-        console.log('🔧 Dimensiones forzadas: 100vw x 100vh');
-
-        // FORZAR DIMENSIONES DEL CONTAINER
-        if (container) {
-          container.style.position = 'absolute';
-          container.style.right = '0';
-          container.style.top = '0';
-          container.style.width = '400px';
-          container.style.height = '100vh';
-          container.style.backgroundColor = 'white';
-          console.log('🔧 Container dimensiones: 400px x 100vh');
-        }
-
-        // Debug: Estado después de mostrar
-        setTimeout(() => {
-          const newRect = modal.getBoundingClientRect();
-          console.log('🔍 Estado después de mostrar:', {
-            modalDisplay: getComputedStyle(modal).display,
-            modalVisibility: getComputedStyle(modal).visibility,
-            modalZIndex: getComputedStyle(modal).zIndex,
-            containerTransform: getComputedStyle(container).transform,
-            containerOpacity: getComputedStyle(container).opacity,
-            modalRect: newRect,
-            hasSize: newRect.width > 0 && newRect.height > 0
-          });
-
-          if (newRect.width > 0 && newRect.height > 0) {
-            console.log('🎉 ¡MODAL TIENE DIMENSIONES! Debería ser visible ahora');
-          } else {
-            console.log('❌ Modal sigue sin dimensiones, problema de CSS');
-          }
-        }, 100);
-
-        console.log('✅ Modal iOS 26 mostrado correctamente');
 
         // Cargar mensajes al abrir
         this.loadMessages();
@@ -11109,32 +11820,32 @@
         const contenido = message.mensaje || message.contenido || '';
 
         return `
-          <div class="message-item p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors ${isUnread ? 'bg-red-50 border-red-200' : ''}" data-message-id="${message.id}">
+          <div class="message-item${isUnread ? ' unread' : ''}" data-message-id="${message.id}">
             <div class="flex items-start">
               <div class="flex-shrink-0 mr-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-r ${this.getTypeGradient(message.tipo)} flex items-center justify-center">
+                <div class="message-avatar bg-gradient-to-r ${this.getTypeGradient(message.tipo)} flex items-center justify-center">
                   <i class="${this.getTypeIcon(message.tipo)} text-white text-sm"></i>
                 </div>
               </div>
               <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between">
-                  <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-900 truncate">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium truncate" style="color: var(--claut-text-primary);">
                       ${message.titulo}
                       ${isUnread ? '<span class="ml-2 inline-block w-2 h-2 bg-red-500 rounded-full"></span>' : ''}
                     </p>
-                    ${isComiteMessage ? `<p class="text-xs text-gray-300 mt-1"><i class="fas fa-envelope"></i> Comité: ${message.comite_nombre || 'Sin nombre'}</p>` : ''}
+                    ${isComiteMessage ? `<p class="text-xs mt-1" style="color: var(--claut-text-tertiary);"><i class="fas fa-envelope"></i> Comité: ${message.comite_nombre || 'Sin nombre'}</p>` : ''}
                   </div>
-                  <span class="text-xs text-gray-300">${timeAgo}</span>
+                  <span class="text-xs flex-shrink-0" style="color: var(--claut-text-tertiary);">${timeAgo}</span>
                 </div>
-                <div class="text-sm text-gray-600 mt-2">${contenido}</div>
+                <div class="text-sm mt-2" style="color: var(--claut-text-secondary);">${contenido}</div>
                 ${message.importante ? '<div class="mt-2"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800"><i class="fas fa-star mr-1"></i>Importante</span></div>' : ''}
 
                 <!-- Botón para abrir mensaje completo -->
-                <div class="mt-3 flex items-center justify-end space-x-2">
+                <div class="mt-3 flex items-center justify-end flex-wrap gap-2">
                   <button data-action="open-message" data-message-id="${message.id}"
                           class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
-                          style="background-color: #C7252B; color: var(--claut-text-primary); border: none;"
+                          style="background-color: #C7252B; color: #fff; border: none;"
                           onmouseover="this.style.backgroundColor='#A01E24'"
                           onmouseout="this.style.backgroundColor='#C7252B'">
                     <i class="fas fa-eye mr-1"></i>
@@ -11143,7 +11854,7 @@
                   ${!message.leido ? `
                     <button onclick="window.messageCenter.${this.getMarkAsReadMethod(message)}('${message.id}'${this.getMarkAsReadParams(message)})"
                             class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1"
-                            style="background-color: #059669; color: var(--claut-text-primary); border: none;"
+                            style="background-color: #059669; color: #fff; border: none;"
                             onmouseover="this.style.backgroundColor='#047857'"
                             onmouseout="this.style.backgroundColor='#059669'">
                       <i class="fas fa-check mr-1"></i>
@@ -14766,16 +15477,11 @@
       .main-content-wrapper { padding-left: 134px !important; }
     }
 
-    /* Suaviza la tarjeta "Bienvenido" para que fluya con el resto de la
-       página en vez de verse como una caja aparte con borde marcado —
-       sin borde de 1px (se ve como línea dura); solo una sombra muy
-       difuminada para dar profundidad sin marcar un límite recto. */
-    .porsche-navbar {
-      background: rgba(255, 255, 255, 0.025) !important;
-      border: none !important;
-      box-shadow: 0 12px 40px -16px rgba(0, 0, 0, 0.55) !important;
-      backdrop-filter: blur(12px) !important;
-    }
+    /* El bloque que replicaba aquí el estilo "PREMIUM DARK" del navbar
+       (gradiente granate) se eliminó: claut-page-header.js v2 inyecta su
+       propio CSS definitivo del navbar, idéntico en todas las páginas.
+       Dejar esta copia habría ganado el empate de !important (aparece
+       más tarde en el documento) y roto la homologación. */
 
     /* Quita líneas duras que marcan límites de sección */
     .claut-header { border-bottom: none !important; box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.6) !important; }
@@ -14839,6 +15545,92 @@
       }
     }
   </style>
+
+  <!-- El estilo del navbar interno lo inyecta claut-page-header.js v2
+       (CSS autocontenido) para que sea idéntico en todas las páginas. -->
+  <style>
+    /* ============================================================
+       Botones + "ensamblado" del contenido al scroll (FEATURE-030)
+       ============================================================ */
+
+    /* Controles de la Agenda: de links planos a botones táctiles */
+    #dashPrevBtn, #dashNextBtn, #dashTodayBtn {
+      border-radius: 10px !important;
+      min-width: 34px;
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 160ms ease, color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1) !important;
+    }
+    #dashPrevBtn:hover, #dashNextBtn:hover, #dashTodayBtn:hover {
+      background: rgba(199, 37, 43, 0.18) !important;
+      color: #fff !important;
+    }
+    #dashPrevBtn:active, #dashNextBtn:active, #dashTodayBtn:active { transform: scale(0.92); }
+
+    /* Reveal por scroll: cada bloque entra desenfocado y desplazado,
+       y se "ensambla" (nítido, en su sitio) al entrar al viewport. */
+    .dph-reveal {
+      opacity: 0;
+      transform: translateY(34px) scale(0.98);
+      filter: blur(6px);
+      transition:
+        opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 700ms cubic-bezier(0.16, 1, 0.3, 1),
+        filter 700ms ease;
+      transition-delay: var(--dph-reveal-delay, 0ms);
+      will-change: transform, opacity, filter;
+    }
+    .dph-reveal.dph-in {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .dph-reveal { opacity: 1; transform: none; filter: none; transition: none; }
+    }
+  </style>
+
+  <script>
+    /* Ensamblado del contenido al scroll (IntersectionObserver).
+       Se aplica solo a las secciones bajo el pliegue — el panel superior
+       ya tiene su propia entrada escalonada al cargar. */
+    (function () {
+      'use strict';
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const targets = [];
+      document.querySelectorAll('.dph-showcase-wrap .dph-section-head, .dph-showcase-wrap .glass-card').forEach(el => targets.push(el));
+      const agendaCard = document.querySelector('#dashboard-preview-calendar');
+      if (agendaCard) {
+        const card = agendaCard.closest('.glass-card');
+        if (card) targets.push(card);
+      }
+      const footer = document.querySelector('footer');
+      if (footer) targets.push(footer);
+
+      if (!('IntersectionObserver' in window) || !targets.length) return;
+
+      targets.forEach(el => el.classList.add('dph-reveal'));
+
+      let batch = 0;
+      let batchReset;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          // Escalona los elementos que entran juntos en el mismo scroll
+          entry.target.style.setProperty('--dph-reveal-delay', (batch++ * 90) + 'ms');
+          clearTimeout(batchReset);
+          batchReset = setTimeout(() => { batch = 0; }, 250);
+          entry.target.classList.add('dph-in');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+      targets.forEach(el => io.observe(el));
+    })();
+  </script>
 </body>
 
 </html>

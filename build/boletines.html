@@ -50,7 +50,7 @@
   </script>
 
   <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a" />
-  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
   <style>
     :root {
       /* Re-definición de variables de espaciado eliminadas */
@@ -380,9 +380,10 @@
       main.claut-main { padding-left: 134px !important; }
     }
   </style>
+  <link rel="stylesheet" href="./css/claut-panel.css?v=20260903a">
 </head>
 
-<body class="m-0 font-sans text-base antialiased font-normal leading-default bg-black text-gray-100 claut-dark claut-skin">
+<body class="m-0 font-sans text-base antialiased font-normal leading-default bg-black text-gray-100 claut-dark">
   <!-- Header Horizontal Premium con Menú Integrado -->
   <header class="claut-header">
     <a href="#" class="claut-header-logo">
@@ -454,58 +455,10 @@
     style="margin-left: 0; overflow: hidden; z-index: 1; position: relative;">
     <div class="main-content-wrapper relative z-10">
       <div id="mainContent" class="">
-        <!-- Navbar (oculto - usando header horizontal) -->
-        <nav
-          class="porsche-navbar porsche-navbar-responsive relative flex flex-wrap items-center justify-between px-0 py-1 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start"
-          navbar-main navbar-scroll="false"
-          style="display: flex; z-index: 10; position: relative;">
-          <div class="flex items-center justify-between w-full px-6 py-0 mx-auto flex-wrap-inherit">
-            <nav>
-              <!-- breadcrumb -->
-              <ol class="porsche-breadcrumb flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-                <li class="text-sm leading-normal">
-                  <a class="opacity-60 text-white" href="javascript:;">Intranet</a>
-                </li>
-                <li class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/'] text-white"
-                  aria-current="page">Boletines</li>
-              </ol>
-              <!-- Mostrar saludo con usuario logueado -->
-              <div id="welcomeMessage" class="mb-2">
-                <h6 class="porsche-welcome mb-0 capitalize text-white" id="welcomeText">Boletines & Documentación</h6>
-              </div>
-            </nav>
-
-            <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-              <div class="flex items-center md:ml-auto md:pr-4">
-                <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
-                  <div id="userInfo" class="apple-user-info text-white text-sm mr-4 hidden items-center">
-                    <div class="flex flex-col">
-                      <span id="userName" class="text-sm font-semibold"></span>
-                      <span id="userRole" class="text-xs opacity-75"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                <li class="flex items-center" id="loginMenuItem">
-                  <a href="./pages/sign-in.html"
-                    class="apple-nav-link block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75">
-                    <i class="fa fa-user sm:mr-1"></i>
-                    <span class="hidden sm:inline">Iniciar Sesión</span>
-                  </a>
-                </li>
-                <li class="flex items-center pl-4 hidden" id="adminPanelButton">
-                  <a href="./admin-panel.html?login=success"
-                    class="block px-3 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75 hover:bg-gray-800 hover:bg-opacity-20 rounded-lg"
-                    title="Panel de Administración">
-                    <i class="fas fa-cogs mr-2"></i>
-                    <span class="hidden lg:inline">Admin Panel</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <!-- Navbar interno (breadcrumb + usuario) — componente reutilizable -->
+        <script src="./assets/js/claut-page-header.js?v=20260903b" data-breadcrumb="Boletines" data-welcome="Boletines &amp; Documentación"></script>
+        <!-- Hero del rediseño 2026 (componente compartido) -->
+        <script src="./js/claut-panel.js?v=20260903a" data-eyebrow="Comunicación oficial" data-title="Boletines" data-tagline="Publicaciones y documentación oficial del <strong>Clúster</strong>" data-reveal="#toggleContainer, #boletines-grid"></script>
         <!-- end Navbar -->
 
     <!-- Contenido principal con restricción de autenticación -->
@@ -592,52 +545,8 @@
             <div class="flex flex-wrap -mx-3">
               <div class="w-full max-w-full px-3 mx-auto">
 
-                <!-- Modern Header with Gradient Background -->
-                <div
-                  class="relative bg-gradient-to-br from-black via-gray-900 to-black rounded-3xl shadow-2xl overflow-hidden mb-8 border border-[#C7252B] shadow-[#C7252B]/20">
-                  <!-- Background Pattern -->
-                  <div class="absolute inset-0 bg-gradient-to-br from-[#C7252B]/10 via-transparent to-transparent">
-                  </div>
-                  <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-32 translate-x-32">
-                  </div>
-                  <div
-                    class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24">
-                  </div>
-
-                  <!-- Content -->
-                  <div class="relative p-8 md:p-12 text-white text-center">
-                    <!-- Icon -->
-                    <div
-                      class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
-                      <i class="fas fa-newspaper text-3xl text-white"></i>
-                    </div>
-
-                    <!-- Title -->
-                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                      <span class="bg-gradient-to-r from-white via-gray-100 to-[#C7252B] bg-clip-text text-transparent">
-                        Boletines Informativos
-                      </span>
-                    </h1>
-
-                    <!-- Description -->
-                    <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-                      Plataforma corporativa de comunicaciones estratégicas, análisis sectoriales y actualizaciones
-                      ejecutivas para la toma de decisiones empresariales
-                    </p>
-
-                    <!-- Stats -->
-                    <div class="flex justify-center space-x-8 text-center">
-                      <div class="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                        <i class="fas fa-file-alt mr-2" style="color: #C7252B;"></i>
-                        <span class="text-white font-semibold">Publicaciones Mensuales</span>
-                      </div>
-                      <div class="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-                        <i class="fas fa-users mr-2" style="color: #C7252B;"></i>
-                        <span class="text-white font-semibold">Acceso Exclusivo</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <!-- Header legacy "Boletines Informativos" eliminado:
+                     el hero del rediseño 2026 (claut-panel.js) ya cumple ese rol. -->
 
                 <!-- Enhanced Bulletins Grid -->
                 <div
@@ -665,10 +574,10 @@
                             style="border-top-color: #C7252B;"></div>
                         </div>
                         <h3 class="text-xl font-semibold text-white mb-2">Cargando Boletines</h3>
-                        <p class="text-gray-400">Obteniendo información corporativa desde la base de datos...</p>
+                        <p class="claut-text-muted">Obteniendo información corporativa desde la base de datos...</p>
 
                         <!-- Loading Progress -->
-                        <div class="mt-4 w-48 h-2 bg-gray-200 rounded-full mx-auto">
+                        <div class="mt-4 w-48 h-2 rounded-full mx-auto" style="background:rgba(255,255,255,0.1);">
                           <div class="h-full bg-gradient-to-r from-red-500 to-[#C7252B] rounded-full animate-pulse"
                             style="width: 60%"></div>
                         </div>
@@ -686,55 +595,10 @@
   <!-- Sección de Documentación -->
   <div id="seccionDocumentacion" class="seccion-content section-transition hidden">
     <div class="font-inter">
-      <!-- Modern Header with Gradient Background -->
-      <div
-        class="relative bg-gradient-to-br from-black via-gray-900 to-black rounded-3xl shadow-2xl overflow-hidden mb-8 border border-[#C7252B] shadow-[#C7252B]/20">
-        <!-- Animated background elements -->
-        <div class="absolute inset-0 opacity-10">
-          <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-gray-700 rounded-full animate-pulse"></div>
-          <div class="absolute bottom-1/4 right-1/4 w-24 h-24 bg-gray-700 rounded-full animate-pulse delay-1000"></div>
-          <div class="absolute top-3/4 left-3/4 w-16 h-16 bg-gray-700 rounded-full animate-pulse delay-2000"></div>
-        </div>
-
-        <!-- Glass morphism overlay -->
-        <div class="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
-
-        <div class="relative p-8 md:p-12 text-white text-center">
-          <h1 class="text-4xl md:text-6xl font-bold mb-6">
-            <span class="bg-gradient-to-r from-white via-gray-100 to-[#C7252B] bg-clip-text text-transparent">
-              Centro de Documentación
-            </span>
-          </h1>
-          <p class="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto">
-            Centro integral de recursos documentales corporativos, políticas empresariales y manuales de procedimientos
-            para el desarrollo organizacional
-          </p>
-
-          <!-- Loading progress bar -->
-          <div class="mb-8">
-            <div class="progress-3d">
-              <div class="progress-fill" style="width: 100%"></div>
-            </div>
-            <p class="text-sm opacity-75 mt-2">Sistema de documentación cargado</p>
-          </div>
-
-          <!-- Stats cards -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <div class="text-3xl font-bold mb-2" id="totalDocumentos">Cargando...</div>
-              <div class="text-gray-300">Documentos Disponibles</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <div class="text-3xl font-bold mb-2">24/7</div>
-              <div class="text-gray-300">Acceso Completo</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-              <div class="text-3xl font-bold mb-2">100%</div>
-              <div class="text-gray-300">Actualizado</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Header legacy "Centro de Documentación" eliminado: redundante
+           con el hero del rediseño 2026. El contador #totalDocumentos
+           vivía aquí; su asignación en cargarDocumentos() ahora lleva
+           null-check para no romper la carga. -->
 
       <!-- Modern Content Container -->
       <div class="w-full pr-6 pl-0 mx-auto">
@@ -754,10 +618,7 @@
 
               <!-- Filtros de Documentación -->
               <div class="mb-6">
-                <input type="text" id="searchDocumentos" placeholder="Buscar documentos..."
-                  class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:outline-none"
-                  style="&:focus { border-color: #C7252B; }" onFocus="this.style.borderColor='#C7252B'"
-                  onBlur="this.style.borderColor='#6b7280'">
+                <input type="text" id="searchDocumentos" placeholder="Buscar documentos..." class="claut-input">
               </div>
 
               <!-- Contenedor de documentos -->
@@ -767,7 +628,7 @@
                   <div class="max-w-md mx-auto">
                     <div class="text-6xl mb-4"><i class="fas fa-rotate fa-spin"></i></div>
                     <h3 class="text-lg font-medium text-white mb-2">Cargando documentos...</h3>
-                    <p class="text-gray-400">Accediendo al sistema de gestión documental corporativo...</p>
+                    <p class="claut-text-muted">Accediendo al sistema de gestión documental corporativo...</p>
                   </div>
                 </div>
               </div>
@@ -1119,7 +980,8 @@
 
         if (result.success && result.data) {
           console.log('✅ Documentos cargados:', result.data.length);
-          document.getElementById('totalDocumentos').textContent = `${result.data.length} Documentos`;
+          const totalDocsEl = document.getElementById('totalDocumentos');
+          if (totalDocsEl) totalDocsEl.textContent = `${result.data.length} Documentos`;
           renderizarDocumentos(result.data);
         } else {
           console.log('❌ No hay documentos disponibles');
@@ -1166,7 +1028,7 @@
             <div class="flex items-start justify-between mb-4">
               <div class="flex-1">
                 <h3 class="font-semibold text-lg text-white mb-2">${documento.titulo}</h3>
-                <p class="text-gray-300 text-sm mb-3">${documento.descripcion || 'Sin descripción'}</p>
+                <p class="claut-text-secondary text-sm mb-3">${documento.descripcion || 'Sin descripción'}</p>
               </div>
               <div class="ml-4">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#C7252B]/10 text-[#C7252B] border border-[#C7252B]/30">
@@ -1175,7 +1037,7 @@
               </div>
             </div>
 
-            <div class="flex items-center justify-between text-sm text-gray-400 mb-4">
+            <div class="flex items-center justify-between text-sm claut-text-muted mb-4">
               <span><i class="fas fa-calendar mr-1"></i>${fechaFormateada}</span>
               <span><i class="fas fa-user mr-1"></i>Sistema</span>
             </div>
@@ -1315,7 +1177,7 @@
             <div class="text-center py-12">
               <div class="text-7xl mb-6">${getFileIcon(filename)}</div>
               <h3 class="text-2xl font-bold text-white mb-3">${title}</h3>
-              <p class="text-gray-400 mb-8">Formato: ${ext.toUpperCase()}</p>
+              <p class="claut-text-muted mb-8">Formato: ${ext.toUpperCase()}</p>
               <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="${finalPath}" download class="bg-[#C7252B] text-white px-8 py-4 rounded-2xl hover:bg-red-700 transition-all font-bold shadow-lg shadow-red-900/20">
                   <i class="fas fa-download mr-2"></i>Descargar para ver
@@ -1503,20 +1365,20 @@
               viewerHTML = `
                 <div class="text-center py-8 text-red-500">
                   <div class="text-4xl mb-4"><i class="fas fa-file-lines"></i></div>
-                  <h3 class="text-xl font-bold text-gray-800 mb-2">Documento no disponible</h3>
-                  <p class="text-gray-500 mb-6">El archivo "${filename}" no se encuentra en la ruta esperada.</p>
+                  <h3 class="text-xl font-bold claut-text-primary mb-2">Documento no disponible</h3>
+                  <p class="claut-text-muted mb-6">El archivo "${filename}" no se encuentra en la ruta esperada.</p>
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-sm mx-auto">
                     <button onclick="window.open('./api/documentos.php?action=file&file=${encodeURIComponent(filename)}', '_blank')" 
                       class="flex items-center justify-center gap-2 bg-[#C7252B] text-white px-4 py-3 rounded-xl hover:bg-red-700 transition-all font-bold">
                       <i class="fas fa-external-link-alt"></i> Abrir vía API
                     </button>
                     <button onclick="contactSupport('${filename}')" 
-                      class="flex items-center justify-center gap-2 bg-gray-100 text-gray-700 px-4 py-3 rounded-xl hover:bg-gray-200 transition-all font-bold">
+                      class="flex items-center justify-center gap-2 claut-text-secondary px-4 py-3 rounded-xl transition-all font-bold" style="background:rgba(255,255,255,0.08);" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
                       <i class="fas fa-envelope"></i> Soporte
                     </button>
                   </div>
-                  <div class="mt-8 p-4 bg-yellow-50 border border-yellow-100 rounded-2xl">
-                    <p class="text-xs text-yellow-700 leading-relaxed">
+                  <div class="mt-8 p-4 rounded-2xl" style="background:var(--surface-warning); border:1px solid rgba(234,179,8,0.3);">
+                    <p class="text-xs leading-relaxed" style="color:var(--state-warning);">
                       <strong>Nota:</strong> Si el documento es reciente, es posible que el servidor aún esté procesando el archivo. Por favor, intenta de nuevo en unos momentos.
                     </p>
                   </div>
@@ -1542,14 +1404,14 @@
         } else if (['txt', 'csv'].includes(fileExtension)) {
             const textResponse = await fetch(filePath);
             const textContent = await textResponse.text();
-            viewerHTML = `<pre class="whitespace-pre-wrap bg-gray-100 p-4 rounded border text-sm max-h-96 overflow-auto">${textContent}</pre>`;
+            viewerHTML = `<pre class="whitespace-pre-wrap p-4 rounded text-sm max-h-96 overflow-auto" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);">${textContent}</pre>`;
         } else if (['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(fileExtension)) {
             viewerHTML = `
               <div class="text-center py-8">
                 <div class="text-6xl mb-4">${getFileIcon(filename)}</div>
                 <h3 class="text-xl font-semibold mb-2">${title}</h3>
-                <p class="text-gray-600 mb-4">Archivo de ${fileExtension.toUpperCase()}</p>
-                <p class="text-sm text-gray-500 mb-4">Este tipo de archivo requiere una aplicación externa para visualizarse completamente.</p>
+                <p class="claut-text-secondary mb-4">Archivo de ${fileExtension.toUpperCase()}</p>
+                <p class="text-sm claut-text-muted mb-4">Este tipo de archivo requiere una aplicación externa para visualizarse completamente.</p>
                 <div class="space-y-3">
                   <button onclick="openInNewTab('${filePath}')" class="bg-[#C7252B] text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors mr-2">
                     <i class="fas fa-link"></i> Abrir en nueva pestaña
@@ -1565,7 +1427,7 @@
               <div class="text-center py-8">
                 <div class="text-6xl mb-4"><i class="fas fa-file-lines"></i></div>
                 <h3 class="text-xl font-semibold mb-2">${title}</h3>
-                <p class="text-gray-600 mb-4">Formato: ${fileExtension.toUpperCase()}</p>
+                <p class="claut-text-secondary mb-4">Formato: ${fileExtension.toUpperCase()}</p>
                 <div class="space-y-3">
                   <button onclick="openInNewTab('${filePath}')" class="bg-[#C7252B] text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors mr-2">
                     <i class="fas fa-link"></i> Abrir en nueva pestaña
@@ -1611,13 +1473,13 @@
         setTimeout(() => {
           document.getElementById('documentModalFrame').src = '';
           document.getElementById('documentModalPlaceholder').innerHTML = `
-            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-16 h-16 mx-auto mb-4 claut-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
               </path>
             </svg>
             <p class="text-lg font-medium">Vista previa del documento</p>
-            <p class="text-sm text-gray-400 mt-2">El documento se cargará aquí</p>
+            <p class="text-sm claut-text-muted mt-2">El documento se cargará aquí</p>
           `;
         }, 300);
       }
@@ -1692,8 +1554,8 @@ Saludos.`);
         <div class="col-span-full text-center py-16">
           <div class="max-w-md mx-auto">
             <div class="text-6xl mb-4"><i class="fas fa-inbox"></i></div>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No hay documentos disponibles</h3>
-            <p class="text-gray-500">Próximamente se agregarán documentos importantes.</p>
+            <h3 class="text-lg font-medium claut-text-primary mb-2">No hay documentos disponibles</h3>
+            <p class="claut-text-muted">Próximamente se agregarán documentos importantes.</p>
           </div>
         </div>
       `;
@@ -1706,8 +1568,8 @@ Saludos.`);
         <div class="col-span-full text-center py-16">
           <div class="max-w-md mx-auto">
             <div class="text-6xl mb-4 text-red-500"><i class="fas fa-triangle-exclamation"></i></div>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">Error al cargar documentos</h3>
-            <p class="text-gray-500 mb-4">Ha ocurrido un problema al cargar los documentos.</p>
+            <h3 class="text-lg font-medium claut-text-primary mb-2">Error al cargar documentos</h3>
+            <p class="claut-text-muted mb-4">Ha ocurrido un problema al cargar los documentos.</p>
             <button onclick="cargarDocumentos()" class="text-white px-4 py-2 rounded-lg hover:bg-red-700" style="background-color: #C7252B;">
               Reintentar
             </button>
@@ -2179,12 +2041,12 @@ Saludos.`);
             <h2 id="modalTitle" class="text-2xl font-bold text-white">
               Boletín Informativo
             </h2>
-            <p id="modalDate" class="text-gray-400 mt-1">
+            <p id="modalDate" class="claut-text-muted mt-1">
               Enero 2025
             </p>
           </div>
           <button onclick="closeBulletin()" class="p-2 hover:bg-gray-700 rounded-full transition-colors text-white">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 claut-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
@@ -2203,7 +2065,7 @@ Saludos.`);
 
             <div class="bg-clúster-gray rounded-2xl p-4">
               <h3 class="font-semibold text-clúster-dark mb-2">Descripción</h3>
-              <p id="modalDescription" class="text-gray-600 text-sm leading-relaxed">
+              <p id="modalDescription" class="claut-text-secondary text-sm leading-relaxed">
                 Este boletín contiene información importante sobre las últimas actualizaciones de la organización.
               </p>
             </div>
@@ -2226,14 +2088,14 @@ Saludos.`);
             <div class="bg-gray-800 rounded-2xl p-4 h-96 lg:h-full min-h-[400px] flex items-center justify-center">
               <iframe id="documentFrame" src="" class="w-full h-full rounded-xl border-0 hidden" allowfullscreen>
               </iframe>
-              <div id="documentPlaceholder" class="text-center text-gray-500">
-                <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div id="documentPlaceholder" class="text-center claut-text-muted">
+                <svg class="w-16 h-16 mx-auto mb-4 claut-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                   </path>
                 </svg>
                 <p class="text-lg font-medium">Vista previa del documento</p>
-                <p class="text-sm text-gray-400 mt-2">El documento se cargará aquí</p>
+                <p class="text-sm claut-text-muted mt-2">El documento se cargará aquí</p>
               </div>
             </div>
           </div>
@@ -2255,12 +2117,12 @@ Saludos.`);
             <h2 id="documentModalTitle" class="text-2xl font-bold text-white">
               Documento
             </h2>
-            <p id="documentModalDate" class="text-gray-400 mt-1">
+            <p id="documentModalDate" class="claut-text-muted mt-1">
               Fecha de subida
             </p>
           </div>
           <button onclick="closeDocument()" class="p-2 hover:bg-gray-700 rounded-full transition-colors text-white">
-            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 claut-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
@@ -2269,18 +2131,18 @@ Saludos.`);
         <!-- Contenido del Modal -->
         <div class="flex flex-col lg:flex-row">
           <!-- Información del documento -->
-          <div class="lg:w-1/3 p-8 bg-gray-50 border-r border-gray-100">
+          <div class="lg:w-1/3 p-8" style="background: rgba(255,255,255,0.03); border-right: 1px solid rgba(255,255,255,0.08);">
             <!-- Descripción -->
             <div class="mb-8">
-              <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Descripción</h3>
-              <p id="documentModalDescription" class="text-gray-600 leading-relaxed">
+              <h3 class="text-xs font-bold claut-text-muted uppercase tracking-widest mb-3">Descripción</h3>
+              <p id="documentModalDescription" class="claut-text-secondary leading-relaxed">
                 Información detallada sobre el documento cargado.
               </p>
             </div>
 
             <!-- Detalles Técnicos -->
             <div class="mb-8">
-              <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Detalles Técnicos</h3>
+              <h3 class="text-xs font-bold claut-text-muted uppercase tracking-widest mb-4">Detalles Técnicos</h3>
               <div id="documentModalInfo" class="space-y-4">
                 <!-- Se llena dinámicamente -->
               </div>
@@ -2294,7 +2156,7 @@ Saludos.`);
                 Descargar Documento
               </button>
               <button id="documentOpenInNewTabBtn" onclick="openDocumentInNewTab()"
-                class="w-full bg-white text-gray-900 border border-gray-200 py-4 rounded-2xl font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                class="w-full claut-text-primary py-4 rounded-2xl font-bold transition-all flex items-center justify-center gap-2" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">
                 <i class="fas fa-external-link-alt"></i>
                 Abrir en nueva pestaña
               </button>
@@ -2302,13 +2164,13 @@ Saludos.`);
           </div>
 
           <!-- Previsualización -->
-          <div class="lg:w-2/3 bg-gray-100 relative">
+          <div class="lg:w-2/3 relative" style="background: rgba(255,255,255,0.02);">
             <div id="documentModalPlaceholder"
-              class="absolute inset-0 flex flex-col items-center justify-center text-gray-400 p-12 text-center">
-              <div class="w-20 h-20 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-6">
-                <i class="fas fa-file-pdf text-3xl text-gray-300"></i>
+              class="absolute inset-0 flex flex-col items-center justify-center claut-text-muted p-12 text-center">
+              <div class="w-20 h-20 rounded-3xl flex items-center justify-center mb-6" style="background:rgba(255,255,255,0.06);">
+                <i class="fas fa-file-pdf text-3xl claut-text-secondary"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-800 mb-2">Vista Previa</h3>
+              <h3 class="text-xl font-bold claut-text-primary mb-2">Vista Previa</h3>
               <p class="max-w-xs">El documento se está procesando para su visualización segura.</p>
             </div>
             <iframe id="documentModalFrame" class="w-full h-[calc(90vh-100px)] border-0 hidden relative z-10"

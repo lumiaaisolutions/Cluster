@@ -6,7 +6,7 @@
     <title>Demo Comités - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
     <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
@@ -32,7 +32,7 @@
         }
     </style>
 </head>
-<body class="m-0 font-sans antialiased text-white claut-dark claut-skin" style="background: #1f232a;">
+<body class="m-0 font-sans antialiased text-white claut-dark" style="background: #1f232a;">
     <!-- Globals JS Toggle -->
     <script>
       window.toggleLinkInput = function() {
@@ -154,7 +154,7 @@
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <!-- Hamburger Menu Button for All Screens -->
-                    <button class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
+                    <button class="mr-3 p-2 text-white hover:claut-text-secondary focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
                             id="claut-header-menu-btn"
                             aria-label="Abrir menú de navegación">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,7 +168,7 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <span id="userInfo" class="text-sm"></span>
-                    <button onclick="location.href='dashboard.html'" class="bg-white text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 transition">
+                    <button onclick="location.href='dashboard.html'" class="px-4 py-2 rounded-lg transition" style="background:rgba(255,255,255,0.1); color:#fff;" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
                         <i class="fas fa-arrow-left mr-2"></i>Volver al Dashboard
                     </button>
                 </div>
@@ -213,16 +213,16 @@
                     <!-- Loading State -->
                     <div id="loadingComites" class="hidden p-8 text-center text-white">
                         <div class="inline-block w-8 h-8 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
-                        <p class="mt-2 text-gray-400">Cargando comités...</p>
+                        <p class="mt-2 claut-text-muted">Cargando comités...</p>
                     </div>
 
                     <!-- Empty State -->
                     <div id="emptyState" class="hidden p-8 text-center text-white">
                         <div class="w-16 h-16 mx-auto mb-4 bg-white/5 border border-white/10 rounded-full flex items-center justify-center">
-                            <i class="fas fa-users text-2xl text-gray-400"></i>
+                            <i class="fas fa-users text-2xl claut-text-muted"></i>
                         </div>
                         <h3 class="text-lg font-medium text-white mb-2">No hay comités</h3>
-                        <p class="text-gray-400">Crea tu primer comité para comenzar.</p>
+                        <p class="claut-text-muted">Crea tu primer comité para comenzar.</p>
                     </div>
 
                     <!-- Comités List -->
@@ -267,23 +267,23 @@
 
                 <div id="loadingMensajes" class="p-8 text-center">
                     <div class="inline-block w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                    <p class="mt-2 text-gray-400">Cargando mensajes enviados...</p>
+                    <p class="mt-2 claut-text-muted">Cargando mensajes enviados...</p>
                 </div>
 
                 <!-- Empty State para mensajes -->
                 <div id="emptyMensajes" class="hidden p-8 text-center">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                        <i class="fas fa-paper-plane text-2xl text-gray-400"></i>
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background:rgba(255,255,255,0.06);">
+                        <i class="fas fa-paper-plane text-2xl claut-text-muted"></i>
                     </div>
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">No hay mensajes enviados</h3>
-                    <p class="text-gray-500">Envía tu primer mensaje a los miembros del comité.</p>
+                    <h3 class="text-lg font-medium claut-text-primary mb-2">No hay mensajes enviados</h3>
+                    <p class="claut-text-muted">Envía tu primer mensaje a los miembros del comité.</p>
                     <button onclick="abrirModalMensajeria()" class="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition">
                         <i class="fas fa-plus mr-2"></i>Enviar Primer Mensaje
                     </button>
                 </div>
 
                 <!-- Lista de mensajes -->
-                <div id="mensajesContainer" class="divide-y divide-gray-200">
+                <div id="mensajesContainer" class="divide-y divide-white/5">
                     <!-- Los mensajes se cargarán aquí dinámicamente -->
                 </div>
                 </div>
@@ -305,13 +305,13 @@
                     <div class="bg-black/20 px-6 py-4 border-b border-white/10">
                         <div class="flex flex-wrap items-center gap-4">
                             <div>
-                                <label for="filtroComite" class="block text-sm font-medium text-gray-400 mb-1">Filtrar por Comité:</label>
+                                <label for="filtroComite" class="block text-sm font-medium claut-text-muted mb-1">Filtrar por Comité:</label>
                                 <select id="filtroComite" onchange="filtrarRegistros()" class="px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
                                     <option value="" class="text-black">Todos los comités</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="filtroEstado" class="block text-sm font-medium text-gray-400 mb-1">Filtrar por Estado:</label>
+                                <label for="filtroEstado" class="block text-sm font-medium claut-text-muted mb-1">Filtrar por Estado:</label>
                                 <select id="filtroEstado" onchange="filtrarRegistros()" class="px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
                                     <option value="" class="text-black">Todos los estados</option>
                                     <option value="pendiente" class="text-black">Pendientes</option>
@@ -327,18 +327,18 @@
                         <table class="min-w-full divide-y divide-white/10">
                             <thead class="bg-black/30">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Usuario</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Empresa</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Cargo</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Comité</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Enviado por</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Estado</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Fecha</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Acciones</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Usuario</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Empresa</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Email</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Cargo</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Comité</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Enviado por</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Estado</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Fecha</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium claut-text-secondary uppercase tracking-wider">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody id="tablaRegistros" class="bg-transparent divide-y divide-white/10 text-gray-300">
+                            <tbody id="tablaRegistros" class="bg-transparent divide-y divide-white/10 claut-text-secondary">
                                 <!-- Los registros se cargarán aquí dinámicamente -->
                             </tbody>
                         </table>
@@ -347,10 +347,10 @@
                     <!-- Estado de carga -->
                     <div id="registrosLoading" class="hidden flex items-center justify-center py-8">
                         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                        <span class="ml-2 text-gray-400">Cargando registros...</span>
+                        <span class="ml-2 claut-text-muted">Cargando registros...</span>
                     </div>
 
-                    <div id="noRegistros" class="hidden text-center py-8 text-gray-400">
+                    <div id="noRegistros" class="hidden text-center py-8 claut-text-muted">
                         <i class="fas fa-inbox text-4xl mb-2 text-white/20"></i>
                         <p>No hay registros para mostrar</p>
                     </div>
@@ -756,15 +756,15 @@
 
     <!-- Modal para ver mensaje completo -->
     <div id="modalVerMensaje" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto" style="background:#101013; border:1px solid rgba(255,255,255,0.1);">
             <!-- Header del Modal -->
-            <div class="border-b border-gray-200 p-6">
+            <div class="p-6" style="border-bottom:1px solid rgba(255,255,255,0.08);">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-xl font-semibold text-gray-800">
+                    <h3 class="text-xl font-semibold claut-text-primary">
                         <i class="fas fa-eye mr-2 text-green-600"></i>
                         Ver Mensaje
                     </h3>
-                    <button onclick="cerrarModalVerMensaje()" class="text-gray-400 hover:text-gray-600">
+                    <button onclick="cerrarModalVerMensaje()" class="claut-text-muted hover:claut-text-secondary">
                         <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
@@ -773,22 +773,22 @@
             <!-- Contenido del Modal -->
             <div class="p-6">
                 <!-- Información del mensaje -->
-                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                <div class="p-4 rounded-lg mb-6" style="background:rgba(255,255,255,0.04);">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                         <div>
-                            <span class="text-gray-500">Fecha de envío:</span>
+                            <span class="claut-text-muted">Fecha de envío:</span>
                             <div id="verFechaEnvio" class="font-medium"></div>
                         </div>
                         <div>
-                            <span class="text-gray-500">Destinatarios:</span>
+                            <span class="claut-text-muted">Destinatarios:</span>
                             <div id="verDestinatarios" class="font-medium"></div>
                         </div>
                         <div>
-                            <span class="text-gray-500">Estado:</span>
+                            <span class="claut-text-muted">Estado:</span>
                             <div id="verEstado" class="font-medium"></div>
                         </div>
                         <div>
-                            <span class="text-gray-500">Prioridad:</span>
+                            <span class="claut-text-muted">Prioridad:</span>
                             <div id="verPrioridad" class="font-medium"></div>
                         </div>
                     </div>
@@ -796,7 +796,7 @@
 
                 <!-- Asunto -->
                 <div class="mb-4">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-2">
+                    <h4 class="text-lg font-semibold claut-text-primary mb-2">
                         <i class="fas fa-heading mr-2 text-blue-600"></i>
                         <span id="verAsunto"></span>
                     </h4>
@@ -804,15 +804,15 @@
 
                 <!-- Mensaje -->
                 <div class="mb-6">
-                    <div class="bg-white border border-gray-200 rounded-lg p-4">
-                        <div id="verMensajeTexto" class="prose max-w-none whitespace-pre-wrap text-gray-700 leading-relaxed"></div>
+                    <div class="rounded-lg p-4" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);">
+                        <div id="verMensajeTexto" class="prose max-w-none whitespace-pre-wrap claut-text-secondary leading-relaxed"></div>
                     </div>
                 </div>
 
                 <!-- Botones -->
-                <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                <div class="flex justify-end space-x-4 pt-6" style="border-top:1px solid rgba(255,255,255,0.08);">
                     <button type="button" onclick="cerrarModalVerMensaje()"
-                            class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">
+                            class="px-6 py-2 bg-gray-300 claut-text-secondary rounded-lg hover:bg-gray-400 transition">
                         <i class="fas fa-times mr-2"></i>Cerrar
                     </button>
                     <button type="button" onclick="editarMensajeDesdeVer()"
@@ -826,7 +826,7 @@
     </div><!-- cierra .claut-admin-main (Main Content) -->
 
     <!-- Incluir el administrador de comités -->
-    <script src="./js/admin-comites.js?v=20260901a"></script>
+    <script src="./js/admin-comites.js?v=20260903a"></script>
 
     <script>
         // Inicializar el administrador de comités siguiendo el patrón de demo_empresas.html
@@ -1156,10 +1156,10 @@
 
             const html = registrosFiltrados.map(registro => {
                 const estadoClass = {
-                    'pendiente': 'bg-yellow-100 text-yellow-800',
-                    'aprobado': 'bg-green-100 text-green-800',
-                    'rechazado': 'bg-red-100 text-red-800'
-                }[registro.estado_registro] || 'bg-gray-100 text-gray-800';
+                    'pendiente': 'claut-badge claut-badge--warning',
+                    'aprobado': 'claut-badge claut-badge--success',
+                    'rechazado': 'claut-badge claut-badge--danger'
+                }[registro.estado_registro] || 'claut-badge claut-badge--neutral';
 
                 const estadoIcon = {
                     'pendiente': 'fas fa-clock',
@@ -1168,66 +1168,66 @@
                 }[registro.estado_registro] || 'fas fa-question-circle';
 
                 return `
-                    <tr class="hover:bg-gray-50">
+                    <tr style="transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
-                                    <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                                        <i class="fas fa-user text-gray-600"></i>
+                                    <div class="h-10 w-10 rounded-full flex items-center justify-center" style="background:rgba(255,255,255,0.08);">
+                                        <i class="fas fa-user claut-text-secondary"></i>
                                     </div>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">${registro.nombre_usuario}</div>
-                                    <div class="text-sm text-gray-500">${registro.telefono_contacto || 'Sin teléfono'}</div>
+                                    <div class="text-sm font-medium claut-text-primary">${registro.nombre_usuario}</div>
+                                    <div class="text-sm claut-text-muted">${registro.telefono_contacto || 'Sin teléfono'}</div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">${registro.nombre_empresa}</div>
+                            <div class="text-sm claut-text-primary">${registro.nombre_empresa}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">
-                                <a href="mailto:${registro.email_contacto}" class="text-blue-600 hover:text-blue-800">
+                            <div class="text-sm claut-text-primary">
+                                <a href="mailto:${registro.email_contacto}" style="color:#60a5fa;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#60a5fa'">
                                     ${registro.email_contacto}
                                 </a>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">${registro.cargo}</div>
-                            ${registro.departamento ? `<div class="text-sm text-gray-500">${registro.departamento}</div>` : ''}
+                            <div class="text-sm claut-text-primary">${registro.cargo}</div>
+                            ${registro.departamento ? `<div class="text-sm claut-text-muted">${registro.departamento}</div>` : ''}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">${registro.comite_nombre}</div>
+                            <div class="text-sm claut-text-primary">${registro.comite_nombre}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-xs text-gray-600">
+                            <div class="text-xs claut-text-secondary">
                                 ${registro.info_usuario_loggeado || 'No disponible'}
                             </div>
-                            ${registro.ip_address ? `<div class="text-xs text-gray-400">IP: ${registro.ip_address}</div>` : ''}
+                            ${registro.ip_address ? `<div class="text-xs claut-text-muted">IP: ${registro.ip_address}</div>` : ''}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${estadoClass}">
+                            <span class="${estadoClass}">
                                 <i class="${estadoIcon} mr-1"></i>
                                 ${registro.estado_registro.charAt(0).toUpperCase() + registro.estado_registro.slice(1)}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm claut-text-primary">
                             ${new Date(registro.fecha_registro).toLocaleDateString('es-ES')}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             ${registro.estado_registro === 'pendiente' ? `
                                 <div class="flex space-x-2">
                                     <button onclick="cambiarEstadoRegistro(${registro.id}, 'aprobado')"
-                                            class="text-green-600 hover:text-green-900 bg-green-50 hover:bg-green-100 px-2 py-1 rounded">
+                                            class="px-2 py-1 rounded" style="color:var(--state-success); background:var(--surface-success);" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">
                                         <i class="fas fa-check"></i> Aprobar
                                     </button>
                                     <button onclick="cambiarEstadoRegistro(${registro.id}, 'rechazado')"
-                                            class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-2 py-1 rounded">
+                                            class="px-2 py-1 rounded" style="color:var(--state-danger); background:var(--surface-danger);" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">
                                         <i class="fas fa-times"></i> Rechazar
                                     </button>
                                 </div>
                             ` : `
-                                <div class="text-gray-400 text-xs">
+                                <div class="claut-text-muted text-xs">
                                     ${registro.fecha_aprobacion ? 'Procesado el ' + new Date(registro.fecha_aprobacion).toLocaleDateString('es-ES') : 'Sin fecha de procesamiento'}
                                 </div>
                             `}
@@ -1419,42 +1419,42 @@
                 'urgente': 'fas fa-exclamation-triangle text-red-500',
                 'recordatorio': 'fas fa-bell text-yellow-500',
                 'convocatoria': 'fas fa-calendar-alt text-purple-500'
-            }[tipoMensaje] || 'fas fa-envelope text-gray-500';
+            }[tipoMensaje] || 'fas fa-envelope claut-text-muted';
 
             const prioridadBadge = {
-                'normal': 'bg-gray-100 text-gray-800',
-                'alta': 'bg-yellow-100 text-yellow-800',
-                'urgente': 'bg-red-100 text-red-800'
-            }[prioridad] || 'bg-gray-100 text-gray-800';
+                'normal': 'claut-badge claut-badge--neutral',
+                'alta': 'claut-badge claut-badge--warning',
+                'urgente': 'claut-badge claut-badge--danger'
+            }[prioridad] || 'claut-badge claut-badge--neutral';
 
             const estadoBadge = {
-                'enviado': 'bg-green-100 text-green-800',
-                'leido': 'bg-blue-100 text-blue-800',
-                'pendiente': 'bg-yellow-100 text-yellow-800'
-            }[estado] || 'bg-gray-100 text-gray-800';
+                'enviado': 'claut-badge claut-badge--success',
+                'leido': 'claut-badge claut-badge--info',
+                'pendiente': 'claut-badge claut-badge--warning'
+            }[estado] || 'claut-badge claut-badge--neutral';
 
             return `
-                <div class="p-6 hover:bg-gray-50 transition-colors">
+                <div class="p-6 transition-colors" style="transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
                             <div class="flex items-center mb-2">
                                 <i class="${tipoIcon} mr-2"></i>
-                                <h4 class="text-lg font-medium text-gray-900">${asunto}</h4>
+                                <h4 class="text-lg font-medium claut-text-primary">${asunto}</h4>
                                 <div class="ml-auto flex space-x-2">
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${prioridadBadge}">
+                                    <span class="${prioridadBadge}">
                                         ${prioridad.toUpperCase()}
                                     </span>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${estadoBadge}">
+                                    <span class="${estadoBadge}">
                                         ${estado.toUpperCase()}
                                     </span>
                                 </div>
                             </div>
 
-                            <p class="text-gray-600 text-sm mb-3 leading-relaxed">
+                            <p class="claut-text-secondary text-sm mb-3 leading-relaxed">
                                 ${contenidoPreview}${contenidoPreview.length >= 150 ? '...' : ''}
                             </p>
 
-                            <div class="flex items-center text-sm text-gray-500 space-x-4">
+                            <div class="flex items-center text-sm claut-text-muted space-x-4">
                                 <div class="flex items-center">
                                     <i class="fas fa-calendar mr-1"></i>
                                     ${fechaFormateada}
@@ -1469,17 +1469,17 @@
                                 </div>
                             </div>
                             ${mensaje.destinatarios_nombres && mensaje.destinatarios_nombres.length > 0 ? `
-                            <div class="mt-2 pt-2 border-t border-gray-200">
-                                <div class="flex items-start text-sm text-gray-600">
+                            <div class="mt-2 pt-2" style="border-top:1px solid rgba(255,255,255,0.08);">
+                                <div class="flex items-start text-sm claut-text-secondary">
                                     <i class="fas fa-paper-plane mr-2 mt-1 flex-shrink-0"></i>
                                     <div>
                                         <span class="font-medium">Enviado a:</span>
                                         <div class="mt-1">
                                             ${mensaje.destinatarios_nombres.slice(0, 3).map(nombre =>
-                                                `<span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-1 mb-1">${nombre}</span>`
+                                                `<span class="claut-badge claut-badge--info mr-1 mb-1">${nombre}</span>`
                                             ).join('')}
                                             ${mensaje.destinatarios_nombres.length > 3 ?
-                                                `<span class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">+${mensaje.destinatarios_nombres.length - 3} más</span>` : ''
+                                                `<span class="claut-badge claut-badge--neutral">+${mensaje.destinatarios_nombres.length - 3} más</span>` : ''
                                             }
                                         </div>
                                     </div>
@@ -1490,17 +1490,17 @@
 
                         <div class="ml-4 flex space-x-2">
                             <button onclick="verMensaje(${mensaje.id})"
-                                    class="p-2 text-green-600 hover:bg-green-100 rounded-lg transition"
+                                    class="p-2 rounded-lg transition" style="color:var(--state-success);" onmouseover="this.style.background='var(--surface-success)'" onmouseout="this.style.background='transparent'"
                                     title="Ver mensaje completo">
                                 <i class="fas fa-eye"></i>
                             </button>
                             <button onclick="editarMensaje(${mensaje.id})"
-                                    class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition"
+                                    class="p-2 rounded-lg transition" style="color:var(--state-info);" onmouseover="this.style.background='var(--surface-info)'" onmouseout="this.style.background='transparent'"
                                     title="Editar mensaje">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button onclick="eliminarMensaje(${mensaje.id})"
-                                    class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
+                                    class="p-2 rounded-lg transition" style="color:var(--state-danger);" onmouseover="this.style.background='var(--surface-danger)'" onmouseout="this.style.background='transparent'"
                                     title="Eliminar mensaje">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -1754,11 +1754,11 @@
             if (containerElement) {
                 containerElement.innerHTML = `
                     <div class="p-8 text-center">
-                        <div class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background:var(--surface-danger);">
                             <i class="fas fa-exclamation-triangle text-2xl text-red-500"></i>
                         </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Error al cargar mensajes</h3>
-                        <p class="text-gray-500 mb-4">${errorMessage}</p>
+                        <h3 class="text-lg font-medium claut-text-primary mb-2">Error al cargar mensajes</h3>
+                        <p class="claut-text-muted mb-4">${errorMessage}</p>
                         <button onclick="cargarMensajesEnviados()"
                                 class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
                             <i class="fas fa-sync-alt mr-2"></i>Reintentar

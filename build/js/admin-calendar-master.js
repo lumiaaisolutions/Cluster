@@ -138,9 +138,9 @@ function updateActiveViewButton(id) {
     const btns = ['viewWeek', 'viewMonth'];
     btns.forEach(b => {
         const el = document.getElementById(b);
-        el.className = b === id 
-            ? 'px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all bg-red-600 text-white shadow-lg shadow-red-600/20'
-            : 'px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all text-slate-400 hover:text-white';
+        el.className = b === id
+            ? 'px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all claut-view-active'
+            : 'px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all claut-text-muted hover:text-white';
     });
 }
 

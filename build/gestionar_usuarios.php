@@ -271,7 +271,7 @@ try {
     <title>Gestión de Usuarios - Clúster</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
     <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
@@ -504,8 +504,8 @@ try {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
             color: #f1f5f9 !important;
         }
-        .text-gray-800 { color: #f8f9fa !important; font-weight: 700 !important; }
-        .text-gray-500, .text-gray-600 { color: #9ca3af !important; }
+        .claut-text-primary { color: #f8f9fa !important; font-weight: 700 !important; }
+        .claut-text-muted, .claut-text-secondary { color: #9ca3af !important; }
         
         /* Table Styles */
         .users-table th { 
@@ -544,7 +544,7 @@ try {
         }
     </style>
 </head>
-<body class="claut-dark claut-skin">
+<body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
         <div class="claut-admin-sidebar-brand">
             <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
@@ -637,7 +637,7 @@ try {
                         </h1>
                         <div class="flex items-center mt-1">
                             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse mr-2"></span>
-                            <p class="text-gray-400 text-xs font-medium uppercase tracking-widest">Panel Administrativo Premium</p>
+                            <p class="claut-text-muted text-xs font-medium uppercase tracking-widest">Panel Administrativo Premium</p>
                         </div>
                     </div>
                 </div>
@@ -710,14 +710,14 @@ try {
     <div class="container mx-auto px-4 max-w-7xl">
         
         <?php if (isset($message)): ?>
-            <div class="bg-<?php echo $result ? 'green' : 'red'; ?>-100 border border-<?php echo $result ? 'green' : 'red'; ?>-400 text-<?php echo $result ? 'green' : 'red'; ?>-700 px-4 py-3 rounded mb-4">
+            <div class="px-4 py-3 rounded mb-4" style="background: <?php echo $result ? 'var(--surface-success)' : 'var(--surface-danger)'; ?>; border: 1px solid <?php echo $result ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'; ?>; color: <?php echo $result ? 'var(--state-success)' : 'var(--state-danger)'; ?>;">
                 <i class="fas fa-<?php echo $result ? 'check-circle' : 'exclamation-circle'; ?> mr-2"></i>
                 <?php echo $message; ?>
             </div>
         <?php endif; ?>
 
         <?php if (isset($error)): ?>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div class="px-4 py-3 rounded mb-4" style="background: var(--surface-danger); border: 1px solid rgba(239,68,68,0.3); color: var(--state-danger);">
                 <i class="fas fa-exclamation-circle mr-2"></i>
                 <?php echo $error; ?>
             </div>
@@ -742,7 +742,7 @@ try {
                     </div>
                     <div>
                         <h2 class="text-lg font-bold text-white tracking-tight">Solicitudes de Cambios de Perfil</h2>
-                        <p class="text-gray-500 text-xs">Revisiones pendientes de datos de usuario</p>
+                        <p class="claut-text-muted text-xs">Revisiones pendientes de datos de usuario</p>
                     </div>
                 </div>
                 <button onclick="loadProfileNotifications()" class="flex items-center space-x-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white text-xs font-bold rounded-lg border border-white/10 transition-all">
@@ -751,7 +751,7 @@ try {
                 </button>
             </div>
             <div id="profileNotificationsContainer" class="p-0">
-                <div class="flex flex-col items-center justify-center py-16 text-gray-500">
+                <div class="flex flex-col items-center justify-center py-16 claut-text-muted">
                     <i class="fas fa-circle-notch fa-spin text-3xl mb-4 text-red-500/50"></i>
                     <p class="text-sm font-medium tracking-wide">Sincronizando notificaciones...</p>
                 </div>
@@ -768,15 +768,15 @@ try {
                     </div>
                     <div>
                         <h2 class="text-xl font-black text-white tracking-tighter">Directorio de Usuarios</h2>
-                        <p class="text-gray-500 text-xs font-medium tracking-wide uppercase">Gestión de Accesos y Roles</p>
+                        <p class="claut-text-muted text-xs font-medium tracking-wide uppercase">Gestión de Accesos y Roles</p>
                     </div>
                 </div>
                 
                 <div class="flex flex-col sm:flex-row gap-3">
                     <div class="relative group">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-red-500 transition-colors"></i>
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 claut-text-muted group-focus-within:text-red-500 transition-colors"></i>
                         <input type="text" id="searchBox" 
-                               class="w-full sm:w-80 pl-11 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-all placeholder:text-gray-600" 
+                               class="w-full sm:w-80 pl-11 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-all placeholder:claut-text-secondary" 
                                placeholder="Filtrar por nombre, email o rol..." 
                                onkeyup="filterUsers()">
                     </div>
@@ -791,7 +791,7 @@ try {
             <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-left whitespace-nowrap" id="usersTable">
                     <thead>
-                        <tr class="bg-white/[0.03] text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
+                        <tr class="bg-white/[0.03] claut-text-muted text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
                             <th class="px-6 py-4">ID</th>
                             <th class="px-6 py-4">Usuario</th>
                             <th class="px-6 py-4">Información</th>
@@ -805,7 +805,7 @@ try {
                     <tr class="border-b border-white/5">
                         <td colspan="6" class="px-6 py-12 text-center">
                             <i class="fas fa-users-slash text-4xl text-white/10 mb-4 block"></i>
-                            <span class="text-gray-500 font-medium tracking-wide">No se encontraron usuarios en la base de datos.</span>
+                            <span class="claut-text-muted font-medium tracking-wide">No se encontraron usuarios en la base de datos.</span>
                         </td>
                     </tr>
                 <?php else: ?>
@@ -845,7 +845,7 @@ try {
                                     <?php echo ucfirst($estado_real); ?>
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-gray-500 text-[10px]">
+                            <td class="px-6 py-4 claut-text-muted text-[10px]">
                                 <i class="fas fa-calendar-check mr-2"></i>
                                 <?php 
                                 if ($usuario['fecha_registro'] && $usuario['fecha_registro'] != '0000-00-00 00:00:00') {
@@ -1071,7 +1071,7 @@ try {
                             <i class="fas fa-check text-3xl text-green-500"></i>
                         </div>
                         <h4 class="text-white font-bold text-lg">Sin solicitudes pendientes</h4>
-                        <p class="text-gray-400 text-sm mt-1">El sistema está actualizado. No hay cambios de perfil por revisar.</p>
+                        <p class="claut-text-muted text-sm mt-1">El sistema está actualizado. No hay cambios de perfil por revisar.</p>
                     </div>
                 `;
                 return;
@@ -1082,10 +1082,10 @@ try {
                     <table class="w-full text-left whitespace-nowrap">
                         <thead>
                             <tr class="border-b border-white/5 bg-white/5">
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Usuario</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Campo</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Cambio Propuesto</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">Acciones</th>
+                                <th class="px-6 py-4 text-xs font-bold claut-text-muted uppercase tracking-widest">Usuario</th>
+                                <th class="px-6 py-4 text-xs font-bold claut-text-muted uppercase tracking-widest">Campo</th>
+                                <th class="px-6 py-4 text-xs font-bold claut-text-muted uppercase tracking-widest">Cambio Propuesto</th>
+                                <th class="px-6 py-4 text-xs font-bold claut-text-muted uppercase tracking-widest text-right">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-white/5">
@@ -1107,7 +1107,7 @@ try {
                                 </div>
                                 <div>
                                     <div class="text-white font-bold text-sm">${notif.nombre} ${notif.apellidos || ''}</div>
-                                    <div class="text-gray-500 text-xs">${notif.email}</div>
+                                    <div class="claut-text-muted text-xs">${notif.email}</div>
                                 </div>
                             </div>
                         </td>
@@ -1115,11 +1115,11 @@ try {
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
                                 ${fieldName}
                             </span>
-                            <div class="text-[10px] text-gray-500 mt-1 font-bold">Solicitado: ${fecha}</div>
+                            <div class="text-[10px] claut-text-muted mt-1 font-bold">Solicitado: ${fecha}</div>
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center space-x-3">
-                                <span class="text-xs text-gray-500 italic line-through max-w-[100px] truncate">${notif.valor_anterior || 'Vacío'}</span>
+                                <span class="text-xs claut-text-muted italic line-through max-w-[100px] truncate">${notif.valor_anterior || 'Vacío'}</span>
                                 <i class="fas fa-arrow-right text-[10px] text-red-500"></i>
                                 <span class="text-sm text-white font-bold max-w-[150px] truncate">${notif.valor_nuevo || 'Vacío'}</span>
                             </div>

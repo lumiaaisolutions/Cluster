@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="./assets/css/eventos.css">
   <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a">
 
-  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
   <style>
     :root {
       /* Primary Colors - Inspired by Porsche */
@@ -1316,6 +1316,8 @@
       main.claut-main { padding-left: 134px !important; }
     }
   </style>
+  <link rel="stylesheet" href="./css/claut-panel.css?v=20260903a">
+  <style>/* rediseño 2026: oculta título legacy duplicado por el hero */ section.relative.pt-6 > header.py-4 { display: none !important; }</style>
 </head>
 
 <body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default overflow-x-hidden"
@@ -1430,60 +1432,10 @@
     style="margin-top: 0; margin-left: 0; overflow: hidden; z-index: 1; position: relative;">
     <div id="mainContent" class="main-content-wrapper relative z-10 w-full">
 
-      <!-- Navbar (Sub-header Glassmorphism) como en dashboard.html/contacto.html -->
-      <nav
-        class="porsche-navbar relative flex flex-wrap items-center justify-between transition-all ease-in duration-250 lg:flex-nowrap lg:justify-start"
-        navbar-main navbar-scroll="false" style="display: flex;">
-        <div class="flex items-center justify-between w-full px-6 py-0 mx-auto flex-wrap-inherit">
-          <nav>
-            <!-- breadcrumb -->
-            <ol class="porsche-breadcrumb flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-              <li class="text-sm leading-normal">
-                <a class="opacity-60" href="javascript:;">Intranet</a>
-              </li>
-              <li class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/']"
-                aria-current="page">Eventos</li>
-            </ol>
-            <!-- Mostrar saludo con usuario logueado -->
-            <div id="welcomeMessage" class="mb-2">
-              <h2 class="porsche-welcome mb-0 capitalize text-white">Próximos Eventos</h2>
-            </div>
-          </nav>
-
-          <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-            <div class="flex items-center md:ml-auto md:pr-4">
-              <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
-                <!-- Mostrar información del usuario autenticado -->
-                <div id="userInfo" class="apple-user-info text-white text-sm mr-4 hidden items-center">
-                  <div class="flex flex-col">
-                    <span id="userName" class="text-sm font-semibold"></span>
-                    <span id="userRole" class="text-xs opacity-75"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-              <!-- Menú para usuarios no autenticados -->
-              <li class="flex items-center" id="loginMenuItem">
-                <a href="./pages/sign-in.html"
-                  class="apple-nav-link block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75">
-                  <i class="fa fa-user sm:mr-1"></i>
-                  <span class="hidden sm:inline">Iniciar Sesión</span>
-                </a>
-              </li>
-              <!-- Botón Panel de Administración (solo para admins) -->
-              <li class="flex items-center pl-4 hidden" id="adminPanelButton">
-                <a href="./admin-panel.html?login=success"
-                  class="block px-3 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75 hover:bg-gray-800 hover:bg-opacity-20 rounded-lg"
-                  title="Panel de Administración">
-                  <i class="fas fa-cogs mr-2"></i>
-                  <span class="hidden lg:inline">Admin Panel</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <!-- Navbar interno (breadcrumb + usuario) — componente reutilizable -->
+      <script src="./assets/js/claut-page-header.js?v=20260903b" data-breadcrumb="Eventos" data-welcome="Próximos Eventos"></script>
+      <!-- Hero del rediseño 2026 (componente compartido) -->
+      <script src="./js/claut-panel.js?v=20260903a" data-eyebrow="Agenda del clúster" data-title="Eventos" data-tagline="Networking, capacitación y encuentros de la <strong>industria automotriz</strong>" data-reveal=".section3 .container"></script>
 
       <!-- end Navbar -->
 
@@ -1638,25 +1590,8 @@
               </div>
             </div>
 
-            <!-- Enhanced Call to Action -->
-            <div class="text-center mb-8 relative z-20">
-              <div class="bg-gradient-to-br from-gray-900 to-black rounded-[2.5rem] p-10 border border-white/10 shadow-2xl relative overflow-hidden">
-                <div class="absolute inset-0 bg-[url('./css/moveimage.png')] opacity-10 bg-cover bg-center"></div>
-                <div class="relative z-10">
-                  <h3 class="text-4xl font-black text-white mb-6 tracking-tight">¿Listo para Transformar tu Negocio?</h3>
-                  <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto font-light">
-                    No te pierdas la oportunidad de formar parte de la comunidad empresarial más dinámica.
-                    Cada evento es una puerta hacia nuevas posibilidades.
-                  </p>
-                  <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <button class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold py-4 px-10 rounded-full shadow-lg shadow-red-500/20 hover:shadow-red-500/40 transition-all duration-300 transform hover:-translate-y-1 flex items-center tracking-wide">
-                      <i class="fas fa-calendar-plus mr-3 text-xl hover:rotate-12 transition-transform"></i>
-                      Explora Nuestros Próximos Eventos
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!-- CTA legacy "¿Listo para Transformar tu Negocio?" eliminado:
+                 redundante con el hero del rediseño 2026 y su botón no tenía acción. -->
           </div>
         </section>
 
@@ -2013,15 +1948,6 @@
 
       console.log('✅ Claut Navigation System initialized successfully');
     });
-
-    // Logout functionality
-    function handleLogout() {
-      if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-        localStorage.removeItem('userSession');
-        sessionStorage.clear();
-        window.location.href = './pages/sign-in.html';
-      }
-    }
 
     // Modal functions for events
     async function openEventModal(eventId, title) {

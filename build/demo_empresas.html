@@ -7,7 +7,7 @@
     <title>Demo Empresas - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
     <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
@@ -116,7 +116,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 claut-dark claut-skin">
+<body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
         <div class="claut-admin-sidebar-brand">
             <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
@@ -201,7 +201,7 @@
                             <span class="p-2 bg-red-600 rounded-lg"><i class="fas fa-building text-white"></i></span>
                             Gestión de Empresas
                         </h1>
-                        <p class="text-gray-400 mt-1 flex items-center gap-2">
+                        <p class="claut-text-muted mt-1 flex items-center gap-2">
                             <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                             Panel de Control Administrativo
                         </p>
@@ -271,20 +271,20 @@
                     </div>
                     <div>
                         <h2 class="text-xl font-bold text-white tracking-tight">Solicitudes de Cambio</h2>
-                        <p class="text-gray-400 text-sm">Revisiones pendientes de socios</p>
+                        <p class="claut-text-muted text-sm">Revisiones pendientes de socios</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <span id="solicitudesBadge" class="px-3 py-1 bg-yellow-500 text-black text-xs font-bold rounded-full">0</span>
                     <button onclick="if(window.adminEmpresas) window.adminEmpresas.cargarSolicitudes()" 
-                            class="p-2 hover:bg-white/10 rounded-lg transition-all text-gray-400" title="Recargar solicitudes">
+                            class="p-2 hover:bg-white/10 rounded-lg transition-all claut-text-muted" title="Recargar solicitudes">
                         <i class="fas fa-sync-alt"></i>
                     </button>
                 </div>
             </div>
             <div id="solicitudesContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-4 relative z-10">
                 <!-- Placeholder inicial -->
-                <div id="solicitudesPlaceholder" class="col-span-2 text-center py-8 text-gray-500">
+                <div id="solicitudesPlaceholder" class="col-span-2 text-center py-8 claut-text-muted">
                     <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
                     <p class="text-sm">Cargando solicitudes pendientes...</p>
                 </div>
@@ -309,14 +309,14 @@
                     <i class="fas fa-file-export text-green-500"></i> Exportar JSON
                 </button>
                 <div class="ml-auto flex items-center gap-2">
-                    <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Total:</span>
+                    <span class="text-xs claut-text-muted uppercase tracking-wider font-semibold">Total:</span>
                     <span id="totalEnTabla" class="text-sm font-bold text-white bg-white/10 px-3 py-1 rounded-full">0</span>
                 </div>
             </div>
             <!-- Fila 2: Búsqueda y Filtros -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="relative">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"></i>
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 claut-text-muted pointer-events-none"></i>
                     <input type="text" id="searchInput" placeholder="Buscar empresa..."
                         class="w-full pl-11 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-500 transition-all">
                 </div>
@@ -353,7 +353,7 @@
         <div class="glass-card overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="porsche-table min-w-full">
-                    <thead class="text-xs uppercase tracking-wider text-gray-500 border-b border-white/5 bg-white/2">
+                    <thead class="text-xs uppercase tracking-wider claut-text-muted border-b border-white/5 bg-white/2">
                         <tr>
                             <th class="text-left">Empresa</th>
                             <th class="text-left">Contacto</th>
@@ -374,16 +374,16 @@
                 <div class="inline-block p-4 rounded-full bg-red-500/10 mb-4">
                     <i class="fas fa-circle-notch fa-spin text-4xl text-red-500"></i>
                 </div>
-                <p class="text-gray-400 font-medium">Sincronizando con el servidor...</p>
+                <p class="claut-text-muted font-medium">Sincronizando con el servidor...</p>
             </div>
 
             <!-- Empty State -->
             <div id="emptyState" class="hidden p-20 text-center">
                 <div class="p-6 bg-white/5 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-building text-3xl text-gray-600"></i>
+                    <i class="fas fa-building text-3xl claut-text-secondary"></i>
                 </div>
-                <p class="text-gray-400 font-medium tracking-tight">No se encontraron registros</p>
-                <p class="text-sm text-gray-600 mt-1">Prueba ajustando los filtros de búsqueda</p>
+                <p class="claut-text-muted font-medium tracking-tight">No se encontraron registros</p>
+                <p class="text-sm claut-text-secondary mt-1">Prueba ajustando los filtros de búsqueda</p>
             </div>
         </div>
     </div>
@@ -423,11 +423,11 @@
                         <p class="claut-wizard-panel-eyebrow">Paso 1 de 5 — I. Datos del Directorio</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <div class="md:col-span-2 lg:col-span-2">
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Nombre de la Empresa</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Nombre de la Empresa</label>
                                 <input type="text" id="nombre" name="nombre" required class="w-full px-4 py-3" placeholder="Ej: Porsche de México">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Estado del Registro</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Estado del Registro</label>
                                 <select id="estado" name="estado" class="w-full px-4 py-3">
                                     <option value="activa">Activa</option>
                                     <option value="inactiva">Inactiva</option>
@@ -435,7 +435,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Sector Industrial</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Sector Industrial</label>
                                 <select id="sector" name="sector" class="w-full px-4 py-3">
                                     <option value="">Seleccionar sector</option>
                                     <option value="Automotriz">Automotriz</option>
@@ -447,7 +447,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Entidad Federativa</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Entidad Federativa</label>
                                 <select id="entidad_federativa" name="entidad_federativa" class="w-full px-4 py-3">
                                     <option value="">Seleccionar estado</option>
                                     <option value="Ciudad de México">Ciudad de México</option>
@@ -465,26 +465,26 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Municipio</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Municipio</label>
                                 <input type="text" id="municipio" name="municipio" class="w-full px-4 py-3" placeholder="Ej: Tlalnepantla">
                             </div>
                             <div class="lg:col-span-2">
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Dirección Fiscal / Operativa</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Dirección Fiscal / Operativa</label>
                                 <input type="text" id="direccion" name="direccion" class="w-full px-4 py-3" placeholder="Calle, número, colonia...">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">¿Exporta?</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">¿Exporta?</label>
                                 <select id="exporta" name="exporta" class="w-full px-4 py-3">
                                     <option value="0">No</option>
                                     <option value="1">Sí</option>
                                 </select>
                             </div>
                             <div class="md:col-span-2 lg:col-span-2">
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Descripción de Productos y Servicios</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Descripción de Productos y Servicios</label>
                                 <textarea id="descripcion" name="descripcion" rows="3" class="w-full px-4 py-3" placeholder="Describe brevemente la actividad de la empresa..."></textarea>
                             </div>
                             <div class="lg:col-span-1">
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Certificaciones (Opcional)</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Certificaciones (Opcional)</label>
                                 <textarea id="certificaciones" name="certificaciones" rows="3" class="w-full px-4 py-3" placeholder="Ej: ISO 9001, IATF 16949..."></textarea>
                             </div>
                         </div>
@@ -495,23 +495,23 @@
                         <p class="claut-wizard-panel-eyebrow">Paso 2 de 5 — Contacto digital y redes</p>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Sitio Web</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Sitio Web</label>
                                 <div class="relative">
-                                    <i class="fas fa-globe absolute left-4 top-1/2 -translate-y-1/2 text-gray-600"></i>
+                                    <i class="fas fa-globe absolute left-4 top-1/2 -translate-y-1/2 claut-text-secondary"></i>
                                     <input type="url" id="sitio_web" name="sitio_web" class="w-full pl-11 pr-4 py-3" placeholder="https:// ...">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Email Corporativo</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Email Corporativo</label>
                                 <div class="relative">
-                                    <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-600"></i>
+                                    <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 claut-text-secondary"></i>
                                     <input type="email" id="email" name="email" class="w-full pl-11 pr-4 py-3" placeholder="info@empresa.com">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Teléfono General</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Teléfono General</label>
                                 <div class="relative">
-                                    <i class="fas fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-600"></i>
+                                    <i class="fas fa-phone absolute left-4 top-1/2 -translate-y-1/2 claut-text-secondary"></i>
                                     <input type="tel" id="telefono" name="telefono" class="w-full pl-11 pr-4 py-3" placeholder="55 ...">
                                 </div>
                             </div>
@@ -520,28 +520,28 @@
                         <!-- Sección Redes Sociales -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 p-4 bg-white/5 rounded-2xl border border-white/5">
                             <div>
-                                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Facebook</label>
+                                <label class="block text-[10px] font-bold claut-text-muted uppercase mb-2">Facebook</label>
                                 <div class="relative">
                                     <i class="fab fa-facebook absolute left-4 top-1/2 -translate-y-1/2 text-blue-500"></i>
                                     <input type="url" id="redes_fb" name="redes_fb" class="w-full pl-11 pr-4 py-2 text-xs" placeholder="URL Facebook">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">X (Twitter)</label>
+                                <label class="block text-[10px] font-bold claut-text-muted uppercase mb-2">X (Twitter)</label>
                                 <div class="relative">
-                                    <i class="fab fa-x-twitter absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                    <i class="fab fa-x-twitter absolute left-4 top-1/2 -translate-y-1/2 claut-text-muted"></i>
                                     <input type="url" id="redes_x" name="redes_x" class="w-full pl-11 pr-4 py-2 text-xs" placeholder="URL X">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">LinkedIn</label>
+                                <label class="block text-[10px] font-bold claut-text-muted uppercase mb-2">LinkedIn</label>
                                 <div class="relative">
                                     <i class="fab fa-linkedin absolute left-4 top-1/2 -translate-y-1/2 text-blue-400"></i>
                                     <input type="url" id="redes_linkedin" name="redes_linkedin" class="w-full pl-11 pr-4 py-2 text-xs" placeholder="URL LinkedIn">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Instagram</label>
+                                <label class="block text-[10px] font-bold claut-text-muted uppercase mb-2">Instagram</label>
                                 <div class="relative">
                                     <i class="fab fa-instagram absolute left-4 top-1/2 -translate-y-1/2 text-pink-500"></i>
                                     <input type="url" id="redes_instagram" name="redes_instagram" class="w-full pl-11 pr-4 py-2 text-xs" placeholder="URL Instagram">
@@ -559,19 +559,19 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Nombres (Registro)</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Nombres (Registro)</label>
                                 <input type="text" id="usuario_registro_nombre" name="usuario_registro_nombre" class="w-full px-4 py-3" placeholder="Nombre de quien registra">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Apellidos (Registro)</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Apellidos (Registro)</label>
                                 <input type="text" id="usuario_registro_apellido" name="usuario_registro_apellido" class="w-full px-4 py-3" placeholder="Apellidos">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Departamento</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Departamento</label>
                                 <input type="text" id="departamento" name="departamento" class="w-full px-4 py-3" placeholder="Ej: Recursos Humanos">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Cargo</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Cargo</label>
                                 <input type="text" id="cargo" name="cargo" class="w-full px-4 py-3" placeholder="Ej: Gerente General">
                             </div>
                         </div>
@@ -582,19 +582,19 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             <div class="lg:col-span-2">
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Nombre Completo</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Nombre Completo</label>
                                 <input type="text" id="contacto_persona" name="contacto_persona" class="w-full px-4 py-3">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Cargo</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Cargo</label>
                                 <input type="text" id="contacto_cargo" name="contacto_cargo" class="w-full px-4 py-3">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Email Directo</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Email Directo</label>
                                 <input type="email" id="contacto_email" name="contacto_email" class="w-full px-4 py-3" placeholder="contacto@empresa.com">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Teléfono Directo</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Teléfono Directo</label>
                                 <input type="tel" id="contacto_telefono" name="contacto_telefono" class="w-full px-4 py-3">
                             </div>
                         </div>
@@ -605,31 +605,31 @@
                         <p class="claut-wizard-panel-eyebrow">Paso 4 de 5 — III. Convenio Clúster</p>
                         <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Descripción del Beneficio</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Descripción del Beneficio</label>
                                 <textarea id="convenio_descripcion" name="convenio_descripcion" rows="2" class="w-full px-4 py-3"></textarea>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">% Descuento</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">% Descuento</label>
                                 <input type="number" id="descuento_porcentaje" name="descuento_porcentaje" class="w-full px-4 py-3">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Inicio Vigencia</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Inicio Vigencia</label>
                                 <input type="date" id="vigencia_inicio" name="vigencia_inicio" class="w-full px-4 py-3">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Fin Vigencia</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Fin Vigencia</label>
                                 <input type="date" id="vigencia_fin" name="vigencia_fin" class="w-full px-4 py-3">
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">WhatsApp / Móvil Convenio</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">WhatsApp / Móvil Convenio</label>
                                 <input type="tel" id="contacto_movil" name="contacto_movil" class="w-full px-4 py-3" placeholder="WhatsApp">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Términos y Condiciones</label>
+                                <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Términos y Condiciones</label>
                                 <textarea id="condiciones" name="condiciones" rows="2" class="w-full px-4 py-3" placeholder="Restricciones, condiciones de uso..."></textarea>
                             </div>
                         </div>
@@ -641,13 +641,13 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Logo (URL o Archivo)</label>
+                                    <label class="block text-xs font-bold claut-text-muted uppercase mb-2">Logo (URL o Archivo)</label>
                                     <input type="text" id="logo_url" name="logo_url" class="w-full px-4 py-3 mb-4" placeholder="URL o ruta de imagen...">
                                     <div class="p-4 border-2 border-dashed border-white/10 rounded-xl hover:border-red-500/50 transition-all group relative">
                                         <input type="file" id="logo_file" name="logo_file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
                                         <div class="text-center">
-                                            <i class="fas fa-cloud-upload-alt text-2xl text-gray-600 mb-2 group-hover:text-red-500 transition-colors"></i>
-                                            <p class="text-sm text-gray-500">Haz clic para subir logo corporativo</p>
+                                            <i class="fas fa-cloud-upload-alt text-2xl claut-text-secondary mb-2 group-hover:text-red-500 transition-colors"></i>
+                                            <p class="text-sm claut-text-muted">Haz clic para subir logo corporativo</p>
                                         </div>
                                     </div>
                                 </div>
@@ -660,7 +660,7 @@
                         <!-- Autorización -->
                         <div class="p-6 bg-red-600/5 border border-red-600/20 rounded-2xl flex items-start gap-4 mt-6">
                             <input type="checkbox" id="autoriza_directorio" name="autoriza_directorio" value="1" class="mt-1 w-5 h-5">
-                            <div class="text-sm text-gray-400 leading-relaxed">
+                            <div class="text-sm claut-text-muted leading-relaxed">
                                 <strong class="text-white block mb-1 uppercase tracking-wider text-xs">Autorización de Directorio</strong>
                                 Confirmo que los datos proporcionados son verídicos y autorizo su publicación en el Directorio Comercial de Socios ClautMet.
                             </div>
@@ -1010,9 +1010,9 @@
                         <i class="fas fa-clipboard-check text-yellow-500"></i>
                         Revisión de Cambios Propuestos
                     </h3>
-                    <p class="text-sm text-gray-400 mt-1" id="reviewSubtitulo">Compara y elige qué datos actualizar</p>
+                    <p class="text-sm claut-text-muted mt-1" id="reviewSubtitulo">Compara y elige qué datos actualizar</p>
                 </div>
-                <button onclick="document.getElementById('modalReview').classList.add('hidden')" class="text-gray-400 hover:text-white transition-colors">
+                <button onclick="document.getElementById('modalReview').classList.add('hidden')" class="claut-text-muted hover:text-white transition-colors">
                     <i class="fas fa-times text-2xl"></i>
                 </button>
             </div>
@@ -1020,7 +1020,7 @@
                 <!-- UI de comparación generada por JS -->
             </div>
             <div class="p-6 border-t border-white/10 bg-white/5 flex justify-between items-center">
-                <div class="text-sm text-gray-400">
+                <div class="text-sm claut-text-muted">
                     <i class="fas fa-info-circle mr-2"></i> Solo los campos marcados serán actualizados en la base de datos.
                 </div>
                 <div class="flex gap-4">

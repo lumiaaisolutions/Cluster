@@ -50,7 +50,7 @@
 
   <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a" />
 
-  <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+  <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
   <style>
     /* ============================================================
        RESPONSIVE MASTER — descuentos.html
@@ -428,9 +428,11 @@
     }
   </style>
 
+  <link rel="stylesheet" href="./css/claut-panel.css?v=20260903a">
+  <style>/* rediseño 2026: oculta título legacy duplicado por el hero */ div.mb-6.text-center:has(> h1) { display: none !important; }</style>
 </head>
 
-<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default claut-dark claut-skin">
+<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default claut-dark">
 
   <!-- Header Horizontal Premium con Menú Integrado -->
   <header class="claut-header">
@@ -519,62 +521,10 @@
     <!-- Contenido principal con restricción de autenticación -->
     <div class="main-content-wrapper relative z-10">
       <div id="mainContent" class="">
-        <!-- Navbar (oculto - usando header horizontal) -->
-        <nav
-          class="porsche-navbar relative flex flex-wrap items-center justify-between px-0 py-1 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start"
-          navbar-main navbar-scroll="false"
-          style="display: flex; z-index: 999999; position: relative;">
-          <div class="flex items-center justify-between w-full px-6 py-0 mx-auto flex-wrap-inherit">
-            <nav>
-              <!-- breadcrumb -->
-              <ol class="porsche-breadcrumb flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-                <li class="text-sm leading-normal">
-                  <a class="opacity-60 text-white" href="javascript:;">Intranet</a>
-                </li>
-                <li
-                  class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/'] text-white"
-                  aria-current="page">Descuentos</li>
-              </ol>
-              <!-- Mostrar saludo con usuario logueado -->
-              <div id="welcomeMessage" class="mb-2">
-                <h6 class="porsche-welcome mb-0 capitalize text-white" id="welcomeText">Descuentos</h6>
-              </div>
-            </nav>
-
-            <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-              <div class="flex items-center md:ml-auto md:pr-4">
-                <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
-                  <!-- Mostrar información del usuario autenticado -->
-                  <div id="userInfo" class="apple-user-info text-white text-sm mr-4 hidden items-center">
-                    <div class="flex flex-col">
-                      <span id="userName" class="text-sm font-semibold"></span>
-                      <span id="userRole" class="text-xs opacity-75"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                <!-- Menú para usuarios no autenticados -->
-                <li class="flex items-center" id="loginMenuItem">
-                  <a href="./pages/sign-in.html"
-                    class="apple-nav-link block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75">
-                    <i class="fa fa-user sm:mr-1"></i>
-                    <span class="hidden sm:inline">Iniciar Sesión</span>
-                  </a>
-                </li>
-                <!-- Botón Panel de Administración (solo para admins) -->
-                <li class="flex items-center pl-4 hidden" id="adminPanelButton">
-                  <a href="./admin-panel.html?login=success"
-                    class="block px-3 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75 hover:bg-gray-800 hover:bg-opacity-20 rounded-lg"
-                    title="Panel de Administración">
-                    <i class="fas fa-cogs mr-2"></i>
-                    <span class="hidden lg:inline">Admin Panel</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+        <!-- Navbar interno (breadcrumb + usuario) — componente reutilizable -->
+        <script src="./assets/js/claut-page-header.js?v=20260903b" data-breadcrumb="Descuentos" data-welcome="Descuentos"></script>
+        <!-- Hero del rediseño 2026 (componente compartido) -->
+        <script src="./js/claut-panel.js?v=20260903a" data-eyebrow="Beneficios exclusivos" data-title="Descuentos" data-tagline="Convenios y beneficios para los socios del <strong>Clúster Automotriz Metropolitano</strong>" data-reveal=".discount-container, .descuentos-info-card"></script>
 
         <!-- end Navbar -->
         <!-- Main content con spacing Apple -->
@@ -605,15 +555,15 @@
               </div>
 
               <!-- Sección de información adicional -->
-              <div class="mt-8 porsche-card descuentos-info-card rounded-lg shadow-md p-6">
+              <div class="mt-8 porsche-card descuentos-info-card rounded-lg p-6">
                 <div class="flex items-center mb-4">
                   <i class="fas fa-info-circle text-clúster-red text-2xl mr-3"></i>
-                  <h2 class="text-xl font-semibold text-gray-800">Información Importante</h2>
+                  <h2 class="text-xl font-semibold claut-text-primary">Información Importante</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h3 class="font-medium text-gray-700 mb-2">Términos y Condiciones:</h3>
-                    <ul class="text-sm text-gray-600 space-y-1">
+                    <h3 class="font-medium claut-text-secondary mb-2">Términos y Condiciones:</h3>
+                    <ul class="text-sm claut-text-secondary space-y-1">
                       <li>• Los descuentos son exclusivos para miembros-socios activos de Clúster</li>
                       <li>• Debes presentar tu credencial vigente</li>
                       <li>• No se pueden combinar con otras promociones</li>
@@ -621,8 +571,8 @@
                     </ul>
                   </div>
                   <div>
-                    <h3 class="font-medium text-gray-700 mb-2">¿Necesitas ayuda?</h3>
-                    <p class="text-sm text-gray-600 mb-2">Si tienes problemas para aplicar algún descuento,
+                    <h3 class="font-medium claut-text-secondary mb-2">¿Necesitas ayuda?</h3>
+                    <p class="text-sm claut-text-secondary mb-2">Si tienes problemas para aplicar algún descuento,
                       contacta al departamento de Recursos Humanos:</p>
                     <div class="flex items-center text-sm text-clúster-red">
                       <i class="fas fa-envelope mr-2"></i>
@@ -644,13 +594,12 @@
     <div id="restrictedOverlay" class="restricted-overlay hidden">
       <div class="restricted-message">
         <div class="mb-4">
-          <i class="fas fa-lock text-4xl text-gray-500 mb-3"></i>
-          <h3 class="text-lg font-semibold text-gray-800 mb-2">Acceso Restringido</h3>
-          <p class="text-sm text-gray-600 mb-4">
+          <i class="fas fa-lock text-4xl claut-text-muted mb-3"></i>
+          <h3 class="text-lg font-semibold claut-text-primary mb-2">Acceso Restringido</h3>
+          <p class="text-sm claut-text-secondary mb-4">
             Debes iniciar sesión para acceder a este contenido
           </p>
-          <button onclick="window.location.href='./pages/sign-in.html'"
-            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+          <button onclick="window.location.href='./pages/sign-in.html'" class="porsche-btn">
             Iniciar Sesión
           </button>
         </div>

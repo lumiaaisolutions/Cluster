@@ -1,4 +1,4 @@
-&lt;?php
+<?php
 /**
  * API: User Messages Management
  * File: api/mensajes_usuario.php
@@ -21,10 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once __DIR__ . '/../config/database.php';
 
-// Start session
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+// Start session — antes session_start() a secas usaba el nombre de
+// cookie por defecto de PHP en vez de "CLAUT_SESSION" (mismo bug que
+// BUG-035). Nota: el propio "<?php" de este archivo venía escapado como
+// texto literal "&lt;?php" — PHP nunca ejecutaba nada de este archivo,
+// solo emitía el código fuente como texto plano. Cero referencias a este
+// archivo en el resto del sitio (verificado) — sin impacto en producción
+// hoy, se deja corregido por consistencia.
+define('CLAUT_ACCESS', true);
+require_once __DIR__ . '/../config/session-config.php';
+SessionConfig::init();
 
 // Check authentication
 if (!isset($_SESSION['user_id'])) {

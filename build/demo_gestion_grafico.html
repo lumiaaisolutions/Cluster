@@ -7,7 +7,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <style>
         /* Porsche-inspired Design System */
         :root {
@@ -187,25 +187,35 @@
             from { transform: translateX(100%); }
             to { transform: translateX(0); }
         }
+        /* Íconos del sidebar legacy Argon (esta página aún no migró al
+           .claut-admin-sidebar nuevo de FEATURE-026 — fuera de alcance hoy,
+           pero sus íconos usaban bg-white, dependiente 100% de .claut-skin). */
+        .claut-nav-icon-badge {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+        }
         .config-panel {
-            background: white;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
             padding: 1.5rem;
             margin-bottom: 1.5rem;
         }
         .config-section {
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         .config-section:last-child {
             border-bottom: none;
         }
         .preview-panel {
-            background: white;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
             padding: 1.5rem;
             height: fit-content;
         }
@@ -220,7 +230,7 @@
             gap: 1rem;
             margin-top: 1rem;
             padding-top: 1rem;
-            border-top: 1px solid #e5e7eb;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .stat-item {
             text-align: center;
@@ -228,26 +238,29 @@
         }
         .stat-label {
             font-size: 0.75rem;
-            color: #6b7280;
+            color: #64748b;
             margin-bottom: 0.25rem;
         }
         .stat-value {
             font-size: 1.25rem;
             font-weight: 600;
-            color: #374151;
+            color: #f8fafc;
         }
         .form-control {
             width: 100%;
             padding: 0.5rem 0.75rem;
-            border: 1px solid #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 0.375rem;
             font-size: 0.875rem;
-            background-color: white;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background-color 0.15s ease-in-out;
         }
+        .form-control::placeholder { color: #64748b; }
         .form-control:focus {
             outline: none;
             border-color: #C7252B;
+            background-color: rgba(255, 255, 255, 0.08);
             box-shadow: 0 0 0 3px rgba(199, 37, 43, 0.1);
         }
         select.form-control {
@@ -261,8 +274,8 @@
         }
         select.form-control option {
             padding: 0.5rem;
-            background-color: white;
-            color: #374151;
+            background-color: #101013;
+            color: #f8fafc;
         }
         .form-group {
             margin-bottom: 1rem;
@@ -271,7 +284,7 @@
             display: block;
             font-size: 0.875rem;
             font-weight: 500;
-            color: #374151;
+            color: #94a3b8;
             margin-bottom: 0.25rem;
         }
         .radio-group, .checkbox-group {
@@ -311,7 +324,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 claut-dark claut-skin">
+<body class="claut-dark">
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidenav-overlay" id="sidenavOverlay"></div>
     <!-- Porsche Sidebar -->
@@ -320,7 +333,7 @@
         aria-expanded="false">
         <div class="h-48 py-6 relative mb-4">
             <!-- Botón de cerrar para todas las pantallas -->
-            <button class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-50 p-3 bg-black/30 rounded-lg hover:bg-black/50 transition-all"
+            <button class="absolute top-4 right-4 text-white hover:claut-text-secondary text-2xl z-50 p-3 bg-black/30 rounded-lg hover:bg-black/50 transition-all"
                     id="sidebarCloseBtn"
                     sidenav-close
                     aria-label="Cerrar menú">
@@ -341,7 +354,7 @@
                 <li class="mt-2 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="dashboard.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-tachometer-alt text-blue-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Dashboard</span>
@@ -351,7 +364,7 @@
                 <li class="mt-2 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="admin-panel.html?login=success">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-tachometer-alt text-green-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Panel Administrador</span>
@@ -361,7 +374,7 @@
                 <li class="mt-0.5 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="gestionar_usuarios.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-users text-green-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Usuarios</span>
@@ -371,7 +384,7 @@
                 <li class="mt-0.5 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="demo_empresas.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-building text-purple-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Empresas</span>
@@ -381,7 +394,7 @@
                 <li class="mt-0.5 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="demo_descuentos.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-tags text-red-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Descuentos</span>
@@ -391,7 +404,7 @@
                 <li class="mt-0.5 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="demo_comite.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-users text-blue-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Comités</span>
@@ -401,7 +414,7 @@
                 <li class="mt-0.5 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="demo_evento.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-calendar text-orange-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Eventos</span>
@@ -411,7 +424,7 @@
                 <li class="mt-0.5 w-full">
                     <a class="porsche-nav-item active py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="demo_gestion_grafico.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-chart-bar text-teal-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Gestión Gráfico</span>
@@ -421,7 +434,7 @@
                 <li class="mt-0.5 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="demo_visitante.html">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-eye text-cyan-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Visitantes</span>
@@ -431,7 +444,7 @@
                 <li class="mt-0.5 w-full">
                     <a class="porsche-nav-item py-2.5 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg"
                         href="admin/banner-admin-mejorado.php">
-                        <div class="shadow-md mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-white">
+                        <div class="mr-3 flex h-8 w-8 items-center justify-center rounded-lg claut-nav-icon-badge">
                             <i class="fas fa-images text-pink-500"></i>
                         </div>
                         <span class="ml-1 duration-300 opacity-100">Banners</span>
@@ -459,7 +472,7 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button onclick="location.href='dashboard.html'" class="bg-white text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 transition">
+                    <button onclick="location.href='dashboard.html'" class="px-4 py-2 rounded-lg transition" style="background: rgba(255,255,255,0.1); color: #fff;" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
                         <i class="fas fa-home mr-2"></i>Dashboard
                     </button>
                 <div class="flex items-center space-x-3">
@@ -486,26 +499,26 @@
                             <i class="fas fa-ellipsis-v text-lg"></i>
                             <span class="ml-2 hidden sm:inline">Opciones</span>
                         </button>
-                        <div id="menuAccionesDropdown" class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border-2 border-gray-200 hidden z-50">
+                        <div id="menuAccionesDropdown" class="absolute right-0 mt-2 w-56 rounded-lg hidden z-50" style="background: rgba(20,20,22,0.97); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
                             <div class="py-2">
-                                <a href="#" id="exportarJSON" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors">
+                                <a href="#" id="exportarJSON" class="flex items-center px-4 py-3 claut-text-secondary transition-colors" style="transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">
                                     <i class="fas fa-file-export mr-3 text-blue-500"></i>
                                     <span>Exportar JSON</span>
                                 </a>
-                                <a href="#" id="importarJSON" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors">
+                                <a href="#" id="importarJSON" class="flex items-center px-4 py-3 claut-text-secondary transition-colors" style="transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">
                                     <i class="fas fa-file-import mr-3 text-green-500"></i>
                                     <span>Importar JSON</span>
                                 </a>
-                                <a href="#" id="verConfiguraciones" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors">
+                                <a href="#" id="verConfiguraciones" class="flex items-center px-4 py-3 claut-text-secondary transition-colors" style="transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='transparent'">
                                     <i class="fas fa-folder-open mr-3 text-purple-500"></i>
                                     <span>Ver Guardadas</span>
                                 </a>
-                                <hr class="my-2">
-                                <a href="#" id="resetearConfig" class="flex items-center px-4 py-3 text-gray-700 hover:bg-red-50 transition-colors">
+                                <hr class="my-2" style="border-color: rgba(255,255,255,0.08);">
+                                <a href="#" id="resetearConfig" class="flex items-center px-4 py-3 claut-text-secondary transition-colors" style="transition:background .15s;" onmouseover="this.style.background='rgba(239,68,68,0.12)'" onmouseout="this.style.background='transparent'">
                                     <i class="fas fa-refresh mr-3 text-red-500"></i>
                                     <span>Resetear Todo</span>
                                 </a>
-                                <a href="#" id="ayudaGestion" class="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors">
+                                <a href="#" id="ayudaGestion" class="flex items-center px-4 py-3 claut-text-secondary transition-colors" style="transition:background .15s;" onmouseover="this.style.background='rgba(59,130,246,0.12)'" onmouseout="this.style.background='transparent'">
                                     <i class="fas fa-question-circle mr-3 text-blue-500"></i>
                                     <span>Ayuda</span>
                                 </a>
@@ -521,38 +534,38 @@
     <!-- Estadísticas -->
     <div class="container mx-auto px-4 py-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white rounded-lg shadow p-4">
+            <div class="rounded-lg p-4" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-500 text-sm">Gráficos Activos</p>
-                        <p class="text-2xl font-bold text-gray-800" id="totalGraficos">0</p>
+                        <p class="claut-text-muted text-sm">Gráficos Activos</p>
+                        <p class="text-2xl font-bold claut-text-primary" id="totalGraficos">0</p>
                     </div>
                     <i class="fas fa-chart-line text-3xl" style="color: #C7252B;"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
+            <div class="rounded-lg p-4" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-500 text-sm">Fuentes de Datos</p>
-                        <p class="text-2xl font-bold text-gray-800" id="totalFuentes">5</p>
+                        <p class="claut-text-muted text-sm">Fuentes de Datos</p>
+                        <p class="text-2xl font-bold claut-text-primary" id="totalFuentes">5</p>
                     </div>
                     <i class="fas fa-database text-3xl text-blue-500"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
+            <div class="rounded-lg p-4" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-500 text-sm">Configuraciones</p>
-                        <p class="text-2xl font-bold text-gray-800" id="totalConfigs">0</p>
+                        <p class="claut-text-muted text-sm">Configuraciones</p>
+                        <p class="text-2xl font-bold claut-text-primary" id="totalConfigs">0</p>
                     </div>
                     <i class="fas fa-cog text-3xl text-purple-500"></i>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4">
+            <div class="rounded-lg p-4" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-500 text-sm">Última Act.</p>
-                        <p class="text-sm font-medium text-gray-800" id="ultimaActualizacion">Ahora</p>
+                        <p class="claut-text-muted text-sm">Última Act.</p>
+                        <p class="text-sm font-medium claut-text-primary" id="ultimaActualizacion">Ahora</p>
                     </div>
                     <i class="fas fa-clock text-3xl text-green-500"></i>
                 </div>
@@ -631,8 +644,8 @@
                             </select>
                             
                             <!-- Descripción del tipo de dato seleccionado -->
-                            <div id="descripcionTipoDato" class="mt-2 p-3 bg-blue-50 rounded border border-blue-200">
-                                <div class="text-sm text-blue-800">
+                            <div id="descripcionTipoDato" class="mt-2 p-3 bg-[rgba(59,130,246,0.12)] rounded border border-[rgba(59,130,246,0.3)]">
+                                <div class="text-sm text-[#60a5fa]">
                                     <div class="font-medium mb-1"><i class="fas fa-chart-line"></i> Empresas Registradas</div>
                                     <div class="text-blue-600">Muestra la evolución histórica de empresas registradas en la plataforma, incluyendo nuevas incorporaciones y estado actual.</div>
                                 </div>
@@ -660,21 +673,21 @@
                                     <option value="24">Últimos 2 años</option>
                                     <option value="custom">Personalizado</option>
                                 </select>
-                                <button id="configurarPeriodo" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded border" title="Configurar período personalizado">
+                                <button id="configurarPeriodo" class="px-3 py-2 rounded border" style="background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.12);" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'" title="Configurar período personalizado">
                                     <i class="fas fa-calendar-alt"></i>
                                 </button>
                             </div>
                         </div>
                         
                         <!-- Panel de configuración de fechas (oculto por defecto) -->
-                        <div id="customPeriodPanel" class="mt-3 p-3 bg-gray-50 rounded border" style="display: none;">
+                        <div id="customPeriodPanel" class="mt-3 p-3 bg-[rgba(255,255,255,0.04)] rounded border" style="display: none;">
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="text-xs text-gray-600">Fecha Inicio:</label>
+                                    <label class="text-xs claut-text-secondary">Fecha Inicio:</label>
                                     <input type="date" id="fechaInicio" class="form-control text-sm">
                                 </div>
                                 <div>
-                                    <label class="text-xs text-gray-600">Fecha Fin:</label>
+                                    <label class="text-xs claut-text-secondary">Fecha Fin:</label>
                                     <input type="date" id="fechaFin" class="form-control text-sm">
                                 </div>
                             </div>
@@ -684,19 +697,19 @@
                         </div>
                         
                         <!-- Estado de datos -->
-                        <div class="mt-3 p-3 bg-blue-50 rounded border border-blue-200">
+                        <div class="mt-3 p-3 bg-[rgba(59,130,246,0.12)] rounded border border-[rgba(59,130,246,0.3)]">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-2">
                                     <div id="dataStatusIcon" class="w-2 h-2 bg-blue-500 rounded-full"></div>
                                     <span id="dataStatusText" class="text-sm text-blue-700">Datos listos</span>
                                 </div>
-                                <button id="actualizarDatos" class="text-blue-600 hover:text-blue-800 text-sm">
+                                <button id="actualizarDatos" class="text-blue-600 hover:text-[#60a5fa] text-sm">
                                     <i class="fas fa-sync-alt mr-1"></i>Actualizar
                                 </button>
                             </div>
                             
                             <!-- Información adicional -->
-                            <div id="dataInfo" class="mt-2 text-xs text-gray-600">
+                            <div id="dataInfo" class="mt-2 text-xs claut-text-secondary">
                                 <div>Registros encontrados: <span id="recordCount">--</span></div>
                                 <div>Última actualización: <span id="lastDataUpdate">--</span></div>
                                 <div>Fuente de datos: <span id="dataSourceDisplay">--</span></div>
@@ -720,7 +733,7 @@
                             <label for="chartTitle">Título del Gráfico:</label>
                             <input type="text" id="chartTitle" class="form-control" 
                                    value="Empresas Registradas" placeholder="Título personalizado">
-                            <div class="mt-1 text-xs text-gray-500">
+                            <div class="mt-1 text-xs claut-text-muted">
                                 <i class="fas fa-lightbulb"></i> El título se actualiza automáticamente según el tipo de datos seleccionado
                             </div>
                         </div>
@@ -829,9 +842,9 @@
 
         <!-- Panel de Datos Personalizados (oculto inicialmente) -->
         <div id="customDataPanel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-            <div class="bg-white rounded-lg shadow-xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden">
-                <div class="panel-header bg-gray-50 px-6 py-4 border-b flex justify-between items-center">
-                    <h3 class="text-xl font-semibold text-gray-800">
+            <div class="rounded-lg max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden" style="background:#101013; box-shadow:0 25px 60px rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1);">
+                <div class="panel-header bg-[rgba(255,255,255,0.04)] px-6 py-4 border-b flex justify-between items-center">
+                    <h3 class="text-xl font-semibold claut-text-primary">
                         <i class="fas fa-database mr-2 text-blue-500"></i>Editor de Datos Personalizados
                     </h3>
                     <div class="flex space-x-2">
@@ -847,15 +860,15 @@
                 <div class="panel-content p-6 overflow-y-auto max-h-[70vh]">
                     <!-- Pestañas del editor -->
                     <div class="mb-6">
-                        <div class="border-b border-gray-200">
+                        <div class="border-b border-[rgba(255,255,255,0.08)]">
                             <nav class="-mb-px flex space-x-8">
                                 <button id="tab-editor" class="tab-button active py-2 px-1 border-b-2 border-blue-500 font-medium text-sm text-blue-600">
                                     <i class="fas fa-code mr-2"></i>Editor JSON
                                 </button>
-                                <button id="tab-table" class="tab-button py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700">
+                                <button id="tab-table" class="tab-button py-2 px-1 border-b-2 border-transparent font-medium text-sm claut-text-muted hover:claut-text-secondary">
                                     <i class="fas fa-table mr-2"></i>Tabla Interactiva
                                 </button>
-                                <button id="tab-import" class="tab-button py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700">
+                                <button id="tab-import" class="tab-button py-2 px-1 border-b-2 border-transparent font-medium text-sm claut-text-muted hover:claut-text-secondary">
                                     <i class="fas fa-file-import mr-2"></i>Importar CSV
                                 </button>
                             </nav>
@@ -867,20 +880,20 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div>
                                 <div class="flex justify-between items-center mb-3">
-                                    <h4 class="font-semibold text-gray-700">
+                                    <h4 class="font-semibold claut-text-secondary">
                                         <i class="fas fa-edit mr-2"></i>Editor de Datos JSON
                                     </h4>
                                     <div class="flex space-x-2">
-                                        <button id="formatearJSON" class="text-blue-600 hover:text-blue-800 text-sm">
+                                        <button id="formatearJSON" class="text-blue-600 hover:text-[#60a5fa] text-sm">
                                             <i class="fas fa-magic mr-1"></i>Formatear
                                         </button>
-                                        <button id="limpiarEditor" class="text-red-600 hover:text-red-800 text-sm">
+                                        <button id="limpiarEditor" class="text-sm" style="color:#f87171;">
                                             <i class="fas fa-trash mr-1"></i>Limpiar
                                         </button>
                                     </div>
                                 </div>
                                 
-                                <textarea id="customDataEditor" class="w-full h-64 p-3 border border-gray-300 rounded-lg font-mono text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                <textarea id="customDataEditor" class="w-full h-64 p-3 border border-[rgba(255,255,255,0.12)] rounded-lg font-mono text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
                                           placeholder="Ingresa datos en formato JSON:\n[\n  {\"mes\": \"Ene\", \"valor\": 10, \"categoria\": \"A\"},\n  {\"mes\": \"Feb\", \"valor\": 15, \"categoria\": \"B\"},\n  {\"mes\": \"Mar\", \"valor\": 12, \"categoria\": \"A\"}\n]"></textarea>
                                 
                                 <div class="mt-3 flex flex-wrap gap-2">
@@ -898,21 +911,21 @@
                             
                             <div>
                                 <div class="flex justify-between items-center mb-3">
-                                    <h4 class="font-semibold text-gray-700">
+                                    <h4 class="font-semibold claut-text-secondary">
                                         <i class="fas fa-chart-line mr-2"></i>Vista Previa del Gráfico
                                     </h4>
-                                    <button id="actualizarPreview" class="text-green-600 hover:text-green-800 text-sm">
+                                    <button id="actualizarPreview" class="text-sm" style="color:#4ade80;">
                                         <i class="fas fa-sync-alt mr-1"></i>Actualizar
                                     </button>
                                 </div>
                                 
-                                <div id="dataPreview" class="border border-gray-300 rounded-lg p-4 bg-gray-50 h-64 overflow-auto">
-                                    <p class="text-gray-500 text-center mt-20">La vista previa aparecerá aquí cuando valides los datos</p>
+                                <div id="dataPreview" class="border border-[rgba(255,255,255,0.12)] rounded-lg p-4 bg-[rgba(255,255,255,0.04)] h-64 overflow-auto">
+                                    <p class="claut-text-muted text-center mt-20">La vista previa aparecerá aquí cuando valides los datos</p>
                                 </div>
                                 
                                 <!-- Estadísticas de los datos -->
-                                <div id="dataStats" class="mt-3 p-3 bg-blue-50 rounded border border-blue-200" style="display: none;">
-                                    <div class="text-sm text-blue-800">
+                                <div id="dataStats" class="mt-3 p-3 bg-[rgba(59,130,246,0.12)] rounded border border-[rgba(59,130,246,0.3)]" style="display: none;">
+                                    <div class="text-sm text-[#60a5fa]">
                                         <div class="flex justify-between">
                                             <span>Registros:</span>
                                             <span id="statsRecords">0</span>
@@ -934,7 +947,7 @@
                     <!-- Contenido de Tabla Interactiva -->
                     <div id="content-table" class="tab-content hidden">
                         <div class="mb-4 flex justify-between items-center">
-                            <h4 class="font-semibold text-gray-700">
+                            <h4 class="font-semibold claut-text-secondary">
                                 <i class="fas fa-table mr-2"></i>Editor de Tabla
                             </h4>
                             <div class="flex space-x-2">
@@ -948,19 +961,19 @@
                         </div>
                         
                         <div class="overflow-x-auto">
-                            <table id="dataTable" class="min-w-full bg-white border border-gray-300">
-                                <thead class="bg-gray-50">
+                            <table id="dataTable" class="min-w-full border border-[rgba(255,255,255,0.12)]" style="background:transparent;">
+                                <thead class="bg-[rgba(255,255,255,0.04)]">
                                     <tr>
-                                        <th class="px-4 py-2 border border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th class="px-4 py-2 border border-[rgba(255,255,255,0.12)] text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                             Etiqueta (Mes/Período)
                                         </th>
-                                        <th class="px-4 py-2 border border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th class="px-4 py-2 border border-[rgba(255,255,255,0.12)] text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                             Valor
                                         </th>
-                                        <th class="px-4 py-2 border border-gray-300 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th class="px-4 py-2 border border-[rgba(255,255,255,0.12)] text-left text-xs font-medium claut-text-muted uppercase tracking-wider">
                                             Categoría (Opcional)
                                         </th>
-                                        <th class="px-4 py-2 border border-gray-300 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th class="px-4 py-2 border border-[rgba(255,255,255,0.12)] text-center text-xs font-medium claut-text-muted uppercase tracking-wider">
                                             Acciones
                                         </th>
                                     </tr>
@@ -976,21 +989,21 @@
                     <div id="content-import" class="tab-content hidden">
                         <div class="space-y-6">
                             <div>
-                                <h4 class="font-semibold text-gray-700 mb-3">
+                                <h4 class="font-semibold claut-text-secondary mb-3">
                                     <i class="fas fa-file-csv mr-2"></i>Importar desde CSV
                                 </h4>
                                 
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                                <div class="border-2 border-dashed border-[rgba(255,255,255,0.12)] rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
                                     <input type="file" id="csvFileInput" accept=".csv" class="hidden">
                                     <button id="selectCsvFile" class="w-full h-full focus:outline-none">
-                                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
-                                        <p class="text-gray-600">Haz clic para seleccionar un archivo CSV</p>
-                                        <p class="text-gray-400 text-sm mt-1">o arrastra y suelta aquí</p>
+                                        <i class="fas fa-cloud-upload-alt text-4xl claut-text-muted mb-3"></i>
+                                        <p class="claut-text-secondary">Haz clic para seleccionar un archivo CSV</p>
+                                        <p class="claut-text-muted text-sm mt-1">o arrastra y suelta aquí</p>
                                     </button>
                                 </div>
                                 
                                 <div id="csvPreview" class="mt-4" style="display: none;">
-                                    <h5 class="font-medium text-gray-700 mb-2">Vista previa del CSV:</h5>
+                                    <h5 class="font-medium claut-text-secondary mb-2">Vista previa del CSV:</h5>
                                     <div class="overflow-x-auto max-h-40 border rounded">
                                         <table id="csvPreviewTable" class="min-w-full text-sm">
                                             <!-- Contenido dinámico -->
@@ -1014,9 +1027,9 @@
         </div>
 
         <!-- Configuraciones Guardadas -->
-        <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <div class="rounded-lg p-6 mb-6" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-800"><i class="fas fa-bookmark mr-2" style="color: #C7252B;"></i>Configuraciones Guardadas</h2>
+                <h2 class="text-xl font-bold claut-text-primary"><i class="fas fa-bookmark mr-2" style="color: #C7252B;"></i>Configuraciones Guardadas</h2>
                 <button onclick="nuevaConfiguracion()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition" style="background-color: #C7252B;">
                     <i class="fas fa-plus mr-2"></i>Nueva Configuración
                 </button>
@@ -1035,17 +1048,17 @@
     <!-- Modal de Confirmación -->
     <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg max-w-md w-full slide-in">
+            <div class="rounded-lg max-w-md w-full slide-in" style="background:#101013; border:1px solid rgba(255,255,255,0.1);">
                 <div class="p-6 border-b">
                     <div class="flex items-center justify-between">
-                        <h3 id="confirmTitle" class="text-xl font-bold text-gray-800">Confirmar Acción</h3>
-                        <button onclick="cerrarModal('confirmModal')" class="text-gray-500 hover:text-gray-700">
+                        <h3 id="confirmTitle" class="text-xl font-bold claut-text-primary">Confirmar Acción</h3>
+                        <button onclick="cerrarModal('confirmModal')" class="claut-text-muted hover:claut-text-secondary">
                             <i class="fas fa-times text-xl"></i>
                         </button>
                     </div>
                 </div>
                 <div class="p-6">
-                    <p id="confirmMessage" class="text-gray-600">¿Estás seguro de realizar esta acción?</p>
+                    <p id="confirmMessage" class="claut-text-secondary">¿Estás seguro de realizar esta acción?</p>
                 </div>
                 <div class="p-6 border-t flex justify-end space-x-3">
                     <button id="confirmCancel" onclick="cerrarModal('confirmModal')" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
@@ -1062,39 +1075,39 @@
     <!-- Modal de Configuración Avanzada -->
     <div id="advancedConfigModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg max-w-4xl w-full slide-in max-h-[90vh] overflow-hidden">
+            <div class="rounded-lg max-w-4xl w-full slide-in max-h-[90vh] overflow-hidden" style="background:#101013; border:1px solid rgba(255,255,255,0.1);">
                 <div class="p-6 border-b">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-bold text-gray-800">Configuración Avanzada</h3>
-                        <button onclick="cerrarModal('advancedConfigModal')" class="text-gray-500 hover:text-gray-700">
+                        <h3 class="text-xl font-bold claut-text-primary">Configuración Avanzada</h3>
+                        <button onclick="cerrarModal('advancedConfigModal')" class="claut-text-muted hover:claut-text-secondary">
                             <i class="fas fa-times text-xl"></i>
                         </button>
                     </div>
                 </div>
                 <div class="p-6 overflow-y-auto max-h-[70vh]">
                     <div class="mb-6">
-                        <div class="border-b border-gray-200">
+                        <div class="border-b border-[rgba(255,255,255,0.08)]">
                             <nav class="-mb-px flex space-x-8">
                                 <button class="tab-btn py-2 px-1 border-b-2 border-red-500 font-medium text-sm text-red-600" data-tab="ejes" style="border-color: #C7252B; color: #C7252B;">Ejes</button>
-                                <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="animaciones">Animaciones</button>
-                                <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="responsive">Responsive</button>
-                                <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700" data-tab="export">Exportación</button>
+                                <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm claut-text-muted hover:claut-text-secondary" data-tab="animaciones">Animaciones</button>
+                                <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm claut-text-muted hover:claut-text-secondary" data-tab="responsive">Responsive</button>
+                                <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm claut-text-muted hover:claut-text-secondary" data-tab="export">Exportación</button>
                             </nav>
                         </div>
                     </div>
 
                     <div class="tab-content">
                         <div id="tab-ejes" class="tab-pane">
-                            <p class="text-gray-600">Configuración de ejes del gráfico...</p>
+                            <p class="claut-text-secondary">Configuración de ejes del gráfico...</p>
                         </div>
                         <div id="tab-animaciones" class="tab-pane hidden">
-                            <p class="text-gray-600">Configuración de animaciones...</p>
+                            <p class="claut-text-secondary">Configuración de animaciones...</p>
                         </div>
                         <div id="tab-responsive" class="tab-pane hidden">
-                            <p class="text-gray-600">Configuración responsive...</p>
+                            <p class="claut-text-secondary">Configuración responsive...</p>
                         </div>
                         <div id="tab-export" class="tab-pane hidden">
-                            <p class="text-gray-600">Configuración de exportación...</p>
+                            <p class="claut-text-secondary">Configuración de exportación...</p>
                         </div>
                     </div>
                 </div>
@@ -1112,9 +1125,9 @@
 
     <!-- Scripts -->
     <script src="./assets/js/plugins/chartjs.min.js"></script>
-    <script src="./js/controlador-tipos-datos.js"></script>
-    <script src="./js/guardado-edicion.js"></script>
-    <script src="./js/gestion-graficos-mejorado.js"></script>
+    <script src="./js/controlador-tipos-datos.js?v=20260902a"></script>
+    <script src="./js/guardado-edicion.js?v=20260902a"></script>
+    <script src="./js/gestion-graficos-mejorado.js?v=20260902a"></script>
 
     <script>
         // === SIDEBAR RETRACTABLE FUNCTIONALITY ===
@@ -1341,17 +1354,17 @@
                 const configList = document.getElementById('configList');
                 if (configList) {
                     configList.innerHTML = `
-                        <div class="bg-gray-50 p-4 rounded-lg border">
-                            <h4 class="font-semibold text-gray-800 mb-2">Gráfico de Empresas</h4>
-                            <p class="text-sm text-gray-600 mb-3">Evolución mensual de empresas registradas</p>
+                        <div class="bg-[rgba(255,255,255,0.04)] p-4 rounded-lg border">
+                            <h4 class="font-semibold claut-text-primary mb-2">Gráfico de Empresas</h4>
+                            <p class="text-sm claut-text-secondary mb-3">Evolución mensual de empresas registradas</p>
                             <div class="flex space-x-2">
                                 <button class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">Cargar</button>
                                 <button class="px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600">Editar</button>
                             </div>
                         </div>
-                        <div class="bg-gray-50 p-4 rounded-lg border">
-                            <h4 class="font-semibold text-gray-800 mb-2">Usuarios Nuevos</h4>
-                            <p class="text-sm text-gray-600 mb-3">Registro semanal de nuevos usuarios</p>
+                        <div class="bg-[rgba(255,255,255,0.04)] p-4 rounded-lg border">
+                            <h4 class="font-semibold claut-text-primary mb-2">Usuarios Nuevos</h4>
+                            <p class="text-sm claut-text-secondary mb-3">Registro semanal de nuevos usuarios</p>
                             <div class="flex space-x-2">
                                 <button class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">Cargar</button>
                                 <button class="px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600">Editar</button>

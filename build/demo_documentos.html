@@ -6,7 +6,7 @@
     <title>Demo Documentos - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
     <link rel="stylesheet" href="./assets/css/layout/claut-wizard.css?v=20260901a">
     <style>
@@ -75,7 +75,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 claut-dark claut-skin">
+<body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
         <div class="claut-admin-sidebar-brand">
             <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
@@ -151,7 +151,7 @@
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <!-- Hamburger Menu Button for All Screens -->
-                    <button class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
+                    <button class="mr-3 p-2 text-white hover:claut-text-secondary focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
                             id="claut-header-menu-btn"
                             aria-label="Abrir menú de navegación">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,7 +165,7 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <span id="userInfo" class="text-sm"></span>
-                    <button onclick="location.href='boletines.html'" class="bg-white text-red-600 px-4 py-2 rounded-lg hover:bg-red-50 transition">
+                    <button onclick="location.href='boletines.html'" class="px-4 py-2 rounded-lg transition" style="background:rgba(255,255,255,0.1); color:#fff;" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
                         <i class="fas fa-arrow-left mr-2"></i>Volver a Documentación
                     </button>
                 </div>
@@ -215,7 +215,7 @@
         </div>
 
         <!-- Controles -->
-        <div class="bg-white rounded-lg shadow p-4 mb-6">
+        <div class="rounded-lg p-4 mb-6" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center space-x-4">
                     <button onclick="showCreateModal()" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition" style="background: #C7252B;">
@@ -228,9 +228,9 @@
 
                 <div class="flex items-center space-x-4">
                     <input type="text" id="searchInput" placeholder="Buscar documentos..."
-                           class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                           class="claut-input" style="width:auto;">
 
-                    <select id="filterCategoria" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <select id="filterCategoria" class="claut-select" style="width:auto; padding:0.6rem 1rem;">
                         <option value="">Todas las categorías</option>
                         <option value="politicas">Políticas</option>
                         <option value="procedimientos">Procedimientos</option>
@@ -239,7 +239,7 @@
                         <option value="formatos">Formatos</option>
                     </select>
 
-                    <select id="filterVisibilidad" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <select id="filterVisibilidad" class="claut-select" style="width:auto; padding:0.6rem 1rem;">
                         <option value="">Todas las visibilidades</option>
                         <option value="publico">Público</option>
                         <option value="privado">Privado</option>
@@ -250,24 +250,24 @@
         </div>
 
         <!-- Tabla de Documentos -->
-        <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="rounded-lg overflow-hidden" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
             <div class="p-4 border-b">
-                <h2 class="text-xl font-semibold text-gray-800">Lista de Documentos</h2>
+                <h2 class="text-xl font-semibold claut-text-primary">Lista de Documentos</h2>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-gray-50">
+                    <thead style="background: rgba(255,255,255,0.04);">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Documento</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Visibilidad</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Autor</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Documento</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Categoría</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Visibilidad</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Fecha</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Autor</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="documentsTableBody" class="bg-white divide-y divide-gray-200">
+                    <tbody id="documentsTableBody" class="divide-y divide-white/5">
                         <!-- Los documentos se cargarán aquí -->
                     </tbody>
                 </table>
@@ -277,14 +277,14 @@
         <!-- Loading State -->
         <div id="loadingDocuments" class="text-center py-8" style="display: none;">
             <i class="fas fa-spinner fa-spin text-3xl mb-4" style="color: #C7252B;"></i>
-            <p class="text-gray-600">Cargando documentos...</p>
+            <p class="claut-text-secondary">Cargando documentos...</p>
         </div>
 
         <!-- Empty State -->
         <div id="emptyDocuments" class="text-center py-12" style="display: none;">
-            <i class="fas fa-file-alt text-6xl text-gray-300 mb-4"></i>
-            <h3 class="text-xl font-semibold text-gray-600 mb-2">No hay documentos</h3>
-            <p class="text-gray-500 mb-4">Crea tu primer documento para comenzar</p>
+            <i class="fas fa-file-alt text-6xl claut-text-secondary mb-4"></i>
+            <h3 class="text-xl font-semibold claut-text-secondary mb-2">No hay documentos</h3>
+            <p class="claut-text-muted mb-4">Crea tu primer documento para comenzar</p>
             <button onclick="showCreateModal()" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
                 <i class="fas fa-plus mr-2"></i>Crear Documento
             </button>
@@ -471,27 +471,27 @@
             document.getElementById('emptyDocuments').style.display = 'none';
 
             tbody.innerHTML = documentsToRender.map(doc => `
-                <tr class="hover:bg-gray-50">
+                <tr style="transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
                     <td class="px-6 py-4">
                         <div>
-                            <div class="text-sm font-medium text-gray-900">${doc.titulo}</div>
-                            <div class="text-sm text-gray-500">${doc.descripcion || 'Sin descripción'}</div>
+                            <div class="text-sm font-medium claut-text-primary">${doc.titulo}</div>
+                            <div class="text-sm claut-text-muted">${doc.descripcion || 'Sin descripción'}</div>
                         </div>
                     </td>
                     <td class="px-6 py-4">
-                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${getCategoryColor(doc.categoria)}">
+                        <span class="${getCategoryColor(doc.categoria)}">
                             ${formatCategory(doc.categoria)}
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${getVisibilityColor(doc.visibilidad)}">
+                        <span class="${getVisibilityColor(doc.visibilidad)}">
                             ${formatVisibility(doc.visibilidad)}
                         </span>
                     </td>
-                    <td class="px-6 py-4 text-sm text-gray-900">
+                    <td class="px-6 py-4 text-sm claut-text-primary">
                         ${formatDate(doc.fecha_subida)}
                     </td>
-                    <td class="px-6 py-4 text-sm text-gray-900">
+                    <td class="px-6 py-4 text-sm claut-text-primary">
                         ${doc.subido_por || 'Usuario'}
                     </td>
                     <td class="px-6 py-4 text-sm font-medium">
@@ -501,12 +501,12 @@
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button onclick="deleteDocument(${doc.id})"
-                                    class="text-red-600 hover:text-red-900">
+                                    style="color:#f87171;" onmouseover="this.style.color='#fca5a5'" onmouseout="this.style.color='#f87171'">
                                 <i class="fas fa-trash"></i>
                             </button>
                             ${doc.archivo_ruta ? `
                                 <a href="${doc.archivo_ruta}" target="_blank"
-                                   class="text-green-600 hover:text-green-900" title="Descargar ${doc.archivo_nombre}">
+                                   style="color:#4ade80;" onmouseover="this.style.color='#86efac'" onmouseout="this.style.color='#4ade80'" title="Descargar ${doc.archivo_nombre}">
                                     <i class="fas fa-download"></i>
                                 </a>
                             ` : ''}
@@ -796,15 +796,18 @@
                 const file = fileInput.files[0];
                 const sizeText = formatFileSize(file.size);
                 helpText.textContent = `Archivo seleccionado: ${file.name} (${sizeText})`;
-                helpText.className = 'text-xs text-green-600 mt-1 font-medium';
+                helpText.className = 'text-xs mt-1 font-medium';
+                helpText.style.color = '#4ade80';
             } else {
                 // Restaurar texto original según el contexto
                 if (fileInput.hasAttribute('required')) {
                     helpText.textContent = 'Formatos permitidos: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, imágenes. Máximo 50MB.';
-                    helpText.className = 'text-xs text-gray-500 mt-1';
+                    helpText.className = 'text-xs claut-text-muted mt-1';
+                    helpText.style.color = '';
                 } else {
                     helpText.textContent = 'Selecciona un nuevo archivo solo si quieres reemplazar el actual. Formatos: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, imágenes.';
-                    helpText.className = 'text-xs text-gray-500 mt-1';
+                    helpText.className = 'text-xs claut-text-muted mt-1';
+                    helpText.style.color = '';
                 }
             }
         }
@@ -829,22 +832,22 @@
 
         function getCategoryColor(categoria) {
             const colors = {
-                'politicas': 'bg-red-100 text-red-800',
-                'procedimientos': 'bg-blue-100 text-blue-800',
-                'manuales': 'bg-green-100 text-green-800',
-                'reglamentos': 'bg-yellow-100 text-yellow-800',
-                'formatos': 'bg-purple-100 text-purple-800'
+                'politicas': 'claut-badge claut-badge--danger',
+                'procedimientos': 'claut-badge claut-badge--info',
+                'manuales': 'claut-badge claut-badge--success',
+                'reglamentos': 'claut-badge claut-badge--warning',
+                'formatos': 'claut-badge claut-badge--accent'
             };
-            return colors[categoria] || 'bg-gray-100 text-gray-800';
+            return colors[categoria] || 'claut-badge claut-badge--neutral';
         }
 
         function getVisibilityColor(visibilidad) {
             const colors = {
-                'publico': 'bg-green-100 text-green-800',
-                'privado': 'bg-red-100 text-red-800',
-                'restringido': 'bg-yellow-100 text-yellow-800'
+                'publico': 'claut-badge claut-badge--success',
+                'privado': 'claut-badge claut-badge--danger',
+                'restringido': 'claut-badge claut-badge--warning'
             };
-            return colors[visibilidad] || 'bg-gray-100 text-gray-800';
+            return colors[visibilidad] || 'claut-badge claut-badge--neutral';
         }
 
         function formatCategory(categoria) {

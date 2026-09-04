@@ -220,9 +220,9 @@ class EmpresasConvenioManager {
         if (empresas.length === 0) {
             container.innerHTML = `
                 <div class="col-span-full text-center py-12">
-                    <i class="fas fa-building text-6xl text-gray-300 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No hay empresas disponibles</h3>
-                    <p class="text-gray-500">No se encontraron empresas que coincidan con los filtros aplicados.</p>
+                    <i class="fas fa-building text-6xl claut-text-muted mb-4"></i>
+                    <h3 class="text-xl font-semibold claut-text-secondary mb-2">No hay empresas disponibles</h3>
+                    <p class="claut-text-muted">No se encontraron empresas que coincidan con los filtros aplicados.</p>
                 </div>
             `;
             return;
@@ -261,10 +261,10 @@ class EmpresasConvenioManager {
         const descuento = empresa.descuento_porcentaje ? `${empresa.descuento_porcentaje}% descuento` : 'Consultar beneficios';
 
         return `
-            <div class="empresa-card bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden" 
+            <div class="empresa-card glass-panel glass-panel--hover rounded-xl overflow-hidden"
                  data-empresa-id="${empresa.id}">
                 <!-- Imagen de la empresa (clickeable) -->
-                <div class="relative h-48 bg-gradient-to-br from-blue-50 to-indigo-100 cursor-pointer group" 
+                <div class="relative h-48 empresa-logo-bg cursor-pointer group"
                      title="Click para ver detalles">
                     <img src="${logoUrl}" 
                          alt="Logo de ${empresa.nombre}"
@@ -289,33 +289,33 @@ class EmpresasConvenioManager {
                 <!-- Información de la empresa -->
                 <div class="p-6">
                     <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-lg font-bold text-gray-900 leading-tight">${empresa.nombre}</h3>
-                        <span class="px-2 py-1 text-xs rounded-full ${empresa.estado === 'activa' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                        <h3 class="text-lg font-bold claut-text-primary leading-tight">${empresa.nombre}</h3>
+                        <span class="claut-badge ${empresa.estado === 'activa' ? 'claut-badge--success' : 'claut-badge--warning'}">
                             ${empresa.estado === 'activa' ? 'Activa' : 'Inactiva'}
                         </span>
                     </div>
 
                     <!-- Sector -->
                     <div class="mb-3">
-                        <span class="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
+                        <span class="claut-badge claut-badge--info">
                             <i class="fas fa-industry mr-1"></i>
                             ${sector}
                         </span>
                     </div>
 
                     <!-- Descripción -->
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">${descripcion}</p>
+                    <p class="claut-text-secondary text-sm mb-4 line-clamp-3">${descripcion}</p>
 
                     <!-- Información de contacto rápida -->
                     <div class="space-y-2 mb-4">
                         ${empresa.email ? `
-                            <div class="flex items-center text-sm text-gray-500">
+                            <div class="flex items-center text-sm claut-text-muted">
                                 <i class="fas fa-envelope w-4 mr-2"></i>
                                 <span class="truncate">${empresa.email}</span>
                             </div>
                         ` : ''}
                         ${empresa.telefono ? `
-                            <div class="flex items-center text-sm text-gray-500">
+                            <div class="flex items-center text-sm claut-text-muted">
                                 <i class="fas fa-phone w-4 mr-2"></i>
                                 <span>${empresa.telefono}</span>
                             </div>
@@ -324,14 +324,14 @@ class EmpresasConvenioManager {
 
                     <!-- Botones de acción -->
                     <div class="flex space-x-2">
-                        <button onclick="window.empresasManager.abrirVistaPrevia('${empresa.id}')" 
-                                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <button onclick="window.empresasManager.abrirVistaPrevia('${empresa.id}')"
+                                class="flex-1 porsche-btn" style="padding: 0.5rem 1rem; font-size: 0.875rem; text-transform: none; letter-spacing: normal;">
                             <i class="fas fa-eye mr-1"></i>
                             Ver Detalles
                         </button>
                         ${empresa.sitio_web ? `
-                            <a href="${empresa.sitio_web}" target="_blank" 
-                               class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            <a href="${empresa.sitio_web}" target="_blank"
+                               class="porsche-btn porsche-btn--ghost" style="padding: 0.5rem 1rem; text-transform: none; letter-spacing: normal;">
                                 <i class="fas fa-external-link-alt"></i>
                             </a>
                         ` : ''}
@@ -444,7 +444,7 @@ class EmpresasConvenioManager {
                     <h3 class="text-sm font-semibold text-white/60 uppercase tracking-widest border-b border-white/10 pb-2">Información General</h3>
 
                     ${empresa.descripcion ? `
-                    <p class="text-gray-300 text-sm leading-relaxed">${empresa.descripcion}</p>` : ''}
+                    <p class="claut-text-muted text-sm leading-relaxed">${empresa.descripcion}</p>` : ''}
 
                     ${empresa.email ? `
                     <div class="flex items-center gap-3 text-sm">
@@ -475,7 +475,7 @@ class EmpresasConvenioManager {
                         <i class="fas fa-user text-emerald-400 w-4 flex-shrink-0 mt-0.5"></i>
                         <div>
                             <p class="text-white font-medium">${empresa.contacto_nombre}</p>
-                            ${empresa.contacto_cargo ? `<p class="text-gray-400 text-xs">${empresa.contacto_cargo}</p>` : ''}
+                            ${empresa.contacto_cargo ? `<p class="claut-text-muted text-xs">${empresa.contacto_cargo}</p>` : ''}
                         </div>
                     </div>` : ''}
 
@@ -498,7 +498,7 @@ class EmpresasConvenioManager {
                     </div>` : ''}
 
                     ${(!empresa.contacto_nombre && !empresa.contacto_telefono && !empresa.contacto_email && !empresa.contacto_movil) ? `
-                    <p class="text-gray-500 text-sm italic">Contacto no especificado</p>` : ''}
+                    <p class="claut-text-muted text-sm italic">Contacto no especificado</p>` : ''}
                 </div>
             </div>
 
@@ -524,13 +524,13 @@ class EmpresasConvenioManager {
                 </div>` : ''}
 
                 ${empresa.convenio_descripcion ? `
-                <p class="text-gray-300 text-sm mb-3 font-medium border-l-2 border-emerald-400 pl-3">${empresa.convenio_descripcion}</p>` : ''}
+                <p class="claut-text-muted text-sm mb-3 font-medium border-l-2 border-emerald-400 pl-3">${empresa.convenio_descripcion}</p>` : ''}
 
                 ${empresa.beneficios ? `
-                <p class="text-gray-300 text-sm mb-3">${empresa.beneficios}</p>` : ''}
+                <p class="claut-text-muted text-sm mb-3">${empresa.beneficios}</p>` : ''}
                 
                 ${(empresa.vigencia_inicio || empresa.vigencia_fin) ? `
-                <div class="mt-3 text-xs text-gray-400 bg-black/20 p-2 rounded inline-block">
+                <div class="mt-3 text-xs claut-text-muted bg-black/20 p-2 rounded inline-block">
                     <i class="fas fa-calendar-alt mr-2"></i>Vigencia: 
                     <span class="text-white ml-1">${empresa.vigencia_inicio ? empresa.vigencia_inicio : 'No especificada'}</span> a 
                     <span class="text-white ml-1">${empresa.vigencia_fin ? empresa.vigencia_fin : 'No especificada'}</span>
@@ -561,7 +561,9 @@ class EmpresasConvenioManager {
             <div class="flex flex-wrap gap-3 pt-4 border-t border-white/10">
                 ${empresa.sitio_web ? `
                 <a href="${empresa.sitio_web}" target="_blank" rel="noopener noreferrer"
-                   class="flex-1 min-w-[140px] bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium text-center text-sm transition-colors">
+                   class="flex-1 min-w-[140px] text-white px-5 py-2.5 rounded-lg font-medium text-center text-sm transition-colors"
+                   style="background: var(--surface-info); border: 1px solid rgba(59,130,246,.3);"
+                   onmouseover="this.style.filter='brightness(1.15)'" onmouseout="this.style.filter='none'">
                     <i class="fas fa-external-link-alt mr-2"></i>Sitio Web
                 </a>` : ''}
 
@@ -616,8 +618,8 @@ class EmpresasConvenioManager {
                 <div class="col-span-full text-center py-12 bg-red-500/10 rounded-2xl border border-red-500/20">
                     <i class="fas fa-exclamation-triangle text-6xl text-red-500 mb-4"></i>
                     <h3 class="text-xl font-semibold text-red-400 mb-2">Error de Ejecución</h3>
-                    <p class="text-gray-300 mb-4">${mensaje}</p>
-                    <button onclick="location.reload()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    <p class="claut-text-muted mb-4">${mensaje}</p>
+                    <button onclick="location.reload()" class="porsche-btn" style="text-transform: none; letter-spacing: normal;">
                         Reintentar cargar
                     </button>
                 </div>
@@ -635,7 +637,7 @@ class EmpresasConvenioManager {
         if (empresasConLogo.length === 0) {
             carouselTrack.innerHTML = `
                 <div class="flex items-center justify-center h-full w-full">
-                    <p class="text-gray-400 italic">Próximamente más socios disponibles...</p>
+                    <p class="claut-text-muted italic">Próximamente más socios disponibles...</p>
                 </div>
             `;
             return;

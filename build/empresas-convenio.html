@@ -20,7 +20,7 @@
     <link href="./assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a">
 
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <style>
         :root {
             --porsche-red: #d5001c;
@@ -124,7 +124,7 @@
             box-shadow: 0 0 0 4px rgba(213, 0, 28, 0.1);
         }
 
-        /* Company Card Grid - Using Tailwind JS classes instead of dark overrides */
+        /* Company Card Grid */
         .empresa-card {
             border-radius: 1.25rem;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -132,6 +132,13 @@
 
         .empresa-card:hover {
             transform: translateY(-8px);
+        }
+
+        /* Fondo del logo: antes un degradado claro (from-blue-50 to-indigo-100)
+           pensado para logos con fondo blanco — desentonaba con el resto de
+           tarjetas oscuras (mismo bug que BUG-025 en el directorio de socios). */
+        .empresa-logo-bg {
+            background: linear-gradient(135deg, #16161a 0%, #1e1e24 100%);
         }
 
         .badge {
@@ -341,9 +348,11 @@
             main.claut-main { padding-left: 134px !important; }
         }
     </style>
+  <link rel="stylesheet" href="./css/claut-panel.css?v=20260903a">
+  <style>/* rediseño 2026: oculta título legacy duplicado por el hero */ section.max-w-7xl.text-center { display: none !important; }</style>
 </head>
 
-<body class="antialiased font-sans flex flex-col min-h-screen relative claut-dark claut-skin">
+<body class="antialiased font-sans flex flex-col min-h-screen relative claut-dark">
 
     <!-- Background Scroll Image - Fixed position behind everything -->
     <section class="scroll-image-section"
@@ -424,59 +433,9 @@
     <main class="claut-main relative transition-all duration-200 ease-in-out z-10" style="margin-left: 0; overflow-x: hidden;">
 
         <!-- Internal Navbar / Breadcrumb -->
-        <nav class="porsche-navbar relative flex flex-wrap items-center justify-between px-0 py-1 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start"
-            navbar-main navbar-scroll="false"
-            style="display: flex; margin-bottom: 20px; z-index: 999; position: relative;">
-            <div class="flex items-center justify-between w-full px-6 py-0 mx-auto flex-wrap-inherit">
-                <nav>
-                    <!-- breadcrumb -->
-                    <ol class="porsche-breadcrumb flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
-                        <li class="text-sm leading-normal">
-                            <span class="opacity-60 text-gray-400">Intranet</span>
-                        </li>
-                        <li class="text-sm pl-2 capitalize leading-normal before:float-left before:pr-2 before:content-['/'] text-gray-300"
-                            aria-current="page">Socios</li>
-                    </ol>
-                    <!-- Mostrar saludo con usuario logueado -->
-                    <div id="welcomeMessage" class="mb-2">
-                        <h6 class="porsche-welcome mb-0 capitalize text-white" id="welcomeText">Socios Estratégicos</h6>
-                    </div>
-                </nav>
-
-                <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-                    <div class="flex items-center md:ml-auto md:pr-4">
-                        <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease">
-                            <!-- Mostrar información del usuario autenticado -->
-                            <div id="userInfo" class="apple-user-info text-white text-sm mr-4 hidden items-center">
-                                <div class="flex flex-col">
-                                    <span id="userName" class="text-sm font-semibold"></span>
-                                    <span id="userRole" class="text-xs opacity-75"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                        <!-- Menú para usuarios no autenticados -->
-                        <li class="flex items-center hidden" id="loginMenuItem" style="display: none;">
-                            <a href="./pages/sign-in.html"
-                                class="apple-nav-link block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75">
-                                <i class="fa fa-user sm:mr-1"></i>
-                                <span class="hidden sm:inline">Iniciar Sesión</span>
-                            </a>
-                        </li>
-                        <!-- Botón Panel de Administración (solo para admins) -->
-                        <li class="flex items-center pl-4 hidden" id="adminPanelButton">
-                            <a href="./admin-panel.html?login=success"
-                                class="block px-3 py-2 text-sm font-semibold text-white transition-all ease-nav-brand hover:opacity-75 hover:bg-gray-800 hover:bg-opacity-20 rounded-lg"
-                                title="Panel de Administración">
-                                <i class="fas fa-cogs mr-2"></i>
-                                <span class="hidden lg:inline">Admin Panel</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <script src="./assets/js/claut-page-header.js?v=20260903b" data-breadcrumb="Socios" data-welcome="Socios Estratégicos"></script>
+        <!-- Hero del rediseño 2026 (componente compartido) -->
+        <script src="./js/claut-panel.js?v=20260903a" data-eyebrow="Nuestro ecosistema" data-title="Socios Estratégicos" data-tagline="El directorio industrial más fuerte de la región" data-reveal="section.mb-20, .glass-panel"></script>
 
 
         <!-- Hero Section -->
@@ -484,7 +443,7 @@
             <h2 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
                 Nuestros <span class="text-red-500">Socios</span> Estratégicos
             </h2>
-            <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p class="claut-text-secondary text-lg max-w-2xl mx-auto">
                 Explora el ecosistema industrial más fuerte de la región. Conecta con empresas líderes y accede a
                 beneficios exclusivos del convenio Clúster.
             </p>
@@ -508,10 +467,10 @@
             <!-- Barra de Filtros -->
             <div class="glass-panel p-6 mb-12 flex flex-col lg:flex-row gap-6 items-end">
                 <div class="flex-1 w-full">
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Búsqueda
+                    <label class="block text-xs font-bold claut-text-secondary uppercase tracking-widest mb-2 ml-1">Búsqueda
                         directa</label>
                     <div class="relative">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 claut-text-muted"></i>
                         <input type="text" id="busquedaEmpresa" placeholder="Nombre, producto o servicio..."
                             class="filter-input w-full pl-12">
                     </div>
@@ -519,7 +478,7 @@
 
                 <div class="w-full lg:w-48">
                     <label
-                        class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Sector</label>
+                        class="block text-xs font-bold claut-text-secondary uppercase tracking-widest mb-2 ml-1">Sector</label>
                     <select id="filtroSector" class="filter-input w-full appearance-none">
                         <option value="">Todos los sectores</option>
                     </select>
@@ -527,7 +486,7 @@
 
                 <div class="w-full lg:w-48">
                     <label
-                        class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Estado</label>
+                        class="block text-xs font-bold claut-text-secondary uppercase tracking-widest mb-2 ml-1">Estado</label>
                     <select id="filtroEstado" class="filter-input w-full appearance-none">
                         <option value="">Todos los estados</option>
                     </select>
@@ -535,7 +494,7 @@
 
                 <div class="w-full lg:w-48">
                     <label
-                        class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Municipio</label>
+                        class="block text-xs font-bold claut-text-secondary uppercase tracking-widest mb-2 ml-1">Municipio</label>
                     <input type="text" id="filtroMunicipio" placeholder="Ej. Monterrey" class="filter-input w-full">
                 </div>
 
@@ -551,12 +510,12 @@
 
             <!-- Contador -->
             <div class="mb-6 flex justify-between items-center px-2">
-                <p id="contadorEmpresas" class="text-sm font-medium text-gray-400">Cargando empresas...</p>
-                <div class="flex items-center gap-4 text-xs font-bold text-gray-500 uppercase tracking-widest">
+                <p id="contadorEmpresas" class="text-sm font-medium claut-text-secondary">Cargando empresas...</p>
+                <div class="flex items-center gap-4 text-xs font-bold claut-text-muted uppercase tracking-widest">
                     <span>Vista: Grilla</span>
                     <div class="h-4 w-[1px] bg-white/10"></div>
                     <select id="ordenarPor"
-                        class="bg-transparent border-none text-gray-400 focus:ring-0 cursor-pointer">
+                        class="bg-transparent border-none claut-text-secondary focus:ring-0 cursor-pointer">
                         <option value="nombre">Orden Alfabético</option>
                         <option value="sector">Por Sector</option>
                         <option value="fecha">Más Recientes</option>
@@ -610,7 +569,7 @@
     </nav>
 
     <!-- SCRIPTS -->
-    <script src="./js/empresas-convenio-mejorado.js"></script>
+    <script src="./js/empresas-convenio-mejorado.js?v=20260902a"></script>
 
     <!-- SISTEMA DE AUTENTICACIÓN -->
     <script>

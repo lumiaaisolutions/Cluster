@@ -26,7 +26,7 @@
     <!-- FullCalendar v6 -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/locales/es.global.min.js'></script>
-    <link rel="stylesheet" href="./css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="./assets/css/layout/admin-sidebar.css?v=20260901c">
     <style>
         /* 
@@ -139,16 +139,124 @@
 
         /* --- NAVBAR BLUR --- */
         .top-navbar {
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(28, 8, 10, 0.55), rgba(15, 23, 42, 0.45));
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--glass-border);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-            border-radius: 2rem;
+            border-radius: 1.5rem;
             margin: 1.5rem;
             position: sticky;
             top: 1.5rem;
             z-index: 40;
+            position: relative;
+            /* overflow:hidden se quitó: el panel de notificaciones
+               (position:absolute, se abre hacia abajo desde la campana)
+               quedaba recortado por este contenedor — el clic sí
+               funcionaba (togglea la clase .open) pero el panel nunca
+               se veía. El borde con degradado de .top-navbar::before usa
+               mask/inset:0, que no necesita overflow:hidden para
+               contenerse a sí mismo. */
+        }
+
+        .top-navbar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(120deg, rgba(199, 37, 43, 0.5), rgba(255, 255, 255, 0.06) 40%, rgba(199, 37, 43, 0.25));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .top-navbar-icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .top-navbar-icon-btn:hover {
+            background: rgba(199, 37, 43, 0.18);
+            border-color: rgba(199, 37, 43, 0.4);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* Título del panel: antes iba en text-base (~1rem) con un badge
+           pequeño "Vista General" debajo que se veía apretado junto al
+           hamburger. Se quitó el badge (el usuario lo pidió explícitamente)
+           y el título ahora es el único elemento — se agranda y se le da
+           el mismo lenguaje visual (regla roja + tracking) que el resto
+           de los headers rediseñados (claut-panel.css). */
+        .top-navbar-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+        .top-navbar-title-rule {
+            width: 3px;
+            height: 22px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, var(--porsche-accent), rgba(199, 37, 43, 0.2));
+            flex-shrink: 0;
+        }
+        .top-navbar-title {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 900;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Mount points de search/notificaciones: display propio para que
+           el botón que inyecta su JS quede centrado verticalmente contra
+           el avatar (40px) sin depender de que el div contenedor colapse
+           correctamente su altura. */
+        .top-navbar-mount {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-navbar-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, #C7252B, #7a1216);
+            box-shadow: 0 4px 14px rgba(199, 37, 43, 0.4), inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 640px) {
+            .top-navbar { margin: 0.75rem; border-radius: 1.1rem; }
+            .top-navbar .px-8 { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .top-navbar-title { font-size: 1rem; max-width: 46vw; }
+            #adminUserInfo .text-right { display: none !important; }
+        }
+        @media (max-width: 420px) {
+            .top-navbar-title { max-width: 34vw; }
+            .top-navbar-mount:first-of-type { display: none; } /* oculta búsqueda: prioriza notificaciones+avatar */
         }
 
         /* --- CARDS & STATS (LIQUID GLASS) --- */
@@ -910,7 +1018,7 @@
             }
 
             /* Improved text contrast */
-            .text-gray-500 {
+            .claut-text-muted {
                 color: #6b7280 !important;
             }
 
@@ -1045,7 +1153,7 @@
     </style>
 </head>
 
-<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default text-slate-500 claut-dark claut-skin">
+<body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default claut-text-muted claut-dark">
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidenav-overlay" id="sidenavOverlay"></div>
 
@@ -1135,31 +1243,39 @@
     <!-- Main content -->
     <main class="main-content claut-admin-main ease-soft-in-out relative rounded-xl transition-all duration-200">
         <!-- Top Navbar Elite -->
-        <nav class="top-navbar px-8 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <button class="p-2 text-white hover:text-gray-300" id="claut-header-menu-btn" aria-label="Abrir menú de navegación">
+        <nav class="top-navbar px-8 py-3 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4 min-w-0">
+                <button class="top-navbar-icon-btn" id="claut-header-menu-btn" aria-label="Abrir menú de navegación">
                     <i class="fas fa-bars"></i>
                 </button>
-                <div>
-                    <h6 class="text-white font-bold tracking-tight">Panel de Administración</h6>
-                    <p class="text-[10px] uppercase font-bold text-white tracking-widest" id="sectionIndicator">
-                        Vista General</p>
+                <div class="min-w-0 top-navbar-title-wrap">
+                    <span class="top-navbar-title-rule" aria-hidden="true"></span>
+                    <h6 class="top-navbar-title">Panel de Administración</h6>
+                    <!-- sectionIndicator: ya no se muestra ("Vista General" se veía apretado junto
+                         al hamburger), pero se conserva oculto porque showSection() sigue
+                         escribiéndole el nombre de la sección activa (Usuarios, Socios, etc.). -->
+                    <p class="sr-only" id="sectionIndicator">Vista General</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Búsqueda global (mount point para js/global-search.js) -->
+                <div id="global-search-mount" class="top-navbar-mount"></div>
+
+                <!-- Notificaciones (mount point para js/notification-bell.js) -->
+                <div id="notification-bell-mount" class="top-navbar-mount"></div>
+
+                <div class="w-px h-6 bg-white/10 mx-1 hidden sm:block"></div>
+
                 <!-- User Profile -->
-                <div class="flex items-center gap-3 pr-2" id="adminUserInfo">
+                <div class="flex items-center gap-3" id="adminUserInfo">
                     <div class="text-right hidden sm:block">
                         <span class="block text-sm font-bold text-white leading-tight"
                             id="adminUserName">Cargando...</span>
-                        <span class="text-[10px] text-slate-400 font-bold uppercase" id="adminUserRole">Administrador
+                        <span class="text-[10px] claut-text-muted font-bold uppercase" id="adminUserRole">Administrador
                             del Sistema</span>
                     </div>
-                    <div
-                        class="w-10 h-10 rounded-full bg-slate-100 border-2 border-white shadow-sm flex items-center justify-center text-slate-500 font-bold">
-                        A
-                    </div>
+                    <div class="top-navbar-avatar" id="adminUserAvatarInitial">A</div>
                 </div>
             </div>
         </nav>
@@ -1183,7 +1299,7 @@
                             </span>
                             Control de Notificaciones por Correo
                         </h2>
-                        <p class="text-slate-400 text-sm italic opacity-80 mt-1 ml-13">
+                        <p class="claut-text-muted text-sm italic opacity-80 mt-1 ml-13">
                             Activa o desactiva qué eventos generan un correo automático
                         </p>
                     </div>
@@ -1226,7 +1342,7 @@
                     <i class="fas fa-circle-info text-blue-400 mt-0.5 text-lg flex-shrink-0"></i>
                     <div>
                         <p class="text-white font-bold text-sm mb-1">¿Cómo funciona?</p>
-                        <p class="text-slate-400 text-sm leading-relaxed">
+                        <p class="claut-text-muted text-sm leading-relaxed">
                             Cuando activas un tipo de notificación, el sistema enviará un correo automático cada vez que ocurra ese evento.
                             Los cambios se aplican de inmediato. La cuenta de envío es
                             <span class="text-white font-mono">auxsistemas@clautmetropolitano.mx</span>.
@@ -1239,11 +1355,6 @@
             <div id="dashboard-section" class="section">
                 <!-- Módulos de Gestión Premium -->
                 <div class="mb-12">
-                    <h3 class="text-white text-xl font-black text-slate-900 mb-8 flex items-center gap-3">
-                        <i class="fas fa-layer-group text-white"></i>
-                        Ecosistema de Módulos
-                    </h3>
-
                     <div class="module-grid">
                         <!-- Gestión de Banners -->
                         <div class="module-card">
@@ -1251,7 +1362,7 @@
                                 <i class="fas fa-images"></i>
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Visual Branding</h4>
-                            <p class="text-slate-400 text-sm mb-6">Control maestro de carruseles, banners promocionales
+                            <p class="claut-text-muted text-sm mb-6">Control maestro de carruseles, banners promocionales
                                 e identidad visual del portal.</p>
                             <button onclick="window.open('./admin/banner-admin-mejorado.php', '_blank')"
                                 class="porsche-btn w-full justify-center">
@@ -1265,7 +1376,7 @@
                                 <i class="fas fa-newspaper"></i>
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Comunicación</h4>
-                            <p class="text-slate-400 text-sm mb-6">Publicación de boletines informativos y circulares
+                            <p class="claut-text-muted text-sm mb-6">Publicación de boletines informativos y circulares
                                 para la comunidad industrial.</p>
                             <button onclick="window.open('../demo_boletines.html', '_blank')"
                                 class="porsche-btn w-full justify-center">
@@ -1279,7 +1390,7 @@
                                 <i class="fas fa-file-invoice"></i>
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Centro Documental</h4>
-                            <p class="text-slate-400 text-sm mb-6">Repositorio cloud de normativa, convenios y
+                            <p class="claut-text-muted text-sm mb-6">Repositorio cloud de normativa, convenios y
                                 documentos corporativos oficiales.</p>
                             <button onclick="window.open('./demo_documentos.html', '_blank')"
                                 class="porsche-btn w-full justify-center">
@@ -1293,7 +1404,7 @@
                                 <i class="fas fa-tags"></i>
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Benefits & Perks</h4>
-                            <p class="text-slate-400 text-sm mb-6">Administración de convenios de descuento y beneficios
+                            <p class="claut-text-muted text-sm mb-6">Administración de convenios de descuento y beneficios
                                 exclusivos para socios.</p>
                             <button onclick="window.open('./demo_descuentos.html', '_blank')"
                                 class="porsche-btn w-full justify-center">
@@ -1307,7 +1418,7 @@
                                 <i class="fas fa-users-rectangle"></i>
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Grupos de Trabajo</h4>
-                            <p class="text-slate-400 text-sm mb-6">Coordinación de comités técnicos y mesas directivas
+                            <p class="claut-text-muted text-sm mb-6">Coordinación de comités técnicos y mesas directivas
                                 del Clúster Metropolitano.</p>
                             <button onclick="window.open('../demo_comite.html', '_blank')"
                                 class="porsche-btn w-full justify-center">
@@ -1321,7 +1432,7 @@
                                 <i class="fas fa-calendar-days"></i>
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Master Calendar</h4>
-                            <p class="text-slate-400 text-sm mb-6">Planificación visual 360° de la agenda del Clúster
+                            <p class="claut-text-muted text-sm mb-6">Planificación visual 360° de la agenda del Clúster
                                 con interfaz estilo Notion e interactiva.</p>
                             <button onclick="window.location.href='calendario.html'"
                                 class="porsche-btn w-full justify-center">
@@ -1336,7 +1447,7 @@
                                 <i class="fas fa-calendar-days"></i>
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Socios</h4>
-                            <p class="text-slate-400 text-sm mb-6">Manten un control de tus socios y sus datos.</p>
+                            <p class="claut-text-muted text-sm mb-6">Manten un control de tus socios y sus datos.</p>
                             <button onclick="window.location.href='./demo_empresas.html'"
                                 class="porsche-btn w-full justify-center">
                                 <i class="fas fa-building"></i> Gestionar Socios
@@ -1349,7 +1460,7 @@
                                 <i class="fas fa-calendar-check"></i>
                             </div>
                             <h4 class="text-lg font-bold text-white mb-2">Event Hub</h4>
-                            <p class="text-slate-400 text-sm mb-6">Planificación de asambleas, webinars y eventos
+                            <p class="claut-text-muted text-sm mb-6">Planificación de asambleas, webinars y eventos
                                 networking de alto nivel.</p>
                             <button onclick="window.open('../demo_evento.html', '_blank')"
                                 class="porsche-btn w-full justify-center">
@@ -1362,8 +1473,8 @@
                             <div class="module-icon-box text-cyan-600">
                                 <i class="fas fa-users"></i>
                             </div>
-                            <h4 class="text-lg font-bold text-slate-900 mb-2 text-white">Control de Usuarios</h4>
-                            <p class="text-slate-500 text-sm mb-6">Monitoreo y Control de Accesos y Usuarios</p>
+                            <h4 class="text-lg font-bold claut-text-primary mb-2 text-white">Control de Usuarios</h4>
+                            <p class="claut-text-muted text-sm mb-6">Monitoreo y Control de Accesos y Usuarios</p>
                             <button onclick="abrirDemoUsuarios()" class="porsche-btn w-full justify-center">
                                 <i class="fas fa-users"></i> Gestionar Usuarios
                             </button>
@@ -1374,8 +1485,8 @@
                             <div class="module-icon-box text-cyan-600">
                                 <i class="fas fa-user-secret"></i>
                             </div>
-                            <h4 class="text-lg font-bold text-slate-900 mb-2 text-white">Control de Acceso</h4>
-                            <p class="text-slate-500 text-sm mb-6">Monitoreo de perfiles visitantes y configuración de
+                            <h4 class="text-lg font-bold claut-text-primary mb-2 text-white">Control de Acceso</h4>
+                            <p class="claut-text-muted text-sm mb-6">Monitoreo de perfiles visitantes y configuración de
                                 accesos temporales restringidos.</p>
                             <button onclick="abrirDemoVisitante()" class="porsche-btn w-full justify-center">
                                 <i class="fas fa-shield-halved"></i> Gestionar Visitantes
@@ -1389,7 +1500,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                         <div>
                             <h2 class="text-2xl font-black text-white leading-tight">Gestión de Eventos</h2>
-                            <p class="text-slate-400 text-sm italic opacity-80">Asambleas, Networking y Capacitaciones
+                            <p class="claut-text-muted text-sm italic opacity-80">Asambleas, Networking y Capacitaciones
                             </p>
                         </div>
                         <div class="flex gap-3 items-center">
@@ -1400,7 +1511,7 @@
                                     <i class="fas fa-list mr-2"></i>Tabla
                                 </button>
                                 <button onclick="toggleEventView('calendar')" id="btnViewCalendar"
-                                    class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white hover:bg-white/5">
+                                    class="px-4 py-2 rounded-lg text-xs font-bold transition-all claut-text-muted hover:text-white hover:bg-white/5">
                                     <i class="fas fa-calendar-alt mr-2"></i>Calendario
                                 </button>
                             </div>
@@ -1413,19 +1524,19 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                         <div class="glass-card p-6 border-l-4 border-red-500">
-                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Total Eventos</p>
+                            <p class="claut-text-muted text-xs font-bold uppercase tracking-wider mb-1">Total Eventos</p>
                             <h3 class="text-2xl font-black text-white" id="totalEventos">0</h3>
                         </div>
                         <div class="glass-card p-6 border-l-4 border-blue-500">
-                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Próximos</p>
+                            <p class="claut-text-muted text-xs font-bold uppercase tracking-wider mb-1">Próximos</p>
                             <h3 class="text-2xl font-black text-white" id="proximosEventos">0</h3>
                         </div>
                         <div class="glass-card p-6 border-l-4 border-emerald-500">
-                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">En Curso</p>
+                            <p class="claut-text-muted text-xs font-bold uppercase tracking-wider mb-1">En Curso</p>
                             <h3 class="text-2xl font-black text-white" id="enCursoEventos">0</h3>
                         </div>
                         <div class="glass-card p-6 border-l-4 border-orange-500">
-                            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Total Registros
+                            <p class="claut-text-muted text-xs font-bold uppercase tracking-wider mb-1">Total Registros
                             </p>
                             <h3 class="text-2xl font-black text-white" id="totalRegistros">0</h3>
                         </div>
@@ -1438,7 +1549,7 @@
                                 <table class="w-full text-left border-collapse">
                                     <thead>
                                         <tr
-                                            class="bg-white/5 text-slate-400 text-[10px] uppercase font-bold tracking-widest border-b border-white/5">
+                                            class="bg-white/5 claut-text-muted text-[10px] uppercase font-bold tracking-widest border-b border-white/5">
                                             <th class="px-6 py-5">Evento</th>
                                             <th class="px-6 py-5">Fecha / Ubicación</th>
                                             <th class="px-6 py-5">Tipo / Modalidad</th>
@@ -1455,7 +1566,7 @@
                                                         class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500">
                                                     </div>
                                                 </div>
-                                                <p class="text-slate-400">Cargando eventos...</p>
+                                                <p class="claut-text-muted">Cargando eventos...</p>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1478,7 +1589,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                         <div>
                             <h2 class="text-2xl font-black text-white leading-tight">Control de Usuarios</h2>
-                            <p class="text-slate-400 text-sm italic opacity-80">Gestión de accesos, roles y perfiles del
+                            <p class="claut-text-muted text-sm italic opacity-80">Gestión de accesos, roles y perfiles del
                                 sistema</p>
                         </div>
                         <div>
@@ -1500,7 +1611,7 @@
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr
-                                        class="bg-white/5 text-slate-400 text-[10px] uppercase font-bold tracking-widest border-b border-white/5">
+                                        class="bg-white/5 claut-text-muted text-[10px] uppercase font-bold tracking-widest border-b border-white/5">
                                         <th class="px-6 py-5">Usuario</th>
                                         <th class="px-6 py-5">Email</th>
                                         <th class="px-6 py-5">Rol</th>
@@ -1521,7 +1632,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                         <div>
                             <h2 class="text-2xl font-black text-white leading-tight">Directorio de Socios</h2>
-                            <p class="text-slate-400 text-sm italic opacity-80">Empresas afiliadas y convenios vigentes
+                            <p class="claut-text-muted text-sm italic opacity-80">Empresas afiliadas y convenios vigentes
                             </p>
                         </div>
                         <button onclick="openCompanyModal()" class="porsche-btn bg-slate-900 text-white px-6">
@@ -1534,7 +1645,7 @@
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr
-                                        class="bg-slate-50/50 text-slate-500 text-[10px] uppercase font-bold tracking-widest border-b border-slate-100">
+                                        class="bg-white/5 claut-text-muted text-[10px] uppercase font-bold tracking-widest border-b border-white/5">
                                         <th class="px-6 py-4">Empresa</th>
                                         <th class="px-6 py-4">Categoría</th>
                                         <th class="px-6 py-4">Beneficio</th>
@@ -1542,7 +1653,7 @@
                                         <th class="px-6 py-4 text-right">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="companiesTableBody" class="divide-y divide-slate-100">
+                                <tbody id="companiesTableBody" class="divide-y divide-white/5">
                                     <!-- Renderizado vía JS -->
                                 </tbody>
                             </table>
@@ -1555,8 +1666,8 @@
                 <div id="bulletins-section" class="section hidden">
                     <div class="flex justify-between items-center mb-8">
                         <div>
-                            <h2 class="text-2xl font-black text-slate-900 leading-tight">Boletines Informativos</h2>
-                            <p class="text-slate-500 text-sm">Gestión de publicaciones y circulares</p>
+                            <h2 class="text-2xl font-black claut-text-primary leading-tight">Boletines Informativos</h2>
+                            <p class="claut-text-muted text-sm">Gestión de publicaciones y circulares</p>
                         </div>
                         <button onclick="openBulletinModal()" class="porsche-btn bg-slate-900 text-white px-6">
                             <i class="fas fa-plus"></i> Nuevo Boletín
@@ -1570,8 +1681,8 @@
                 <!-- Documentos Section -->
                 <div id="documents-section" class="section hidden">
                     <div class="mb-8">
-                        <h2 class="text-2xl font-black text-slate-900 leading-tight">Centro de Documentación</h2>
-                        <p class="text-slate-500 text-sm">Repositorio oficial de activos de la organización</p>
+                        <h2 class="text-2xl font-black claut-text-primary leading-tight">Centro de Documentación</h2>
+                        <p class="claut-text-muted text-sm">Repositorio oficial de activos de la organización</p>
                     </div>
                     <div id="documentsContainer">
                         <!-- Renderizado vía JS -->
@@ -1581,8 +1692,8 @@
                 <!-- Descuentos Section -->
                 <div id="discounts-section" class="section hidden">
                     <div class="mb-8">
-                        <h2 class="text-2xl font-black text-slate-900 leading-tight">Benefits & Perks</h2>
-                        <p class="text-slate-500 text-sm">Administración de programas de beneficios exclusivos</p>
+                        <h2 class="text-2xl font-black claut-text-primary leading-tight">Benefits & Perks</h2>
+                        <p class="claut-text-muted text-sm">Administración de programas de beneficios exclusivos</p>
                     </div>
                     <div id="discountsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         <!-- Contenido dinámico -->
@@ -1607,7 +1718,7 @@
                                 Configuración Estándar Elite</p>
                         </div>
                         <button onclick="closeUserModal()"
-                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all">
+                            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center claut-text-muted hover:text-white hover:bg-white/10 transition-all">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -1617,19 +1728,19 @@
 
                         <div class="grid grid-cols-2 gap-8">
                             <div class="space-y-2">
-                                <label class="text-[11px] uppercase font-black text-slate-400 ml-1">Nombre</label>
+                                <label class="text-[11px] uppercase font-black claut-text-muted ml-1">Nombre</label>
                                 <input type="text" id="userNombre" required
                                     class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white text-sm focus:ring-2 focus:ring-orange-500 focus:bg-white/10 transition-all outline-none">
                             </div>
                             <div class="space-y-2">
-                                <label class="text-[11px] uppercase font-black text-slate-400 ml-1">Apellido</label>
+                                <label class="text-[11px] uppercase font-black claut-text-muted ml-1">Apellido</label>
                                 <input type="text" id="userApellido" required
                                     class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white text-sm focus:ring-2 focus:ring-orange-500 focus:bg-white/10 transition-all outline-none">
                             </div>
                         </div>
 
                         <div class="space-y-2">
-                            <label class="text-[11px] uppercase font-black text-slate-400 ml-1">Email
+                            <label class="text-[11px] uppercase font-black claut-text-muted ml-1">Email
                                 Institucional</label>
                             <input type="email" id="userEmail" required
                                 class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white text-sm focus:ring-2 focus:ring-orange-500 focus:bg-white/10 transition-all outline-none">
@@ -1637,7 +1748,7 @@
 
                         <div class="grid grid-cols-2 gap-8">
                             <div class="space-y-4">
-                                <label class="text-[11px] uppercase font-black text-slate-400 ml-1">Acceso &
+                                <label class="text-[11px] uppercase font-black claut-text-muted ml-1">Acceso &
                                     Estado</label>
                                 <div class="flex items-center gap-6 bg-white/5 p-5 rounded-2xl border border-white/5">
                                     <!-- Status Checkbox (Fixed Crowding) -->
@@ -1663,7 +1774,7 @@
                             </div>
 
                             <div class="space-y-2">
-                                <label class="text-[11px] uppercase font-black text-slate-400 ml-1">Rol de
+                                <label class="text-[11px] uppercase font-black claut-text-muted ml-1">Rol de
                                     Acceso</label>
                                 <select id="userRol" onchange="toggleUserEmpresaField()"
                                     class="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 text-white text-sm focus:ring-2 focus:ring-orange-500 transition-all outline-none appearance-none">
@@ -1676,7 +1787,7 @@
 
                         <div class="flex justify-end gap-4 pt-6">
                             <button type="button" onclick="closeUserModal()"
-                                class="px-8 py-4 rounded-2xl text-slate-400 font-bold hover:text-white hover:bg-white/5 transition-all">Cancelar</button>
+                                class="px-8 py-4 rounded-2xl claut-text-muted font-bold hover:text-white hover:bg-white/5 transition-all">Cancelar</button>
                             <button type="submit" id="userSubmitBtn" class="porsche-btn">
                                 Guardar Cambios Elite
                             </button>
@@ -1706,7 +1817,9 @@
 
 
             <!-- Scripts -->
-            <script src="./js/auth-session.js"></script>
+            <!-- auth-session.js ya se cargó arriba (línea ~1794); esta segunda
+                 inclusión duplicada causaba "SyntaxError: Can't create
+                 duplicate variable: 'AuthSessionManager'" en consola. -->
             <script>
                 // === SIDEBAR CORE CONTROLS (claut-admin-sidebar) ===
                 function openSidebar() {
@@ -1852,12 +1965,12 @@
 
                 // Actualizar información del administrador
                 function updateAdminInfo(admin) {
-                    document.getElementById('adminUserName').textContent = `${admin.nombre} ${admin.apellido}`;
+                    const nombreCompleto = [admin.nombre, admin.apellido].filter(Boolean).join(' ') || 'Administrador';
+                    document.getElementById('adminUserName').textContent = nombreCompleto;
                     document.getElementById('adminUserRole').textContent = 'Administrador del Sistema';
 
-                    if (admin.avatar_url) {
-                        document.getElementById('adminUserAvatar').src = admin.avatar_url;
-                    }
+                    const avatarEl = document.getElementById('adminUserAvatarInitial');
+                    if (avatarEl) avatarEl.textContent = nombreCompleto.trim().charAt(0).toUpperCase() || 'A';
                 }
 
                 // Mostrar sección
@@ -1943,10 +2056,10 @@
 
                         if (statsResult.success && statsResult.data) {
                             console.log('✅ Actualizando estadísticas con datos reales');
-                            document.getElementById('totalUsers').textContent = statsResult.data.users || 0;
-                            document.getElementById('totalCompanies').textContent = statsResult.data.companies || 0;
-                            document.getElementById('totalEvents').textContent = statsResult.data.events || 0;
-                            document.getElementById('totalBulletins').textContent = statsResult.data.bulletins || 0;
+                            const _totalUsersEl = document.getElementById('totalUsers'); if (_totalUsersEl) _totalUsersEl.textContent = statsResult.data.users || 0;
+                            const _totalCompaniesEl = document.getElementById('totalCompanies'); if (_totalCompaniesEl) _totalCompaniesEl.textContent = statsResult.data.companies || 0;
+                            const _totalEventsEl = document.getElementById('totalEvents'); if (_totalEventsEl) _totalEventsEl.textContent = statsResult.data.events || 0;
+                            const _totalBulletinsEl = document.getElementById('totalBulletins'); if (_totalBulletinsEl) _totalBulletinsEl.textContent = statsResult.data.bulletins || 0;
                         } else {
                             console.error('❌ Error en respuesta de stats:', statsResult.message);
                             console.log('🔍 Verificando estado de autenticación actual...');
@@ -1975,11 +2088,11 @@
                             const docsResponse = await fetch('./api/documentos.php');
                             const docsResult = await docsResponse.json();
                             if (docsResult.success && docsResult.stats) {
-                                document.getElementById('totalDocuments').textContent = docsResult.stats.total || 0;
+                                const _totalDocumentsEl = document.getElementById('totalDocuments'); if (_totalDocumentsEl) _totalDocumentsEl.textContent = docsResult.stats.total || 0;
                             }
                         } catch (error) {
                             console.error('Error loading documents stats:', error);
-                            document.getElementById('totalDocuments').textContent = '0';
+                            const _totalDocumentsEl = document.getElementById('totalDocuments'); if (_totalDocumentsEl) _totalDocumentsEl.textContent = '0';
                         }
 
                         // Cargar estadísticas de descuentos
@@ -2016,14 +2129,14 @@
                             <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
                             <div class="flex-1">
                                 <div class="text-sm font-medium">${activity.action}</div>
-                                <div class="text-xs text-gray-500">${activity.created_at}</div>
+                                <div class="text-xs claut-text-muted">${activity.created_at}</div>
                             </div>
                         </div>
                     `).join('');
 
                             document.getElementById('recentActivity').innerHTML = activityHtml;
                         } else {
-                            document.getElementById('recentActivity').innerHTML = '<p class="text-gray-500">No hay actividad reciente</p>';
+                            document.getElementById('recentActivity').innerHTML = '<p class="claut-text-muted">No hay actividad reciente</p>';
                         }
                     } catch (error) {
                         document.getElementById('recentActivity').innerHTML = '<p class="text-red-500">Error cargando actividad</p>';
@@ -2055,7 +2168,7 @@
                     const tbody = document.getElementById('usersTableBody');
 
                     if (users.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-500">No hay usuarios</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center claut-text-muted">No hay usuarios</td></tr>';
                         return;
                     }
 
@@ -2065,7 +2178,7 @@
                         <div class="flex items-center">
                             <div>
                                 <div class="font-medium">${user.nombre} ${user.apellido}</div>
-                                <div class="text-xs text-gray-500">${user.telefono || 'Sin teléfono'}</div>
+                                <div class="text-xs claut-text-muted">${user.telefono || 'Sin teléfono'}</div>
                             </div>
                         </div>
                     </td>
@@ -2129,7 +2242,7 @@
                     const tbody = document.getElementById('companiesTableBody');
 
                     if (companies.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-500">No hay empresas</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center claut-text-muted">No hay empresas</td></tr>';
                         return;
                     }
 
@@ -2137,12 +2250,12 @@
                 <tr class="table-row">
                     <td class="p-3">
                         <div class="flex items-center">
-                            <div class="w-10 h-10 bg-gray-200 rounded mr-3 flex items-center justify-center">
-                                <i class="fas fa-building text-gray-500"></i>
+                            <div class="w-10 h-10 rounded mr-3 flex items-center justify-center" style="background: rgba(255,255,255,0.06);">
+                                <i class="fas fa-building claut-text-muted"></i>
                             </div>
                             <div>
                                 <div class="font-medium">${company.nombre_empresa}</div>
-                                <div class="text-xs text-gray-500">${company.email || 'Sin email'}</div>
+                                <div class="text-xs claut-text-muted">${company.email || 'Sin email'}</div>
                             </div>
                         </div>
                     </td>
@@ -2344,51 +2457,51 @@
                             const documents = result.data || [];
 
                             if (documents.length === 0) {
-                                container.innerHTML = '<p class="text-center py-8 text-gray-500">No hay documentos disponibles</p>';
+                                container.innerHTML = '<p class="text-center py-8 claut-text-muted">No hay documentos disponibles</p>';
                                 return;
                             }
 
                             container.innerHTML = `
-                        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-300">
-                                <thead class="bg-gray-50">
+                        <div class="overflow-hidden rounded-lg" style="border: 1px solid rgba(255,255,255,0.08);">
+                            <table class="min-w-full" style="border-collapse: collapse;">
+                                <thead style="background: rgba(255,255,255,0.04);">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Documento</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tamaño</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descargas</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Documento</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Categoría</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Tamaño</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Fecha</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Descargas</th>
                                         <th class="relative px-6 py-3"><span class="sr-only">Acciones</span></th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tbody>
                                     ${documents.map(doc => `
-                                        <tr class="hover:bg-gray-50">
+                                        <tr style="border-top: 1px solid rgba(255,255,255,0.06); transition: background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <i class="fas ${getFileIcon(doc.tipo_archivo)} text-lg text-indigo-500 mr-3"></i>
                                                     <div>
-                                                        <div class="text-sm font-medium text-gray-900">${doc.titulo}</div>
-                                                        <div class="text-sm text-gray-500">${doc.archivo_nombre}</div>
+                                                        <div class="text-sm font-medium claut-text-primary">${doc.titulo}</div>
+                                                        <div class="text-sm claut-text-muted">${doc.archivo_nombre}</div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                <span class="claut-badge claut-badge--success">
                                                     ${doc.categoria}
                                                 </span>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm claut-text-primary">
                                                 ${doc.tamaño_formateado || formatFileSize(doc.tamaño_archivo)}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm claut-text-primary">
                                                 ${formatDate(doc.fecha_subida)}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm claut-text-primary">
                                                 ${doc.descargas}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="${doc.archivo_ruta}" target="_blank" class="text-indigo-600 hover:text-indigo-900">Descargar</a>
+                                                <a href="${doc.archivo_ruta}" target="_blank" style="color:#818cf8;">Descargar</a>
                                             </td>
                                         </tr>
                                     `).join('')}
@@ -2420,25 +2533,25 @@
                             const discounts = result.data;
 
                             if (discounts.length === 0) {
-                                container.innerHTML = '<p class="text-center py-8 text-gray-500">No hay descuentos disponibles</p>';
+                                container.innerHTML = '<p class="text-center py-8 claut-text-muted">No hay descuentos disponibles</p>';
                                 return;
                             }
 
                             container.innerHTML = `
                         <div class="overflow-x-auto">
                             <table class="w-full">
-                                <thead class="bg-gray-50">
+                                <thead style="background: rgba(255,255,255,0.04);">
                                     <tr>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Título</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Empresa</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Descuento</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Código</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Vigencia</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Usos</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium claut-text-muted uppercase">Título</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium claut-text-muted uppercase">Empresa</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium claut-text-muted uppercase">Descuento</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium claut-text-muted uppercase">Código</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium claut-text-muted uppercase">Vigencia</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium claut-text-muted uppercase">Estado</th>
+                                        <th class="px-4 py-2 text-left text-xs font-medium claut-text-muted uppercase">Usos</th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
+                                <tbody>
                                     ${discounts.map(discount => {
                                 const discountText = discount.porcentaje_descuento
                                     ? `${discount.porcentaje_descuento}%`
@@ -2451,14 +2564,14 @@
                                 const estadoBadge = getDiscountStateBadge(discount.estado_calculado || discount.estado);
 
                                 return `
-                                            <tr class="hover:bg-gray-50">
+                                            <tr style="border-top: 1px solid rgba(255,255,255,0.06); transition: background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
                                                 <td class="px-4 py-2">
-                                                    <div class="font-medium text-gray-900">${discount.titulo}</div>
-                                                    <div class="text-sm text-gray-500">${discount.descripcion || 'Sin descripción'}</div>
+                                                    <div class="font-medium claut-text-primary">${discount.titulo}</div>
+                                                    <div class="text-sm claut-text-muted">${discount.descripcion || 'Sin descripción'}</div>
                                                 </td>
                                                 <td class="px-4 py-2">
-                                                    <div class="font-medium text-gray-900">${discount.empresa_nombre}</div>
-                                                    <div class="text-sm text-gray-500">${discount.sector || 'General'}</div>
+                                                    <div class="font-medium claut-text-primary">${discount.empresa_nombre}</div>
+                                                    <div class="text-sm claut-text-muted">${discount.sector || 'General'}</div>
                                                 </td>
                                                 <td class="px-4 py-2">
                                                     <span class="text-lg font-bold text-red-600">${discountText}</span>
@@ -2468,7 +2581,7 @@
                                                 </td>
                                                 <td class="px-4 py-2 text-sm">
                                                     <div>${new Date(discount.fecha_inicio).toLocaleDateString('es-MX')}</div>
-                                                    <div class="text-gray-500">al ${new Date(discount.fecha_fin).toLocaleDateString('es-MX')}</div>
+                                                    <div class="claut-text-muted">al ${new Date(discount.fecha_fin).toLocaleDateString('es-MX')}</div>
                                                 </td>
                                                 <td class="px-4 py-2">${estadoBadge}</td>
                                                 <td class="px-4 py-2 text-sm">${usosText}</td>
@@ -2490,10 +2603,10 @@
 
                 function getDiscountStateBadge(estado) {
                     const badges = {
-                        'activo': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Activo</span>',
-                        'inactivo': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Inactivo</span>',
-                        'expirado': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Expirado</span>',
-                        'agotado': '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Agotado</span>'
+                        'activo': '<span class="claut-badge claut-badge--success">Activo</span>',
+                        'inactivo': '<span class="claut-badge claut-badge--neutral">Inactivo</span>',
+                        'expirado': '<span class="claut-badge claut-badge--danger">Expirado</span>',
+                        'agotado': '<span class="claut-badge claut-badge--warning">Agotado</span>'
                     };
                     return badges[estado] || badges['inactivo'];
                 }
@@ -2708,10 +2821,10 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                                 const mainStatsResult = await mainStatsResponse.json();
                                 if (mainStatsResult.success && mainStatsResult.data) {
                                     console.log('✅ Estadísticas principales cargadas exitosamente');
-                                    document.getElementById('totalUsers').textContent = mainStatsResult.data.users || 0;
-                                    document.getElementById('totalCompanies').textContent = mainStatsResult.data.companies || 0;
-                                    document.getElementById('totalEvents').textContent = mainStatsResult.data.events || 0;
-                                    document.getElementById('totalBulletins').textContent = mainStatsResult.data.bulletins || 0;
+                                    const _totalUsersEl = document.getElementById('totalUsers'); if (_totalUsersEl) _totalUsersEl.textContent = mainStatsResult.data.users || 0;
+                                    const _totalCompaniesEl = document.getElementById('totalCompanies'); if (_totalCompaniesEl) _totalCompaniesEl.textContent = mainStatsResult.data.companies || 0;
+                                    const _totalEventsEl = document.getElementById('totalEvents'); if (_totalEventsEl) _totalEventsEl.textContent = mainStatsResult.data.events || 0;
+                                    const _totalBulletinsEl = document.getElementById('totalBulletins'); if (_totalBulletinsEl) _totalBulletinsEl.textContent = mainStatsResult.data.bulletins || 0;
                                     return; // Si funciona, no necesitamos cargar estadísticas alternativas
                                 }
                             }
@@ -2737,19 +2850,19 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                                 if (usersResult.success && usersResult.data) {
                                     const userCount = usersResult.data.length;
-                                    document.getElementById('totalUsers').textContent = userCount;
+                                    const _totalUsersEl = document.getElementById('totalUsers'); if (_totalUsersEl) _totalUsersEl.textContent = userCount;
                                     console.log('✅ Total usuarios encontrados:', userCount);
                                 } else {
                                     console.error('❌ Error en respuesta de usuarios:', usersResult.message);
-                                    document.getElementById('totalUsers').textContent = '0';
+                                    const _totalUsersEl = document.getElementById('totalUsers'); if (_totalUsersEl) _totalUsersEl.textContent = '0';
                                 }
                             } else {
                                 console.error('❌ Error HTTP en usuarios:', usersResponse.status, usersResponse.statusText);
-                                document.getElementById('totalUsers').textContent = 'Error';
+                                const _totalUsersEl = document.getElementById('totalUsers'); if (_totalUsersEl) _totalUsersEl.textContent = 'Error';
                             }
                         } catch (error) {
                             console.error('❌ Error cargando estadísticas de usuarios:', error);
-                            document.getElementById('totalUsers').textContent = 'Error';
+                            const _totalUsersEl = document.getElementById('totalUsers'); if (_totalUsersEl) _totalUsersEl.textContent = 'Error';
                         }
 
                         // Cargar estadísticas de empresas
@@ -2761,7 +2874,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                                 const companiesResult = await companiesResponse.json();
                                 if (companiesResult.success && companiesResult.data) {
                                     const activeCompanies = companiesResult.data.filter(c => c.activo === 1);
-                                    document.getElementById('totalCompanies').textContent = activeCompanies.length;
+                                    const _totalCompaniesEl = document.getElementById('totalCompanies'); if (_totalCompaniesEl) _totalCompaniesEl.textContent = activeCompanies.length;
                                 }
                             }
                         } catch (error) {
@@ -2776,7 +2889,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                             if (eventsResponse.ok) {
                                 const eventsResult = await eventsResponse.json();
                                 if (eventsResult.success && eventsResult.data) {
-                                    document.getElementById('totalEvents').textContent = eventsResult.data.length;
+                                    const _totalEventsEl = document.getElementById('totalEvents'); if (_totalEventsEl) _totalEventsEl.textContent = eventsResult.data.length;
                                 }
                             }
                         } catch (error) {
@@ -2791,7 +2904,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                             if (bulletinsResponse.ok) {
                                 const bulletinsResult = await bulletinsResponse.json();
                                 if (bulletinsResult.success && bulletinsResult.data) {
-                                    document.getElementById('totalBulletins').textContent = bulletinsResult.data.length;
+                                    const _totalBulletinsEl = document.getElementById('totalBulletins'); if (_totalBulletinsEl) _totalBulletinsEl.textContent = bulletinsResult.data.length;
                                 }
                             }
                         } catch (error) {
@@ -2806,7 +2919,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                             if (documentsResponse.ok) {
                                 const documentsResult = await documentsResponse.json();
                                 if (documentsResult.success && documentsResult.data) {
-                                    document.getElementById('totalDocuments').textContent = documentsResult.data.length;
+                                    const _totalDocumentsEl = document.getElementById('totalDocuments'); if (_totalDocumentsEl) _totalDocumentsEl.textContent = documentsResult.data.length;
                                 }
                             }
                         } catch (error) {
@@ -3049,7 +3162,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                     'destinatario' : { label: 'Al destinatario',    cls: 'dest-dest',  icon: 'fa-user' }
                 };
                 if (!configs || configs.length === 0) {
-                    grid.innerHTML = '<div class="text-slate-500 col-span-2 text-center py-10">No se encontró configuración.</div>';
+                    grid.innerHTML = '<div class="claut-text-muted col-span-2 text-center py-10">No se encontró configuración.</div>';
                     return;
                 }
                 grid.innerHTML = configs.map(cfg => {
@@ -3066,7 +3179,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-white text-sm leading-tight">${cfg.nombre}</h3>
-                                    <p class="text-slate-500 text-xs mt-0.5">${cfg.descripcion || ''}</p>
+                                    <p class="claut-text-muted text-xs mt-0.5">${cfg.descripcion || ''}</p>
                                 </div>
                             </div>
                             <div class="email-toggle-track ${on ? 'on' : ''} flex-shrink-0 mt-1"
@@ -3082,7 +3195,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                             </span>
                             <span class="text-[10px] font-bold">
                                 ${on ? '<span class="text-emerald-400"><i class="fas fa-circle text-[6px] mr-1"></i>ACTIVO</span>'
-                                     : '<span class="text-slate-600"><i class="fas fa-circle text-[6px] mr-1"></i>INACTIVO</span>'}
+                                     : '<span class="claut-text-secondary"><i class="fas fa-circle text-[6px] mr-1"></i>INACTIVO</span>'}
                             </span>
                         </div>
                     </div>`;
@@ -3161,9 +3274,9 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                     <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
                         <div>
                             <h3 class="text-xl font-bold text-white" id="eventModalTitle">Nuevo Evento</h3>
-                            <p class="text-xs text-slate-400">Configure los detalles del evento corporativo</p>
+                            <p class="text-xs claut-text-muted">Configure los detalles del evento corporativo</p>
                         </div>
-                        <button onclick="closeEventModal()" class="text-slate-400 hover:text-white transition-colors">
+                        <button onclick="closeEventModal()" class="claut-text-muted hover:text-white transition-colors">
                             <i class="fas fa-times text-xl"></i>
                         </button>
                     </div>
@@ -3174,7 +3287,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div class="md:col-span-2">
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Título
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Título
                                     del Evento</label>
                                 <input type="text" name="titulo" id="event_titulo" required
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all"
@@ -3183,7 +3296,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                             <div class="md:col-span-2">
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Descripción</label>
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Descripción</label>
                                 <textarea name="descripcion" id="event_descripcion" rows="3"
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all"
                                     placeholder="Detalles sobre el orden del día, ponentes, etc."></textarea>
@@ -3191,7 +3304,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Fecha
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Fecha
                                     Inicio</label>
                                 <input type="datetime-local" name="fecha_inicio" id="event_fecha_inicio" required
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
@@ -3199,7 +3312,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Fecha
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Fecha
                                     Fin</label>
                                 <input type="datetime-local" name="fecha_fin" id="event_fecha_fin"
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
@@ -3207,7 +3320,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Tipo
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Tipo
                                     de Evento</label>
                                 <select name="tipo" id="event_tipo"
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
@@ -3221,7 +3334,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Modalidad</label>
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Modalidad</label>
                                 <select name="modalidad" id="event_modalidad"
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
                                     <option value="Presencial">Presencial</option>
@@ -3232,7 +3345,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Ubicación
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Ubicación
                                     / Plataforma</label>
                                 <input type="text" name="ubicacion" id="event_ubicacion"
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all"
@@ -3241,7 +3354,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Capacidad
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Capacidad
                                     Máxima</label>
                                 <input type="number" name="capacidad_maxima" id="event_capacidad_maxima" value="100"
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all">
@@ -3249,21 +3362,21 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                             <div class="md:col-span-2">
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Imagen
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Imagen
                                     del Evento</label>
                                 <div class="flex gap-4 items-center">
                                     <div id="imagePreview"
                                         class="w-16 h-16 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden">
-                                        <i class="fas fa-image text-slate-600 text-xl"></i>
+                                        <i class="fas fa-image claut-text-secondary text-xl"></i>
                                     </div>
                                     <input type="file" name="imagenFile" id="event_imagenFile" accept="image/*"
-                                        class="flex-1 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-500/10 file:text-red-500 hover:file:bg-red-500/20 transition-all">
+                                        class="flex-1 text-sm claut-text-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-500/10 file:text-red-500 hover:file:bg-red-500/20 transition-all">
                                 </div>
                             </div>
 
                             <div class="md:col-span-2">
                                 <label
-                                    class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Link
+                                    class="block text-xs font-bold claut-text-muted uppercase tracking-widest mb-2">Link
                                     de Acceso / Registro</label>
                                 <input type="url" name="link_evento" id="event_link_evento"
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-red-500 outline-none transition-all"
@@ -3273,7 +3386,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                             <div class="md:col-span-2 flex items-center gap-2">
                                 <input type="checkbox" name="tiene_beneficio" id="event_tiene_beneficio" value="1"
                                     class="w-5 h-5 bg-white/5 border-white/10 rounded accent-red-500">
-                                <label for="event_tiene_beneficio" class="text-sm text-slate-300">Este evento otorga
+                                <label for="event_tiene_beneficio" class="text-sm claut-text-secondary">Este evento otorga
                                     beneficios exclusivos a socios</label>
                             </div>
                         </div>
@@ -3292,6 +3405,8 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                 </div>
             </div>
     <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
+    <script src="./js/notification-bell.js?v=20260903a" defer></script>
+    <script src="./js/global-search.js?v=20260903a" defer></script>
 </body>
 
 </html>

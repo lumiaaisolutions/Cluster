@@ -429,7 +429,8 @@
                                     <div class="porsche-input-group">
                                         <i class="fas fa-industry porsche-input-icon"></i>
                                         <select id="nueva_empresa_sector" name="nueva_empresa_sector"
-                                            class="porsche-input appearance-none">
+                                            class="porsche-input appearance-none"
+                                            onchange="toggleSectorOtroInput()">
                                             <option value="Automotriz">Automotriz</option>
                                             <option value="Servicios">Servicios</option>
                                             <option value="Academia">Academia</option>
@@ -438,6 +439,12 @@
                                         </select>
                                         <i
                                             class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                                    </div>
+                                    <div class="porsche-input-group hidden" id="sectorOtroWrap">
+                                        <i class="fas fa-pen porsche-input-icon"></i>
+                                        <input type="text" id="nueva_empresa_sector_otro"
+                                            placeholder="Especifica el giro de tu empresa *" class="porsche-input"
+                                            maxlength="100">
                                     </div>
                                     <div class="bg-amber-50/70 px-4 py-3 rounded-xl border border-amber-200/70">
                                         <p class="text-[10px] text-amber-800 leading-relaxed">
@@ -755,9 +762,22 @@
 
                     // Si el usuario eligió "Registrar nueva empresa", crearla primero y usar su ID
                     if (data.rol === 'empresa' && isNuevaEmpresaMode()) {
+                        // Si el giro es "Otros", usar el texto que escribió el
+                        // usuario en vez de guardar literalmente "Otros".
+                        let categoriaSector = data.nueva_empresa_sector || 'Otros';
+                        if (categoriaSector === 'Otros') {
+                            const otroInput = document.getElementById('nueva_empresa_sector_otro');
+                            const otroValor = (otroInput && otroInput.value || '').trim();
+                            if (!otroValor) {
+                                showFieldError('nueva_empresa_sector', 'Especifica el giro de tu empresa');
+                                setLoadingState(false);
+                                return;
+                            }
+                            categoriaSector = otroValor;
+                        }
                         const nuevaEmpresa = await crearEmpresaPendiente({
                             nombre_empresa: (data.nueva_empresa_nombre || '').trim(),
-                            categoria: data.nueva_empresa_sector || 'Otros'
+                            categoria: categoriaSector
                         });
                         if (!nuevaEmpresa || !nuevaEmpresa.id) {
                             setLoadingState(false);
@@ -936,6 +956,23 @@
             } catch (e) {
                 console.error('Error cargando empresas:', e);
                 select.innerHTML = '<option value="">Error al cargar empresas</option>';
+            }
+        }
+
+        // Al elegir "Otros" en el giro de la empresa, mostrar un campo de
+        // texto para que el usuario escriba el giro real en vez de guardar
+        // literalmente la palabra "Otros" en la base de datos.
+        function toggleSectorOtroInput() {
+            const select = document.getElementById('nueva_empresa_sector');
+            const wrap = document.getElementById('sectorOtroWrap');
+            const input = document.getElementById('nueva_empresa_sector_otro');
+            if (!select || !wrap) return;
+            const esOtros = select.value === 'Otros';
+            wrap.classList.toggle('hidden', !esOtros);
+            if (esOtros) {
+                setTimeout(() => input && input.focus(), 50);
+            } else if (input) {
+                input.value = '';
             }
         }
 

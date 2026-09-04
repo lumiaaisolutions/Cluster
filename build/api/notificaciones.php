@@ -1,4 +1,8 @@
 <?php
+define('CLAUT_ACCESS', true);
+require_once __DIR__ . '/../config/session-config.php';
+SessionConfig::init();
+
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: https://intranet.clautmetropolitano.mx');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -402,12 +406,17 @@ class NotificacionesAPI {
     }
 
     private function getCurrentUserEmail() {
-        session_start();
+        // La sesión ya se inició arriba con SessionConfig::init() (mismo
+        // nombre/cookie "CLAUT_SESSION" que usa el login). Antes esta
+        // función llamaba a session_start() a secas, que usa el nombre de
+        // cookie por defecto de PHP ("PHPSESSID") — al no coincidir con la
+        // cookie real, $_SESSION siempre estaba vacío y toda petición
+        // devolvía 401 "Usuario no autenticado" sin importar que el
+        // usuario sí tuviera sesión iniciada.
         return $_SESSION['user_email'] ?? null;
     }
 
     private function getCurrentUserRole() {
-        session_start();
         return $_SESSION['user_rol'] ?? 'user';
     }
 

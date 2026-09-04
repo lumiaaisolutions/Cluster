@@ -59,8 +59,14 @@ function obtenerAvatarPorDefecto() {
     ];
 }
 
-// Configuración de sesión
-session_start();
+// Configuración de sesión — antes session_start() a secas usaba el
+// nombre de cookie por defecto de PHP en vez de "CLAUT_SESSION" (mismo
+// bug que BUG-035). Nota: este archivo no está referenciado por ninguna
+// página del sitio (verificado, cero resultados) — sin impacto en
+// producción hoy, se deja corregido por consistencia.
+define('CLAUT_ACCESS', true);
+require_once __DIR__ . '/../config/session-config.php';
+SessionConfig::init();
 
 // Determinar qué usuario
 $userId = null;

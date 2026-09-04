@@ -171,6 +171,7 @@ body.claut-dark {
 
 .claut-text-muted { color: var(--text-muted); }
 .claut-text-secondary { color: var(--text-secondary); }
+.claut-text-primary { color: var(--text-primary); }
 
 /* ── 5. BOTONES ─────────────────────────────────────────────────────────── */
 .porsche-btn {

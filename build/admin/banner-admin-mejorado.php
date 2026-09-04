@@ -281,7 +281,7 @@ try {
     <title>Administrador de Banners - CRUD Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/claut-ui.css?v=20260901e">
+    <link rel="stylesheet" href="../css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="../assets/css/layout/claut-wizard.css?v=20260901a">
     <link rel="stylesheet" href="../assets/css/layout/admin-sidebar.css?v=20260901c">
     <style>
@@ -366,7 +366,7 @@ try {
         }
     </style>
 </head>
-<body class="bg-gray-100 claut-dark claut-skin">
+<body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
         <div class="claut-admin-sidebar-brand">
             <img src="../assets/img/apple-icon.png" alt="Clúster Metropolitano" class="claut-admin-sidebar-logo">
@@ -442,7 +442,7 @@ try {
             <div class="flex justify-between items-center">
                 <div class="flex items-center">
                     <!-- Hamburger Menu Button for All Screens -->
-                    <button class="mr-3 p-2 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
+                    <button class="mr-3 p-2 text-white hover:claut-text-secondary focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md"
                             id="claut-header-menu-btn"
                             style="transition: background .2s ease;"
                             aria-label="Abrir menú de navegación">
@@ -501,7 +501,7 @@ try {
         </div>
 
         <!-- Controles -->
-        <div class="bg-white rounded-lg shadow p-4 mb-6">
+        <div class="rounded-lg p-4 mb-6" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div class="flex items-center space-x-4">
                     <button onclick="abrirModalNuevo()" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition" style="background: #C7252B;">
@@ -513,7 +513,7 @@ try {
                 </div>
 
                 <div class="flex items-center space-x-4">
-                    <select id="filterEstado" class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" onchange="filtrarBanners()">
+                    <select id="filterEstado" class="claut-select" style="width:auto; padding:0.6rem 1rem;" onchange="filtrarBanners()">
                         <option value="">Todos los estados</option>
                         <option value="activo">Activos</option>
                         <option value="inactivo">Inactivos</option>
@@ -527,7 +527,7 @@ try {
 
         <!-- Mensajes -->
         <?php if ($mensaje): ?>
-            <div class="mb-6 p-4 rounded-lg shadow <?= $tipo_mensaje === 'success' ? 'bg-green-50 border-l-4 border-green-500 text-green-700' : 'bg-red-50 border-l-4 border-red-500 text-red-700' ?>">
+            <div class="mb-6 p-4 rounded-lg" style="<?= $tipo_mensaje === 'success' ? 'background:var(--surface-success); border-left:4px solid var(--state-success); color:var(--state-success);' : 'background:var(--surface-danger); border-left:4px solid var(--state-danger); color:var(--state-danger);' ?>">
                 <div class="flex items-center">
                     <i class="fas <?= $tipo_mensaje === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle' ?> mr-2"></i>
                     <?= htmlspecialchars($mensaje) ?>
@@ -540,13 +540,13 @@ try {
 
             <!-- Lista de Banners -->
             <section class="mb-6">
-                <div class="bg-white rounded-lg shadow p-4">
+                <div class="rounded-lg p-4" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold text-gray-800">
+                        <h2 class="text-xl font-bold claut-text-primary">
                             <i class="fas fa-images mr-2" style="color: #C7252B;"></i>
                             Lista de Banners
                         </h2>
-                        <div class="text-sm text-gray-600">
+                        <div class="text-sm claut-text-secondary">
                             <?= count($banners) ?> banner(es) total
                         </div>
                     </div>
@@ -555,8 +555,8 @@ try {
                         <?php if (empty($banners)): ?>
                             <div class="text-center py-12">
                                 <div class="text-6xl mb-4" style="color:#475569;"><i class="fas fa-images"></i></div>
-                                <h3 class="text-xl font-semibold mb-2 text-gray-700">No hay banners configurados</h3>
-                                <p class="text-gray-500 mb-4">Crea tu primer banner para comenzar</p>
+                                <h3 class="text-xl font-semibold mb-2 claut-text-secondary">No hay banners configurados</h3>
+                                <p class="claut-text-muted mb-4">Crea tu primer banner para comenzar</p>
                                 <button onclick="abrirModalNuevo()" class="text-white px-6 py-3 rounded-lg hover:opacity-90 transition" style="background: #C7252B;">
                                     <i class="fas fa-plus mr-2"></i>Crear Primer Banner
                                 </button>
@@ -578,12 +578,12 @@ try {
                                 }
                                 $fechaCreacion = date('d/m/Y H:i', strtotime($banner['fecha_creacion']));
                                 ?>
-                                <div class="banner-item bg-white border rounded-lg p-4 hover:shadow-md transition-shadow" data-estado="<?= $banner['activo'] ? 'activo' : 'inactivo' ?>">
+                                <div class="banner-item rounded-lg p-4 transition-shadow" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);" data-estado="<?= $banner['activo'] ? 'activo' : 'inactivo' ?>">
                                     <div class="flex gap-4">
                                         <div class="w-32 h-24 rounded-lg banner-preview flex-shrink-0" style="background-image: url('<?= htmlspecialchars($imagenUrl) ?>')">
                                             <?php if (!$banner['imagen_url']): ?>
-                                                <div class="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-image text-gray-400 text-2xl"></i>
+                                                <div class="w-full h-full rounded-lg flex items-center justify-center" style="background:rgba(255,255,255,0.06);">
+                                                    <i class="fas fa-image claut-text-muted text-2xl"></i>
                                                 </div>
                                             <?php endif; ?>
                                         </div>
@@ -591,15 +591,15 @@ try {
                                         <div class="flex-1">
                                             <div class="flex justify-between items-start mb-2">
                                                 <div class="flex-1">
-                                                    <h3 class="text-lg font-semibold text-gray-800 mb-1"><?= htmlspecialchars($banner['titulo']) ?></h3>
-                                                    <p class="text-gray-600 text-sm"><?= htmlspecialchars($banner['descripcion'] ?: 'Sin descripción') ?></p>
+                                                    <h3 class="text-lg font-semibold claut-text-primary mb-1"><?= htmlspecialchars($banner['titulo']) ?></h3>
+                                                    <p class="claut-text-secondary text-sm"><?= htmlspecialchars($banner['descripcion'] ?: 'Sin descripción') ?></p>
                                                 </div>
-                                                <span class="px-2 py-1 rounded-full text-xs font-medium ml-3 <?= $banner['activo'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
+                                                <span class="claut-badge <?= $banner['activo'] ? 'claut-badge--success' : 'claut-badge--danger' ?> ml-3">
                                                     <?= $banner['activo'] ? '<i class="fas fa-check-circle"></i> ACTIVO' : '<i class="fas fa-times-circle"></i> INACTIVO' ?>
                                                 </span>
                                             </div>
 
-                                            <div class="flex justify-between items-center text-sm text-gray-500 mb-3">
+                                            <div class="flex justify-between items-center text-sm claut-text-muted mb-3">
                                                 <div class="flex items-center space-x-4">
                                                     <span><i class="fas fa-sort-numeric-up mr-1"></i>Posición <?= $banner['posicion'] ?></span>
                                                     <span><i class="fas fa-calendar mr-1"></i><?= $fechaCreacion ?></span>
@@ -608,7 +608,7 @@ try {
                                             </div>
 
                                             <div class="flex justify-between items-center pt-3 border-t">
-                                                <div class="text-sm text-gray-500">
+                                                <div class="text-sm claut-text-muted">
                                                     <?php if ($banner['fecha_inicio'] || $banner['fecha_fin']): ?>
                                                         <i class="fas fa-clock mr-1"></i>
                                                         <?php if ($banner['fecha_inicio']): ?>

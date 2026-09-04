@@ -30,21 +30,26 @@
             font-family: 'Inter', sans-serif;
             background: #f1f5f9;
             margin: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             display: flex;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         /* Split Screen Layout */
         .split-container {
             width: 100%;
             display: flex;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
-        /* Left Panel - Glassmorphism */
+        /* Left Panel - Glassmorphism.
+           overflow-y:auto + min-height (no height fija) evita que en
+           pantallas bajas (laptops ~800px, zoom, formulario largo) el
+           badge de LUMIA quede cortado por el overflow:hidden que tenía
+           el body — ahora el panel scrollea internamente si no cabe. */
         .left-panel {
             width: 40%;
+            min-height: 100vh;
             background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
             display: flex;
             flex-direction: column;
@@ -53,6 +58,7 @@
             padding: 2rem;
             position: relative;
             z-index: 10;
+            overflow-y: auto;
         }
 
         .glass-card {
@@ -75,11 +81,22 @@
             overflow: hidden;
         }
 
+        /* Los banners reales que sube el admin (ej. anuncios de eventos como
+           "BAM México") son imágenes ya diseñadas con su propio texto —
+           un scrim oscuro pensado solo para el banner de respaldo genérico
+           (mostrarBannerDefault) las oscurecía innecesariamente y tapaba
+           contenido que ya era legible por sí mismo. El scrim ahora es un
+           tinte sutil (marca + profundidad leve), no un oscurecimiento —
+           la legibilidad del texto de respaldo la da el text-shadow de
+           .carousel-content, no este overlay. */
         .carousel-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, rgba(193, 75, 75, 0.8), transparent, rgba(255, 255, 255, 0.2));
+            background:
+                linear-gradient(0deg, rgba(9, 9, 11, 0.4) 0%, rgba(9, 9, 11, 0.12) 30%, transparent 55%),
+                linear-gradient(100deg, rgba(9, 9, 11, 0.18) 0%, rgba(199, 37, 43, 0.1) 32%, transparent 60%);
             z-index: 2;
+            pointer-events: none;
         }
 
         .carousel-slide {
@@ -96,13 +113,24 @@
             opacity: 1;
         }
 
+        /* Texto siempre claro + text-shadow: legible sobre CUALQUIER imagen
+           de banner, sin depender de qué tan oscura/clara sea la foto. */
         .carousel-content {
             position: absolute;
             bottom: 6rem;
             left: 5rem;
+            right: 3rem;
             max-width: 600px;
             z-index: 10;
-            color: #1e293b;
+            color: #f8fafc;
+        }
+        .carousel-content h2 {
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.8), 0 8px 28px rgba(0, 0, 0, 0.65);
+        }
+        .carousel-content p {
+            color: #e2e8f0 !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 4px 14px rgba(0, 0, 0, 0.6);
         }
 
         /* Form Controls */
@@ -273,6 +301,51 @@
             .left-panel  { width: 100%; }
         }
 
+        /* Antes solo existía el breakpoint de 1024px (ocultar el carrusel):
+           en teléfonos el padding/tamaños quedaban pensados para escritorio
+           — la tarjeta se veía apretada contra los bordes y el badge de
+           LUMIA competía por espacio sin margen de respiro. */
+        @media (max-width: 640px) {
+            .left-panel { padding: 1.25rem; }
+            .glass-card { padding: 2rem 1.5rem; border-radius: 24px; }
+        }
+        @media (max-width: 380px) {
+            .left-panel { padding: 1rem 0.85rem; }
+            .glass-card { padding: 1.5rem 1.15rem; }
+        }
+
+        /* En pantallas bajas (laptops ~800px de alto, o zoom del navegador)
+           el formulario completo (logo + título + email + password + botón
+           + visitante + registro + badge LUMIA) no cabía sin scroll. El
+           overflow-y:auto ya permite scrollear, pero se compacta el
+           espaciado vertical para que quepa completo sin scroll en la
+           mayoría de las pantallas reales, dejando el scroll solo como
+           red de seguridad en viewports genuinamente pequeños. */
+        /* El umbral anterior (760px) casi nunca se activaba: una laptop
+           normal con la barra del navegador ya tiene ~850-950px de alto
+           de viewport, así que en la práctica el formulario SIEMPRE se
+           veía a tamaño completo y SIEMPRE requería scroll para ver el
+           badge de LUMIA. Subido a 1050px para que cubra prácticamente
+           cualquier laptop real, no solo pantallas genuinamente chicas. */
+        /* Todavía faltaba un poco (el badge quedaba justo cortado en el
+           borde) — se sube el umbral a 1300px (cubre prácticamente toda
+           pantalla real) y se recorta más el padding vertical de la
+           tarjeta, que antes solo se tocaba por debajo de 760px. */
+        @media (max-height: 1300px) {
+            .glass-card { padding-top: 1.75rem !important; padding-bottom: 1.75rem !important; }
+            .glass-card img { margin-bottom: 0.85rem !important; width: 8rem !important; }
+            .glass-card .mb-10 { margin-bottom: 1rem !important; }
+            .back-to-site { margin-bottom: 0.35rem; }
+            .glass-card form.space-y-6 > * + * { margin-top: 0.85rem !important; }
+            .mt-8.pt-8 { margin-top: 1rem !important; padding-top: 1rem !important; }
+            .left-panel { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+            div[style*="margin-top: 1.75rem"] { margin-top: 0.65rem !important; }
+        }
+        @media (max-height: 760px) {
+            .glass-card { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+            .glass-card img { width: 6rem !important; margin-bottom: 0.6rem !important; }
+        }
+
         /* Botón "Volver al sitio" */
         .back-to-site {
             display: inline-flex;
@@ -302,6 +375,13 @@
             transition: transform 0.25s ease;
         }
         .back-to-site:hover i { transform: translateX(-3px); }
+
+        /* Espaciado base reducido (no depende de ningún breakpoint): el
+           formulario completo era más alto de lo necesario incluso en
+           laptops normales — logo de 176px + mb-10 (40px) + mb-6 (24px)
+           sumaban peso vertical que el login no necesita para verse bien. */
+        .glass-card img.w-44 { width: 10rem !important; margin-bottom: 1.25rem !important; }
+        .glass-card .mb-10 { margin-bottom: 1.75rem !important; }
     </style>
 </head>
 
@@ -576,10 +656,11 @@
             const container = document.getElementById('carouselSlides');
             container.innerHTML = banners.map((banner, i) => `
                 <div class="carousel-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${banner.imagen_url}')">
+                    ${banner.titulo ? `
                     <div class="carousel-content">
-                        <h2 class="text-5xl font-black mb-4 leading-tight text-slate-800">${banner.titulo}</h2>
-                        <p class="text-slate-500 text-lg max-w-md font-medium">${banner.descripcion || ''}</p>
-                    </div>
+                        <h2 class="text-5xl font-black mb-4 leading-tight">${banner.titulo}</h2>
+                        ${banner.descripcion ? `<p class="text-lg max-w-md font-medium">${banner.descripcion}</p>` : ''}
+                    </div>` : ''}
                 </div>
             `).join('');
         }

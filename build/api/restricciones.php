@@ -1,4 +1,8 @@
 <?php
+define('CLAUT_ACCESS', true);
+require_once __DIR__ . '/../config/session-config.php';
+SessionConfig::init();
+
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: https://intranet.clautmetropolitano.mx');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -172,7 +176,8 @@ class RestriccionesAPI {
     }
 
     private function getCurrentUserEmail() {
-        session_start();
+        // La sesión ya se inició arriba con SessionConfig::init() (mismo
+        // patrón/causa que BUG-035 en api/notificaciones.php).
         return $_SESSION['user_email'] ?? null;
     }
 

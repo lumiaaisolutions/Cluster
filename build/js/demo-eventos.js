@@ -470,29 +470,29 @@ function renderRegistrosEmpresas() {
     emptyState.classList.add('hidden');
     
     container.innerHTML = filteredRegistros.map(registro => `
-        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" 
+        <div class="rounded-lg p-4 transition-shadow cursor-pointer" style="border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.02);"
              onclick="viewDetalleRegistro(${registro.id})">
             <div class="flex items-center justify-between">
                 <div class="flex-1">
                     <div class="flex items-center space-x-3">
                         <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-building text-blue-600"></i>
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--surface-info);">
+                                <i class="fas fa-building" style="color: var(--state-info);"></i>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center space-x-2">
-                                <h4 class="text-sm font-medium text-gray-900 truncate">
+                                <h4 class="text-sm font-medium claut-text-primary truncate">
                                     ${registro.nombre_empresa || registro.nombre_usuario || 'Sin nombre'}
                                 </h4>
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getRegistroEstadoColor(registro.estado_registro)}">
+                                <span class="${getRegistroEstadoColor(registro.estado_registro)}">
                                     ${registro.estado_registro || 'Confirmado'}
                                 </span>
                             </div>
-                            <p class="text-sm text-gray-500 truncate">
+                            <p class="text-sm claut-text-muted truncate">
                                 ${registro.evento_titulo || 'Evento no encontrado'}
                             </p>
-                            <div class="flex items-center space-x-4 mt-1 text-xs text-gray-400">
+                            <div class="flex items-center space-x-4 mt-1 text-xs claut-text-muted">
                                 <span><i class="fas fa-envelope mr-1"></i>${registro.email_contacto || 'Sin email'}</span>
                                 <span><i class="fas fa-calendar mr-1"></i>${formatDate(registro.fecha_registro)}</span>
                             </div>
@@ -500,7 +500,7 @@ function renderRegistrosEmpresas() {
                     </div>
                 </div>
                 <div class="flex-shrink-0">
-                    <i class="fas fa-chevron-right text-gray-400"></i>
+                    <i class="fas fa-chevron-right claut-text-muted"></i>
                 </div>
             </div>
         </div>
@@ -720,7 +720,7 @@ function renderEventos() {
     }
 
     if (filteredEventos.length === 0) {
-        container.innerHTML = '<tr><td colspan="6" class="px-6 py-12 text-center text-gray-500 font-medium">No se encontraron eventos coincidentes</td></tr>';
+        container.innerHTML = '<tr><td colspan="6" class="px-6 py-12 text-center claut-text-muted font-medium">No se encontraron eventos coincidentes</td></tr>';
         if (emptyState) emptyState.classList.remove('hidden');
         return;
     }
@@ -761,7 +761,7 @@ function createEventoRow(evento) {
         statusClass = 'border-green-500/20 text-green-400 bg-green-500/5';
         dotClass = 'bg-green-500';
     } else if (estado.includes('final') || estado === 'finalizado') {
-        statusClass = 'border-gray-500/20 text-gray-400 bg-gray-500/5';
+        statusClass = 'border-gray-500/20 claut-text-muted bg-gray-500/5';
         dotClass = 'bg-gray-500';
     } else if (estado.includes('cancel')) {
         statusClass = 'border-red-500/20 text-red-400 bg-red-500/5';
@@ -780,7 +780,7 @@ function createEventoRow(evento) {
                     </div>
                     <div>
                         <div class="text-white font-bold text-sm tracking-tight group-hover:text-porsche-accent transition-colors">${evento.titulo}</div>
-                        <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">${(evento.tipo || 'evento')}</div>
+                        <div class="text-[10px] claut-text-muted font-bold uppercase tracking-widest mt-0.5">${(evento.tipo || 'evento')}</div>
                     </div>
                 </div>
             </td>
@@ -790,7 +790,7 @@ function createEventoRow(evento) {
                         <i class="far fa-calendar-alt mr-2 text-red-500/50"></i>
                         ${fechaFormateada}
                     </div>
-                    <div class="flex items-center text-[10px] text-gray-500 mt-1 font-bold">
+                    <div class="flex items-center text-[10px] claut-text-muted mt-1 font-bold">
                         <i class="far fa-clock mr-2"></i>
                         ${horaFormateada}
                     </div>
@@ -1321,22 +1321,22 @@ function formatTime(dateString) {
 
 function getEstadoColor(estado) {
     const colors = {
-        'proximo': 'bg-blue-100 text-blue-800',
-        'programado': 'bg-blue-100 text-blue-800',
-        'en_curso': 'bg-green-100 text-green-800',
-        'finalizado': 'bg-gray-100 text-gray-800',
-        'cancelado': 'bg-red-100 text-red-800'
+        'proximo': 'claut-badge claut-badge--info',
+        'programado': 'claut-badge claut-badge--info',
+        'en_curso': 'claut-badge claut-badge--success',
+        'finalizado': 'claut-badge claut-badge--neutral',
+        'cancelado': 'claut-badge claut-badge--danger'
     };
-    return colors[estado] || 'bg-gray-100 text-gray-800';
+    return colors[estado] || 'claut-badge claut-badge--neutral';
 }
 
 function getRegistroEstadoColor(estado) {
     const colors = {
-        'confirmado': 'bg-green-100 text-green-800',
-        'pendiente': 'bg-yellow-100 text-yellow-800',
-        'cancelado': 'bg-red-100 text-red-800'
+        'confirmado': 'claut-badge claut-badge--success',
+        'pendiente': 'claut-badge claut-badge--warning',
+        'cancelado': 'claut-badge claut-badge--danger'
     };
-    return colors[estado] || 'bg-green-100 text-green-800';
+    return colors[estado] || 'claut-badge claut-badge--success';
 }
 
 // Función para cambiar estado de registro

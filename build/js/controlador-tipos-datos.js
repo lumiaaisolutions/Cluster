@@ -250,7 +250,7 @@ class ControladorTiposDatos {
                 box-sizing: border-box;
             ">
                 <div style="
-                    background: white;
+                    background: #16161a;
                     padding: 30px;
                     border-radius: 12px;
                     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
@@ -260,7 +260,7 @@ class ControladorTiposDatos {
                     overflow-y: auto;
                 ">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3 style="margin: 0; color: #1f2937; font-size: 24px;">
+                        <h3 style="margin: 0; color: #f8fafc; font-size: 24px;">
                             ${info.titulo} - Detalles
                         </h3>
                         <button onclick="cerrarModalDetalles()" style="
@@ -276,19 +276,19 @@ class ControladorTiposDatos {
                     </div>
                     
                     <div style="space-y: 16px;">
-                        <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                            <h4 style="margin: 0 0 8px 0; color: #374151;">📊 Descripción</h4>
-                            <p style="margin: 0; color: #6b7280; font-size: 14px;">${info.descripcion}</p>
+                        <div style="background: rgba(255,255,255,0.04); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <h4 style="margin: 0 0 8px 0; color: #f8fafc;">📊 Descripción</h4>
+                            <p style="margin: 0; color: #94a3b8; font-size: 14px;">${info.descripcion}</p>
                         </div>
                         
-                        <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                            <h4 style="margin: 0 0 8px 0; color: #374151;">🗄️ Fuente de Datos</h4>
-                            <p style="margin: 0; color: #6b7280; font-size: 14px;">${info.explicacion}</p>
+                        <div style="background: rgba(255,255,255,0.04); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <h4 style="margin: 0 0 8px 0; color: #f8fafc;">🗄️ Fuente de Datos</h4>
+                            <p style="margin: 0; color: #94a3b8; font-size: 14px;">${info.explicacion}</p>
                         </div>
                         
-                        <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                            <h4 style="margin: 0 0 8px 0; color: #374151;">📈 Información Actual</h4>
-                            <ul style="margin: 8px 0; padding-left: 20px; color: #6b7280; font-size: 14px;">
+                        <div style="background: rgba(255,255,255,0.04); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <h4 style="margin: 0 0 8px 0; color: #f8fafc;">📈 Información Actual</h4>
+                            <ul style="margin: 8px 0; padding-left: 20px; color: #94a3b8; font-size: 14px;">
                                 <li>Total de registros: <strong>${datos.length}</strong></li>
                                 <li>Tipo de datos: <strong>${this.tipoActual}</strong></li>
                                 <li>Último valor: <strong>${datos.length > 0 ? datos[datos.length - 1].valor : 'N/A'}</strong></li>
@@ -296,17 +296,17 @@ class ControladorTiposDatos {
                             </ul>
                         </div>
                         
-                        <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                            <h4 style="margin: 0 0 8px 0; color: #374151;">🔍 Campos Disponibles</h4>
-                            <ul style="margin: 8px 0; padding-left: 20px; color: #6b7280; font-size: 14px;">
+                        <div style="background: rgba(255,255,255,0.04); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <h4 style="margin: 0 0 8px 0; color: #f8fafc;">🔍 Campos Disponibles</h4>
+                            <ul style="margin: 8px 0; padding-left: 20px; color: #94a3b8; font-size: 14px;">
                                 ${info.campos.map(campo => `<li>${campo}</li>`).join('')}
                             </ul>
                         </div>
                         
                         ${datos.length > 0 ? `
-                        <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                            <h4 style="margin: 0 0 8px 0; color: #374151;">📋 Muestra de Datos</h4>
-                            <pre style="background: white; padding: 12px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 0;">${JSON.stringify(primerDato, null, 2)}</pre>
+                        <div style="background: rgba(255,255,255,0.04); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <h4 style="margin: 0 0 8px 0; color: #f8fafc;">📋 Muestra de Datos</h4>
+                            <pre style="background: #16161a; padding: 12px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 0;">${JSON.stringify(primerDato, null, 2)}</pre>
                         </div>
                         ` : ''}
                     </div>
