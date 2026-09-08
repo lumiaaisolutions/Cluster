@@ -10366,46 +10366,16 @@
       position: relative;
     }
 
-    .expanding-card::after {
-      content: '';
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      width: 30px;
-      height: 30px;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .expanding-card:hover::after {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .expanding-card::before {
-      content: '\f002';
-      font-family: "Font Awesome 6 Free";
-      font-weight: 900;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 14px;
-      z-index: 2;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: all 0.3s ease;
-    }
-
-    .expanding-card:hover::before {
-      opacity: 1;
-      transform: scale(1);
+    /* El botón de expandir vivía como ::before/::after puramente decorativo:
+       parecía clickeable (lupa flotante) pero cualquier clic ahí en realidad
+       activaba el listener de la tarjeta completa, que solo abre el modal
+       con DOBLE clic — de ahí el reporte "con un clic no abre". Ahora
+       createExpandingCards() inserta un <button class="card-preview-btn">
+       real (esa clase ya existía en el CSS, diseñada para esto, pero nunca
+       se conectó al HTML) con su propio listener de un solo clic. */
+    @media (max-width: 768px) {
+      /* En móvil no hay hover — el botón queda siempre visible a tamaño táctil */
+      .card-preview-btn { opacity: 1 !important; transform: scale(1) !important; width: 44px; height: 44px; }
     }
 
     /* Responsive modal */
@@ -10911,8 +10881,7 @@
     @media print {
 
       .image-modal-overlay,
-      .expanding-card::before,
-      .expanding-card::after {
+      .card-preview-btn {
         display: none !important;
       }
 
@@ -14258,18 +14227,25 @@
           card.style.setProperty('--optionBackground', `url("${banner.imagen_url}")`);
           card.style.backgroundImage = `url("${banner.imagen_url}")`;
 
-          card.innerHTML = ``;
-
-          // Add double-click to expand image and single click to activate
-          card.addEventListener('click', (e) => {
-            if (e.detail === 1) {
-              // Single click - activate card
-              setActiveCard(card);
-            }
+          // Botón real de expandir — un solo clic abre el modal directamente,
+          // sin depender del doble clic de la tarjeta (ver nota en el CSS).
+          const previewBtn = document.createElement('button');
+          previewBtn.type = 'button';
+          previewBtn.className = 'card-preview-btn';
+          previewBtn.setAttribute('aria-label', `Ver imagen completa: ${banner.titulo || `Banner ${index + 1}`}`);
+          previewBtn.innerHTML = '<i class="fas fa-magnifying-glass"></i>';
+          previewBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openImageModal(banner.imagen_url, banner.titulo || `Banner ${index + 1}`);
           });
+          card.appendChild(previewBtn);
 
+          // Un clic en el resto de la tarjeta activa/cambia la tarjeta actual
+          card.addEventListener('click', () => setActiveCard(card));
+
+          // Doble clic en cualquier parte de la tarjeta también abre el modal
+          // (se conserva para quien ya tenía ese hábito)
           card.addEventListener('dblclick', () => {
-            // Double click - expand image
             openImageModal(banner.imagen_url, banner.titulo || `Banner ${index + 1}`);
           });
 
@@ -14520,18 +14496,25 @@
         card.className = `expanding-card ${index === 0 ? 'active' : ''}`;
         card.style.backgroundImage = `url("${banner.imagen_url}")`;
 
-        card.innerHTML = ``;
-
-        // Add double-click to expand image and single click to activate
-        card.addEventListener('click', (e) => {
-          if (e.detail === 1) {
-            // Single click - activate card
-            window.setActiveCard(card);
-          }
+        // Botón real de expandir — un solo clic abre el modal directamente
+        // (antes solo el doble clic en la tarjeta lo abría; el botón visual
+        // era un ::before/::after decorativo sin listener propio).
+        const previewBtn = document.createElement('button');
+        previewBtn.type = 'button';
+        previewBtn.className = 'card-preview-btn';
+        previewBtn.setAttribute('aria-label', `Ver imagen completa: ${banner.titulo || `Banner ${index + 1}`}`);
+        previewBtn.innerHTML = '<i class="fas fa-magnifying-glass"></i>';
+        previewBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          window.openImageModal(banner.imagen_url, banner.titulo || `Banner ${index + 1}`);
         });
+        card.appendChild(previewBtn);
 
+        // Un clic en el resto de la tarjeta activa/cambia la tarjeta actual
+        card.addEventListener('click', () => window.setActiveCard(card));
+
+        // Doble clic en cualquier parte también abre el modal
         card.addEventListener('dblclick', () => {
-          // Double click - expand image
           window.openImageModal(banner.imagen_url, banner.titulo || `Banner ${index + 1}`);
         });
 
