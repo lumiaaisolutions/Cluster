@@ -407,7 +407,7 @@ class EmpresasVisualizacionManager {
     }
 
     generarLogoDefault(nombre) {
-        return `https://via.placeholder.com/300x200/6366f1/ffffff?text=${encodeURIComponent(nombre)}`;
+        return `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=6366f1&color=ffffff&bold=true&length=2&size=300&font-size=0.33`;
     }
 }
 

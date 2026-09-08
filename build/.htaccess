@@ -94,14 +94,13 @@ RewriteRule ^demo_([a-z_]+)\.html$ /auth-gate.php?page=demo_$1.html [L,QSA]
     # img-src + images.unsplash.com (Sept 2026): api/eventos.php usa esa URL
     # como imagen de respaldo para eventos sin foto propia — bloqueada,
     # rompía la carga de esas imágenes (error "Redirect was not allowed").
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://kit.fontawesome.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com https://kit.fontawesome.com; img-src 'self' data: blob: https://cdnjs.cloudflare.com https://images.unsplash.com; connect-src 'self' https://ka-f.fontawesome.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://kit.fontawesome.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com https://kit.fontawesome.com; img-src 'self' data: blob: https://cdnjs.cloudflare.com https://images.unsplash.com https://ui-avatars.com; connect-src 'self' https://ka-f.fontawesome.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
 
-    # CSP endurecida en modo SOLO-REPORTE (Sept 2026, ver docs/architecture/PLAN_CSP_HARDENING.md Fase D).
-    # No bloquea nada — corre en paralelo a la política real de arriba y solo
-    # registra en api/csp-report.php qué se habría bloqueado si quitáramos
-    # unsafe-inline/unsafe-eval hoy. Es el paso de datos reales antes de migrar
-    # los 289 onclick="" y el Tailwind CDN de 22 páginas (Fases A-C, no ejecutadas).
-    Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://kit.fontawesome.com https://unpkg.com; style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com https://kit.fontawesome.com; img-src 'self' data: blob: https://cdnjs.cloudflare.com https://images.unsplash.com; connect-src 'self' https://ka-f.fontawesome.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; report-uri /api/csp-report.php"
+    # CSP Report-Only RETIRADA (2026-09-08): cumplió su fase de recolección —
+    # confirmó que las violaciones son universales (Tailwind CDN JIT inyecta
+    # cientos de estilos inline por página + onclick masivo, inventario en
+    # PLAN_CSP_HARDENING.md). El costo superó al beneficio: cada violación
+    # dispara un POST de reporte y Safari se congelaba con cientos por carga.
 </IfModule>
 
 # ==== REGLAS PARA PRETTY URLs ====

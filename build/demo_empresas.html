@@ -114,6 +114,7 @@
         .diff-added { background: rgba(34, 197, 94, 0.1); color: #4ade80; }
         .diff-removed { background: rgba(239, 44, 44, 0.1); color: #f87171; }
     </style>
+<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260908e">
 </head>
 
 <body class="claut-dark">
@@ -349,25 +350,9 @@
 
 
 
-        <!-- Tabla de Empresas Elite -->
+        <!-- Directorio de Empresas Elite (vista de tarjetas) -->
         <div class="glass-card overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="porsche-table min-w-full">
-                    <thead class="text-xs uppercase tracking-wider claut-text-muted border-b border-white/5 bg-white/2">
-                        <tr>
-                            <th class="text-left">Empresa</th>
-                            <th class="text-left">Contacto</th>
-                            <th class="text-left">Estado</th>
-                            <th class="text-left">Descuento</th>
-                            <th class="text-left">Usuario Asignado</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="empresasTableBody" class="divide-y divide-white/2">
-                        <!-- Las empresas se cargarán aquí -->
-                    </tbody>
-                </table>
-            </div>
+            <div id="empresasTableBody" class="elite-grid p-4"></div>
 
             <!-- Loading State -->
             <div id="loadingState" class="hidden p-20 text-center">
@@ -690,7 +675,7 @@
     <!-- Notifications -->
     <div id="notifications" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
-    <script src="./js/admin-empresas.js?v=20260901a"></script>
+    <script src="./js/admin-empresas.js?v=20260908b"></script>
 
     <script>
         // Funciones de mantenimiento de base de datos
@@ -1038,6 +1023,7 @@
   <script src="assets/js/loading-screen.js"></script>
   <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
   <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
+<script src="./js/claut-admin-elite.js?v=20260908e"></script>
 </body>
 
 </html>

@@ -10,7 +10,6 @@
     <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous" defer></script>
 
   <!-- Porsche-inspired Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +18,7 @@
   <!-- Nucleo Icons -->
   <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260901a" />
+  <link rel="stylesheet" href="./assets/css/layout/header-navbar.css?v=20260908e" />
   <!-- Popper -->
   <script src="https://unpkg.com/@popperjs/core@2"></script>
     
@@ -50,6 +49,48 @@
             display: block;
             opacity: 1;
         }
+
+        /* ===== Vista resumen del perfil (Ver / Editar) ===== */
+        .profile-summary { display: flex; flex-direction: column; gap: 1.25rem; }
+        .profile-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 1023px) { .profile-summary-grid { grid-template-columns: 1fr; } }
+        .profile-summary-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            backdrop-filter: blur(14px);
+        }
+        .profile-summary-card-head { display: flex; align-items: center; margin-bottom: 1rem; }
+        .profile-summary-list { display: flex; flex-direction: column; gap: 0; margin: 0; }
+        .profile-summary-row {
+            display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+            padding: 0.65rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .profile-summary-row:last-child { border-bottom: none; }
+        .profile-summary-row--full { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+        .profile-summary-row dt {
+            display: flex; align-items: center; gap: 0.5rem; flex: none;
+            font-size: 0.78rem; font-weight: 600; color: #94a3b8; white-space: nowrap;
+        }
+        .profile-summary-row dt i { width: 14px; text-align: center; color: #C7252B; opacity: 0.85; font-size: 0.75rem; }
+        .profile-summary-row dd {
+            margin: 0; font-size: 0.85rem; font-weight: 600; color: #f1f5f9;
+            text-align: right; overflow-wrap: anywhere;
+        }
+        .profile-summary-row--full dd { text-align: left; font-weight: 400; color: #cbd5e1; line-height: 1.5; }
+        .profile-summary-row dd.is-empty { color: #52525b; font-weight: 400; font-style: italic; }
+        .profile-edit-cta {
+            align-self: flex-end;
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            padding: 0.85rem 1.75rem; border-radius: 999px; border: none;
+            background: linear-gradient(135deg, #C7252B, #a02622);
+            color: #fff; font-weight: 700; font-size: 0.9rem;
+            box-shadow: 0 8px 22px -6px rgba(199, 37, 43, 0.55);
+            cursor: pointer; transition: transform 180ms cubic-bezier(0.23,1,0.32,1), filter 180ms ease;
+        }
+        .profile-edit-cta:hover { filter: brightness(1.08); transform: translateY(-1px); }
+        .profile-edit-cta:active { transform: scale(0.97); }
         /* Ajuste de inputs premium global si es que hay genéricos */
         .enhanced-input {
             background-color: rgba(255, 255, 255, 0.05) !important;
@@ -138,9 +179,10 @@
             overflow-x: hidden !important;
         }
 
-        /* --- Main: padding adaptativo --- */
+        /* --- Main: padding adaptativo (reporte: hueco excesivo entre el
+           header fijo y el breadcrumb — el aire extra de +1rem se redujo) --- */
         main.claut-main {
-            padding-top: calc(var(--header-height, 64px) + 1rem) !important;
+            padding-top: calc(var(--header-height, 64px) + 0.35rem) !important;
             padding-left: clamp(0.75rem, 3vw, 3rem) !important;
             padding-right: clamp(0.75rem, 3vw, 3rem) !important;
             overflow-x: hidden !important;
@@ -290,7 +332,7 @@
             main.claut-main { padding-left: 134px !important; }
         }
     </style>
-  <link rel="stylesheet" href="./css/claut-panel.css?v=20260903a">
+  <link rel="stylesheet" href="./css/claut-panel.css?v=20260908f">
 </head>
 
 <body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default claut-dark">
@@ -382,6 +424,52 @@
             <div class="tab-content">
                 <!-- Information Tab -->
                 <div id="infoTab" class="tab-pane active">
+
+                    <!-- ================= Vista resumen (por defecto) ================= -->
+                    <div id="profileSummaryView" class="profile-summary">
+                        <div class="profile-summary-grid">
+                            <div class="profile-summary-card">
+                                <div class="profile-summary-card-head">
+                                    <div class="text-white w-8 h-8 bg-black rounded-lg flex items-center justify-center mr-3">
+                                        <i class="fas fa-user text-white text-sm"></i>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white">Información Personal</h3>
+                                </div>
+                                <dl class="profile-summary-list" id="summaryPersonal">
+                                    <div class="profile-summary-row"><dt><i class="fas fa-signature"></i>Nombre completo</dt><dd data-summary="fullName">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-envelope"></i>Correo</dt><dd data-summary="email">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-phone"></i>Teléfono</dt><dd data-summary="phone">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-calendar" id="summaryBirthIcon"></i><span id="summaryBirthLabel">Fecha de nacimiento</span></dt><dd data-summary="birthDate">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-building"></i>Departamento</dt><dd data-summary="department">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-id-badge"></i>Cargo</dt><dd data-summary="position">—</dd></div>
+                                    <div class="profile-summary-row profile-summary-row--full"><dt><i class="fas fa-align-left"></i>Biografía</dt><dd data-summary="bio">—</dd></div>
+                                </dl>
+                            </div>
+                            <div class="profile-summary-card">
+                                <div class="profile-summary-card-head">
+                                    <div class="text-white w-8 h-8 bg-black rounded-lg flex items-center justify-center mr-3">
+                                        <i class="fas fa-address-book text-white text-sm"></i>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white">Información de Contacto</h3>
+                                </div>
+                                <dl class="profile-summary-list" id="summaryContact">
+                                    <div class="profile-summary-row profile-summary-row--full"><dt><i class="fas fa-location-dot"></i>Dirección</dt><dd data-summary="address">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-city"></i>Ciudad</dt><dd data-summary="city">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-map"></i>Estado</dt><dd data-summary="state">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-mail-bulk"></i>Código Postal</dt><dd data-summary="zipCode">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-flag"></i>País</dt><dd data-summary="country">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-triangle-exclamation" style="color:#f59e0b"></i>Contacto de emergencia</dt><dd data-summary="emergencyContact">—</dd></div>
+                                    <div class="profile-summary-row"><dt><i class="fas fa-phone-volume" style="color:#f59e0b"></i>Tel. de emergencia</dt><dd data-summary="emergencyPhone">—</dd></div>
+                                </dl>
+                            </div>
+                        </div>
+                        <button type="button" id="editProfileBtn" class="profile-edit-cta">
+                            <i class="fas fa-pen"></i> Editar Información
+                        </button>
+                    </div>
+
+                    <!-- ================= Vista de edición (oculta por defecto) ================= -->
+                    <div id="profileEditForms" class="hidden">
                     <div class="flex flex-wrap -mx-3">
                         <!-- Personal Information -->
                         <div class="w-full max-w-full px-3 lg:w-1/2 lg:flex-none ">
@@ -601,7 +689,7 @@
 
                                     <!-- Action Buttons -->
                                     <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 mt-6">
-                                        <button type="button"
+                                        <button type="button" id="cancelEditProfileBtn"
                                             class="px-5 py-2.5 text-sm border border-white/10 claut-text-secondary rounded-xl font-medium hover:bg-white/5 hover:text-white transition-all duration-300 w-full sm:w-auto">
                                             Cancelar
                                         </button>
@@ -614,6 +702,8 @@
                             </div>
                         </div>
                     </div>
+                    </div>
+                    <!-- ================= /Vista de edición ================= -->
                 </div>
 
                 <!-- Empresa Tab -->
@@ -1004,6 +1094,18 @@
     <!-- JavaScript -->
     <script>
         // Profile Manager Class
+        // Alterna entre la vista resumen (Ver) y el formulario (Editar) del
+        // perfil — FEATURE-034. Función global porque el marcado la referencia
+        // como fallback antes de que ProfileManager exista.
+        function toggleProfileEditMode(editing) {
+            const summary = document.getElementById('profileSummaryView');
+            const forms = document.getElementById('profileEditForms');
+            if (!summary || !forms) return;
+            summary.classList.toggle('hidden', editing);
+            forms.classList.toggle('hidden', !editing);
+            if (editing) forms.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         class ProfileManager {
             constructor() {
                 this.userData = null;
@@ -1139,6 +1241,42 @@
                 document.getElementById('country').value = data.country || 'México';
                 document.getElementById('emergencyPhone').value = data.emergencyPhone || '';
                 document.getElementById('emergencyContact').value = data.emergencyContact || '';
+
+                this.renderProfileSummary(data);
+            }
+
+            // Vista "Ver" del perfil: refleja los mismos datos que llenan el
+            // formulario, en formato de solo lectura (FEATURE-034).
+            renderProfileSummary(data) {
+                const setRow = (key, value, opts = {}) => {
+                    const el = document.querySelector(`[data-summary="${key}"]`);
+                    if (!el) return;
+                    const text = (value ?? '').toString().trim();
+                    if (!text) {
+                        el.textContent = opts.emptyLabel || 'Sin especificar';
+                        el.classList.add('is-empty');
+                    } else {
+                        el.textContent = text;
+                        el.classList.remove('is-empty');
+                    }
+                };
+                setRow('fullName', `${data.firstName || ''} ${data.lastName || ''}`.trim());
+                setRow('email', data.email);
+                setRow('phone', data.phone);
+                setRow('birthDate', data.birthDate);
+                setRow('department', data.department);
+                setRow('position', data.position);
+                setRow('bio', data.bio, { emptyLabel: 'Aún no cuentas nada sobre ti' });
+                setRow('address', data.address, { emptyLabel: 'Sin dirección registrada' });
+                setRow('city', data.city);
+                setRow('state', data.state);
+                setRow('zipCode', data.zipCode);
+                setRow('country', data.country || 'México');
+                setRow('emergencyContact', data.emergencyContact, { emptyLabel: 'No registrado' });
+                setRow('emergencyPhone', data.emergencyPhone, { emptyLabel: 'No registrado' });
+
+                const birthLabel = document.getElementById('summaryBirthLabel');
+                if (birthLabel) birthLabel.textContent = data.role === 'empresa' ? 'Fundación de la empresa' : 'Fecha de nacimiento';
             }
 
             updateStats(stats) {
@@ -1418,6 +1556,17 @@
                 // Save profile button
                 document.getElementById('saveProfileBtn').addEventListener('click', () => {
                     this.saveProfile();
+                });
+
+                // Ver / Editar (FEATURE-034)
+                const editBtn = document.getElementById('editProfileBtn');
+                const cancelBtn = document.getElementById('cancelEditProfileBtn');
+                if (editBtn) editBtn.addEventListener('click', () => toggleProfileEditMode(true));
+                if (cancelBtn) cancelBtn.addEventListener('click', () => {
+                    // Descarta cambios sin guardar: repuebla el formulario con los
+                    // últimos datos confirmados antes de volver a la vista resumen.
+                    if (this.userData) this.populateProfile(this.userData);
+                    toggleProfileEditMode(false);
                 });
 
                 this.setupEmpresaEvents();
@@ -1875,6 +2024,8 @@
                                 document.getElementById('profilePosition').textContent = profileData.position;
                                 document.getElementById('profileDepartment').textContent = profileData.department;
 
+                                this.renderProfileSummary(this.userData);
+                                toggleProfileEditMode(false);
                                 this.showMessage('Solicitudes de cambio enviadas para revisión', 'success');
                                 return;
                             }
@@ -1896,6 +2047,8 @@
                         document.getElementById('profilePosition').textContent = profileData.position;
                         document.getElementById('profileDepartment').textContent = profileData.department;
 
+                        this.renderProfileSummary(this.userData);
+                        toggleProfileEditMode(false);
                         this.showMessage('Perfil actualizado localmente (modo demo)', 'success');
                     }
 

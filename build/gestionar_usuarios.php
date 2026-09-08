@@ -543,6 +543,7 @@ try {
             .container { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
         }
     </style>
+<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260908e">
 </head>
 <body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
@@ -787,27 +788,20 @@ try {
                 </div>
             </div>
         
-            <!-- Modern Table Implementation -->
-            <div class="overflow-x-auto custom-scrollbar">
-                <table class="w-full text-left whitespace-nowrap" id="usersTable">
-                    <thead>
-                        <tr class="bg-white/[0.03] claut-text-muted text-[10px] font-black uppercase tracking-[0.2em] border-b border-white/5">
-                            <th class="px-6 py-4">ID</th>
-                            <th class="px-6 py-4">Usuario</th>
-                            <th class="px-6 py-4">Información</th>
-                            <th class="px-6 py-4 text-center">Rol / Cargo</th>
-                            <th class="px-6 py-4 text-center">Estado</th>
-                            <th class="px-6 py-4 text-right">Aciones Rápidas</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5">
+            <!-- Directorio en tarjetas (elite v2) + filtros por rol -->
+            <div class="elite-filter-chips mb-5" id="rolChips">
+                <button type="button" class="on" data-rol="" onclick="setRolFilter(this)">Todos</button>
+                <button type="button" data-rol="admin" onclick="setRolFilter(this)">Administradores</button>
+                <button type="button" data-rol="empresa" onclick="setRolFilter(this)">Empresas</button>
+                <button type="button" data-rol="empleado" onclick="setRolFilter(this)">Empleados</button>
+            </div>
+            <div>
+                <div class="elite-grid" id="usersTable">
                 <?php if (empty($usuarios)): ?>
-                    <tr class="border-b border-white/5">
-                        <td colspan="6" class="px-6 py-12 text-center">
-                            <i class="fas fa-users-slash text-4xl text-white/10 mb-4 block"></i>
-                            <span class="claut-text-muted font-medium tracking-wide">No se encontraron usuarios en la base de datos.</span>
-                        </td>
-                    </tr>
+                    <div class="py-12 text-center" style="grid-column:1/-1;">
+                        <i class="fas fa-users-slash text-4xl text-white/10 mb-4 block"></i>
+                        <span class="claut-text-muted font-medium tracking-wide">No se encontraron usuarios en la base de datos.</span>
+                    </div>
                 <?php else: ?>
                     <?php foreach ($usuarios as $usuario): ?>
                         <?php 
@@ -822,113 +816,79 @@ try {
                             $estado_class = 'status-inactivo';
                         }
                         ?>
-                        <tr>
-                            <td><?php echo $usuario['id']; ?></td>
-                            <td>
-                                <strong><?php echo htmlspecialchars($usuario['nombre'] . ' ' . ($usuario['apellidos'] ?? '')); ?></strong>
-                            </td>
-                            <td><?php echo htmlspecialchars($usuario['email']); ?></td>
-                            <td><?php echo htmlspecialchars($usuario['telefono'] ?? 'N/A'); ?></td>
-                            <td>
-                                <span style="text-transform: capitalize; font-weight: 500;">
-                                    <?php 
-                                    $rol_map = ['admin' => 'Administrador', 'empresa' => 'Empresa', 'empleado' => 'Empleado'];
-                                    echo $rol_map[$usuario['rol']] ?? $usuario['rol']; 
-                                    ?>
-                                </span>
-                            </td>
-                            <td><?php echo htmlspecialchars($usuario['nombre_empresa'] ?? 'N/A'); ?></td>
-                            <td><?php echo htmlspecialchars($usuario['cargo'] ?? 'N/A'); ?></td>
-                            <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/10 glass-card">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 animate-pulse"></span>
-                                    <?php echo ucfirst($estado_real); ?>
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 claut-text-muted text-[10px]">
-                                <i class="fas fa-calendar-check mr-2"></i>
-                                <?php 
-                                if ($usuario['fecha_registro'] && $usuario['fecha_registro'] != '0000-00-00 00:00:00') {
-                                    echo date('d/m/Y', strtotime($usuario['fecha_registro'])); 
-                                } else {
-                                    echo 'N/A';
-                                }
-                                ?>
-                            </td>
-                            <td>
-                                <div class="actions flex space-x-2">
-                                    <button type="button" class="btn-primary-premium p-2 rounded-lg" onclick="abrirModalEditar(<?php echo htmlspecialchars(json_encode($usuario)); ?>)">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Botón Restricciones -->
-                                    <button type="button" class="btn btn-warning" onclick="abrirModalRestricciones(<?php echo $usuario['id']; ?>, '<?php echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellidos']); ?>')">
-                                        <i class="fas fa-lock"></i> Restricciones
-                                    </button>
-                                    
-                                    <?php if ($estado_real !== 'activo'): ?>
-                                        <form method="POST" style="display: inline;">
+                        <?php
+                        $rol_map = ['admin' => 'Administrador', 'empresa' => 'Empresa', 'empleado' => 'Empleado'];
+                        $rol_colores = ['admin' => 'linear-gradient(135deg,#e23238,#7f1d1d)', 'empresa' => 'linear-gradient(135deg,#3b82f6,#1e3a8a)', 'empleado' => 'linear-gradient(135deg,#475569,#1e293b)'];
+                        $iniciales = strtoupper(mb_substr($usuario['nombre'] ?? '?', 0, 1) . mb_substr($usuario['apellidos'] ?? '', 0, 1));
+                        $badge_estado = $estado_real === 'activo' ? 'claut-badge--success' : ($estado_real === 'pendiente' ? 'claut-badge--warning' : 'claut-badge--neutral');
+                        $search_blob = strtolower(($usuario['nombre'] ?? '') . ' ' . ($usuario['apellidos'] ?? '') . ' ' . ($usuario['email'] ?? '') . ' ' . ($rol_map[$usuario['rol']] ?? $usuario['rol']) . ' ' . ($usuario['nombre_empresa'] ?? ''));
+                        ?>
+                        <div class="elite-card" data-rol="<?php echo htmlspecialchars($usuario['rol']); ?>" data-search="<?php echo htmlspecialchars($search_blob); ?>">
+                            <div class="elite-card-body">
+                                <div style="display:flex;align-items:center;gap:12px;">
+                                    <div style="width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;background:<?php echo $rol_colores[$usuario['rol']] ?? $rol_colores['empleado']; ?>;"><?php echo htmlspecialchars($iniciales); ?></div>
+                                    <div style="min-width:0;flex:1;">
+                                        <h4 style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><?php echo htmlspecialchars($usuario['nombre'] . ' ' . ($usuario['apellidos'] ?? '')); ?></h4>
+                                        <div class="elite-card-desc" style="-webkit-line-clamp:1;"><?php echo htmlspecialchars($usuario['email']); ?></div>
+                                    </div>
+                                    <span class="claut-badge <?php echo $badge_estado; ?>"><?php echo ucfirst($estado_real); ?></span>
+                                </div>
+                                <div class="elite-card-meta">
+                                    <div class="row"><i class="fas fa-id-badge"></i><?php echo $rol_map[$usuario['rol']] ?? htmlspecialchars($usuario['rol']); ?><?php if (!empty($usuario['cargo'])): ?> · <?php echo htmlspecialchars($usuario['cargo']); ?><?php endif; ?></div>
+                                    <?php if (!empty($usuario['nombre_empresa'])): ?><div class="row"><i class="fas fa-building"></i><?php echo htmlspecialchars($usuario['nombre_empresa']); ?></div><?php endif; ?>
+                                    <?php if (!empty($usuario['telefono'])): ?><div class="row"><i class="fas fa-phone"></i><?php echo htmlspecialchars($usuario['telefono']); ?></div><?php endif; ?>
+                                    <div class="row"><i class="fas fa-calendar-check"></i><?php echo ($usuario['fecha_registro'] && $usuario['fecha_registro'] != '0000-00-00 00:00:00') ? date('d/m/Y', strtotime($usuario['fecha_registro'])) : 'Sin fecha'; ?> · ID <?php echo $usuario['id']; ?></div>
+                                </div>
+                                <div class="elite-card-foot">
+                                    <div class="elite-actions">
+                                        <button type="button" class="elite-btn elite-btn--edit" onclick="abrirModalEditar(<?php echo htmlspecialchars(json_encode($usuario)); ?>)"><i class="fas fa-edit"></i>Editar</button>
+                                        <button type="button" class="elite-btn elite-btn--view" onclick="abrirModalRestricciones(<?php echo $usuario['id']; ?>, '<?php echo htmlspecialchars($usuario['nombre'] . ' ' . $usuario['apellidos']); ?>')"><i class="fas fa-lock"></i>Accesos</button>
+                                    </div>
+                                    <div class="elite-actions">
+                                        <?php if ($estado_real !== 'activo'): ?>
+                                        <form method="POST" style="display:inline;">
                                             <input type="hidden" name="action" value="activar">
                                             <input type="hidden" name="user_id" value="<?php echo $usuario['id']; ?>">
-                                            <button type="submit" class="btn btn-success" onclick="return confirm('¿Activar este usuario?')">
-                                                <i class="fas fa-circle-check"></i> Activar
-                                            </button>
+                                            <button type="submit" class="elite-btn" style="background:rgba(52,211,153,.16);color:#34d399;" onclick="return confirm('¿Activar este usuario?')"><i class="fas fa-circle-check"></i>Activar</button>
                                         </form>
-                                    <?php endif; ?>
-                                    
-                                    <?php if ($estado_real === 'activo'): ?>
-                                        <form method="POST" style="display: inline;">
+                                        <?php else: ?>
+                                        <form method="POST" style="display:inline;">
                                             <input type="hidden" name="action" value="desactivar">
                                             <input type="hidden" name="user_id" value="<?php echo $usuario['id']; ?>">
-                                            <button type="submit" class="btn btn-secondary" onclick="return confirm('¿Desactivar este usuario?')">
-                                                <i class="fas fa-circle-xmark"></i> Desactivar
-                                            </button>
+                                            <button type="submit" class="elite-btn" style="background:rgba(255,255,255,.09);color:#a2a8b3;" onclick="return confirm('¿Desactivar este usuario?')"><i class="fas fa-circle-xmark"></i>Pausar</button>
                                         </form>
-                                    <?php endif; ?>
-                                    
-                                    <form method="POST" style="display: inline;">
-                                        <input type="hidden" name="action" value="eliminar">
-                                        <input type="hidden" name="user_id" value="<?php echo $usuario['id']; ?>">
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿ELIMINAR permanentemente este usuario? Esta acción no se puede deshacer.')">
-                                            <i class="fas fa-trash"></i> Eliminar
-                                        </button>
-                                    </form>
+                                        <?php endif; ?>
+                                        <form method="POST" style="display:inline;">
+                                            <input type="hidden" name="action" value="eliminar">
+                                            <input type="hidden" name="user_id" value="<?php echo $usuario['id']; ?>">
+                                            <button type="submit" class="elite-btn elite-btn--del" onclick="return confirm('¿ELIMINAR permanentemente este usuario? Esta acción no se puede deshacer.')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </div>
                                 </div>
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
-            </tbody>
-        </table>
+                </div>
+            </div>
         
         
     </div>
     
     <script>
+        let rolActivo = '';
+        function setRolFilter(btn) {
+            rolActivo = btn.dataset.rol || '';
+            document.querySelectorAll('#rolChips button').forEach(b => b.classList.toggle('on', b === btn));
+            filterUsers();
+        }
         function filterUsers() {
-            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
-            const table = document.getElementById('usersTable');
-            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-            
-            for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                const cells = row.getElementsByTagName('td');
-                let found = false;
-                
-                // Skip if it's the "no users" row
-                if (cells.length === 1 && cells[0].getAttribute('colspan')) {
-                    continue;
-                }
-                
-                for (let j = 1; j < 5; j++) { // Search in name, email, phone, role
-                    if (cells[j] && cells[j].textContent.toLowerCase().includes(searchTerm)) {
-                        found = true;
-                        break;
-                    }
-                }
-                
-                row.style.display = found ? '' : 'none';
-            }
+            const searchTerm = (document.getElementById('searchBox').value || '').toLowerCase();
+            document.querySelectorAll('#usersTable .elite-card').forEach(card => {
+                const matchTexto = !searchTerm || (card.dataset.search || '').includes(searchTerm);
+                const matchRol = !rolActivo || card.dataset.rol === rolActivo;
+                card.style.display = (matchTexto && matchRol) ? '' : 'none';
+            });
         }
         
         // Auto-refresh every 30 seconds
@@ -1510,7 +1470,6 @@ try {
                                 <input type="checkbox" name="paginas[]" value="eventos" class="mr-3" style="width:auto;">
                                 <div>
                                     <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Eventos</div>
-                                    <div style="color:#64748b; font-size:.75rem;">eventos.html</div>
                                 </div>
                             </label>
 
@@ -1518,7 +1477,6 @@ try {
                                 <input type="checkbox" name="paginas[]" value="documentacion" class="mr-3" style="width:auto;">
                                 <div>
                                     <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Documentación</div>
-                                    <div style="color:#64748b; font-size:.75rem;">documentacion.html</div>
                                 </div>
                             </label>
 
@@ -1526,7 +1484,6 @@ try {
                                 <input type="checkbox" name="paginas[]" value="boletines" class="mr-3" style="width:auto;">
                                 <div>
                                     <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Boletines</div>
-                                    <div style="color:#64748b; font-size:.75rem;">boletines.html</div>
                                 </div>
                             </label>
 
@@ -1534,7 +1491,6 @@ try {
                                 <input type="checkbox" name="paginas[]" value="comites" class="mr-3" style="width:auto;">
                                 <div>
                                     <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Comités</div>
-                                    <div style="color:#64748b; font-size:.75rem;">comites.html</div>
                                 </div>
                             </label>
 
@@ -1542,7 +1498,6 @@ try {
                                 <input type="checkbox" name="paginas[]" value="contacto" class="mr-3" style="width:auto;">
                                 <div>
                                     <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Contacto</div>
-                                    <div style="color:#64748b; font-size:.75rem;">contacto.html</div>
                                 </div>
                             </label>
 
@@ -1550,7 +1505,6 @@ try {
                                 <input type="checkbox" name="paginas[]" value="empresas-convenio" class="mr-3" style="width:auto;">
                                 <div>
                                     <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Empresas en Convenio</div>
-                                    <div style="color:#64748b; font-size:.75rem;">empresas-convenio.html</div>
                                 </div>
                             </label>
 
@@ -1558,7 +1512,6 @@ try {
                                 <input type="checkbox" name="paginas[]" value="descuentos" class="mr-3" style="width:auto;">
                                 <div>
                                     <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Descuentos</div>
-                                    <div style="color:#64748b; font-size:.75rem;">descuentos.html</div>
                                 </div>
                             </label>
 
@@ -1566,7 +1519,6 @@ try {
                                 <input type="checkbox" name="paginas[]" value="profile" class="mr-3" style="width:auto;">
                                 <div>
                                     <div style="color:#f8fafc; font-weight:600; font-size:.85rem;">Perfil</div>
-                                    <div style="color:#64748b; font-size:.75rem;">profile.html</div>
                                 </div>
                             </label>
                         </div>
@@ -2049,5 +2001,6 @@ try {
 
     <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
     <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
+<script src="./js/claut-admin-elite.js?v=20260908e"></script>
 </body>
 </html>

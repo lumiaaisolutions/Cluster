@@ -17,10 +17,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-require_once '../includes/config.php';
+require_once __DIR__ . '/../config/database.php';
+
+/**
+ * Adaptador: este archivo fue escrito contra un config antiguo (includes/config.php,
+ * inexistente en producción — mismo patrón de FIX-023) cuyo Database exponía
+ * selectOne/select/insert/update. El Database real solo expone getConnection(),
+ * así que se puentean aquí esos 4 helpers sobre PDO preparado.
+ */
+if (!function_exists('jsonResponse')) {
+    function jsonResponse($data, $code = 200, $message = null) {
+        http_response_code($code);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'success' => $code < 400,
+            'message' => $message,
+            'data' => $data
+        ]);
+        exit;
+    }
+}
+if (!function_exists('jsonError')) {
+    function jsonError($message, $code = 400) {
+        http_response_code($code);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['success' => false, 'message' => $message]);
+        exit;
+    }
+}
+
+class EmpresasDbAdapter {
+    private $pdo;
+    public function __construct($pdo) { $this->pdo = $pdo; }
+    public function select($sql, $params = []) {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function selectOne($sql, $params = []) {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row === false ? null : $row;
+    }
+    public function insert($sql, $params = []) {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $this->pdo->lastInsertId();
+    }
+    public function update($sql, $params = []) {
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->rowCount();
+    }
+}
 
 try {
-    $db = Database::getInstance();
+    $db = new EmpresasDbAdapter(Database::getInstance()->getConnection());
     $method = $_SERVER['REQUEST_METHOD'];
     
     switch ($method) {

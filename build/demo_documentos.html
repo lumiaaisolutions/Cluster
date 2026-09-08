@@ -74,6 +74,7 @@
             }
         }
     </style>
+<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260908e">
 </head>
 <body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
@@ -245,32 +246,22 @@
                         <option value="privado">Privado</option>
                         <option value="restringido">Restringido</option>
                     </select>
+                    <a href="./boletines.html" target="_blank" rel="noopener"
+                       class="text-white px-4 py-2 rounded-lg transition hover:opacity-90" style="background:#2563eb;">
+                        <i class="fas fa-eye mr-2"></i>Vista Previa
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- Tabla de Documentos -->
+        <!-- Lista de Documentos -->
         <div class="rounded-lg overflow-hidden" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
             <div class="p-4 border-b">
                 <h2 class="text-xl font-semibold claut-text-primary">Lista de Documentos</h2>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead style="background: rgba(255,255,255,0.04);">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Documento</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Categoría</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Visibilidad</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Fecha</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Autor</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium claut-text-muted uppercase tracking-wider">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="documentsTableBody" class="divide-y divide-white/5">
-                        <!-- Los documentos se cargarán aquí -->
-                    </tbody>
-                </table>
+            <div id="documentsList" class="space-y-4 p-4">
+                <!-- Los documentos se cargarán aquí -->
             </div>
         </div>
 
@@ -457,62 +448,64 @@
             console.log('🎨 renderDocuments() iniciado');
             const documentsToRender = filteredDocuments || documents;
             console.log('📄 Documentos a renderizar:', documentsToRender.length);
-            const tbody = document.getElementById('documentsTableBody');
-            console.log('🎯 tbody element:', tbody ? 'ENCONTRADO' : 'NO ENCONTRADO');
+            const listDiv = document.getElementById('documentsList');
+            console.log('🎯 listDiv element:', listDiv ? 'ENCONTRADO' : 'NO ENCONTRADO');
 
             if (documentsToRender.length === 0) {
                 console.log('📭 No hay documentos, mostrando estado vacío');
                 document.getElementById('emptyDocuments').style.display = 'block';
-                tbody.innerHTML = '';
+                listDiv.innerHTML = '';
                 return;
             }
 
-            console.log('📋 Hay documentos, ocultando estado vacío y renderizando tabla');
+            console.log('📋 Hay documentos, ocultando estado vacío y renderizando lista');
             document.getElementById('emptyDocuments').style.display = 'none';
 
-            tbody.innerHTML = documentsToRender.map(doc => `
-                <tr style="transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
-                    <td class="px-6 py-4">
-                        <div>
-                            <div class="text-sm font-medium claut-text-primary">${doc.titulo}</div>
-                            <div class="text-sm claut-text-muted">${doc.descripcion || 'Sin descripción'}</div>
+            listDiv.innerHTML = documentsToRender.map(doc => `
+                <div class="rounded-lg p-4 transition-shadow" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold claut-text-primary mb-1">${doc.titulo}</h3>
+                            <p class="claut-text-secondary text-sm line-clamp-2">${doc.descripcion || 'Sin descripción'}</p>
                         </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="${getCategoryColor(doc.categoria)}">
-                            ${formatCategory(doc.categoria)}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="${getVisibilityColor(doc.visibilidad)}">
+                        <span class="${getVisibilityColor(doc.visibilidad)} ml-3">
                             ${formatVisibility(doc.visibilidad)}
                         </span>
-                    </td>
-                    <td class="px-6 py-4 text-sm claut-text-primary">
-                        ${formatDate(doc.fecha_subida)}
-                    </td>
-                    <td class="px-6 py-4 text-sm claut-text-primary">
-                        ${doc.subido_por || 'Usuario'}
-                    </td>
-                    <td class="px-6 py-4 text-sm font-medium">
-                        <div class="flex space-x-2">
-                            <button onclick="editDocument(${doc.id})"
-                                    class="text-indigo-600 hover:text-indigo-900">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteDocument(${doc.id})"
-                                    style="color:#f87171;" onmouseover="this.style.color='#fca5a5'" onmouseout="this.style.color='#f87171'">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                    </div>
+
+                    <div class="flex justify-between items-center text-sm claut-text-muted mb-3">
+                        <div class="flex items-center space-x-4">
+                            <span><i class="fas fa-calendar mr-1"></i>${formatDate(doc.fecha_subida)}</span>
+                            <span class="${getCategoryColor(doc.categoria)}">${formatCategory(doc.categoria)}</span>
+                            <span><i class="fas fa-user mr-1"></i>${doc.subido_por || 'Usuario'}</span>
+                        </div>
+                        <span class="text-xs">#${doc.id}</span>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-3 border-t">
+                        <div class="flex-1">
                             ${doc.archivo_ruta ? `
-                                <a href="${doc.archivo_ruta}" target="_blank"
-                                   style="color:#4ade80;" onmouseover="this.style.color='#86efac'" onmouseout="this.style.color='#4ade80'" title="Descargar ${doc.archivo_nombre}">
-                                    <i class="fas fa-download"></i>
+                                <a href="${doc.archivo_ruta}" target="_blank" title="Ver ${doc.archivo_nombre || 'archivo'}"
+                                   style="color:#60a5fa; font-size:0.875rem;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#60a5fa'">
+                                    <i class="fas fa-paperclip mr-1"></i>Ver archivo
+                                </a>
+                            ` : '<span class="claut-text-muted text-sm">Sin archivo adjunto</span>'}
+                        </div>
+                        <div class="elite-actions">
+                            ${doc.archivo_ruta ? `
+                                <a href="${doc.archivo_ruta}" target="_blank" class="elite-btn elite-btn--view" title="Ver ${doc.archivo_nombre || 'archivo'}">
+                                    <i class="fas fa-eye"></i>Ver
                                 </a>
                             ` : ''}
+                            <button onclick="editDocument(${doc.id})" class="elite-btn elite-btn--edit">
+                                <i class="fas fa-edit"></i>Editar
+                            </button>
+                            <button onclick="deleteDocument(${doc.id})" class="elite-btn elite-btn--del">
+                                <i class="fas fa-trash"></i>Eliminar
+                            </button>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </div>
             `).join('');
             console.log('✅ renderDocuments() completado - DOM actualizado');
         }
@@ -843,9 +836,9 @@
 
         function getVisibilityColor(visibilidad) {
             const colors = {
-                'publico': 'claut-badge claut-badge--success',
-                'privado': 'claut-badge claut-badge--danger',
-                'restringido': 'claut-badge claut-badge--warning'
+                'publico': 'claut-badge claut-badge--info',
+                'privado': 'claut-badge claut-badge--neutral',
+                'restringido': 'claut-badge claut-badge--danger'
             };
             return colors[visibilidad] || 'claut-badge claut-badge--neutral';
         }
@@ -933,5 +926,6 @@
   <script src="assets/js/loading-screen.js"></script>
   <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
   <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
+<script src="./js/claut-admin-elite.js?v=20260908e"></script>
 </body>
 </html>

@@ -365,6 +365,7 @@ try {
             border-color: rgba(199,37,43,.35) !important;
         }
     </style>
+<link rel="stylesheet" href="../css/claut-admin-elite.css?v=20260908e">
 </head>
 <body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
@@ -622,6 +623,11 @@ try {
                                                     <?php endif; ?>
                                                 </div>
                                                 <div class="flex items-center space-x-2">
+                                                    <a href="<?= htmlspecialchars((strpos($banner['imagen_url'], 'http') === 0 ? '' : '../') . $banner['imagen_url']) ?>"
+                                                       target="_blank" rel="noopener"
+                                                       class="px-3 py-1 text-white rounded text-xs transition-colors" style="background:#2563eb;">
+                                                        <i class="fas fa-eye mr-1"></i>Ver
+                                                    </a>
                                                     <button onclick='editarBanner(<?= htmlspecialchars(json_encode($banner)) ?>)'
                                                             class="px-3 py-1 bg-yellow-600 text-white rounded text-xs hover:bg-yellow-700 transition-colors">
                                                         <i class="fas fa-edit mr-1"></i>Editar
@@ -919,5 +925,6 @@ try {
 
     <script src="../assets/js/claut-admin-sidebar.js?v=20260901c"></script>
     <script src="../assets/js/claut-wizard.js?v=20260901a"></script>
+<script src="../js/claut-admin-elite.js?v=20260908e"></script>
 </body>
 </html>

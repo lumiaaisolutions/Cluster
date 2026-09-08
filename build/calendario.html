@@ -277,6 +277,7 @@
             }
         }
     </style>
+<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260908e">
 </head>
 
 <body class="claut-dark">
@@ -380,9 +381,59 @@
 
         <section class="flex-grow p-8 lg:p-10">
             <div class="glass-panel h-full p-6 lg:p-8 bg-white/[0.02]">
+                <div class="elite-cal-legend" aria-label="Categorías del calendario">
+                    <span><i style="background:#C7252B"></i>Asamblea</span>
+                    <span><i style="background:#3B82F6"></i>Networking</span>
+                    <span><i style="background:#10B981"></i>Capacitación</span>
+                    <span><i style="background:#F59E0B"></i>Comunicado</span>
+                </div>
                 <div id="admin-master-calendar" class="w-full"></div>
             </div>
         </section>
+        <style>
+            /* Estilo "propuesta v3/v4": leyenda de categorías + celdas redondeadas
+               tipo bento sobre FullCalendar (solo presentación, cero cambios de JS) */
+            .elite-cal-legend { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:16px; }
+            .elite-cal-legend span { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color:#a2a8b3; }
+            .elite-cal-legend i { width:9px; height:9px; border-radius:3px; }
+            #admin-master-calendar .fc-theme-standard td,
+            #admin-master-calendar .fc-theme-standard th,
+            #admin-master-calendar .fc-scrollgrid { border-color: rgba(255,255,255,0.05) !important; }
+            #admin-master-calendar .fc-col-header-cell {
+                background: transparent; padding: 8px 4px;
+            }
+            #admin-master-calendar .fc-col-header-cell-cushion {
+                font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase;
+                color: #61687a; font-weight: 800; text-decoration: none;
+            }
+            #admin-master-calendar .fc-daygrid-day { background: rgba(0,0,0,0.18); transition: background .15s; }
+            #admin-master-calendar .fc-daygrid-day:hover { background: rgba(255,255,255,0.045); }
+            #admin-master-calendar .fc-daygrid-day-number { font-size: 11px; color: #61687a; font-weight: 700; text-decoration: none; }
+            #admin-master-calendar .fc-day-today { background: rgba(199,37,43,0.10) !important; }
+            #admin-master-calendar .fc-day-today .fc-daygrid-day-number { color: #e23238; }
+            #admin-master-calendar .fc-event { border-radius: 6px; font-weight: 700; }
+            /* Header separado del borde superior, como píldora elite */
+            .header-console {
+                margin: 14px 18px 0;
+                border-radius: 20px;
+                border-bottom: none;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: none;
+            }
+            /* Móvil: la fecha se cortaba contra el borde — el cluster de
+               controles envuelve y la fecha baja a su propia línea completa */
+            @media (max-width: 900px) {
+                .header-console { margin: 10px 10px 0; padding: 0.75rem 1rem; }
+                .header-console > .flex.items-center.gap-4 { flex-wrap: wrap; row-gap: 8px; }
+                #calendarTitle {
+                    min-width: 0 !important;
+                    width: 100%;
+                    order: 5;
+                    text-align: center;
+                    margin: 4px 0 0 !important;
+                }
+            }
+        </style>
     </main>
 
     <!-- Modal para Eventos Rápidos -->
@@ -520,6 +571,7 @@
     <script src="./js/admin-calendar-master.js?v=20260902a"></script>
     <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
     <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
+<script src="./js/claut-admin-elite.js?v=20260908e"></script>
 </body>
 
 </html>

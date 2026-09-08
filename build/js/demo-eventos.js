@@ -707,9 +707,9 @@ async function refreshRegistros() {
 
 // Cargar eventos desde la API (misma lógica que eventos.html)
 
-// Renderizar lista de eventos en formato TABLA PREMIUM (Estilo Directory)
+// Renderizar lista de eventos en formato TARJETAS (Estilo Elite)
 function renderEventos() {
-    console.log('🎨 Renderizando tabla de eventos:', filteredEventos.length);
+    console.log('🎨 Renderizando tarjetas de eventos:', filteredEventos.length);
     const container = document.getElementById('eventosContainer');
     const loadingState = document.getElementById('loadingEventos');
     const emptyState = document.getElementById('emptyEventos');
@@ -720,7 +720,7 @@ function renderEventos() {
     }
 
     if (filteredEventos.length === 0) {
-        container.innerHTML = '<tr><td colspan="6" class="px-6 py-12 text-center claut-text-muted font-medium">No se encontraron eventos coincidentes</td></tr>';
+        container.innerHTML = '<div class="col-span-full px-6 py-12 text-center claut-text-muted font-medium">No se encontraron eventos coincidentes</div>';
         if (emptyState) emptyState.classList.remove('hidden');
         return;
     }
@@ -736,7 +736,7 @@ function renderEventos() {
     if (badge) badge.textContent = filteredEventos.length;
 }
 
-// Crear fila de evento para la tabla premium (Estilo Porsche Directory)
+// Crear tarjeta de evento para el directorio (Estilo Elite)
 function createEventoRow(evento) {
     const fechaInicio = new Date(evento.fecha_inicio);
     const fechaFormateada = fechaInicio.toLocaleDateString('es-MX', {
@@ -744,90 +744,63 @@ function createEventoRow(evento) {
         month: 'short',
         year: 'numeric'
     });
-    
+
     const horaFormateada = fechaInicio.toLocaleTimeString('es-MX', {
         hour: '2-digit',
         minute: '2-digit'
     });
 
-    const imagenUrl = evento.imagen_url || (evento.imagen ? `./api/eventos.php?action=imagen&file=${evento.imagen}` : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80');
-    
+    const imagenUrl = evento.imagen_url || (evento.imagen ? `./api/eventos.php?action=imagen&file=${evento.imagen}` : '');
+
+    // Portada: imagen real del evento, o degradado con ícono si no tiene
+    const cover = imagenUrl
+        ? `<div class="elite-cover-bg" style="background-image:url('${imagenUrl}')"></div>`
+        : `<div class="elite-cover-bg" style="background:linear-gradient(135deg,#1a2a3d,#2563eb 60%,#0a1220);display:flex;align-items:center;justify-content:center;"><i class="far fa-calendar-alt" style="font-size:36px;color:rgba(255,255,255,0.4);"></i></div>`;
+
     // Determinar badge de estado
     const estado = (evento.estado || 'programado').toLowerCase();
-    let statusClass = 'border-blue-500/20 text-blue-400 bg-blue-500/5';
-    let dotClass = 'bg-blue-500';
+    let estadoLabel = 'En Preparación';
+    let estadoBadge = 'claut-badge--warning';
 
     if (estado.includes('curso') || estado === 'activo') {
-        statusClass = 'border-green-500/20 text-green-400 bg-green-500/5';
-        dotClass = 'bg-green-500';
-    } else if (estado.includes('final') || estado === 'finalizado') {
-        statusClass = 'border-gray-500/20 claut-text-muted bg-gray-500/5';
-        dotClass = 'bg-gray-500';
+        estadoLabel = 'Publicado';
+        estadoBadge = 'claut-badge--success';
+    } else if (estado.includes('final')) {
+        estadoLabel = 'Histórico';
+        estadoBadge = 'claut-badge--neutral';
     } else if (estado.includes('cancel')) {
-        statusClass = 'border-red-500/20 text-red-400 bg-red-500/5';
-        dotClass = 'bg-red-500';
+        estadoLabel = 'Cancelado';
+        estadoBadge = 'claut-badge--danger';
     }
 
+    const capacidadInfo = evento.capacidad_maxima
+        ? `<div class="row"><i class="fas fa-users"></i><span>${evento.capacidad_actual || 0} / ${evento.capacidad_maxima} registrados</span></div>`
+        : (evento.capacidad_actual ? `<div class="row"><i class="fas fa-users"></i><span>${evento.capacidad_actual} registrados</span></div>` : '');
+
     return `
-        <tr class="hover:bg-white/[0.02] transition-colors group">
-            <td class="px-6 py-4">
-                <span class="text-[10px] font-black font-mono text-red-500/50">#${evento.id}</span>
-            </td>
-            <td class="px-6 py-4">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-lg bg-white/5 border border-white/10 overflow-hidden mr-4 group-hover:border-red-500/30 transition-colors shadow-2xl">
-                        <img src="${imagenUrl}" class="w-full h-full object-cover transition-transform group-hover:scale-110" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=80'"/>
-                    </div>
-                    <div>
-                        <div class="text-white font-bold text-sm tracking-tight group-hover:text-porsche-accent transition-colors">${evento.titulo}</div>
-                        <div class="text-[10px] claut-text-muted font-bold uppercase tracking-widest mt-0.5">${(evento.tipo || 'evento')}</div>
-                    </div>
+        <article class="elite-card">
+            <div class="elite-card-cover">
+                ${cover}
+                <span class="claut-badge ${estadoBadge} elite-cover-badge">${estadoLabel}</span>
+                <span class="claut-badge claut-badge--neutral elite-cover-badge elite-cover-badge--right">${evento.tipo || 'evento'}</span>
+                <div class="elite-cover-title">${evento.titulo}</div>
+            </div>
+            <div class="elite-card-body">
+                <div class="elite-card-meta">
+                    <div class="row"><i class="far fa-calendar-alt"></i><span>${fechaFormateada} · ${horaFormateada} h</span></div>
+                    <div class="row"><i class="fas fa-map-marker-alt"></i><span>${evento.ubicacion || 'Por definir'}</span></div>
+                    ${capacidadInfo}
                 </div>
-            </td>
-            <td class="px-6 py-4">
-                <div class="flex flex-col">
-                    <div class="flex items-center text-xs text-porsche-silver font-medium">
-                        <i class="far fa-calendar-alt mr-2 text-red-500/50"></i>
-                        ${fechaFormateada}
-                    </div>
-                    <div class="flex items-center text-[10px] claut-text-muted mt-1 font-bold">
-                        <i class="far fa-clock mr-2"></i>
-                        ${horaFormateada}
+                <div class="elite-card-foot">
+                    <span class="elite-chip"><i class="fas fa-hashtag"></i>${evento.id}</span>
+                    <div class="elite-actions">
+                        <button onclick="viewEventoRegistros(${evento.id})" class="elite-btn elite-btn--view" title="Ver Asistentes"><i class="fas fa-users"></i> Registros</button>
+                        <button onclick="editEvento(${evento.id})" class="elite-btn elite-btn--edit" title="Editar Evento"><i class="fas fa-edit"></i> Editar</button>
+                        <button onclick="deleteEvento(${evento.id}, '${evento.titulo.replace(/'/g, "\\'")}', ${evento.capacidad_actual || 0})" class="elite-btn elite-btn--del" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
-            </td>
-            <td class="px-6 py-4">
-                <div class="flex items-center text-xs text-porsche-silver">
-                    <i class="fas fa-map-marker-alt mr-2 text-red-500/50"></i>
-                    <span class="truncate max-w-[150px] font-medium">${evento.ubicacion || 'Por definir'}</span>
-                </div>
-            </td>
-            <td class="px-6 py-4 text-center">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/5 shadow-inner ${statusClass}">
-                    <span class="w-1.5 h-1.5 rounded-full ${dotClass} mr-2 animate-pulse"></span>
-                    ${evento.estado || 'Programado'}
-                </span>
-            </td>
-            <td class="px-6 py-4 text-right">
-                <div class="flex items-center justify-end space-x-2">
-                    <button onclick="viewEventoRegistros(${evento.id})" 
-                            class="p-2.5 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-all border border-white/10 group/btn" 
-                            title="Ver Asistentes">
-                        <i class="fas fa-users group-hover/btn:text-red-500 transition-colors"></i>
-                    </button>
-                    <button onclick="editEvento(${evento.id})" 
-                            class="p-2.5 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-all border border-white/10 group/btn"
-                            title="Editar Evento">
-                        <i class="fas fa-edit group-hover/btn:text-blue-400 transition-colors"></i>
-                    </button>
-                    <button onclick="deleteEvento(${evento.id}, '${evento.titulo.replace(/'/g, "\\'")}', ${evento.capacidad_actual || 0})" 
-                            class="p-2.5 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-all border border-white/10 group/btn"
-                            title="Eliminar">
-                        <i class="fas fa-trash-alt group-hover/btn:text-porsche-accent transition-colors"></i>
-                    </button>
-                </div>
-            </td>
-        </tr>
+            </div>
+        </article>
     `;
 }
 
@@ -954,6 +927,8 @@ function editEvento(eventoId) {
     document.getElementById('ubicacion').value = evento.ubicacion || '';
     document.getElementById('categoria').value = evento.tipo || evento.categoria || 'reunion';
     document.getElementById('estado').value = evento.estado || 'activo';
+    const vvChk = document.getElementById('visible_visitantes');
+    if (vvChk) vvChk.checked = String(evento.visible_visitantes) === '1';
     document.getElementById('capacidad_maxima').value = evento.capacidad_maxima || 100;
     document.getElementById('precio').value = evento.precio || 0;
     
@@ -983,7 +958,7 @@ function editEvento(eventoId) {
                 imagenUrlFinal.value = evento.imagen;
             };
             img.onerror = () => {
-                img.src = `https://via.placeholder.com/300x200/c7252b/ffffff?text=${encodeURIComponent(evento.titulo || 'Evento')}`;
+                img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(evento.titulo || 'Evento')}&background=C7252B&color=ffffff&bold=true&length=2&size=300&font-size=0.33`;
             };
             img.src = imageUrl;
         }
@@ -1624,6 +1599,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 postData.append('precio', parseFloat(formData.get('precio')) || 0);
                 postData.append('link_evento', formData.get('link_evento') || '');
                 postData.append('tiene_beneficio', formData.get('tiene_beneficio') || '0');
+                postData.append('visible_visitantes', document.getElementById('visible_visitantes')?.checked ? '1' : '0');
 
                 // Manejar imagen
                 const imagen_method = document.getElementById('imagen_method')?.value || 'upload';

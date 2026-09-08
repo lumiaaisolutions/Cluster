@@ -141,14 +141,14 @@ class AdminEmpresasManager {
     }
 
     renderizarTablaAdmin(lista = null) {
-        const tbody = document.getElementById('empresasTableBody');
+        const grid = document.getElementById('empresasTableBody');
         const empty = document.getElementById('emptyState');
-        if (!tbody) return;
+        if (!grid) return;
 
         const items = lista || this.empresas;
-        
+
         if (items.length === 0) {
-            tbody.innerHTML = '';
+            grid.innerHTML = '';
             if (empty) empty.classList.remove('hidden');
             return;
         }
@@ -159,68 +159,63 @@ class AdminEmpresasManager {
         const totalEnTabla = document.getElementById('totalEnTabla');
         if (totalEnTabla) totalEnTabla.textContent = items.length;
 
-        tbody.innerHTML = items.map(emp => {
+        grid.innerHTML = items.map(emp => {
             const logo = this.sanitizarLogo(emp.logo_url, emp.nombre);
-            // Badge semántico por estado: verde activa, naranja pendiente, rojo inactiva
+            // Badge semántico por estado: verde activa, ámbar pendiente, neutro inactiva
             const estadoNorm = (emp.estado || 'inactiva').toLowerCase();
-            let statusClass, estadoLabel;
+            let badgeClass, estadoLabel;
             if (estadoNorm === 'activa') {
-                statusClass = 'bg-green-500/15 text-green-400 border border-green-500/20';
-                estadoLabel = '✅ Activa';
+                badgeClass = 'claut-badge--success';
+                estadoLabel = 'Activa';
             } else if (estadoNorm === 'pendiente') {
-                statusClass = 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/20';
-                estadoLabel = '🟠 Pendiente';
+                badgeClass = 'claut-badge--warning';
+                estadoLabel = 'Pendiente';
             } else {
-                statusClass = 'bg-red-500/15 text-red-400 border border-red-500/20';
-                estadoLabel = '❌ Inactiva';
+                badgeClass = 'claut-badge--neutral';
+                estadoLabel = 'Inactiva';
             }
-            const userBadge = emp.admin_nombre ? `<div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full bg-red-600/20 flex items-center justify-center text-[10px] font-bold text-red-500">${emp.admin_nombre.charAt(0)}</div><span class="text-xs text-gray-300 font-medium">${emp.admin_nombre}</span></div>` : '<span class="text-gray-600 text-xs italic">Sin asignar</span>';
+
+            const estrella = emp.destacado ? '<i class="fas fa-star" style="color:#fbbf24; font-size:12px; margin-left:6px;" title="Destacada"></i>' : '';
+            const descuentoChip = parseFloat(emp.descuento_porcentaje) > 0
+                ? `<span class="elite-chip"><i class="fas fa-tag"></i>${emp.descuento_porcentaje}% descuento</span>`
+                : '';
+            const contactoChips = [
+                emp.email ? `<span class="elite-chip" title="${emp.email}"><i class="fas fa-envelope"></i><span style="overflow:hidden; text-overflow:ellipsis;">${emp.email}</span></span>` : '',
+                emp.telefono ? `<span class="elite-chip"><i class="fas fa-phone"></i>${emp.telefono}</span>` : ''
+            ].join('');
+            const usuarioRow = emp.admin_nombre
+                ? `<div class="row"><i class="fas fa-user-shield"></i><span>${emp.admin_nombre}</span></div>`
+                : '<div class="row"><i class="fas fa-user-slash"></i><span style="font-style:italic; color:#61687a;">Sin asignar</span></div>';
 
             return `
-                <tr class="group border-b border-white/2 hover:bg-white/[0.02] transition-colors">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-4">
-                            <div class="relative">
-                                <img src="${logo}" class="company-logo" onerror="this.src='${this.generarLogoDefault(emp.nombre)}'">
-                                ${emp.destacado ? '<div class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full border-2 border-black"></div>' : ''}
-                            </div>
-                            <div>
-                                <div class="font-bold text-white tracking-tight">${emp.nombre}</div>
-                                <div class="text-[11px] font-medium text-gray-500 uppercase tracking-widest mt-0.5">${emp.sector || 'GENERAL'}</div>
+                <article class="elite-card">
+                    <div class="elite-card-body">
+                        <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+                            <img src="${logo}" class="elite-card-logo" alt="Logo de ${emp.nombre}" onerror="this.src='${this.generarLogoDefault(emp.nombre)}'">
+                            <div style="min-width:0; flex:1;">
+                                <h4>${emp.nombre}${estrella}</h4>
+                                <div style="font-size:10.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#8b93a1; margin-top:3px;">${emp.sector || 'General'}</div>
                             </div>
                         </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex flex-col gap-1">
-                            <div class="text-sm text-gray-300 flex items-center gap-2"><i class="fas fa-envelope text-[10px] text-gray-600"></i> ${emp.email || '—'}</div>
-                            <div class="text-[11px] text-gray-500 flex items-center gap-2"><i class="fas fa-phone text-[10px] text-gray-600"></i> ${emp.telefono || '—'}</div>
+                        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                            <span class="claut-badge ${badgeClass}">${estadoLabel}</span>
+                            ${descuentoChip}
                         </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${statusClass}">
-                            ${estadoLabel}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <div class="text-sm font-black text-red-500">${emp.descuento_porcentaje ? emp.descuento_porcentaje + '%' : '—'}</div>
-                    </td>
-                    <td class="px-6 py-4">
-                        ${userBadge}
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center justify-center gap-2">
-                            <button onclick="window.adminEmpresas.mostrarDetallesEmpresa(${emp.id})" class="p-2 bg-green-500/10 text-green-500 rounded-lg hover:bg-green-500 hover:text-white transition-all" title="Ver Detalles">
-                                <i class="fas fa-eye text-sm"></i>
-                            </button>
-                            <button onclick="window.adminEmpresas.editarEmpresa(${emp.id})" class="p-2 bg-blue-500/10 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-white transition-all" title="Editar">
-                                <i class="fas fa-edit text-sm"></i>
-                            </button>
-                            <button onclick="window.adminEmpresas.eliminarEmpresa(${emp.id})" class="p-2 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all" title="Eliminar">
-                                <i class="fas fa-trash text-sm"></i>
-                            </button>
+                        <div style="display:flex; flex-direction:column; gap:5px; align-items:flex-start; min-width:0;">
+                            ${contactoChips}
                         </div>
-                    </td>
-                </tr>
+                        <div class="elite-card-meta">
+                            ${usuarioRow}
+                        </div>
+                        <div class="elite-card-foot">
+                            <div class="elite-actions">
+                                <button type="button" onclick="window.adminEmpresas.mostrarDetallesEmpresa(${emp.id})" class="elite-btn elite-btn--view" title="Ver Detalles"><i class="fas fa-eye"></i> Ver</button>
+                                <button type="button" onclick="window.adminEmpresas.editarEmpresa(${emp.id})" class="elite-btn elite-btn--edit" title="Editar"><i class="fas fa-edit"></i> Editar</button>
+                                <button type="button" onclick="window.adminEmpresas.eliminarEmpresa(${emp.id})" class="elite-btn elite-btn--del" title="Eliminar"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
             `;
         }).join('');
     }

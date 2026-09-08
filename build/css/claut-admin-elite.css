@@ -1,0 +1,584 @@
+/* ============================================================
+   CLAUT ADMIN ELITE — capa de reskin 2026 (propuesta v3/v4 aprobada)
+   ----------------------------------------------------------------------------
+   Se carga DESPUÉS de admin-sidebar.css / claut-ui.css / <style> local de cada
+   página. Restyling puro de las clases compartidas ya existentes:
+   NO requiere cambios de markup ni de JS — el CRUD queda intacto.
+
+   Qué transforma:
+   1. .claut-admin-sidebar  → rail flotante tipo píldora, botones distribuidos
+      en toda la altura, etiquetas como tooltip al hover. En móvil el drawer
+      .show se expande con etiquetas visibles (mismo JS de siempre).
+   2. .claut-stat-card      → bento grid colorido: tarjeta roja destacada,
+      lima con texto oscuro, azul/ámbar/violeta vivos.
+   3. header.claut-admin-main → transparente y compacto; claut-admin-elite.js
+      inyecta el saludo "Hola, {nombre}" debajo.
+   4. Botones .rounded-lg/.rounded-xl (button/a) → píldoras.
+   5. Superficies: sin bordes, sin backdrop-filter (blur), rellenos
+      translúcidos sobre el fondo con glow.
+
+   USO por página (2 líneas, con ?v= SIEMPRE — regla BUG-026):
+     <link rel="stylesheet" href="./css/claut-admin-elite.css?v=YYYYMMDDx">   (antes de </head>)
+     <script src="./js/claut-admin-elite.js?v=YYYYMMDDx"></script>            (antes de </body>)
+   Desde /admin/: usar ../css/ y ../js/
+   ============================================================ */
+
+:root {
+  --elite-surface: rgba(255, 255, 255, 0.05);
+  --elite-surface-hover: rgba(255, 255, 255, 0.085);
+  --elite-lime: #d5f259;
+  --elite-lime-deep: #b6d935;
+  --elite-lime-ink: #181a08;
+  --elite-rail-w: 74px;
+  --elite-rail-gap: 14px;
+}
+
+/* fondo con glow (sin blur) — refuerza el de cada página sin sustituirlo */
+body:has(.claut-admin-sidebar)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 40% at 8% -5%, rgba(199, 37, 43, 0.14), transparent 60%),
+    radial-gradient(40% 35% at 100% 5%, rgba(139, 92, 246, 0.06), transparent 55%),
+    radial-gradient(50% 45% at 55% 110%, rgba(199, 37, 43, 0.07), transparent 60%);
+}
+
+/* ============ 1. RAIL ============ */
+.claut-admin-sidebar {
+  inset-block: var(--elite-rail-gap);
+  left: var(--elite-rail-gap);
+  width: var(--elite-rail-w);
+  border-radius: 100px;
+  background: var(--elite-surface);
+  border-right: none;
+  overflow: visible;
+  padding: 10px 0;
+}
+.claut-admin-sidebar::-webkit-scrollbar { display: none; }
+
+/* Sección de marca: degradado blanco→negro que cubre TODA la sección (como el
+   diseño de referencia del usuario) — el logo flota encima sin fondo propio,
+   sin círculo, sin límites de diseño */
+.claut-admin-sidebar-brand {
+  background: linear-gradient(180deg, #ffffff 0%, #e9e9ec 32%, #77777d 66%, rgba(9, 9, 11, 0) 100%);
+  margin: -10px 0 2px;
+  padding: 18px 0 26px;
+  border-radius: 37px 37px 0 0;
+  flex-direction: column;
+  gap: 0;
+}
+.claut-admin-sidebar-logo {
+  width: 64px !important;
+  height: 64px !important;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+.claut-admin-sidebar-title { display: none; }
+.claut-admin-sidebar-divider { display: none; }
+
+.claut-admin-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 4px 0;
+  min-height: 0;
+}
+.claut-admin-nav-group { display: contents; }
+.claut-admin-nav-label { display: none; }
+
+.claut-admin-nav-item {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+  gap: 0;
+  transition: background 0.18s cubic-bezier(0.23, 1, 0.32, 1),
+              color 0.18s cubic-bezier(0.23, 1, 0.32, 1),
+              transform 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.claut-admin-nav-item i { font-size: 1.05rem; width: auto; }
+.claut-admin-nav-item:hover { transform: scale(1.07); background: var(--elite-surface-hover); }
+.claut-admin-nav-item:active { transform: scale(0.94); }
+.claut-admin-nav-item.active {
+  background: #C7252B;
+  color: #fff;
+  box-shadow: 0 10px 26px -8px rgba(199, 37, 43, 0.5);
+}
+.claut-admin-nav-item.active i { color: #fff; }
+
+/* etiqueta → tooltip al hover (desktop) */
+.claut-admin-nav-item span {
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  background: #1a1a1f;
+  color: #f6f6f8;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 100px;
+  white-space: nowrap;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 5;
+}
+.claut-admin-nav-item:hover span { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+.claut-admin-sidebar-foot { border-top: none; padding: 4px 0 8px; }
+
+/* .collapsed neutralizado: el rail ya es angosto siempre (el botón del header
+   queda como no-op en desktop; en móvil sigue abriendo el drawer) */
+.claut-admin-sidebar.collapsed { width: var(--elite-rail-w); }
+.claut-admin-sidebar.collapsed:hover { width: var(--elite-rail-w); box-shadow: none; }
+.claut-admin-sidebar.collapsed:hover .claut-admin-sidebar-logo { width: 46px; height: 46px; }
+.claut-admin-sidebar.collapsed:hover .claut-admin-sidebar-title,
+.claut-admin-sidebar.collapsed:hover .claut-admin-nav-label { display: none; }
+.claut-admin-sidebar.collapsed:hover .claut-admin-nav-item { justify-content: center; padding: 0; }
+.claut-admin-sidebar.collapsed .claut-admin-nav-item span { display: block; }
+.claut-admin-sidebar.collapsed:hover .claut-admin-nav-item span { display: block; }
+
+/* Espacio del rail en el BODY (padding) + centrado real de los contenedores:
+   así el contenido se centra en el espacio restante en vez de quedar pegado
+   al rail (reporte del usuario: demo_evento pegado vs gestionar_usuarios
+   centrado). Nota: el padding no puede ir en .claut-admin-main porque las
+   utilidades px-* de Tailwind CDN se inyectan en runtime DESPUÉS de esta hoja
+   y ganarían el empate de especificidad. */
+body:has(.claut-admin-sidebar) { padding-left: calc(var(--elite-rail-w) + var(--elite-rail-gap) * 2); }
+/* margin-left:0 !important basta también contra el `body:has(.collapsed)
+   .claut-admin-main { margin-left:76px }` de admin-sidebar.css (sin important).
+   OJO: NO duplicar esta regla con un selector body:has(...collapsed) propio —
+   ese selector tiene especificidad (0,3,1) y le ganaría a la regla de centrado
+   de los .container de abajo (0,2,0), dejando el contenido pegado a la
+   izquierda para cualquier usuario con el sidebar colapsado en localStorage
+   (bug real reportado con captura en banner-admin). */
+.claut-admin-main { margin-left: 0 !important; }
+.claut-admin-main.container,
+.claut-admin-main .container,
+.claut-admin-main > main,
+.claut-admin-main > section {
+  width: 100%; /* imprescindible: como flex-item, margin auto sin width lo encoge
+                  a su contenido (calendario quedaba en ~420px, "desfasado") */
+  max-width: 1360px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* móvil: drawer expandido con etiquetas (mismo .show del JS existente).
+   Los selectores incluyen la variante .collapsed (y :hover) porque esa clase
+   puede venir persistida de localStorage desde escritorio — sin estas reglas
+   el drawer quedaba en 74px con las etiquetas-tooltip asomando por el borde
+   de la pantalla (bug reportado con capturas). claut-admin-elite.js además
+   la remueve en móvil, esto es el cinturón de seguridad en CSS. */
+@media (max-width: 1024px) {
+  .claut-admin-sidebar,
+  .claut-admin-sidebar.collapsed,
+  .claut-admin-sidebar.collapsed:hover {
+    inset-block: 0;
+    left: 0;
+    width: min(280px, 86vw);
+    border-radius: 0 26px 26px 0;
+    background: #131317;
+    padding: 0 12px 18px;
+  }
+  .claut-admin-sidebar-brand { margin: 0 -12px 6px; border-radius: 0 26px 0 0; }
+  .claut-admin-sidebar-title,
+  .claut-admin-sidebar.collapsed .claut-admin-sidebar-title,
+  .claut-admin-sidebar.collapsed:hover .claut-admin-sidebar-title { display: block; color: #1c1c1f; font-size: 0.8rem; }
+  .claut-admin-sidebar.collapsed .claut-admin-sidebar-logo,
+  .claut-admin-sidebar.collapsed:hover .claut-admin-sidebar-logo { width: 64px !important; height: 64px !important; }
+  .claut-admin-nav-item,
+  .claut-admin-sidebar.collapsed .claut-admin-nav-item,
+  .claut-admin-sidebar.collapsed:hover .claut-admin-nav-item {
+    width: 100%;
+    height: auto;
+    min-height: 48px;
+    border-radius: 100px;
+    justify-content: flex-start;
+    gap: 0.85rem;
+    padding: 0.7rem 1.1rem;
+  }
+  .claut-admin-nav-item span,
+  .claut-admin-sidebar.collapsed .claut-admin-nav-item span,
+  .claut-admin-sidebar.collapsed:hover .claut-admin-nav-item span {
+    position: static;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    background: transparent;
+    padding: 0;
+    font-size: 0.875rem;
+    display: inline;
+  }
+  .claut-admin-main { margin-left: 0 !important; padding-left: 0; }
+  /* el offset del rail vive en el body — en móvil también hay que quitarlo
+     (la franja oscura vacía a la izquierda en las capturas del usuario) */
+  body:has(.claut-admin-sidebar) { padding-left: 0; }
+  /* admin-panel: su .top-navbar flota sobre el saludo en móvil */
+  nav.top-navbar + .elite-greet { margin-top: 78px; }
+}
+
+/* Pies de tarjeta en listados (banners/boletines/documentos): en pantallas
+   angostas los botones se amontonaban contra la fecha/el link — se permite
+   envolver y las acciones bajan a su propia fila alineada a la derecha */
+@media (max-width: 640px) {
+  .claut-admin-main .flex.justify-between.items-center { flex-wrap: wrap; row-gap: 10px; }
+  .claut-admin-main .elite-actions,
+  .claut-admin-main .flex.items-center.space-x-2 {
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .claut-admin-main .flex.items-center.space-x-2 > * { margin-left: 0 !important; }
+  /* wizard compartido: en pantallas angostas el modal excedía el viewport y
+     los botones del pie quedaban cortados fuera de pantalla */
+  .claut-wizard {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    margin-inline: auto;
+  }
+  .claut-wizard-foot { flex-wrap: wrap; row-gap: 8px; }
+}
+.claut-admin-sidebar-overlay { backdrop-filter: none; }
+
+/* ============ 2. BENTO STATS ============ */
+.claut-stat-card {
+  border: none !important;
+  border-radius: 24px !important;
+  backdrop-filter: none !important;
+  padding: 1.25rem 1.4rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.claut-stat-card .stat-label {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 800;
+  opacity: 0.85;
+}
+.claut-stat-card .stat-value {
+  font-size: clamp(28px, 2.6vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+.claut-stat-card .stat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+/* variantes → gradientes vivos */
+.claut-stat-card--red {
+  background: linear-gradient(130deg, #e23238 0%, #C7252B 45%, #5e0e12 100%) !important;
+}
+.claut-stat-card--red .stat-label, .claut-stat-card--red .stat-value,
+.claut-stat-card--red .stat-icon { color: #fff !important; }
+
+.claut-stat-card--green {
+  background: linear-gradient(130deg, var(--elite-lime), var(--elite-lime-deep)) !important;
+}
+.claut-stat-card--green .stat-label, .claut-stat-card--green .stat-value,
+.claut-stat-card--green .stat-icon { color: var(--elite-lime-ink) !important; }
+.claut-stat-card--green .stat-icon { background: rgba(0, 0, 0, 0.14) !important; }
+
+.claut-stat-card--blue {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+}
+.claut-stat-card--blue .stat-label, .claut-stat-card--blue .stat-value,
+.claut-stat-card--blue .stat-icon { color: #fff !important; }
+
+.claut-stat-card--gold {
+  background: linear-gradient(135deg, #f59e0b, #b45309) !important;
+}
+.claut-stat-card--gold .stat-label, .claut-stat-card--gold .stat-value,
+.claut-stat-card--gold .stat-icon { color: #fff !important; }
+
+.claut-stat-card--purple {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
+}
+.claut-stat-card--purple .stat-label, .claut-stat-card--purple .stat-value,
+.claut-stat-card--purple .stat-icon { color: #fff !important; }
+
+/* bento asimétrico cuando la fila tiene exactamente 4 tarjetas */
+@media (min-width: 900px) {
+  .grid:has(> .claut-stat-card:first-child:nth-last-child(4)) {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+  .claut-stat-card:first-child:nth-last-child(4) { grid-column: span 2; }
+}
+
+/* barras decorativas que inyecta claut-admin-elite.js en la tarjeta destacada */
+.elite-bars {
+  position: absolute;
+  right: 20px;
+  bottom: 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 46px;
+  pointer-events: none;
+}
+.elite-bars i {
+  width: 8px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.32);
+}
+.elite-bars i.hl { background: #fff; }
+@media (prefers-reduced-motion: no-preference) {
+  .elite-bars i { animation: eliteBarUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) backwards; }
+  @keyframes eliteBarUp {
+    from { transform: scaleY(0.2); opacity: 0; }
+    to { transform: scaleY(1); opacity: 1; }
+  }
+}
+
+/* ============ 3. HEADER compacto + saludo ============ */
+header.claut-admin-main {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+body.elite-greeted header.claut-admin-main h1,
+body.elite-greeted header.claut-admin-main h1 + p { display: none; }
+#claut-header-menu-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--elite-surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+#claut-header-menu-btn:hover { background: var(--elite-surface-hover); }
+/* En escritorio el rail siempre está visible — la hamburguesa solo sirve en
+   móvil (abre el drawer), en PC era un no-op confuso */
+@media (min-width: 1025px) {
+  #claut-header-menu-btn { display: none !important; }
+}
+/* título original del header de cada página: lo oculta claut-admin-elite.js
+   SOLO cuando insertó el saludo unificado en su lugar */
+.elite-hidden-title { display: none !important; }
+
+.elite-greet {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 4px auto 18px;
+  padding: 0 1rem;
+}
+.elite-greet-txt { margin-right: auto; min-width: 0; }
+.elite-greet-txt h2 {
+  margin: 0;
+  font-size: clamp(23px, 3vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #f6f6f8;
+}
+.elite-greet-txt h2 em { font-style: normal; color: #e23238; }
+.elite-greet-txt p { margin: 3px 0 0; font-size: 13px; color: #61687a; }
+.elite-greet-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--elite-surface);
+  border-radius: 100px;
+  padding: 10px 18px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #a2a8b3;
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .elite-greet-date { display: none; }
+}
+
+/* demo_evento: su .glass-header era fijo con fondo oscuro a lo ancho — con el
+   saludo elite debajo quedaba una franja negra tapando contenido. Estático y
+   transparente; los botones (Crear Evento / Vista Previa) siguen en su sitio. */
+body:has(.claut-admin-sidebar) .glass-header {
+  position: static !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+/* móvil: los botones del header de eventos quedaban apilados a lo ancho ANTES
+   del saludo (se veía como panel distinto al resto) — se compactan a íconos
+   en una sola fila junto a la hamburguesa, como en los demás módulos */
+@media (max-width: 768px) {
+  body:has(.claut-admin-sidebar) .glass-header .flex.items-center.space-x-4.w-full {
+    width: auto;
+    margin-left: auto;
+  }
+  body:has(.claut-admin-sidebar) .glass-header a span,
+  body:has(.claut-admin-sidebar) .glass-header button span { display: none; }
+  body:has(.claut-admin-sidebar) .glass-header a,
+  body:has(.claut-admin-sidebar) .glass-header button {
+    padding: 0.65rem 0.85rem !important;
+  }
+}
+
+/* ============ 4. BOTONES píldora ============ */
+button.rounded-lg, a.rounded-lg, button.rounded-xl, a.rounded-xl,
+input[type="submit"].rounded-lg {
+  border-radius: 100px !important;
+}
+button, .claut-admin-main a[onclick] {
+  transition: transform 0.12s cubic-bezier(0.23, 1, 0.32, 1),
+              filter 0.15s ease, background 0.15s ease;
+}
+.claut-admin-main button:active, .claut-admin-main a[onclick]:active { transform: scale(0.96); }
+
+/* ============ 5. SUPERFICIES sin borde / sin blur ============ */
+.glass-card {
+  border: none !important;
+  background: var(--elite-surface) !important;
+  border-radius: 20px !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.glass-card:hover { background: var(--elite-surface-hover) !important; }
+
+/* contenedores con el borde inline estándar del proyecto */
+.claut-admin-main [style*="border:1px solid rgba(255,255,255,0.08)"],
+.claut-admin-main [style*="border: 1px solid rgba(255,255,255,0.08)"],
+.claut-admin-main [style*="border:1px solid rgba(255, 255, 255, 0.08)"],
+.claut-admin-main [style*="border: 1px solid rgba(255, 255, 255, 0.08)"] {
+  border-color: transparent !important;
+  background: var(--elite-surface) !important;
+  border-radius: 18px !important;
+}
+
+/* tablas dentro del área admin: separadores sutiles, sin marco */
+.claut-admin-main table thead th { background: rgba(0, 0, 0, 0.22) !important; }
+.claut-admin-main table tbody td { border-color: rgba(255, 255, 255, 0.04) !important; }
+
+/* ============ 6. COMPONENTES COMPARTIDOS DE LISTADOS (v2) ============
+   Clases que usan los renders de tarjetas/acciones de los módulos.
+   Un único lenguaje: Ver (azul) / Editar (ámbar) / Eliminar (rojo). */
+
+.elite-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.elite-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: none; border-radius: 100px; cursor: pointer;
+  padding: 7px 14px; font-size: 12px; font-weight: 700; font-family: inherit;
+  transition: transform 0.12s cubic-bezier(0.23, 1, 0.32, 1), filter 0.15s ease;
+  white-space: nowrap;
+}
+.elite-btn:hover { filter: brightness(1.15); }
+.elite-btn:active { transform: scale(0.95); }
+.elite-btn i { font-size: 11px; }
+.elite-btn--view { background: rgba(96, 165, 250, 0.16); color: #60a5fa; }
+.elite-btn--edit { background: rgba(251, 191, 36, 0.16); color: #fbbf24; }
+.elite-btn--del  { background: rgba(248, 113, 113, 0.16); color: #f87171; }
+.elite-btn--solid { background: linear-gradient(135deg, #e23238, #a01e24); color: #fff; }
+
+.elite-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 480px) { .elite-grid { grid-template-columns: 1fr; } }
+
+.elite-card {
+  background: var(--elite-surface);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.22s cubic-bezier(0.23, 1, 0.32, 1), background 0.22s ease;
+}
+.elite-card:hover { transform: translateY(-4px); background: var(--elite-surface-hover); }
+
+.elite-card-cover {
+  position: relative;
+  height: 150px;
+  flex: none;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+}
+.elite-card-cover img, .elite-card-cover .elite-cover-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; background-size: cover; background-position: center;
+  transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.elite-card:hover .elite-card-cover img,
+.elite-card:hover .elite-card-cover .elite-cover-bg { transform: scale(1.06); }
+/* variante para imágenes tipo póster/texto (comités): completa, sin recortar */
+.elite-card-cover--contain img, .elite-card-cover--contain .elite-cover-bg {
+  object-fit: contain; background-size: contain; background-repeat: no-repeat;
+}
+.elite-card-cover::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 100%);
+}
+.elite-card-cover--contain::after { background: none; }
+.elite-cover-badge { position: absolute; top: 10px; left: 10px; z-index: 2; }
+.elite-cover-badge--right { left: auto; right: 10px; }
+.elite-cover-title {
+  position: absolute; bottom: 10px; left: 14px; right: 14px; z-index: 2;
+  font-size: 15px; font-weight: 800; color: #fff; line-height: 1.25;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+.elite-card-body { padding: 14px 16px 15px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+.elite-card-body h4 { margin: 0; font-size: 14.5px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.3; color: #f6f6f8; }
+.elite-card-desc {
+  font-size: 12px; color: #8b93a1; line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.elite-card-meta { display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #a2a8b3; }
+.elite-card-meta .row { display: flex; align-items: center; gap: 7px; }
+.elite-card-meta i { width: 13px; text-align: center; color: #61687a; font-size: 11px; }
+.elite-card-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding-top: 10px; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.elite-card-logo {
+  width: 52px; height: 52px; border-radius: 14px; flex: none;
+  background: #fff; padding: 5px; object-fit: contain;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+.elite-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(0, 0, 0, 0.3); border-radius: 100px;
+  padding: 5px 12px; font-size: 11.5px; font-weight: 600; color: #a2a8b3;
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.elite-chip i { font-size: 10px; color: #61687a; flex: none; }
+.elite-chip--link { color: #60a5fa; cursor: pointer; text-decoration: none; }
+.elite-chip--link:hover { background: rgba(96, 165, 250, 0.14); }
+
+/* filtros por tipo (chips de segmentación) */
+.elite-filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.elite-filter-chips button {
+  border: none; border-radius: 100px; cursor: pointer;
+  padding: 8px 16px; font-size: 12px; font-weight: 700; font-family: inherit;
+  background: var(--elite-surface); color: #a2a8b3;
+  transition: 0.15s ease;
+}
+.elite-filter-chips button:hover { background: var(--elite-surface-hover); color: #f6f6f8; }
+.elite-filter-chips button.on { background: var(--elite-lime); color: var(--elite-lime-ink); }

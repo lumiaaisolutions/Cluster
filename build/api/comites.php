@@ -351,6 +351,34 @@ try {
             }
             break;
 
+        case 'eliminar_registro':
+            // Eliminar definitivamente una inscripción del historial de admisiones
+            $registro_id = $_POST['registro_id'] ?? null;
+
+            if (!$registro_id) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'ID del registro requerido'
+                ]);
+                break;
+            }
+
+            $stmt = $conn->prepare("DELETE FROM comite_registros WHERE id = ?");
+            $result = $stmt->execute([$registro_id]);
+
+            if ($result) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Registro eliminado'
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Error al eliminar el registro'
+                ]);
+            }
+            break;
+
         case 'listar_registros_pendientes':
             // Listar registros pendientes de comités
             $stmt = $conn->prepare("

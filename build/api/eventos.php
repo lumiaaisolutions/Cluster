@@ -623,6 +623,7 @@ try {
             $link_evento = $_POST['link_evento'] ?? '';
             $link_mapa = $_POST['link_mapa'] ?? '';
             $tiene_beneficio = $_POST['tiene_beneficio'] ?? 0;
+            $visible_visitantes = (isset($_POST['visible_visitantes']) && $_POST['visible_visitantes'] !== '' && $_POST['visible_visitantes'] !== '0') ? 1 : 0;
 
             // Manejo de imagen mejorado
             $imagen = '';
@@ -699,8 +700,8 @@ try {
             
             try {
                 $stmt = $conn->prepare("
-                    INSERT INTO eventos (titulo, descripcion, fecha_inicio, fecha_fin, ubicacion, tipo, modalidad, capacidad_maxima, capacidad_actual, precio, imagen, estado, fecha_creacion, link_evento, link_mapa, tiene_beneficio)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, 'activo', NOW(), ?, ?, ?)
+                    INSERT INTO eventos (titulo, descripcion, fecha_inicio, fecha_fin, ubicacion, tipo, modalidad, capacidad_maxima, capacidad_actual, precio, imagen, estado, fecha_creacion, link_evento, link_mapa, tiene_beneficio, visible_visitantes)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, 'activo', NOW(), ?, ?, ?, ?)
                 ");
 
                 $result = $stmt->execute([
@@ -716,7 +717,8 @@ try {
                     $imagen,
                     $link_evento,
                     $link_mapa,
-                    $tiene_beneficio
+                    $tiene_beneficio,
+                    $visible_visitantes
                 ]);
                 
                 if ($result) {
@@ -892,7 +894,7 @@ try {
                     UPDATE eventos
                     SET titulo = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ?, ubicacion = ?,
                         tipo = ?, modalidad = ?, capacidad_maxima = ?, precio = ?, imagen = ?,
-                        link_evento = ?, link_mapa = ?, tiene_beneficio = ?,
+                        link_evento = ?, link_mapa = ?, tiene_beneficio = ?, visible_visitantes = ?,
                         fecha_actualizacion = NOW()
                     WHERE id = ?
                 ");
@@ -911,6 +913,7 @@ try {
                     $link_evento,
                     $link_mapa,
                     $tiene_beneficio,
+                    (isset($_POST['visible_visitantes']) && $_POST['visible_visitantes'] !== '' && $_POST['visible_visitantes'] !== '0') ? 1 : 0,
                     $evento_id
                 ]);
                 

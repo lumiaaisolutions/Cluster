@@ -59,6 +59,7 @@
 
         header.claut-admin-main { position: relative; z-index: 10; }
     </style>
+<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260908e">
 </head>
 <body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
@@ -162,6 +163,21 @@
     </header>
 
     <!-- Contenido Principal -->
+    <div class="claut-admin-main container mx-auto px-4 pt-6">
+        <div class="rounded-2xl p-5 mb-2" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.03));">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-3">
+                <h3 class="text-sm font-black claut-text-primary"><i class="fas fa-chart-line mr-2" style="color:#a78bfa"></i>Actividad de visitantes · últimos 7 días</h3>
+                <span class="text-xs claut-text-muted">portal visitante (sin datos personales)</span>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="eliteVisStats">
+                <div class="rounded-xl p-3" style="background:rgba(0,0,0,.3)"><b class="block text-xl font-black" data-vis="visita">—</b><span class="text-[10px] uppercase tracking-wider claut-text-muted font-bold">Visitas</span></div>
+                <div class="rounded-xl p-3" style="background:rgba(0,0,0,.3)"><b class="block text-xl font-black" data-vis="click_registro">—</b><span class="text-[10px] uppercase tracking-wider claut-text-muted font-bold">Clics registro</span></div>
+                <div class="rounded-xl p-3" style="background:rgba(0,0,0,.3)"><b class="block text-xl font-black" data-vis="click_whatsapp">—</b><span class="text-[10px] uppercase tracking-wider claut-text-muted font-bold">WhatsApp</span></div>
+                <div class="rounded-xl p-3" style="background:rgba(0,0,0,.3)"><b class="block text-xl font-black" data-vis="click_correo">—</b><span class="text-[10px] uppercase tracking-wider claut-text-muted font-bold">Correo</span></div>
+                <div class="rounded-xl p-3" style="background:rgba(0,0,0,.3)"><b class="block text-xl font-black" data-vis="click_evento">—</b><span class="text-[10px] uppercase tracking-wider claut-text-muted font-bold">Interés eventos</span></div>
+            </div>
+        </div>
+    </div>
     <div class="claut-admin-main container mx-auto px-4 py-6">
         <!-- Información del Sistema -->
         <div class="rounded-lg p-6 mb-6" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);">
@@ -561,5 +577,18 @@
     <script src="assets/js/loading-screen.js"></script>
     <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
     <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
+<script src="./js/claut-admin-elite.js?v=20260908e"></script>
+<script>
+// Métricas del portal visitante (api/visitante.php action=stats — solo admin)
+fetch('./api/visitante.php?action=stats', { credentials: 'include' })
+    .then(r => r.json())
+    .then(d => {
+        if (!d.success) return;
+        document.querySelectorAll('#eliteVisStats [data-vis]').forEach(el => {
+            el.textContent = d.stats[el.dataset.vis] ?? 0;
+        });
+    })
+    .catch(() => {});
+</script>
 </body>
 </html>

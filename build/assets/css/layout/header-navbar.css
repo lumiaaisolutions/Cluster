@@ -603,3 +603,12 @@
 @media (min-width: 1025px) {
   .claut-main { padding-left: 134px; }
 }
+/* FEATURE-033 (2026-09-08): en los paneles de socio el menú de usuario funcional
+   es el dropdown cph- de claut-page-header.js (avatar + nombre + Mi Perfil +
+   Cerrar Sesión). El botón de ícono suelto (#headerUserMenuBtn) no hacía nada
+   y la hamburguesa (#mobileMenuBtn) quedó obsoleta con el riel/tab-bar
+   (claut-icon-rail). Se ocultan aquí — NO se elimina el markup porque
+   header-navbar.js les cuelga listeners por id y removerlos rompería el JS. */
+#headerUserMenuBtn,
+#mobileMenuBtn,
+.claut-mobile-menu-btn { display: none !important; }

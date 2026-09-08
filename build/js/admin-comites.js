@@ -316,8 +316,7 @@ class AdminComitesManager {
 
     createComiteCard(comite) {
         const card = document.createElement('div');
-        card.className = 'rounded-lg transition-shadow';
-        card.style.cssText = 'background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); box-shadow:0 4px 12px rgba(0,0,0,0.2);';
+        card.className = 'elite-card';
 
         // Determinar URL de imagen
         let imageUrl = '';
@@ -336,9 +335,22 @@ class AdminComitesManager {
             }
         }
 
+        const estadoBadges = {
+            'activo':     { cls: 'claut-badge claut-badge--success', label: 'Activo' },
+            'inactivo':   { cls: 'claut-badge claut-badge--neutral', label: 'Inactivo' },
+            'suspendido': { cls: 'claut-badge claut-badge--warning', label: 'Suspendido' }
+        };
+        const eb = estadoBadges[comite.estado] || estadoBadges['activo'];
+
+        // --contain: las imágenes de comités son pósters con texto — se muestran
+        // completas sobre fondo oscuro en vez de recortarse (reporte del usuario)
         const imageHTML = imageUrl ?
-            `<div class="h-48 bg-cover bg-center rounded-t-lg" style="background-image: url('${imageUrl}')"></div>` :
-            `<div class="h-48 rounded-t-lg flex items-center justify-center" style="background:rgba(255,255,255,0.05);">
+            `<div class="elite-card-cover elite-card-cover--contain">
+                <div class="elite-cover-bg" style="background-image: url('${imageUrl}')"></div>
+                <span class="elite-cover-badge ${eb.cls}">${eb.label}</span>
+             </div>` :
+            `<div class="elite-card-cover flex items-center justify-center" style="background:rgba(255,255,255,0.05);">
+                <span class="elite-cover-badge ${eb.cls}">${eb.label}</span>
                 <svg class="w-12 h-12 claut-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 715.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
@@ -346,24 +358,74 @@ class AdminComitesManager {
 
         card.innerHTML = `
             ${imageHTML}
-            <div class="p-4">
-                <h3 class="text-lg font-semibold claut-text-primary mb-2">${this.escapeHtml(comite.nombre)}</h3>
-                <p class="claut-text-secondary text-sm mb-2">${this.escapeHtml(comite.descripcion || 'Sin descripción')}</p>
-                <p class="claut-text-muted text-xs mb-4">${this.escapeHtml(comite.objetivo || 'Sin objetivo definido')}</p>
-                <div class="flex space-x-2">
-                    <button onclick="window.adminComites.editComite(${comite.id})"
-                            class="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600">
-                        Editar
-                    </button>
-                    <button onclick="window.adminComites.deleteComite(${comite.id})"
-                            class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">
-                        Eliminar
-                    </button>
+            <div class="elite-card-body">
+                <h4>${this.escapeHtml(comite.nombre)}</h4>
+                <div class="elite-card-desc">${this.escapeHtml(comite.descripcion || 'Sin descripción')}</div>
+                <div class="elite-card-meta">
+                    <div class="row"><i class="fas fa-clock"></i>${this.escapeHtml(comite.periodicidad || 'Mensual')}</div>
+                    <div class="row"><i class="fas fa-users"></i>${parseInt(comite.miembros_activos, 10) || 0} miembros</div>
+                </div>
+                <div class="elite-card-foot">
+                    <div class="elite-actions">
+                        <button onclick="window.adminComites.verComite(${comite.id})" class="elite-btn elite-btn--view"><i class="fas fa-eye"></i>Ver</button>
+                        <button onclick="window.adminComites.editComite(${comite.id})" class="elite-btn elite-btn--edit"><i class="fas fa-edit"></i>Editar</button>
+                        <button onclick="window.adminComites.deleteComite(${comite.id})" class="elite-btn elite-btn--del"><i class="fas fa-trash"></i>Eliminar</button>
+                    </div>
                 </div>
             </div>
         `;
 
         return card;
+    }
+
+    // Vista de solo lectura del comité (overlay ligero, sin tocar el wizard de edición)
+    verComite(id) {
+        const comite = this.comites.find(c => c.id == id);
+        if (!comite) return;
+
+        const prev = document.getElementById('eliteVerComiteOverlay');
+        if (prev) prev.remove();
+
+        let imageUrl = '';
+        if (comite.imagen) {
+            imageUrl = (comite.imagen.startsWith('http://') || comite.imagen.startsWith('https://'))
+                ? comite.imagen
+                : `${this.apiUrl}?action=imagen&id=${comite.id}&t=${Date.now()}`;
+        }
+
+        const estadoBadges = {
+            'activo':     { cls: 'claut-badge claut-badge--success', label: 'Activo' },
+            'inactivo':   { cls: 'claut-badge claut-badge--neutral', label: 'Inactivo' },
+            'suspendido': { cls: 'claut-badge claut-badge--warning', label: 'Suspendido' }
+        };
+        const eb = estadoBadges[comite.estado] || estadoBadges['activo'];
+
+        const overlay = document.createElement('div');
+        overlay.id = 'eliteVerComiteOverlay';
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:20px;';
+        overlay.innerHTML = `
+            <div style="background:#141418;border-radius:24px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;">
+                ${imageUrl ? `<div class="elite-card-cover elite-card-cover--contain" style="height:200px;border-radius:24px 24px 0 0;"><div class="elite-cover-bg" style="background-image:url('${imageUrl}')"></div></div>` : ''}
+                <div style="padding:22px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
+                        <h3 style="margin:0;font-size:18px;font-weight:800;color:#f6f6f8;">${this.escapeHtml(comite.nombre)}</h3>
+                        <span class="${eb.cls}">${eb.label}</span>
+                    </div>
+                    <p style="margin:0 0 12px;font-size:13px;color:#a2a8b3;line-height:1.5;">${this.escapeHtml(comite.descripcion || 'Sin descripción')}</p>
+                    ${comite.objetivo ? `<p style="margin:0 0 14px;font-size:12.5px;color:#8b93a1;line-height:1.5;"><strong style="color:#a2a8b3;">Objetivo:</strong> ${this.escapeHtml(comite.objetivo)}</p>` : ''}
+                    <div class="elite-card-meta" style="margin-bottom:18px;">
+                        <div class="row"><i class="fas fa-clock"></i>Periodicidad: ${this.escapeHtml(comite.periodicidad || 'Mensual')}</div>
+                        <div class="row"><i class="fas fa-users"></i>${parseInt(comite.miembros_activos, 10) || 0} miembros activos</div>
+                        ${comite.organizacion ? `<div class="row"><i class="fas fa-building"></i>${this.escapeHtml(comite.organizacion)}</div>` : ''}
+                    </div>
+                    <div class="elite-actions" style="justify-content:flex-end;">
+                        <button class="elite-btn elite-btn--edit" onclick="document.getElementById('eliteVerComiteOverlay').remove(); window.adminComites.editComite(${comite.id});"><i class="fas fa-edit"></i>Editar</button>
+                        <button class="elite-btn elite-btn--solid" onclick="document.getElementById('eliteVerComiteOverlay').remove();">Cerrar</button>
+                    </div>
+                </div>
+            </div>`;
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+        document.body.appendChild(overlay);
     }
 
     editComite(id) {

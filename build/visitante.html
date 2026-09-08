@@ -1,285 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png" />
-  <link rel="icon" type="image/png" href="./assets/img/favicon.png" />
-  <title>Portal Visitante - Claut Intranet</title>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
-  <link href="./assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <link rel="stylesheet" href="./css/claut-ui.css?v=20260902a">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Visitante — Clúster Intranet</title>
+  <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Estilos personalizados para visitante */
-    .visitante-card {
-      background: #C7252B;
-      border-radius: 20px;
-      padding: 2rem;
-      color: white;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
+    /* Panel de visitante (FEATURE-032) — híbrido landing + elite.
+       Autocontenido a propósito: el visitante no carga el stack admin. */
+    :root{
+      --bg:#060607; --surface:rgba(255,255,255,.05); --surface-h:rgba(255,255,255,.085);
+      --accent:#c7252b; --accent-glow:rgba(199,37,43,.4);
+      --lime:#d5f259; --lime-deep:#b6d935; --lime-ink:#181a08;
+      --hi:#f6f6f8; --mid:#a2a8b3; --low:#61687a;
+      --info:#60a5fa; --success:#34d399; --wa:#25d366;
+      --ease:cubic-bezier(.23,1,.32,1);
     }
+    *{box-sizing:border-box} html,body{overflow-x:clip}
+    body{margin:0;background:var(--bg);color:var(--hi);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(55% 40% at 10% -5%,rgba(199,37,43,.15),transparent 60%),radial-gradient(45% 40% at 100% 8%,rgba(139,92,246,.06),transparent 55%)}
+    button{font-family:inherit;cursor:pointer}
+    a{text-decoration:none;color:inherit}
+    .page{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:18px 20px 80px}
 
-    .visitante-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
+    .hdr{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:100px;padding:10px 16px;flex-wrap:wrap}
+    .hdr img{width:44px;height:44px;border-radius:50%;background:#fff;padding:3px}
+    .hdr b{font-size:15px}
+    .vtag{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);font-weight:800;background:rgba(213,242,89,.12);padding:4px 10px;border-radius:100px}
+    .hdr-spacer{flex:1}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:100px;padding:12px 20px;font-size:13px;font-weight:800;transition:transform .12s var(--ease),filter .15s}
+    .btn:active{transform:scale(.96)}
+    .btn-red{background:linear-gradient(135deg,#e23238,var(--accent) 55%,#8f1a1f);color:#fff;box-shadow:0 14px 30px -10px var(--accent-glow)}
+    .btn-red:hover{filter:brightness(1.1)}
+    .btn-ghost{background:rgba(255,255,255,.09);color:var(--hi)}
+    .btn-wa{background:rgba(37,211,102,.15);color:var(--wa)}
+    .btn-mail{background:rgba(96,165,250,.14);color:var(--info)}
+    .btn-sm{padding:9px 14px;font-size:12px}
 
-    .nav-card {
-      background: white;
-      border-radius: 15px;
-      padding: 2rem;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
+    .hero{position:relative;border-radius:28px;overflow:hidden;min-height:400px;display:flex;align-items:flex-end;margin:18px 0 26px;background:#000}
+    #heroCanvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,7,.05) 25%,rgba(6,6,7,.9) 90%)}
+    .hero-copy{position:relative;z-index:2;padding:26px 28px;max-width:660px}
+    .eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);font-weight:800;margin-bottom:8px}
+    .hero-copy h1{margin:0 0 10px;font-size:clamp(26px,4.4vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+    .hero-copy h1 em{font-style:normal;color:#ff4d55}
+    .hero-copy p{margin:0 0 18px;font-size:14px;color:var(--mid);line-height:1.55;max-width:560px}
+    .hero-ctas{display:flex;gap:10px;flex-wrap:wrap}
 
-    .nav-card:hover {
-      transform: translateY(-3px);
-      border-color: #C7252B;
-      box-shadow: 0 10px 30px rgba(199, 37, 43, 0.2);
-    }
+    .sec{display:flex;align-items:baseline;gap:10px;margin:30px 2px 14px;flex-wrap:wrap}
+    .sec h3{margin:0;font-size:16px;font-weight:800}
+    .sec span{font-size:11.5px;color:var(--low)}
 
-    .nav-card i {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: #C7252B;
-    }
+    .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+    .bcard{border-radius:24px;padding:20px;position:relative;background:var(--surface);min-height:118px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s var(--ease),background .2s}
+    .bcard:hover{transform:translateY(-3px);background:var(--surface-h)}
+    .lock{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;color:var(--low);font-size:11px}
+    .bic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:15px}
+    .bcard h4{margin:0 0 4px;font-size:14px;font-weight:800}
+    .bcard p{margin:0;font-size:11.5px;color:var(--low);line-height:1.45}
+    .b4{grid-column:span 4}.b3{grid-column:span 3}.b6{grid-column:span 6}
+    .cta-lime{background:linear-gradient(130deg,var(--lime),var(--lime-deep));color:var(--lime-ink)}
+    .cta-lime p{color:rgba(24,26,8,.75)}
+    .cta-lime h4{font-size:16px}
+    .cta-lime .btn{margin-top:12px;background:#141418;color:#fff;align-self:flex-start}
 
-    .header-visitante {
-      background: linear-gradient(135deg, #C7252B 0%, #A01E24 100%);
-      color: white;
-    }
+    .peek{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+    .pcard{background:var(--surface);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s var(--ease),background .2s}
+    .pcard:hover{transform:translateY(-3px);background:var(--surface-h)}
+    .pcover{height:120px;position:relative;flex:none;background-size:cover;background-position:center}
+    .pcover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.62))}
+    .pcover .cat{position:absolute;top:10px;left:10px;font-size:10px;font-weight:800;color:#fff;padding:4px 10px;border-radius:100px;z-index:2;background:rgba(0,0,0,.45)}
+    .pcover .ttl{position:absolute;bottom:10px;left:12px;right:12px;z-index:2;font-size:14px;font-weight:800;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+    .pbody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .prow{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--mid)}
+    .prow i{width:13px;text-align:center;color:var(--low);font-size:11px}
+    .pfoot{margin-top:auto;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+    .badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;padding:4px 10px;border-radius:100px}
+    .badge::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+    .badge-open{background:rgba(52,211,153,.13);color:var(--success)}
+    .badge-doc{background:rgba(96,165,250,.13);color:var(--info)}
+    .plock{font-size:10.5px;color:var(--low)}
+    .empty{grid-column:1/-1;text-align:center;color:var(--low);font-size:12.5px;padding:26px;background:var(--surface);border-radius:16px}
 
-    .btn-salir {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .btn-salir:hover {
-      background: rgba(255,255,255,0.2);
-    }
+    .contact{margin-top:34px;background:var(--surface);border-radius:24px;padding:22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .contact h4{margin:0;font-size:15px;font-weight:800}
+    .contact p{margin:2px 0 0;font-size:12px;color:var(--mid)}
+    .contact .sp{flex:1}
+    @media(max-width:900px){.b4,.b3{grid-column:span 6}.b6{grid-column:span 12}}
+    @media(max-width:600px){.b4,.b3,.b6{grid-column:span 12}.hero{min-height:340px}}
   </style>
 </head>
-
-<body class="m-0 font-sans text-base antialiased font-normal leading-default claut-dark">
-  <!-- Header -->
-  <header class="header-visitante shadow-lg">
-    <div class="container mx-auto px-6 py-4">
-      <div class="flex justify-between items-center">
-        <div class="flex items-center">
-          <img src="./assets/img/apple-icon.png" alt="Logo" class="w-10 h-10 mr-3">
-          <div>
-            <h1 class="text-white text-2xl font-bold">Portal Visitante</h1>
-            <p class="text-red-200 text-sm">Acceso público a información</p>
-          </div>
-        </div>
-        <button onclick="salirModoVisitante()" class="btn-salir">
-          <i class="fas fa-sign-out-alt mr-2"></i>
-          Salir
-        </button>
-      </div>
-    </div>
+<body>
+<div class="page">
+  <header class="hdr">
+    <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano">
+    <b>Clúster Intranet</b>
+    <span class="vtag">Modo visitante</span>
+    <div class="hdr-spacer"></div>
+    <a class="btn btn-ghost btn-sm" href="./pages/sign-in.html"><i class="fas fa-arrow-left"></i> Salir</a>
+    <a class="btn btn-red btn-sm" href="./pages/sign-up.html" data-metrica="click_registro">Crear mi cuenta</a>
   </header>
 
-  <!-- Contenido Principal -->
-  <div class="container mx-auto px-6 py-8">
-    <!-- Bienvenida -->
-    <div class="visitante-card mb-8">
-      <div class="text-center">
-        <i class="fas fa-eye text-4xl mb-4 opacity-80"></i>
-        <h2 class="text-white text-3xl font-bold mb-2">¡Bienvenido Visitante!</h2>
-        <p class="text-lg opacity-90">
-          Explora la información pública disponible. Tienes acceso de solo lectura a las siguientes secciones.
-        </p>
+  <section class="hero">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-copy">
+      <div class="eyebrow">Bienvenido al Clúster Metropolitano</div>
+      <h1>La industria automotriz, <em>conectada</em> por dentro</h1>
+      <p>Esta es la intranet donde los socios gestionan eventos, comités, beneficios y su red de negocio. Explora qué hay dentro — y súmate cuando quieras.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-red" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Crear mi cuenta</a>
+        <a class="btn btn-mail" href="mailto:atencion@clautedomex.mx" data-metrica="click_correo"><i class="fas fa-envelope"></i> Escribirnos</a>
+        <a class="btn btn-wa" href="https://wa.me/5255000000" target="_blank" rel="noopener" data-metrica="click_whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
       </div>
     </div>
+  </section>
 
-    <!-- Navegación de Secciones -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="navegacionVisitante">
-      <!-- Las secciones se cargarán dinámicamente -->
-    </div>
-
-    <!-- Información Adicional -->
-    <div class="mt-8 text-center">
-      <div class="glass-panel rounded-lg p-6">
-        <h3 class="text-xl font-semibold claut-text-primary mb-3">Información Importante</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm claut-text-secondary">
-          <div>
-            <i class="fas fa-eye text-blue-500 mb-2"></i>
-            <p><strong>Solo Lectura:</strong> Puedes visualizar información pero no modificarla</p>
-          </div>
-          <div>
-            <i class="fas fa-shield-alt text-green-500 mb-2"></i>
-            <p><strong>Acceso Limitado:</strong> Solo secciones públicas disponibles</p>
-          </div>
-          <div>
-            <i class="fas fa-user-plus text-orange-500 mb-2"></i>
-            <p><strong>¿Necesitas más acceso?</strong> <a href="./pages/sign-up.html" class="text-blue-500">Regístrate aquí</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="sec"><h3>Lo que usan los socios todos los días</h3><span>con tu cuenta se desbloquea todo</span></div>
+  <div class="bento">
+    <div class="bcard b4"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(199,37,43,.16);color:#ff4d55"><i class="fas fa-calendar-days"></i></div>
+      <h4>Eventos y networking</h4><p>Asambleas, foros y encuentros con registro en un clic y recordatorios.</p></div></div>
+    <div class="bcard b4"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(96,165,250,.14);color:#60a5fa"><i class="fas fa-people-group"></i></div>
+      <h4>Comités de trabajo</h4><p>Comercio exterior, innovación, capital humano — participa donde aportas.</p></div></div>
+    <div class="bcard b4"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(213,242,89,.14);color:#d5f259"><i class="fas fa-tags"></i></div>
+      <h4>Beneficios exclusivos</h4><p>Descuentos y convenios corporativos negociados para los socios.</p></div></div>
+    <div class="bcard b3"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(52,211,153,.13);color:#34d399"><i class="fas fa-folder-open"></i></div>
+      <h4>Documentación</h4><p>Normativa y formatos oficiales.</p></div></div>
+    <div class="bcard b3"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(139,92,246,.15);color:#a78bfa"><i class="fas fa-building"></i></div>
+      <h4>Red de empresas</h4><p>Directorio y perfil de tu empresa.</p></div></div>
+    <div class="bcard b6 cta-lime">
+      <div><h4>¿Tu empresa es del sector automotriz?</h4>
+      <p>Crea tu cuenta hoy — un administrador validará tu perfil y tendrás acceso completo a la comunidad del Clúster Metropolitano.</p>
+      <a class="btn" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Iniciar mi registro</a></div></div>
   </div>
 
-  <!-- Footer -->
-  <footer class="glass-panel mt-12" style="border-radius: 0;">
-    <div class="container mx-auto px-6 py-4">
-      <div class="text-center claut-text-secondary">
-        <p>© <span id="currentYear"></span> Clúster Metropolitano. Portal Visitante.</p>
-      </div>
-    </div>
-  </footer>
+  <div class="sec"><h3>Próximos eventos abiertos</h3><span>vista pública · solo lectura</span></div>
+  <div class="peek" id="peekEventos"><div class="empty">Cargando eventos…</div></div>
 
-  <script>
-    // Configuración de páginas permitidas para visitantes - ACTUALIZADO con páginas finales de BD
-    const paginasPermitidas = [
-      {
-        id: 'empresas',
-        titulo: 'Empresas',
-        descripcion: 'Directorio de empresas con convenios',
-        icono: 'fas fa-handshake',
-        url: './visitante-empresas-final.html',
-        activo: true
-      },
-      {
-        id: 'boletines',
-        titulo: 'Boletines',
-        descripcion: 'Boletines informativos públicos',
-        icono: 'fas fa-newspaper',
-        url: './visitante-boletines-final.html',
-        activo: true
-      },
-      {
-        id: 'eventos',
-        titulo: 'Eventos',
-        descripcion: 'Calendario de eventos públicos',
-        icono: 'fas fa-calendar-alt',
-        url: './visitante-eventos-final.html',
-        activo: true
-      },
-      {
-        id: 'documentacion',
-        titulo: 'Documentación',
-        descripcion: 'Centro de documentación pública',
-        icono: 'fas fa-file-alt',
-        url: './visitante-documentacion-final.html',
-        activo: true
+  <div class="sec"><h3>Boletines públicos recientes</h3><span>lo que el Clúster comunica</span></div>
+  <div class="peek" id="peekBoletines"><div class="empty">Cargando boletines…</div></div>
+
+  <div class="contact">
+    <div><h4>¿Dudas antes de registrarte?</h4><p>El equipo del Clúster te responde directamente.</p></div>
+    <div class="sp"></div>
+    <a class="btn btn-mail btn-sm" href="mailto:atencion@clautedomex.mx" data-metrica="click_correo"><i class="fas fa-envelope"></i> atencion@clautedomex.mx</a>
+    <a class="btn btn-wa btn-sm" href="https://wa.me/5255000000" target="_blank" rel="noopener" data-metrica="click_whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- guard: requiere sesión de visitante (o de usuario real) ----
+  // Resiliente: si el primer check falla (cookie aún no asentada tras el
+  // redirect de entrar), reintenta crear la sesión UNA vez antes de expulsar.
+  const RETRY_KEY = 'visitante_retry';
+  fetch('./api/visitante.php?action=check', { credentials: 'include' })
+    .then(r => r.json())
+    .then(d => {
+      if (d.success) { sessionStorage.removeItem(RETRY_KEY); return; }
+      if (!sessionStorage.getItem(RETRY_KEY)) {
+        sessionStorage.setItem(RETRY_KEY, '1');
+        location.href = './api/visitante.php?action=entrar';
+      } else {
+        sessionStorage.removeItem(RETRY_KEY);
+        location.href = './pages/sign-in.html';
       }
-    ];
+    })
+    .catch(() => { /* si la API falla, no bloquear la vista informativa */ });
 
-    document.addEventListener('DOMContentLoaded', function() {
-      // Verificar si el usuario está en modo visitante
-      if (!localStorage.getItem('visitante_mode')) {
-        console.log('❌ Acceso no autorizado al portal visitante');
-        window.location.href = './pages/sign-in.html';
+  // ---- métricas de conversión (sin PII, fire-and-forget) ----
+  document.querySelectorAll('[data-metrica]').forEach(el => {
+    el.addEventListener('click', () => {
+      const fd = new FormData();
+      fd.append('tipo', el.dataset.metrica);
+      navigator.sendBeacon
+        ? navigator.sendBeacon('./api/visitante.php?action=metrica', fd)
+        : fetch('./api/visitante.php?action=metrica', { method: 'POST', body: fd, credentials: 'include', keepalive: true });
+    });
+  });
+
+  // ---- hero: secuencia rayos-X de la landing, 1 de cada 4 frames (42) ----
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  const STEP = 4, TOTAL = 168;
+  const indices = [];
+  for (let i = 1; i <= TOTAL; i += STEP) indices.push(i);
+  const frames = new Array(indices.length);
+  let loaded = 0, current = -1;
+
+  function draw(idx) {
+    const img = frames[idx];
+    if (!img) return;
+    const cw = canvas.clientWidth, ch = canvas.clientHeight;
+    if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
+    const scale = Math.max(cw / img.width, ch / img.height);
+    const w = img.width * scale, h = img.height * scale;
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+    current = idx;
+  }
+
+  indices.forEach((n, i) => {
+    const img = new Image();
+    img.src = './landing/assets/sequence/ezgif-frame-' + String(n).padStart(3, '0') + '.jpg';
+    img.onload = () => { frames[i] = img; if (++loaded === 1) draw(0); };
+  });
+
+  function onScroll() {
+    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    const p = Math.min(1, Math.max(0, scrollY / (max * 0.5)));
+    const idx = Math.min(indices.length - 1, Math.round(p * (indices.length - 1)));
+    if (idx !== current) draw(idx);
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', () => { if (current >= 0) draw(current); });
+
+  // ---- probadita real: eventos públicos ----
+  const esc = s => String(s ?? '').replace(/</g, '&lt;');
+  const catColores = { reunion: '#3b82f6', capacitacion: '#16a34a', social: '#a21caf', importante: '#C7252B' };
+
+  fetch('./api/visitante.php?action=eventos', { credentials: 'include' })
+    .then(r => r.json())
+    .then(d => {
+      const cont = document.getElementById('peekEventos');
+      if (!d.success || !d.eventos || !d.eventos.length) {
+        cont.innerHTML = '<div class="empty">Por ahora no hay eventos abiertos al público — vuelve pronto.</div>';
         return;
       }
-
-      console.log('✅ Acceso autorizado al portal visitante');
-
-      // Configurar año actual
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-      // Cargar navegación
-      cargarNavegacionVisitante();
-
-      // Cargar configuración desde el servidor (si existe)
-      cargarConfiguracionVisitante();
+      cont.innerHTML = d.eventos.map(ev => {
+        const img = ev.imagen
+          ? (ev.imagen.startsWith('http') ? ev.imagen : './uploads/eventos/' + ev.imagen)
+          : '';
+        const fondo = img
+          ? `background-image:url('${esc(img)}')`
+          : 'background:linear-gradient(135deg,#1a2a3d,#2563eb 60%,#0a1220)';
+        const f = new Date((ev.fecha_inicio || '').replace(' ', 'T'));
+        const fecha = isNaN(f) ? '' : f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) +
+          ' · ' + f.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+        const cat = (ev.tipo || 'Evento');
+        return `<div class="pcard">
+          <div class="pcover" style="${fondo}">
+            <span class="cat" style="background:${catColores[cat.toLowerCase()] || 'rgba(0,0,0,.45)'}">${esc(cat)}</span>
+            <div class="ttl">${esc(ev.titulo)}</div>
+          </div>
+          <div class="pbody">
+            ${fecha ? `<div class="prow"><i class="fas fa-calendar"></i>${fecha}</div>` : ''}
+            ${ev.ubicacion ? `<div class="prow"><i class="fas fa-location-dot"></i>${esc(ev.ubicacion)}</div>` : ''}
+            <div class="pfoot">
+              <span class="badge badge-open">Abierto al público</span>
+              <a class="plock" href="./pages/sign-up.html" data-metrica="click_evento"><i class="fas fa-lock"></i> Regístrate para asistir</a>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+      cont.querySelectorAll('[data-metrica]').forEach(el => {
+        el.addEventListener('click', () => {
+          const fd = new FormData(); fd.append('tipo', el.dataset.metrica);
+          navigator.sendBeacon && navigator.sendBeacon('./api/visitante.php?action=metrica', fd);
+        });
+      });
+    })
+    .catch(() => {
+      document.getElementById('peekEventos').innerHTML = '<div class="empty">No se pudieron cargar los eventos.</div>';
     });
 
-    function cargarNavegacionVisitante() {
-      const navegacion = document.getElementById('navegacionVisitante');
-
-      const html = paginasPermitidas.filter(pagina => pagina.activo).map(pagina => `
-        <div class="nav-card" onclick="navegarA('${pagina.url}', '${pagina.titulo}')">
-          <i class="${pagina.icono}"></i>
-          <h3 class="text-xl font-semibold claut-text-primary mb-2">${pagina.titulo}</h3>
-          <p class="claut-text-secondary">${pagina.descripcion}</p>
-          <div class="mt-4">
-            <span class="claut-badge claut-badge--success">
-              <i class="fas fa-database mr-1"></i>Datos Reales
-            </span>
+  // ---- probadita real: boletines publicados ----
+  fetch('./api/visitante.php?action=boletines', { credentials: 'include' })
+    .then(r => r.json())
+    .then(d => {
+      const cont = document.getElementById('peekBoletines');
+      if (!d.success || !d.boletines || !d.boletines.length) {
+        cont.innerHTML = '<div class="empty">Aún no hay boletines públicos.</div>';
+        return;
+      }
+      const colores = ['#C7252B', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f87171'];
+      cont.innerHTML = d.boletines.map((b, i) => {
+        const f = new Date((b.fecha_creacion || '').replace(' ', 'T'));
+        const fecha = isNaN(f) ? '' : f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+        const enlace = b.archivo_adjunto ? `./${String(b.archivo_adjunto).replace(/^\.?\//, '')}` : '';
+        return `<div class="pcard">
+          <div class="pbody" style="padding-top:16px">
+            <b style="font-size:13.5px">${esc(b.titulo)}</b>
+            <div style="font-size:12px;color:var(--mid);line-height:1.5">${esc(b.resumen)}${(b.resumen || '').length >= 220 ? '…' : ''}</div>
+            ${fecha ? `<div class="prow"><i class="fas fa-calendar"></i>${fecha}</div>` : ''}
+            <div class="pfoot">
+              <span class="badge badge-doc" style="border-left:3px solid ${colores[i % colores.length]}">Público</span>
+              ${enlace ? `<a class="btn btn-ghost btn-sm" href="${esc(enlace)}" target="_blank" rel="noopener" data-metrica="click_boletin"><i class="fas fa-eye"></i> Leer</a>` : ''}
+            </div>
           </div>
-        </div>
-      `).join('');
-
-      navegacion.innerHTML = html;
-    }
-
-    async function cargarConfiguracionVisitante() {
-      try {
-        // Intentar cargar configuración desde el servidor
-        const response = await fetch('./api/visitante-config.php');
-        if (response.ok) {
-          const config = await response.json();
-          if (config.success && config.paginas) {
-            // Actualizar configuración con datos del servidor
-            console.log('📋 Configuración cargada desde servidor');
-            actualizarConfiguracion(config.paginas);
-          }
-        }
-      } catch (error) {
-        console.log('📋 Usando configuración por defecto con páginas finales de BD');
-      }
-    }
-
-    function actualizarConfiguracion(nuevaConfig) {
-      // Actualizar configuración de páginas
-      nuevaConfig.forEach(pagina => {
-        const index = paginasPermitidas.findIndex(p => p.id === pagina.id);
-        if (index !== -1) {
-          paginasPermitidas[index].activo = pagina.activo;
-        }
+        </div>`;
+      }).join('');
+      cont.querySelectorAll('[data-metrica]').forEach(el => {
+        el.addEventListener('click', () => {
+          const fd = new FormData(); fd.append('tipo', el.dataset.metrica);
+          navigator.sendBeacon && navigator.sendBeacon('./api/visitante.php?action=metrica', fd);
+        });
       });
-
-      // Recargar navegación
-      cargarNavegacionVisitante();
-    }
-
-    function navegarA(url, titulo) {
-      console.log(`🔗 Navegando a: ${titulo} (${url})`);
-
-      // Navegar directamente a las páginas finales de visitante con BD
-      window.location.href = url;
-    }
-
-    function salirModoVisitante() {
-      console.log('🚪 Saliendo del modo visitante');
-
-      // Limpiar localStorage
-      localStorage.removeItem('visitante_mode');
-      localStorage.removeItem('visitante_timestamp');
-
-      // Redirigir al login
-      window.location.href = './pages/sign-in.html';
-    }
-
-    // Verificar sesión cada 30 minutos
-    setInterval(() => {
-      const timestamp = localStorage.getItem('visitante_timestamp');
-      if (timestamp) {
-        const tiempoTranscurrido = Date.now() - parseInt(timestamp);
-        const dosHoras = 2 * 60 * 60 * 1000; // 2 horas en milisegundos
-
-        if (tiempoTranscurrido > dosHoras) {
-          console.log('⏰ Sesión de visitante expirada');
-          salirModoVisitante();
-        }
-      }
-    }, 30 * 60 * 1000); // Verificar cada 30 minutos
-  </script>
-  <script src="assets/js/loading-screen.js"></script>
+    })
+    .catch(() => {
+      document.getElementById('peekBoletines').innerHTML = '<div class="empty">No se pudieron cargar los boletines.</div>';
+    });
+})();
+</script>
 </body>
 </html>

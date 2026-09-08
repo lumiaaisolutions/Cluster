@@ -15,7 +15,6 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         crossorigin="anonymous" />
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Nucleo Icons -->
     <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
@@ -1151,6 +1150,7 @@
         .email-dest-badge.dest-todos { background: rgba(59,130,246,0.15); color: #60a5fa; border-color: rgba(59,130,246,0.2); }
         .email-dest-badge.dest-dest { background: rgba(16,185,129,0.15); color: #34d399; border-color: rgba(16,185,129,0.2); }
     </style>
+<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260908e">
 </head>
 
 <body class="porsche-layout m-0 font-sans text-base antialiased font-normal leading-default claut-text-muted claut-dark">
@@ -1231,13 +1231,11 @@
     <div class="claut-admin-sidebar-overlay" id="claut-admin-sidebar-overlay"></div>
     <style>
         /* Gana sobre las ~10 reglas dispersas de .main-content margin-left
-           preexistentes en este archivo (deuda histórica) — última en cascada. */
-        @media (min-width: 1025px) {
-            .claut-admin-main { margin-left: 260px !important; }
-        }
-        @media (max-width: 1024px) {
-            .claut-admin-main { margin-left: 0 !important; }
-        }
+           preexistentes en este archivo (deuda histórica) — última en cascada.
+           margin-left:0 SIEMPRE: el offset del rail lo pone claut-admin-elite.css
+           vía padding-left en el body (260px aquí sumaba al rail y descentraba
+           todo el panel — reporte con captura 2026-09-08). */
+        .claut-admin-main { margin-left: 0 !important; }
     </style>
 
     <!-- Main content -->
@@ -2100,11 +2098,11 @@
                             const discountsResponse = await fetch('./api/descuentos.php?estado=todos');
                             const discountsResult = await discountsResponse.json();
                             if (discountsResult.success && discountsResult.stats) {
-                                document.getElementById('totalDiscounts').textContent = discountsResult.stats.total || 0;
+                                { const el = document.getElementById('totalDiscounts'); if (el) el.textContent = discountsResult.stats.total || 0; }
                             }
                         } catch (error) {
                             console.error('Error loading discounts stats:', error);
-                            document.getElementById('totalDiscounts').textContent = '0';
+                            { const el = document.getElementById('totalDiscounts'); if (el) el.textContent = '0'; }
                         }
 
                         // Cargar actividad reciente
@@ -2934,7 +2932,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
                             if (discountsResponse.ok) {
                                 const discountsResult = await discountsResponse.json();
                                 if (discountsResult.success && discountsResult.data) {
-                                    document.getElementById('totalDiscounts').textContent = discountsResult.data.length;
+                                    { const el = document.getElementById('totalDiscounts'); if (el) el.textContent = discountsResult.data.length; }
                                 }
                             }
                         } catch (error) {
@@ -3407,6 +3405,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
     <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
     <script src="./js/notification-bell.js?v=20260903a" defer></script>
     <script src="./js/global-search.js?v=20260903a" defer></script>
+<script src="./js/claut-admin-elite.js?v=20260908e"></script>
 </body>
 
 </html>
