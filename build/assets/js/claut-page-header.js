@@ -41,7 +41,7 @@
     if (!document.getElementById('cph-styles')) {
         const css = `
 /* Navbar interno — fuente única de verdad (gana a reglas legacy por orden) */
-.porsche-navbar[navbar-main] {
+body .porsche-navbar[navbar-main] {
   position: sticky !important;
   top: calc(var(--header-height, 80px) + 10px) !important;
   z-index: 500 !important;
@@ -234,7 +234,7 @@
 .cph-admin-btn:active { transform: scale(0.94); }
 
 @media (max-width: 640px) {
-  .porsche-navbar[navbar-main] { position: relative !important; top: auto !important; border-radius: 1rem !important; margin-top: 12px !important; }
+  body .porsche-navbar[navbar-main] { position: relative !important; top: auto !important; border-radius: 1rem !important; margin-top: 12px !important; }
   .cph-row { padding: 0.7rem 1rem; }
   .cph-welcome { font-size: 1rem !important; }
 }`;

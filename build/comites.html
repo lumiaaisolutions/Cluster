@@ -715,7 +715,7 @@
     <!-- Contenido principal con restricción de autenticación -->
     <div id="mainContent" class="">
       <!-- Navbar interno (breadcrumb + usuario) — componente reutilizable -->
-      <script src="./assets/js/claut-page-header.js?v=20260903b" data-breadcrumb="Comités" data-welcome="Comités"></script>
+      <script src="./assets/js/claut-page-header.js?v=20260908g" data-breadcrumb="Comités" data-welcome="Comités"></script>
       <!-- Hero del rediseño 2026 (componente compartido) -->
       <script src="./js/claut-panel.js?v=20260903a" data-eyebrow="Colaboración estratégica" data-title="Comités" data-tagline="Grupos de trabajo del <strong>Clúster</strong> — participa y colabora" data-reveal="#comitesContainer"></script>
       <!-- end Navbar -->
@@ -1011,10 +1011,12 @@
         // Simplified image loading function based on empresas-convenio.html pattern
         function createComiteImageElement(comite) {
           const img = document.createElement('img');
-          // object-cover (no contain): las imágenes de comité ya traen su propio
-          // fondo de color de marca llenando el cuadro — contain dejaba franjas
-          // negras arriba/abajo cuando la proporción no calzaba con h-56.
-          img.className = 'w-full h-56 object-cover rounded-t-xl';
+          // Sin object-fit ni altura forzada: las imágenes de comité tienen
+          // contenido real hasta el borde (ícono, texto, logo del Clúster
+          // abajo) — object-cover recortaba ese logo, object-contain con
+          // altura fija dejaba franjas negras. La imagen define su propia
+          // altura a partir de su proporción real, sin recortar nada.
+          img.className = 'w-full h-auto block rounded-t-xl';
           img.alt = comite.nombre || 'Comité';
 
           // Generate dynamic placeholder as fallback (like empresas-convenio.html)
@@ -1171,9 +1173,17 @@
           comites.forEach(comite => {
             html += `
             <div class="porsche-card rounded-2xl overflow-hidden transform hover:scale-105 transition duration-300 card-hover card-animate" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); box-shadow:0 20px 40px -12px rgba(0,0,0,0.4);" data-comite-id="${comite.id}">
-              <div class="relative w-full h-56 overflow-hidden rounded-2xl shadow-xl group" style="background: linear-gradient(135deg, #16161a 0%, #1e1e24 100%);">
+              <div class="relative w-full overflow-hidden rounded-2xl shadow-xl group" style="background: linear-gradient(135deg, #16161a 0%, #1e1e24 100%); min-height: 140px;">
                 <!-- Enhanced image container will be inserted here -->
-                <div class="relative z-20 flex flex-col justify-end h-full p-4">
+                <!-- Nota: este div va vacío hoy, así que NO lleva h-full — un
+                     hijo con height:100% de un padre height:auto es un ciclo
+                     de CSS que colapsa el padre a 0px (regresión encontrada al
+                     quitar el h-56 fijo: la tarjeta quedaba completamente en
+                     blanco, ni siquiera se veía el ícono roto). Si en el
+                     futuro este div lleva contenido real, usar position:absolute
+                     + inset:0 en vez de h-full, para no depender de la altura
+                     del padre. -->
+                <div class="relative z-20 flex flex-col justify-end p-4">
                 </div>
               </div>
               <div class="p-6">
@@ -1213,7 +1223,7 @@
           comites.forEach(comite => {
             const cardElement = container.querySelector(`[data-comite-id="${comite.id}"]`);
             if (cardElement) {
-              const imageContainer = cardElement.querySelector('.relative.w-full.h-56');
+              const imageContainer = cardElement.querySelector('.relative.w-full.overflow-hidden.rounded-2xl');
               if (imageContainer) {
                 const enhancedImageElement = createComiteImageElement(comite);
                 imageContainer.insertBefore(enhancedImageElement, imageContainer.firstChild);
