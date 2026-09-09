@@ -343,9 +343,11 @@ class AdminComitesManager {
         const eb = estadoBadges[comite.estado] || estadoBadges['activo'];
 
         // --contain: las imágenes de comités son pósters con texto — se muestran
-        // completas sobre fondo oscuro en vez de recortarse (reporte del usuario)
+        // completas; la capa .elite-cover-blur rellena el letterboxing con la
+        // misma imagen desenfocada (patrón blur-fill) en vez de barras planas
         const imageHTML = imageUrl ?
             `<div class="elite-card-cover elite-card-cover--contain">
+                <div class="elite-cover-blur" style="background-image: url('${imageUrl}')"></div>
                 <div class="elite-cover-bg" style="background-image: url('${imageUrl}')"></div>
                 <span class="elite-cover-badge ${eb.cls}">${eb.label}</span>
              </div>` :
@@ -405,7 +407,7 @@ class AdminComitesManager {
         overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:20px;';
         overlay.innerHTML = `
             <div style="background:#141418;border-radius:24px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;">
-                ${imageUrl ? `<div class="elite-card-cover elite-card-cover--contain" style="height:200px;border-radius:24px 24px 0 0;"><div class="elite-cover-bg" style="background-image:url('${imageUrl}')"></div></div>` : ''}
+                ${imageUrl ? `<div class="elite-card-cover elite-card-cover--contain" style="height:200px;border-radius:24px 24px 0 0;"><div class="elite-cover-blur" style="background-image:url('${imageUrl}')"></div><div class="elite-cover-bg" style="background-image:url('${imageUrl}')"></div></div>` : ''}
                 <div style="padding:22px;">
                     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
                         <h3 style="margin:0;font-size:18px;font-weight:800;color:#f6f6f8;">${this.escapeHtml(comite.nombre)}</h3>

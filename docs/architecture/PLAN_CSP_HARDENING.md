@@ -59,3 +59,42 @@ Fase C: 1 sesión (los bloques inline con PHP son pocos una vez hecho el barrido
 Fase D: medio día, mayormente esperar y revisar el log de Report-Only.
 
 No se ejecuta ahora porque tocar 30+ archivos de interacción de usuario sin poder probar cada flujo manualmente en el navegador es exactamente el tipo de cambio que "se ve bien en el código" y rompe silenciosamente un botón en producción.
+
+## ✅ FASE A EJECUTADA (2026-09-09) — Tailwind compilado + `unsafe-eval` ELIMINADO de producción
+
+- **Build**: `tailwindcss@3.4.17` vía npx — `build/tailwind.config.js` (fusión de
+  los 5 configs inline que había: la divergencia `'clúster-red': 'black'` de
+  contacto.html era config muerta, la página no usa esa clase) +
+  `build/src/tailwind.in.css` → `build/dist/tailwind.css` (91.8 KB minificado).
+  Comando de rebuild documentado en el propio config.
+- **Safelist obligatorio**: las clases con nombre unicode (`bg-clúster-red`,
+  etc.) NO son confiables para el extractor de contenido de Tailwind — van por
+  patrón en el safelist y salen escapadas (`.bg-cl\FAster-red`), lo cual
+  matchea correctamente `class="bg-clúster-red"` en el HTML.
+- **Reemplazo**: 21 archivos (los 20 del inventario + evento_detalle.php)
+  pasaron de `<script src="https://cdn.tailwindcss.com">` a
+  `<link href="./dist/tailwind.css?v=20260909a">` (../dist/ desde pages/ y
+  admin/). Los 5 bloques `<script>tailwind.config = {...}</script>` inline se
+  eliminaron — sin el CDN, el global `tailwind` no existe y lanzarían
+  ReferenceError.
+- **CSP**: `script-src` de `.htaccess` perdió `'unsafe-eval'` y
+  `https://cdn.tailwindcss.com`. Verificado: cero `eval(` en el JS propio del
+  sitio (grep completo) — el JIT del CDN era el único consumidor.
+- **Verificación**: visual local en Chrome (demo_evento, boletines, sign-in,
+  gestionar_usuarios — pixel-idéntico; utilidades medidas por computed style
+  incluyendo valores arbitrarios `text-[10px]` y variantes); producción por
+  curl (0 referencias al CDN, 91.8 KB servidos, header CSP sin eval) y carga
+  real de sign-in.html en Chrome contra producción con CERO violaciones de
+  CSP en consola.
+- **Orden de deploy** (importante si se repite): assets y páginas PRIMERO,
+  `.htaccess` AL FINAL — la CSP estricta solo llega cuando ya nada necesita eval.
+- **Bonus**: las 21 páginas ya no cargan el compilador JIT (~350 KB de JS +
+  compilación en runtime) — reemplazado por 91.8 KB de CSS cacheable.
+
+### Estado restante
+- **Fase B** (`onclick` → addEventListener, 289 en 30 archivos) y **Fase C**
+  (scripts inline a externos/nonces): pendientes — son el requisito para
+  quitar `'unsafe-inline'`, la única excepción que queda en script-src.
+- **Fase D**: al terminar B y C — reactivar Report-Only BREVEMENTE (con la
+  lección de FIX-038: nunca dejarlo activo con violaciones universales) y
+  hacer el switch.

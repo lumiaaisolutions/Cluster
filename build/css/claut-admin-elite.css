@@ -614,6 +614,15 @@ button, .claut-admin-main a[onclick] {
 .elite-card-cover--contain img, .elite-card-cover--contain .elite-cover-bg {
   object-fit: contain; background-size: contain; background-repeat: no-repeat;
 }
+/* blur-fill: la misma imagen, desenfocada y a cover, rellena el letterboxing
+   que deja --contain (patrón Spotify) — la tarjeta conserva altura uniforme
+   con boletines/eventos/documentos sin barras planas a los lados */
+.elite-cover-blur {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: blur(18px) saturate(1.15) brightness(.75);
+  transform: scale(1.18);
+}
 .elite-card-cover::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 100%);

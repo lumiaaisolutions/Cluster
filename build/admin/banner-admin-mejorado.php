@@ -279,7 +279,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrador de Banners - CRUD Completo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../dist/tailwind.css?v=20260909a" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/claut-ui.css?v=20260902a">
     <link rel="stylesheet" href="../assets/css/layout/claut-wizard.css?v=20260901a">
@@ -379,7 +379,7 @@ try {
             .banner-item .claut-badge.ml-3 { margin-left: 0; }
         }
     </style>
-<link rel="stylesheet" href="../css/claut-admin-elite.css?v=20260909a">
+<link rel="stylesheet" href="../css/claut-admin-elite.css?v=20260909b">
 </head>
 <body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
@@ -939,6 +939,6 @@ try {
 
     <script src="../assets/js/claut-admin-sidebar.js?v=20260901c"></script>
     <script src="../assets/js/claut-wizard.js?v=20260901a"></script>
-<script src="../js/claut-admin-elite.js?v=20260909a"></script>
+<script src="../js/claut-admin-elite.js?v=20260909b"></script>
 </body>
 </html>

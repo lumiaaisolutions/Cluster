@@ -86,7 +86,7 @@ try {
                 $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if (!$resultado || !$resultado['imagen']) {
-                    $defaultImage = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80";
+                    $defaultImage = "/assets/img/placeholder.svg";
                     header('Location: ' . $defaultImage);
                     exit;
                 }
@@ -133,7 +133,7 @@ try {
             }
 
             // Si el archivo no existe o hubo error, servir una imagen por defecto para evitar 404s en consola
-            $defaultImage = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80";
+            $defaultImage = "/assets/img/placeholder.svg";
             header('Location: ' . $defaultImage);
             exit;
 
