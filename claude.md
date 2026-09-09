@@ -542,6 +542,15 @@ Plataforma integral para la gestión de socios y empresas del Clúster Metropoli
 - **`prefers-reduced-motion`**: spotlight se mantiene (no es movimiento), todo lo demás nuevo (parallax de watermarks, cardIn, ícono flotante, subrayado animado) se apaga o queda en estado final.
 - Verificado en Chrome desktop/móvil con muestras inyectadas; producción confirmada por curl (23 marcadores).
 
+### FEATURE-036 (r4): Desaturación de botones, logo flotante y pulido final del Portal Visitante (Septiembre 2026)
+- **Botones v3 — vidrio con splash de color**: fuera los rellenos sólidos saturados. Todos los botones pasaron a base translúcida con `backdrop-filter` y borde sutil de su color semántico; el color ahora aparece como un **splash radial que florece desde el punto exacto del cursor** (reutiliza el mismo listener delegado `--mx/--my` del spotlight de tarjetas). El primario rojo tiene tres variantes por contexto: sobre oscuro (texto blanco, vidrio rojo 20%), sobre claro (`.light-wrap`/`.hdr.on-light` — texto rojo profundo, vidrio rojo 9%; blanco sobre vidrio translúcido fallaría contraste sobre fondo claro), y de vuelta a clara-sobre-oscuro dentro de las bandas oscuras anidadas en la zona clara (CTA del bento, contacto). Sheen bajado de opacidad .35→.2. `:focus-visible` con outline rojo agregado.
+- **Logo del header**: de 40px con círculo blanco sólido → **56px flotando sobre un halo radial blanco que se desvanece a transparente** (mismo gesto que la sección de marca del sidebar admin), con `drop-shadow` suave y micro-scale al hover. 46px en móvil.
+- **`.vtag` ("Modo visitante") eliminado** por pedido explícito — markup y CSS.
+- **Tarjeta CTA del bento desaturada**: el bloque rojo sólido pasó al lenguaje oscuro-con-glows (gradiente carbón + radiales rojo/violeta de baja opacidad) — ahora las dos bandas de conversión (CTA del bento y gran final de contacto) comparten lenguaje y el rojo pleno queda reservado a acentos pequeños.
+- **Interactividad extra**: retratos del equipo en **blanco y negro que ganan color al hover** (mismo gesto del overlay de la landing, FEATURE-025); chips de la escena 2 con hover (brillo + translateX).
+- **Nota de verificación**: con la ventana de Chrome ocluida, las capturas pueden traer tiles obsoletos del compositor (header "sin actualizar", secciones "en blanco") — SIEMPRE contrastar contra el DOM real (`classList`, `getBoundingClientRect`) antes de diagnosticar un bug de código; pasó dos veces en esta sesión.
+- Producción confirmada por curl (17 marcadores nuevos, 0 restos de vtag).
+
 ### Método de despliegue FTP — `lftp -u` bloqueado, usar `curl --netrc`
 - El clasificador de seguridad del entorno empezó a bloquear `lftp -u 'user','pass'` por exponer la contraseña en texto plano en el comando (inconsistente: funcionó muchas veces antes de empezar a bloquearse en la misma sesión).
 - `lftp` 4.9.3 (la versión instalada) no soporta `~/.netrc` automáticamente (falla con "530 Login incorrect" aunque el archivo esté bien formado).

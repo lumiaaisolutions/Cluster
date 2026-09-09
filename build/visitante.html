@@ -48,36 +48,57 @@
       backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);
       color:#fff;transition:background .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease}
     .hdr.on-light{background:var(--glass);border-color:var(--stroke);color:var(--ink);box-shadow:var(--shadow)}
-    .hdr img{width:40px;height:40px;border-radius:50%;background:#fff;padding:3px}
+    /* logo flotante: halo blanco que se desvanece (sin fondo duro), más grande */
+    .hdr img{width:56px;height:56px;border-radius:50%;padding:7px;flex:none;
+      background:radial-gradient(circle at 50% 42%,#ffffff 0%,rgba(255,255,255,.9) 40%,rgba(255,255,255,.35) 62%,rgba(255,255,255,0) 74%);
+      filter:drop-shadow(0 4px 14px rgba(0,0,0,.25));transition:transform .25s var(--ease)}
+    .hdr img:hover{transform:scale(1.06)}
     .hdr b{font-size:14px;letter-spacing:-.01em}
-    .vtag{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;padding:4px 10px;border-radius:100px;background:rgba(199,37,43,.18);color:#ff8a8f}
-    .hdr.on-light .vtag{background:rgba(199,37,43,.09);color:var(--accent)}
     .hdr-spacer{flex:1}
-    .hdr .btn-ghost{background:rgba(255,255,255,.12);color:#fff}
-    .hdr.on-light .btn-ghost{background:rgba(22,24,31,.06);color:var(--ink)}
+    .hdr .btn-ghost{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.16);color:#fff}
+    .hdr.on-light .btn-ghost{background:rgba(22,24,31,.04);border-color:rgba(22,24,31,.1);color:var(--ink)}
 
-    /* --- Botones v2: sheen + flecha deslizante + press --- */
-    .btn{position:relative;display:inline-flex;align-items:center;gap:9px;border:none;border-radius:100px;padding:13px 22px;font-size:13px;font-weight:800;letter-spacing:.01em;overflow:hidden;transition:transform .18s var(--ease),filter .15s,box-shadow .22s ease;min-height:44px}
+    /* --- Botones v3: vidrio desaturado + splash de color desde el cursor ---
+       Nada de rellenos sólidos saturados: base translúcida con blur y borde
+       sutil; el color aparece como un "splash" radial que florece desde el
+       punto exacto del cursor (--mx/--my, mismo listener de las tarjetas). */
+    .btn{position:relative;display:inline-flex;align-items:center;gap:9px;border-radius:100px;padding:13px 22px;
+      font-size:13px;font-weight:800;letter-spacing:.01em;overflow:hidden;min-height:44px;
+      border:1px solid transparent;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      transition:transform .18s var(--ease),box-shadow .22s ease,background .2s ease,border-color .2s ease}
     .btn:hover{transform:translateY(-2px)}
     .btn:active{transform:scale(.955)}
+    .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
     .btn i{transition:transform .22s var(--ease)}
     .btn:hover i.fa-arrow-right{transform:translateX(3px)}
+    /* splash radial en el punto del cursor */
+    .btn::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+      background:radial-gradient(120px circle at var(--mx,50%) var(--my,50%),var(--splash,rgba(255,255,255,.3)),transparent 72%);
+      transition:opacity .3s ease}
+    .btn:hover::before{opacity:1}
+    /* sheen sutil */
     .btn::after{content:"";position:absolute;top:0;bottom:0;left:-70%;width:45%;transform:skewX(-22deg);
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-      opacity:0;transition:opacity .15s}
-    .btn:hover::after{opacity:1;animation:sheen .7s var(--ease)}
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+      opacity:0;transition:opacity .15s;pointer-events:none}
+    .btn:hover::after{opacity:1;animation:sheen .8s var(--ease)}
     @keyframes sheen{to{left:130%}}
-    .btn-red{background:linear-gradient(135deg,#e23238,var(--accent) 55%,var(--accent-deep));color:#fff;box-shadow:0 14px 32px -10px var(--accent-glow)}
-    .btn-red:hover{filter:brightness(1.08);box-shadow:0 20px 44px -12px var(--accent-glow)}
-    .btn-ghost{background:rgba(22,24,31,.06);color:var(--ink)}
-    .btn-ghost:hover{background:rgba(22,24,31,.1)}
-    .btn-wa{background:#e4f6ec;color:var(--wa)}
-    .btn-wa:hover{background:#d6f0e2}
-    .btn-mail{background:#e8effc;color:var(--info)}
-    .btn-mail:hover{background:#dbe7fa}
+
+    /* primario (contexto oscuro por defecto: cine, contacto, header) */
+    .btn-red{background:rgba(199,37,43,.2);border-color:rgba(255,90,96,.35);color:#fff;
+      --splash:rgba(226,50,56,.45);box-shadow:0 10px 30px -14px var(--accent-glow)}
+    .btn-red:hover{border-color:rgba(255,90,96,.55);box-shadow:0 16px 40px -14px var(--accent-glow)}
+    /* primario en contexto claro */
+    .light-wrap .btn-red,.hdr.on-light .btn-red{background:rgba(199,37,43,.09);border-color:rgba(199,37,43,.28);color:var(--accent-deep);--splash:rgba(199,37,43,.16)}
+    .light-wrap .btn-red:hover,.hdr.on-light .btn-red:hover{border-color:rgba(199,37,43,.45)}
+    /* dentro de bandas oscuras (CTA del bento, contacto) vuelve la variante clara-sobre-oscuro */
+    .light-wrap .cta-red .btn-red,.light-wrap .contact .btn-red{background:rgba(199,37,43,.24);border-color:rgba(255,90,96,.38);color:#fff;--splash:rgba(226,50,56,.45)}
+
+    .btn-ghost{background:rgba(22,24,31,.04);border-color:rgba(22,24,31,.1);color:var(--ink);--splash:rgba(22,24,31,.07)}
+    .btn-wa{background:rgba(18,140,75,.07);border-color:rgba(18,140,75,.22);color:var(--wa);--splash:rgba(18,140,75,.14)}
+    .btn-mail{background:rgba(29,78,216,.06);border-color:rgba(29,78,216,.2);color:var(--info);--splash:rgba(29,78,216,.12)}
     .btn-sm{padding:9px 15px;font-size:12px;min-height:40px}
-    .btn-frost{background:rgba(255,255,255,.12);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-    .btn-frost:hover{background:rgba(255,255,255,.2)}
+    .btn-frost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#fff;--splash:rgba(255,255,255,.22)}
+    .btn-frost:hover{border-color:rgba(255,255,255,.4)}
 
     /* ============================================================
        CINE — scrollytelling: región alta + escenario sticky
@@ -110,7 +131,8 @@
     .s2 .chips{display:flex;flex-direction:column;gap:12px;margin-top:8px}
     .chip{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
       backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:18px;padding:14px 18px;max-width:460px;
-      transform:translateX(-18px);opacity:0;transition:transform .6s var(--ease),opacity .6s ease}
+      transform:translateX(-18px);opacity:0;transition:transform .6s var(--ease),opacity .6s ease,background .25s ease,border-color .25s ease}
+    .chip:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.24);transform:translateX(4px) !important}
     .scene.live .chip{transform:none;opacity:1}
     .scene.live .chip:nth-child(2){transition-delay:.09s}
     .scene.live .chip:nth-child(3){transition-delay:.18s}
@@ -172,7 +194,10 @@
       backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
       border-radius:100px;padding:9px 22px 9px 10px;box-shadow:var(--shadow);transition:transform .22s var(--ease)}
     .person:hover{transform:translateY(-3px)}
-    .person img{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top;background:linear-gradient(135deg,#dfe3f0,#c9cfe2)}
+    /* retrato b/n → color al hover (mismo gesto que el overlay de la landing) */
+    .person img{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top;
+      background:linear-gradient(135deg,#dfe3f0,#c9cfe2);filter:grayscale(1);transition:filter .35s ease}
+    .person:hover img{filter:grayscale(0)}
     .person b{display:block;font-size:13.5px;letter-spacing:-.01em}
     .person span{font-size:11px;color:var(--mid)}
 
@@ -196,11 +221,16 @@
     .bcard h4{margin:0 0 4px;font-size:14.5px;font-weight:800;letter-spacing:-.01em}
     .bcard p{margin:0;font-size:12px;color:var(--mid);line-height:1.5}
     .b4{grid-column:span 4}.b3{grid-column:span 3}.b6{grid-column:span 6}
-    .cta-red{background:linear-gradient(130deg,#e23238,var(--accent) 55%,var(--accent-deep));border:none;color:#fff;box-shadow:0 26px 60px -20px var(--accent-glow)}
+    /* tarjeta CTA: mismo lenguaje oscuro-con-glow del cierre (sin saturar) */
+    .cta-red{background:linear-gradient(130deg,#1b1c22,#101116 60%);border:none;color:#fff;box-shadow:0 30px 70px -26px rgba(20,24,48,.5)}
+    .cta-red::after{content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(70% 110% at 12% 115%,rgba(199,37,43,.4),transparent 58%),
+                 radial-gradient(45% 70% at 95% -12%,rgba(124,58,237,.2),transparent 60%)}
+    .cta-red>*{position:relative;z-index:1}
     .cta-red h4{font-size:17px;color:#fff}
-    .cta-red p{color:rgba(255,255,255,.85)}
-    .cta-red .btn{margin-top:14px;background:#fff;color:var(--accent-deep);align-self:flex-start}
-    .cta-red .btn:hover{filter:none;background:#ffe9ea}
+    .cta-red p{color:rgba(255,255,255,.78)}
+    .cta-red .bento-cta{margin-top:14px;align-self:flex-start}
+    .cta-red::before{background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.06),transparent 65%)}
 
     /* --- Tarjetas eventos / boletines --- */
     .peek{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
@@ -257,10 +287,10 @@
     .contact h4{margin:0;font-size:clamp(22px,3.4vw,34px);font-weight:900;letter-spacing:-.035em}
     .contact p{margin:0 0 16px;font-size:13px;color:rgba(255,255,255,.65)}
     .contact .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-    .contact .btn-mail{background:rgba(255,255,255,.1);color:#fff}
-    .contact .btn-mail:hover{background:rgba(255,255,255,.18)}
-    .contact .btn-wa{background:rgba(37,211,102,.16);color:#4ade80}
-    .contact .btn-wa:hover{background:rgba(37,211,102,.26)}
+    .contact .btn-mail{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:#fff;--splash:rgba(96,165,250,.3)}
+    .contact .btn-mail:hover{border-color:rgba(255,255,255,.38)}
+    .contact .btn-wa{background:rgba(37,211,102,.08);border-color:rgba(74,222,128,.3);color:#4ade80;--splash:rgba(37,211,102,.28)}
+    .contact .btn-wa:hover{border-color:rgba(74,222,128,.5)}
 
     .foot{margin-top:34px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;color:var(--low)}
     .foot img{width:22px;height:22px;border-radius:50%;opacity:.8}
@@ -273,6 +303,7 @@
       .s1 .sub{font-size:13.5px}
       .cine-badge{display:none}
       .hdr b{display:none}
+      .hdr img{width:46px;height:46px;padding:5px}
     }
     @media(prefers-reduced-motion:reduce){
       .rv{opacity:1;transform:none;filter:none;transition:none}
@@ -298,7 +329,6 @@
 <header class="hdr" id="hdr">
   <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano">
   <b>Clúster Intranet</b>
-  <span class="vtag">Modo visitante</span>
   <div class="hdr-spacer"></div>
   <a class="btn btn-ghost btn-sm" href="./pages/sign-in.html"><i class="fas fa-arrow-left"></i> Salir</a>
   <a class="btn btn-red btn-sm" href="./pages/sign-up.html" data-metrica="click_registro">Crear mi cuenta</a>
@@ -394,7 +424,7 @@
     <div class="bcard b6 cta-red rv" style="--rvd:140ms">
       <div><h4>¿Tu empresa es del sector automotriz?</h4>
       <p>Crea tu cuenta hoy — un administrador validará tu perfil y tendrás acceso completo a la comunidad del Clúster Metropolitano.</p>
-      <a class="btn" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Iniciar mi registro</a></div></div>
+      <a class="btn btn-red bento-cta" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Iniciar mi registro</a></div></div>
   </div>
 
   <div class="wm" data-wmf="-0.055" style="margin-top:-24px" aria-hidden="true">EVENTOS</div>
@@ -471,14 +501,14 @@
     rvEls.forEach(el => io.observe(el));
   }
 
-  // ---- spotlight: halo que sigue al cursor en tarjetas (solo pointer fino) ----
+  // ---- spotlight/splash: halo que sigue al cursor en tarjetas y botones ----
   if (matchMedia('(pointer: fine)').matches) {
     document.addEventListener('pointermove', e => {
-      const card = e.target.closest && e.target.closest('.bcard, .pcard');
-      if (!card) return;
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
-      card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      const t = e.target.closest && e.target.closest('.bcard, .pcard, .btn');
+      if (!t) return;
+      const r = t.getBoundingClientRect();
+      t.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+      t.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
     }, { passive: true });
   }
 
