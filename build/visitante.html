@@ -138,15 +138,30 @@
        Contenido claro (aurora glass)
        ============================================================ */
     .page{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:26px 20px 70px;background:transparent}
-    .light-wrap{position:relative;z-index:2;background:linear-gradient(180deg,#0b0b0f 0%,var(--bg) 7%)}
+    .light-wrap{position:relative;z-index:2;overflow:clip;
+      background:linear-gradient(180deg,#0b0b0f 0%,rgba(238,240,246,.92) 6%,rgba(238,240,246,0) 18%)}
 
     .rv{opacity:0;transform:translateY(26px);filter:blur(5px);
       transition:opacity .7s var(--ease),transform .7s var(--ease),filter .7s ease;transition-delay:var(--rvd,0ms)}
     .rv.in{opacity:1;transform:none;filter:none}
 
-    .sec{display:flex;align-items:baseline;gap:10px;margin:44px 2px 16px;flex-wrap:wrap}
-    .sec h3{margin:0;font-size:clamp(19px,2.6vw,26px);font-weight:900;letter-spacing:-.03em}
-    .sec span{font-size:11.5px;color:var(--low)}
+    /* Palabras gigantes de fondo (editorial) con parallax propio */
+    .wm{position:absolute;right:-1%;z-index:0;pointer-events:none;user-select:none;
+      font-size:clamp(70px,13vw,170px);font-weight:900;letter-spacing:-.05em;line-height:1;
+      color:transparent;-webkit-text-stroke:1.5px rgba(22,24,31,.07);white-space:nowrap;will-change:transform}
+
+    /* Encabezado de sección: kicker pill + título + subrayado que se dibuja */
+    .sec{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;margin:54px 2px 18px}
+    .sec .kick{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;
+      font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:800;color:var(--accent);
+      background:rgba(199,37,43,.08);border:1px solid rgba(199,37,43,.14);padding:5px 12px;border-radius:100px}
+    .sec .kick i{font-size:9px}
+    .sec .row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+    .sec h3{position:relative;margin:0;font-size:clamp(21px,3vw,30px);font-weight:900;letter-spacing:-.035em;padding-bottom:8px}
+    .sec h3::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;border-radius:3px;
+      background:linear-gradient(90deg,var(--accent),#a78bfa);transition:width .8s var(--ease) .15s}
+    .sec.in h3::after{width:52px}
+    .sec span.note{font-size:11.5px;color:var(--low)}
 
     /* --- Marquee del equipo (fotos reales) --- */
     .mq{overflow:hidden;margin-top:6px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
@@ -162,11 +177,21 @@
     .person span{font-size:11px;color:var(--mid)}
 
     /* --- Bento módulos --- */
-    .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-    .bcard{border-radius:22px;padding:20px;position:relative;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);min-height:126px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease}
+    .bento{position:relative;z-index:1;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+    .bcard{border-radius:22px;padding:20px;position:relative;overflow:hidden;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);min-height:126px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease}
     .bcard:hover{transform:translateY(-5px);box-shadow:0 34px 70px -26px rgba(58,66,110,.35)}
     .bcard:hover .bic{transform:scale(1.12) rotate(-4deg)}
-    .lock{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(22,24,31,.05);display:flex;align-items:center;justify-content:center;color:var(--low);font-size:11px}
+    /* spotlight: halo que sigue al cursor (JS fija --mx/--my) */
+    .bcard::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s ease;
+      background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgba(199,37,43,.09),transparent 65%)}
+    .bcard:hover::before{opacity:1}
+    /* candado que se "abre" al hover — comunica que se desbloquea con cuenta */
+    .lock{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(22,24,31,.05);display:flex;align-items:center;justify-content:center;color:var(--low);font-size:11px;transition:background .25s ease,color .25s ease}
+    .lock i{transition:opacity .25s ease,transform .25s var(--ease)}
+    .lock .fa-lock-open{position:absolute;opacity:0;transform:scale(.6) rotate(-14deg)}
+    .bcard:hover .lock{background:#e0f4eb;color:var(--success)}
+    .bcard:hover .lock .fa-lock{opacity:0;transform:scale(.6) rotate(14deg)}
+    .bcard:hover .lock .fa-lock-open{opacity:1;transform:none}
     .bic{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:16px;transition:transform .25s var(--ease)}
     .bcard h4{margin:0 0 4px;font-size:14.5px;font-weight:800;letter-spacing:-.01em}
     .bcard p{margin:0;font-size:12px;color:var(--mid);line-height:1.5}
@@ -178,9 +203,20 @@
     .cta-red .btn:hover{filter:none;background:#ffe9ea}
 
     /* --- Tarjetas eventos / boletines --- */
-    .peek{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
-    .pcard{background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease}
+    .peek{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+    .pcard{background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease;position:relative}
     .pcard:hover{transform:translateY(-5px);box-shadow:0 34px 70px -26px rgba(58,66,110,.35)}
+    /* entrada escalonada de tarjetas cargadas por JS (post-IntersectionObserver) */
+    .peek .pcard{animation:cardIn .65s var(--ease) both;animation-delay:var(--ci,0ms)}
+    @keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(.97);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+    /* spotlight también en estas tarjetas */
+    .pcard::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;z-index:2;transition:opacity .3s ease;
+      background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(199,37,43,.07),transparent 65%)}
+    .pcard:hover::before{opacity:1}
+    /* cabecera de color de las tarjetas de boletín */
+    .bhead{display:flex;align-items:center;gap:11px;padding:14px 14px 0}
+    .bhead .bi{width:38px;height:38px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+    .bhead b{font-size:13.5px;letter-spacing:-.01em;line-height:1.3}
     .pcover{height:130px;position:relative;flex:none;background-size:cover;background-position:center;overflow:hidden}
     .pcover .zoom{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s var(--ease)}
     .pcard:hover .pcover .zoom{transform:scale(1.07)}
@@ -198,13 +234,36 @@
     .plock{font-size:10.5px;color:var(--low);transition:color .15s}
     .plock:hover{color:var(--accent)}
     .empty{grid-column:1/-1;text-align:center;color:var(--low);font-size:12.5px;padding:26px;background:var(--glass);border:1px solid var(--stroke);border-radius:16px}
+    /* estado vacío como invitación, no como disculpa */
+    .empty-rich{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
+      padding:34px 22px;border-radius:20px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      border:1.5px dashed rgba(199,37,43,.28)}
+    .empty-rich .ei{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-size:19px;color:var(--accent);background:rgba(199,37,43,.08);animation:floaty 3.4s ease-in-out infinite}
+    @keyframes floaty{50%{transform:translateY(-6px)}}
+    .empty-rich b{font-size:14.5px;letter-spacing:-.01em}
+    .empty-rich p{margin:0;font-size:12px;color:var(--mid);max-width:380px;line-height:1.55}
 
-    /* --- Contacto + footer --- */
-    .contact{margin-top:44px;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-radius:24px;padding:22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:var(--shadow)}
-    .contact h4{margin:0;font-size:15px;font-weight:800}
-    .contact p{margin:2px 0 0;font-size:12px;color:var(--mid)}
-    .contact .sp{flex:1}
-    .foot{margin-top:34px;text-align:center;font-size:11px;color:var(--low)}
+    /* --- Gran final de contacto --- */
+    .contact{position:relative;z-index:1;margin-top:64px;border-radius:28px;overflow:hidden;
+      background:linear-gradient(130deg,#1b1c22,#101116 60%);color:#fff;
+      padding:clamp(28px,5vw,52px);display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
+      box-shadow:0 40px 90px -30px rgba(20,24,48,.5)}
+    .contact::before{content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(60% 90% at 15% 110%,rgba(199,37,43,.35),transparent 60%),
+                 radial-gradient(50% 80% at 90% -10%,rgba(124,58,237,.22),transparent 60%)}
+    .contact>*{position:relative}
+    .contact .kick{display:inline-flex;align-items:center;gap:7px;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:800;color:#ff8a8f;background:rgba(199,37,43,.16);padding:5px 12px;border-radius:100px;margin-bottom:6px}
+    .contact h4{margin:0;font-size:clamp(22px,3.4vw,34px);font-weight:900;letter-spacing:-.035em}
+    .contact p{margin:0 0 16px;font-size:13px;color:rgba(255,255,255,.65)}
+    .contact .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+    .contact .btn-mail{background:rgba(255,255,255,.1);color:#fff}
+    .contact .btn-mail:hover{background:rgba(255,255,255,.18)}
+    .contact .btn-wa{background:rgba(37,211,102,.16);color:#4ade80}
+    .contact .btn-wa:hover{background:rgba(37,211,102,.26)}
+
+    .foot{margin-top:34px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;color:var(--low)}
+    .foot img{width:22px;height:22px;border-radius:50%;opacity:.8}
 
     @media(max-width:900px){.b4,.b3{grid-column:span 6}.b6{grid-column:span 12}}
     @media(max-width:600px){
@@ -226,6 +285,10 @@
       .s2,.s3,.cine-hint{display:none}
       .s1{opacity:1 !important;pointer-events:auto !important}
       .cine-hint i,.cine-badge i{animation:none}
+      .peek .pcard{animation:none}
+      .empty-rich .ei{animation:none}
+      .wm{transform:none !important}
+      .sec h3::after{transition:none;width:52px}
     }
   </style>
 </head>
@@ -297,7 +360,9 @@
 <div class="light-wrap">
 <div class="page">
 
-  <div class="sec rv"><h3>Te recibe gente real</h3><span>el equipo directivo del Clúster</span></div>
+  <div class="wm" data-wmf="-0.05" style="top:40px" aria-hidden="true">CLÚSTER</div>
+  <div class="sec rv"><span class="kick"><i class="fas fa-handshake"></i> Equipo</span>
+    <div class="row"><h3>Te recibe gente real</h3><span class="note">el equipo directivo del Clúster</span></div></div>
   <div class="mq rv" aria-label="Equipo directivo">
     <div class="mq-track" id="mqTrack">
       <span class="person"><img src="./assets/img/Fotos/Elisa-Crespo-.png.webp" alt="Elisa Crespo"><span><b>Elisa Crespo</b><span>Presidenta Ejecutiva CLAUTMET</span></span></span>
@@ -307,21 +372,23 @@
     </div>
   </div>
 
-  <div class="sec rv"><h3>Lo que usan los socios todos los días</h3><span>con tu cuenta se desbloquea todo</span></div>
+  <div class="wm" data-wmf="0.06" style="margin-top:-30px" aria-hidden="true">SOCIOS</div>
+  <div class="sec rv"><span class="kick"><i class="fas fa-unlock"></i> Módulos</span>
+    <div class="row"><h3>Lo que usan los socios todos los días</h3><span class="note">con tu cuenta se desbloquea todo</span></div></div>
   <div class="bento">
-    <div class="bcard b4 rv"><span class="lock"><i class="fas fa-lock"></i></span>
+    <div class="bcard b4 rv"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
       <div><div class="bic" style="background:rgba(199,37,43,.1);color:#c7252b"><i class="fas fa-calendar-days"></i></div>
       <h4>Eventos y networking</h4><p>Asambleas, foros y encuentros con registro en un clic y recordatorios.</p></div></div>
-    <div class="bcard b4 rv" style="--rvd:70ms"><span class="lock"><i class="fas fa-lock"></i></span>
+    <div class="bcard b4 rv" style="--rvd:70ms"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
       <div><div class="bic" style="background:rgba(29,78,216,.09);color:#1d4ed8"><i class="fas fa-people-group"></i></div>
       <h4>Comités de trabajo</h4><p>Comercio exterior, innovación, capital humano — participa donde aportas.</p></div></div>
-    <div class="bcard b4 rv" style="--rvd:140ms"><span class="lock"><i class="fas fa-lock"></i></span>
+    <div class="bcard b4 rv" style="--rvd:140ms"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
       <div><div class="bic" style="background:rgba(124,58,237,.09);color:#7c3aed"><i class="fas fa-tags"></i></div>
       <h4>Beneficios exclusivos</h4><p>Descuentos y convenios corporativos negociados para los socios.</p></div></div>
-    <div class="bcard b3 rv"><span class="lock"><i class="fas fa-lock"></i></span>
+    <div class="bcard b3 rv"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
       <div><div class="bic" style="background:rgba(13,122,86,.09);color:#0d7a56"><i class="fas fa-folder-open"></i></div>
       <h4>Documentación</h4><p>Normativa y formatos oficiales.</p></div></div>
-    <div class="bcard b3 rv" style="--rvd:70ms"><span class="lock"><i class="fas fa-lock"></i></span>
+    <div class="bcard b3 rv" style="--rvd:70ms"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
       <div><div class="bic" style="background:rgba(2,132,199,.09);color:#0284c7"><i class="fas fa-building"></i></div>
       <h4>Red de empresas</h4><p>Directorio y perfil de tu empresa.</p></div></div>
     <div class="bcard b6 cta-red rv" style="--rvd:140ms">
@@ -330,20 +397,28 @@
       <a class="btn" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Iniciar mi registro</a></div></div>
   </div>
 
-  <div class="sec rv"><h3>Próximos eventos abiertos</h3><span>vista pública · solo lectura</span></div>
+  <div class="wm" data-wmf="-0.055" style="margin-top:-24px" aria-hidden="true">EVENTOS</div>
+  <div class="sec rv"><span class="kick"><i class="fas fa-calendar-days"></i> Agenda</span>
+    <div class="row"><h3>Próximos eventos abiertos</h3><span class="note">vista pública · solo lectura</span></div></div>
   <div class="peek" id="peekEventos"><div class="empty">Cargando eventos…</div></div>
 
-  <div class="sec rv"><h3>Boletines públicos recientes</h3><span>lo que el Clúster comunica</span></div>
+  <div class="wm" data-wmf="0.05" style="margin-top:-24px" aria-hidden="true">NOTICIAS</div>
+  <div class="sec rv"><span class="kick"><i class="fas fa-bullhorn"></i> Comunicación</span>
+    <div class="row"><h3>Boletines públicos recientes</h3><span class="note">lo que el Clúster comunica</span></div></div>
   <div class="peek" id="peekBoletines"><div class="empty">Cargando boletines…</div></div>
 
   <div class="contact rv">
-    <div><h4>¿Dudas antes de registrarte?</h4><p>El equipo del Clúster te responde directamente.</p></div>
-    <div class="sp"></div>
-    <a class="btn btn-mail btn-sm" href="mailto:atencion@clautedomex.mx" data-metrica="click_correo"><i class="fas fa-envelope"></i> atencion@clautedomex.mx</a>
-    <a class="btn btn-wa btn-sm" href="https://wa.me/5255000000" target="_blank" rel="noopener" data-metrica="click_whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    <span class="kick"><i class="fas fa-comments"></i> Estamos para ayudarte</span>
+    <h4>¿Dudas antes de registrarte?</h4>
+    <p>El equipo del Clúster te responde directamente — sin filas, sin formularios eternos.</p>
+    <div class="row">
+      <a class="btn btn-red" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Crear mi cuenta</a>
+      <a class="btn btn-mail" href="mailto:atencion@clautedomex.mx" data-metrica="click_correo"><i class="fas fa-envelope"></i> atencion@clautedomex.mx</a>
+      <a class="btn btn-wa" href="https://wa.me/5255000000" target="_blank" rel="noopener" data-metrica="click_whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    </div>
   </div>
 
-  <p class="foot">© <span id="footYear"></span> Clúster Metropolitano · CDMX · EdoMex · Hgo</p>
+  <p class="foot"><img src="./assets/img/apple-icon.png" alt="">© <span id="footYear"></span> Clúster Metropolitano · CDMX · EdoMex · Hgo</p>
 </div>
 </div>
 
@@ -394,6 +469,34 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     rvEls.forEach(el => io.observe(el));
+  }
+
+  // ---- spotlight: halo que sigue al cursor en tarjetas (solo pointer fino) ----
+  if (matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('pointermove', e => {
+      const card = e.target.closest && e.target.closest('.bcard, .pcard');
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+    }, { passive: true });
+  }
+
+  // ---- parallax de las palabras de fondo (.wm) ----
+  if (!reduced) {
+    const wms = Array.from(document.querySelectorAll('.wm'));
+    let wRaf = null;
+    function wmTick() {
+      wms.forEach(el => {
+        const f = parseFloat(el.dataset.wmf || '0.05');
+        const r = el.getBoundingClientRect();
+        const delta = (r.top + r.height / 2) - innerHeight / 2;
+        el.style.transform = 'translate3d(0,' + (delta * f).toFixed(1) + 'px,0)';
+      });
+      wRaf = null;
+    }
+    addEventListener('scroll', () => { if (!wRaf) wRaf = requestAnimationFrame(wmTick); }, { passive: true });
+    wmTick();
   }
 
   // ---- CINE: canvas + scrub + escenas por progreso ----
@@ -531,10 +634,16 @@
     .then(d => {
       const cont = document.getElementById('peekEventos');
       if (!d.success || !d.eventos || !d.eventos.length) {
-        cont.innerHTML = '<div class="empty">Por ahora no hay eventos abiertos al público — vuelve pronto.</div>';
+        cont.innerHTML = `<div class="empty-rich">
+          <span class="ei"><i class="fas fa-calendar-plus"></i></span>
+          <b>La agenda pública está por anunciarse</b>
+          <p>Los socios ya ven la agenda completa desde adentro. Crea tu cuenta y recibe el aviso de los próximos eventos abiertos.</p>
+          <a class="btn btn-red btn-sm" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Crear mi cuenta</a>
+        </div>`;
+        wireMetrics(cont);
         return;
       }
-      cont.innerHTML = d.eventos.map(ev => {
+      cont.innerHTML = d.eventos.map((ev, i) => {
         const img = ev.imagen
           ? (ev.imagen.startsWith('http') ? ev.imagen : './uploads/eventos/' + ev.imagen)
           : '';
@@ -545,7 +654,7 @@
         const fecha = isNaN(f) ? '' : f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) +
           ' · ' + f.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
         const cat = (ev.tipo || 'Evento');
-        return `<div class="pcard">
+        return `<div class="pcard" style="--ci:${i * 90}ms">
           <div class="pcover" style="${fondo}">
             <span class="zoom" style="${fondo}"></span>
             <span class="cat" style="background:${catColores[cat.toLowerCase()] || 'rgba(0,0,0,.45)'}">${esc(cat)}</span>
@@ -573,21 +682,30 @@
     .then(d => {
       const cont = document.getElementById('peekBoletines');
       if (!d.success || !d.boletines || !d.boletines.length) {
-        cont.innerHTML = '<div class="empty">Aún no hay boletines públicos.</div>';
+        cont.innerHTML = `<div class="empty-rich">
+          <span class="ei"><i class="fas fa-bullhorn"></i></span>
+          <b>Aún no hay boletines públicos</b>
+          <p>Los comunicados del Clúster aparecerán aquí en cuanto se publiquen.</p>
+        </div>`;
         return;
       }
       const colores = ['#C7252B', '#1d4ed8', '#0d7a56', '#b45309', '#7c3aed', '#be185d'];
+      const iconos = ['fa-bullhorn', 'fa-newspaper', 'fa-file-lines', 'fa-flag', 'fa-star', 'fa-bell'];
       cont.innerHTML = d.boletines.map((b, i) => {
         const f = new Date((b.fecha_creacion || '').replace(' ', 'T'));
         const fecha = isNaN(f) ? '' : f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
         const enlace = b.archivo_adjunto ? `./${String(b.archivo_adjunto).replace(/^\.?\//, '')}` : '';
-        return `<div class="pcard">
-          <div class="pbody" style="padding-top:16px">
-            <b style="font-size:13.5px">${esc(b.titulo)}</b>
+        const c = colores[i % colores.length];
+        return `<div class="pcard" style="--ci:${i * 90}ms">
+          <div class="bhead">
+            <span class="bi" style="background:${c}"><i class="fas ${iconos[i % iconos.length]}"></i></span>
+            <b>${esc(b.titulo)}</b>
+          </div>
+          <div class="pbody">
             <div style="font-size:12px;color:var(--mid);line-height:1.5">${esc(b.resumen)}${(b.resumen || '').length >= 220 ? '…' : ''}</div>
             ${fecha ? `<div class="prow"><i class="fas fa-calendar"></i>${fecha}</div>` : ''}
             <div class="pfoot">
-              <span class="badge badge-doc" style="color:${colores[i % colores.length]}">Público</span>
+              <span class="badge badge-doc" style="color:${c}">Público</span>
               ${enlace ? `<a class="btn btn-ghost btn-sm" href="${esc(enlace)}" target="_blank" rel="noopener" data-metrica="click_boletin"><i class="fas fa-eye"></i> Leer</a>` : ''}
             </div>
           </div>

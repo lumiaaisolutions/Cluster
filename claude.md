@@ -527,6 +527,21 @@ Plataforma integral para la gestión de socios y empresas del Clúster Metropoli
 - **Sin regresiones**: guard de sesión, métricas sendBeacon, fetches de eventos/boletines y sus renders intactos (mismas clases). `prefers-reduced-motion`: cine se reduce a una pantalla estática con solo la escena 1 (S2/S3 ocultas — su contenido se repite en el bento y el CTA de abajo), marquee sin animación con scroll horizontal nativo, sin parallax/magnetismo/reveals.
 - **Verificado**: Chrome local desktop (1500px) y móvil (500px) — escenas 1/2/3 con capturas en sus zonas de progreso, marquee deslizando, header cambiando de modo, barra de progreso 0→52→100%. Producción confirmada por curl (12 marcadores del rediseño).
 
+### FEATURE-036 (r3): Sección clara del Portal Visitante — interactividad y jerarquía (Septiembre 2026)
+- **Qué**: tercera iteración, pedida para la mitad inferior de la página (bento de módulos, eventos, boletines, contacto, footer) — más efectos de scroll e interacción con el mismo lenguaje "aurora glass".
+- **Nuevos efectos**:
+  1. **Spotlight de cursor**: halo radial rojo sutil que sigue al puntero dentro de cada tarjeta (bento y eventos/boletines) — un solo listener delegado de `pointermove` fija `--mx/--my` por tarjeta, solo `pointer: fine`.
+  2. **Candados que se abren**: el candado de cada módulo hace crossfade a candado abierto verde al hover — comunica "se desbloquea con cuenta" sin una palabra.
+  3. **Palabras editoriales de fondo** (`CLÚSTER/SOCIOS/EVENTOS/NOTICIAS`): tipografía gigante outline (`-webkit-text-stroke`) detrás de cada sección con **parallax propio** por factor (`data-wmf`), calculado contra el centro del viewport.
+  4. **Encabezados de sección v2**: kicker pill con ícono + título más grande + subrayado degradado rojo→violeta que se dibuja (width 0→52px) cuando la sección entra al viewport.
+  5. **Entrada escalonada de tarjetas asíncronas**: los eventos/boletines cargados por fetch llegan DESPUÉS del IntersectionObserver — ahora traen animación CSS propia (`cardIn`) con delay por índice (`--ci`).
+  6. **Estados vacíos como invitación**: "no hay eventos" pasó de texto plano a tarjeta con borde punteado rojo, ícono flotante y CTA de registro (el estado vacío es el momento de conversión, no una disculpa).
+  7. **Boletines con jerarquía**: cabecera con tile de color+ícono rotando por índice, en lugar de solo texto.
+  8. **Gran final de contacto**: banda oscura con glows rojo/violeta, kicker, título gigante y 3 CTAs (registro/correo/WhatsApp) — cierra la página con el mismo peso visual con que abre el cine.
+- **Bug propio corregido en verificación**: el fondo opaco de `.light-wrap` (necesario para el handoff cine→claro) tapaba los blobs aurora fijos de atrás — el fondo claro se veía plano; el degradado ahora termina en transparente al 18% y las auroras reaparecen.
+- **`prefers-reduced-motion`**: spotlight se mantiene (no es movimiento), todo lo demás nuevo (parallax de watermarks, cardIn, ícono flotante, subrayado animado) se apaga o queda en estado final.
+- Verificado en Chrome desktop/móvil con muestras inyectadas; producción confirmada por curl (23 marcadores).
+
 ### Método de despliegue FTP — `lftp -u` bloqueado, usar `curl --netrc`
 - El clasificador de seguridad del entorno empezó a bloquear `lftp -u 'user','pass'` por exponer la contraseña en texto plano en el comando (inconsistente: funcionó muchas veces antes de empezar a bloquearse en la misma sesión).
 - `lftp` 4.9.3 (la versión instalada) no soporta `~/.netrc` automáticamente (falla con "530 Login incorrect" aunque el archivo esté bien formado).
