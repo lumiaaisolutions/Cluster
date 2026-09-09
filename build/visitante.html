@@ -41,13 +41,18 @@
     .aurora .a3{width:40vw;height:40vw;left:22%;top:46%;background:radial-gradient(circle,#f2b9c9 0%,transparent 68%)}
     .aurora .a4{width:34vw;height:34vw;right:8%;top:72%;background:radial-gradient(circle,#b9e2f2 0%,transparent 65%)}
 
-    /* --- Header pill fijo (se adapta: oscuro sobre el cine, claro después) --- */
-    .hdr{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;width:min(1140px,calc(100% - 28px));
-      display:flex;align-items:center;gap:12px;border-radius:100px;padding:9px 14px;flex-wrap:wrap;
-      background:rgba(12,12,16,.42);border:1px solid rgba(255,255,255,.14);
-      backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);
-      color:#fff;transition:background .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease}
-    .hdr.on-light{background:var(--glass);border-color:var(--stroke);color:var(--ink);box-shadow:var(--shadow)}
+    /* --- Header transparente, sin contenedor: los elementos flotan.
+       Sobre el cine la viñeta superior propia del escenario da la
+       legibilidad; sobre el contenido claro, un degradado suave del color
+       de fondo que se desvanece (sin borde, sin caja). --- */
+    .hdr{position:fixed;top:0;left:0;right:0;z-index:50;
+      display:flex;align-items:center;gap:12px;padding:16px max(20px,calc((100% - 1140px)/2 + 20px)) 22px;flex-wrap:wrap;
+      color:#fff;transition:color .35s ease;pointer-events:none}
+    .hdr>*{pointer-events:auto}
+    .hdr::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s ease;
+      background:linear-gradient(180deg,rgba(238,240,246,.92) 0%,rgba(238,240,246,.55) 60%,rgba(238,240,246,0) 100%)}
+    .hdr.on-light{color:var(--ink)}
+    .hdr.on-light::before{opacity:1}
     /* logo sobre pastilla horizontal: blanco que se desvanece (gesto del
        sidebar admin, en horizontal) — el logo flota sin círculo propio */
     .hdr img{width:96px;height:56px;padding:5px 25px;object-fit:contain;flex:none;border-radius:100px;
@@ -85,21 +90,21 @@
     @keyframes sheen{to{left:130%}}
 
     /* primario (contexto oscuro por defecto: cine, contacto, header) */
-    .btn-red{background:rgba(199,37,43,.2);border-color:rgba(255,90,96,.35);color:#fff;
+    .btn-red{background:rgba(199,37,43,.2);border-color:rgba(255,90,96,.2);color:#fff;
       --splash:rgba(226,50,56,.45);box-shadow:0 10px 30px -14px var(--accent-glow)}
-    .btn-red:hover{border-color:rgba(255,90,96,.55);box-shadow:0 16px 40px -14px var(--accent-glow)}
+    .btn-red:hover{border-color:rgba(255,90,96,.24);box-shadow:0 16px 40px -14px var(--accent-glow)}
     /* primario en contexto claro */
-    .light-wrap .btn-red,.hdr.on-light .btn-red{background:rgba(199,37,43,.09);border-color:rgba(199,37,43,.28);color:var(--accent-deep);--splash:rgba(199,37,43,.16)}
-    .light-wrap .btn-red:hover,.hdr.on-light .btn-red:hover{border-color:rgba(199,37,43,.45)}
+    .light-wrap .btn-red,.hdr.on-light .btn-red{background:rgba(199,37,43,.09);border-color:rgba(199,37,43,.16);color:var(--accent-deep);--splash:rgba(199,37,43,.16)}
+    .light-wrap .btn-red:hover,.hdr.on-light .btn-red:hover{border-color:rgba(199,37,43,.3)}
     /* dentro de bandas oscuras (CTA del bento, contacto) vuelve la variante clara-sobre-oscuro */
-    .light-wrap .cta-red .btn-red,.light-wrap .contact .btn-red{background:rgba(199,37,43,.24);border-color:rgba(255,90,96,.38);color:#fff;--splash:rgba(226,50,56,.45)}
+    .light-wrap .cta-red .btn-red,.light-wrap .contact .btn-red{background:rgba(199,37,43,.24);border-color:rgba(255,90,96,.24);color:#fff;--splash:rgba(226,50,56,.45)}
 
     .btn-ghost{background:rgba(22,24,31,.04);border-color:rgba(22,24,31,.1);color:var(--ink);--splash:rgba(22,24,31,.07)}
-    .btn-wa{background:rgba(18,140,75,.07);border-color:rgba(18,140,75,.22);color:var(--wa);--splash:rgba(18,140,75,.14)}
-    .btn-mail{background:rgba(29,78,216,.06);border-color:rgba(29,78,216,.2);color:var(--info);--splash:rgba(29,78,216,.12)}
+    .btn-wa{background:rgba(18,140,75,.07);border-color:rgba(18,140,75,.13);color:var(--wa);--splash:rgba(18,140,75,.14)}
+    .btn-mail{background:rgba(29,78,216,.06);border-color:rgba(29,78,216,.12);color:var(--info);--splash:rgba(29,78,216,.12)}
     .btn-sm{padding:9px 15px;font-size:12px;min-height:40px}
-    .btn-frost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#fff;--splash:rgba(255,255,255,.22)}
-    .btn-frost:hover{border-color:rgba(255,255,255,.4)}
+    .btn-frost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:#fff;--splash:rgba(255,255,255,.22)}
+    .btn-frost:hover{border-color:rgba(255,255,255,.26)}
 
     /* ============================================================
        CINE — scrollytelling: región alta + escenario sticky
@@ -187,7 +192,7 @@
     .mq-track{display:flex;gap:14px;width:max-content;animation:mq 32s linear infinite}
     .mq:hover .mq-track{animation-play-state:paused}
     @keyframes mq{to{transform:translateX(-50%)}}
-    .person{display:flex;align-items:center;gap:16px;background:var(--glass);border:1px solid var(--stroke);
+    .person{display:flex;align-items:center;gap:16px;background:var(--glass);border:none;
       backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
       border-radius:100px;padding:11px 28px 11px 12px;box-shadow:var(--shadow);transition:transform .22s var(--ease)}
     .person:hover{transform:translateY(-3px)}
@@ -200,7 +205,7 @@
 
     /* --- Bento módulos --- */
     .bento{position:relative;z-index:1;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-    .bcard{border-radius:22px;padding:20px;position:relative;overflow:hidden;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);min-height:126px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease}
+    .bcard{border-radius:22px;padding:20px;position:relative;overflow:hidden;background:var(--glass);border:none;backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);min-height:126px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease}
     .bcard:hover{transform:translateY(-5px);box-shadow:0 34px 70px -26px rgba(58,66,110,.35)}
     .bcard:hover .bic{transform:scale(1.12) rotate(-4deg)}
     /* spotlight: halo que sigue al cursor (JS fija --mx/--my) */
@@ -232,7 +237,7 @@
 
     /* --- Tarjetas eventos / boletines --- */
     .peek{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
-    .pcard{background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease;position:relative}
+    .pcard{background:var(--glass);border:none;backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease;position:relative}
     .pcard:hover{transform:translateY(-5px);box-shadow:0 34px 70px -26px rgba(58,66,110,.35)}
     /* entrada escalonada de tarjetas cargadas por JS (post-IntersectionObserver) */
     .peek .pcard{animation:cardIn .65s var(--ease) both;animation-delay:var(--ci,0ms)}
@@ -261,22 +266,24 @@
     .badge-doc{background:#e6edfb;color:var(--info)}
     .plock{font-size:10.5px;color:var(--low);transition:color .15s}
     .plock:hover{color:var(--accent)}
-    .empty{grid-column:1/-1;text-align:center;color:var(--low);font-size:12.5px;padding:26px;background:var(--glass);border:1px solid var(--stroke);border-radius:16px}
+    .empty{grid-column:1/-1;text-align:center;color:var(--low);font-size:12.5px;padding:26px;background:var(--glass);border:none;border-radius:16px}
     /* estado vacío como invitación, no como disculpa */
     .empty-rich{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
-      padding:34px 22px;border-radius:20px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-      border:1.5px dashed rgba(199,37,43,.28)}
+      padding:34px 22px;border-radius:24px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      box-shadow:var(--shadow)}
     .empty-rich .ei{display:flex;align-items:center;justify-content:center;
       font-size:26px;color:var(--accent);animation:floaty 3.4s ease-in-out infinite}
     @keyframes floaty{50%{transform:translateY(-6px)}}
     .empty-rich b{font-size:14.5px;letter-spacing:-.01em}
     .empty-rich p{margin:0;font-size:12px;color:var(--mid);max-width:380px;line-height:1.55}
 
-    /* --- Gran final de contacto --- */
-    .contact{position:relative;z-index:1;margin-top:64px;border-radius:28px;overflow:hidden;
-      background:linear-gradient(130deg,#1b1c22,#101116 60%);color:#fff;
+    /* --- Gran final de contacto: vidrio oscuro translúcido, sin bordes —
+       las auroras del fondo se transparentan a través del panel --- */
+    .contact{position:relative;z-index:1;margin-top:64px;border-radius:34px;overflow:hidden;
+      background:rgba(19,20,27,.58);color:#fff;
+      backdrop-filter:blur(26px) saturate(1.3);-webkit-backdrop-filter:blur(26px) saturate(1.3);
       padding:clamp(28px,5vw,52px);display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
-      box-shadow:0 40px 90px -30px rgba(20,24,48,.5)}
+      box-shadow:0 44px 100px -40px rgba(20,24,48,.45)}
     .contact::before{content:"";position:absolute;inset:0;pointer-events:none;
       background:radial-gradient(60% 90% at 15% 110%,rgba(199,37,43,.12),transparent 60%),
                  radial-gradient(50% 80% at 90% -10%,rgba(124,58,237,.08),transparent 60%)}
@@ -297,7 +304,7 @@
       background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:13.5px;resize:vertical;
       transition:border-color .2s ease,background .2s ease}
     .cform input::placeholder,.cform textarea::placeholder{color:rgba(255,255,255,.42)}
-    .cform input:focus,.cform textarea:focus{outline:none;border-color:rgba(255,90,96,.55);background:rgba(255,255,255,.09)}
+    .cform input:focus,.cform textarea:focus{outline:none;border-color:rgba(255,90,96,.24);background:rgba(255,255,255,.09)}
     #cfHoney{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
     .cform-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .cform-status{font-size:12.5px;min-height:18px;color:rgba(255,255,255,.65)}
@@ -306,11 +313,22 @@
     .cform-alt{margin-top:4px}
     @media(max-width:600px){.cform-grid{grid-template-columns:1fr}}
 
-    .foot{margin-top:34px;display:flex;flex-direction:column;align-items:center;gap:12px;font-size:11px;color:var(--low)}
+    .foot{margin-top:48px;display:flex;flex-direction:column;align-items:center;gap:14px;font-size:11px;color:var(--low)}
     .foot p{margin:0;display:flex;align-items:center;gap:10px}
-    .foot img{width:22px;height:22px;border-radius:50%;opacity:.8}
+    /* logo grande del footer: flota sobre un splash de colores difuminado,
+       sin líneas ni contenedor — se funde con el fondo */
+    .foot-logo{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center}
+    .foot-logo::before{content:"";position:absolute;inset:-70%;pointer-events:none;filter:blur(26px);opacity:.95;
+      background:radial-gradient(42% 42% at 30% 32%,rgba(199,37,43,.5),transparent 70%),
+                 radial-gradient(40% 40% at 72% 28%,rgba(124,58,237,.4),transparent 70%),
+                 radial-gradient(46% 46% at 52% 76%,rgba(59,130,246,.42),transparent 70%);
+      transition:opacity .35s ease,transform .5s var(--ease)}
+    .foot-logo:hover::before{opacity:1;transform:scale(1.12)}
+    .foot-logo img{position:relative;width:96px;height:96px;object-fit:contain;border-radius:50%;
+      filter:drop-shadow(0 10px 24px rgba(58,66,110,.3));transition:transform .3s var(--ease)}
+    .foot-logo:hover img{transform:scale(1.05)}
     .lumia-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;
-      background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      background:var(--glass);border:none;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
       font-size:11.5px;font-weight:600;color:var(--mid);transition:transform .2s var(--ease),box-shadow .2s ease}
     .lumia-badge:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
     .lumia-badge:active{transform:scale(.97)}
@@ -478,7 +496,8 @@
   </div>
 
   <div class="foot">
-    <p><img src="./assets/img/apple-icon.png" alt="">© <span id="footYear"></span> Clúster Metropolitano · CDMX · EdoMex · Hgo</p>
+    <span class="foot-logo"><img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano"></span>
+    <p>© <span id="footYear"></span> Clúster Metropolitano · CDMX · EdoMex · Hgo</p>
     <a href="https://lumiaaisolutions.com" target="_blank" rel="noopener noreferrer" class="lumia-badge">
       <img src="./assets/img/lumia-icon.png" alt="LUMIA"> Desarrollado por <strong>LUMIA</strong>
     </a>
