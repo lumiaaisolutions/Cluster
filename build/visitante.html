@@ -48,11 +48,12 @@
       backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);
       color:#fff;transition:background .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease}
     .hdr.on-light{background:var(--glass);border-color:var(--stroke);color:var(--ink);box-shadow:var(--shadow)}
-    /* logo flotante: halo blanco que se desvanece (sin fondo duro), más grande */
-    .hdr img{width:56px;height:56px;border-radius:50%;padding:7px;flex:none;
-      background:radial-gradient(circle at 50% 42%,#ffffff 0%,rgba(255,255,255,.9) 40%,rgba(255,255,255,.35) 62%,rgba(255,255,255,0) 74%);
-      filter:drop-shadow(0 4px 14px rgba(0,0,0,.25));transition:transform .25s var(--ease)}
-    .hdr img:hover{transform:scale(1.06)}
+    /* logo sobre pastilla horizontal: blanco que se desvanece (gesto del
+       sidebar admin, en horizontal) — el logo flota sin círculo propio */
+    .hdr img{width:96px;height:56px;padding:5px 25px;object-fit:contain;flex:none;border-radius:100px;
+      background:linear-gradient(90deg,#ffffff 0%,#eceff4 38%,rgba(190,195,205,.5) 66%,rgba(255,255,255,0) 100%);
+      filter:drop-shadow(0 4px 14px rgba(0,0,0,.22));transition:transform .25s var(--ease)}
+    .hdr img:hover{transform:scale(1.04)}
     .hdr b{font-size:14px;letter-spacing:-.01em}
     .hdr-spacer{flex:1}
     .hdr .btn-ghost{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.16);color:#fff}
@@ -136,7 +137,7 @@
     .scene.live .chip{transform:none;opacity:1}
     .scene.live .chip:nth-child(2){transition-delay:.09s}
     .scene.live .chip:nth-child(3){transition-delay:.18s}
-    .chip .ci{width:42px;height:42px;border-radius:13px;flex:none;display:flex;align-items:center;justify-content:center;font-size:16px}
+    .chip .ci{flex:none;display:flex;align-items:center;font-size:20px}
     .chip b{display:block;font-size:14.5px;color:#fff}
     .chip span{font-size:12px;color:rgba(255,255,255,.6)}
 
@@ -172,12 +173,8 @@
       font-size:clamp(70px,13vw,170px);font-weight:900;letter-spacing:-.05em;line-height:1;
       color:transparent;-webkit-text-stroke:1.5px rgba(22,24,31,.07);white-space:nowrap;will-change:transform}
 
-    /* Encabezado de sección: kicker pill + título + subrayado que se dibuja */
+    /* Encabezado de sección: título + subrayado que se dibuja (sin pills) */
     .sec{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;margin:54px 2px 18px}
-    .sec .kick{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;
-      font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:800;color:var(--accent);
-      background:rgba(199,37,43,.08);border:1px solid rgba(199,37,43,.14);padding:5px 12px;border-radius:100px}
-    .sec .kick i{font-size:9px}
     .sec .row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
     .sec h3{position:relative;margin:0;font-size:clamp(21px,3vw,30px);font-weight:900;letter-spacing:-.035em;padding-bottom:8px}
     .sec h3::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;border-radius:3px;
@@ -190,16 +187,16 @@
     .mq-track{display:flex;gap:14px;width:max-content;animation:mq 32s linear infinite}
     .mq:hover .mq-track{animation-play-state:paused}
     @keyframes mq{to{transform:translateX(-50%)}}
-    .person{display:flex;align-items:center;gap:13px;background:var(--glass);border:1px solid var(--stroke);
+    .person{display:flex;align-items:center;gap:16px;background:var(--glass);border:1px solid var(--stroke);
       backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
-      border-radius:100px;padding:9px 22px 9px 10px;box-shadow:var(--shadow);transition:transform .22s var(--ease)}
+      border-radius:100px;padding:11px 28px 11px 12px;box-shadow:var(--shadow);transition:transform .22s var(--ease)}
     .person:hover{transform:translateY(-3px)}
     /* retrato b/n → color al hover (mismo gesto que el overlay de la landing) */
-    .person img{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top;
-      background:linear-gradient(135deg,#dfe3f0,#c9cfe2);filter:grayscale(1);transition:filter .35s ease}
-    .person:hover img{filter:grayscale(0)}
-    .person b{display:block;font-size:13.5px;letter-spacing:-.01em}
-    .person span{font-size:11px;color:var(--mid)}
+    .person img{width:84px;height:84px;border-radius:50%;object-fit:cover;object-position:top;
+      background:linear-gradient(135deg,#dfe3f0,#c9cfe2);filter:grayscale(1);transition:filter .35s ease,transform .3s var(--ease)}
+    .person:hover img{filter:grayscale(0);transform:scale(1.04)}
+    .person b{display:block;font-size:15px;letter-spacing:-.01em}
+    .person span{font-size:12px;color:var(--mid)}
 
     /* --- Bento módulos --- */
     .bento{position:relative;z-index:1;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
@@ -210,22 +207,23 @@
     .bcard::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s ease;
       background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%),rgba(199,37,43,.09),transparent 65%)}
     .bcard:hover::before{opacity:1}
-    /* candado que se "abre" al hover — comunica que se desbloquea con cuenta */
-    .lock{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(22,24,31,.05);display:flex;align-items:center;justify-content:center;color:var(--low);font-size:11px;transition:background .25s ease,color .25s ease}
+    /* candado que se "abre" al hover — glifo puro, sin fondo ni borde */
+    .lock{position:absolute;top:16px;right:16px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--low);font-size:13px;transition:color .25s ease}
     .lock i{transition:opacity .25s ease,transform .25s var(--ease)}
     .lock .fa-lock-open{position:absolute;opacity:0;transform:scale(.6) rotate(-14deg)}
-    .bcard:hover .lock{background:#e0f4eb;color:var(--success)}
+    .bcard:hover .lock{color:var(--success)}
     .bcard:hover .lock .fa-lock{opacity:0;transform:scale(.6) rotate(14deg)}
     .bcard:hover .lock .fa-lock-open{opacity:1;transform:none}
-    .bic{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:16px;transition:transform .25s var(--ease)}
+    /* íconos de módulo: glifo transparente, sin tile ni borde */
+    .bic{display:flex;align-items:center;margin-bottom:12px;font-size:22px;transition:transform .25s var(--ease);transform-origin:left center}
     .bcard h4{margin:0 0 4px;font-size:14.5px;font-weight:800;letter-spacing:-.01em}
     .bcard p{margin:0;font-size:12px;color:var(--mid);line-height:1.5}
     .b4{grid-column:span 4}.b3{grid-column:span 3}.b6{grid-column:span 6}
     /* tarjeta CTA: mismo lenguaje oscuro-con-glow del cierre (sin saturar) */
     .cta-red{background:linear-gradient(130deg,#1b1c22,#101116 60%);border:none;color:#fff;box-shadow:0 30px 70px -26px rgba(20,24,48,.5)}
     .cta-red::after{content:"";position:absolute;inset:0;pointer-events:none;
-      background:radial-gradient(70% 110% at 12% 115%,rgba(199,37,43,.4),transparent 58%),
-                 radial-gradient(45% 70% at 95% -12%,rgba(124,58,237,.2),transparent 60%)}
+      background:radial-gradient(70% 110% at 12% 115%,rgba(199,37,43,.14),transparent 58%),
+                 radial-gradient(45% 70% at 95% -12%,rgba(124,58,237,.08),transparent 60%)}
     .cta-red>*{position:relative;z-index:1}
     .cta-red h4{font-size:17px;color:#fff}
     .cta-red p{color:rgba(255,255,255,.78)}
@@ -245,7 +243,7 @@
     .pcard:hover::before{opacity:1}
     /* cabecera de color de las tarjetas de boletín */
     .bhead{display:flex;align-items:center;gap:11px;padding:14px 14px 0}
-    .bhead .bi{width:38px;height:38px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+    .bhead .bi{flex:none;display:flex;align-items:center;font-size:18px}
     .bhead b{font-size:13.5px;letter-spacing:-.01em;line-height:1.3}
     .pcover{height:130px;position:relative;flex:none;background-size:cover;background-position:center;overflow:hidden}
     .pcover .zoom{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s var(--ease)}
@@ -268,8 +266,8 @@
     .empty-rich{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
       padding:34px 22px;border-radius:20px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
       border:1.5px dashed rgba(199,37,43,.28)}
-    .empty-rich .ei{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-      font-size:19px;color:var(--accent);background:rgba(199,37,43,.08);animation:floaty 3.4s ease-in-out infinite}
+    .empty-rich .ei{display:flex;align-items:center;justify-content:center;
+      font-size:26px;color:var(--accent);animation:floaty 3.4s ease-in-out infinite}
     @keyframes floaty{50%{transform:translateY(-6px)}}
     .empty-rich b{font-size:14.5px;letter-spacing:-.01em}
     .empty-rich p{margin:0;font-size:12px;color:var(--mid);max-width:380px;line-height:1.55}
@@ -280,10 +278,9 @@
       padding:clamp(28px,5vw,52px);display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
       box-shadow:0 40px 90px -30px rgba(20,24,48,.5)}
     .contact::before{content:"";position:absolute;inset:0;pointer-events:none;
-      background:radial-gradient(60% 90% at 15% 110%,rgba(199,37,43,.35),transparent 60%),
-                 radial-gradient(50% 80% at 90% -10%,rgba(124,58,237,.22),transparent 60%)}
+      background:radial-gradient(60% 90% at 15% 110%,rgba(199,37,43,.12),transparent 60%),
+                 radial-gradient(50% 80% at 90% -10%,rgba(124,58,237,.08),transparent 60%)}
     .contact>*{position:relative}
-    .contact .kick{display:inline-flex;align-items:center;gap:7px;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;font-weight:800;color:#ff8a8f;background:rgba(199,37,43,.16);padding:5px 12px;border-radius:100px;margin-bottom:6px}
     .contact h4{margin:0;font-size:clamp(22px,3.4vw,34px);font-weight:900;letter-spacing:-.035em}
     .contact p{margin:0 0 16px;font-size:13px;color:rgba(255,255,255,.65)}
     .contact .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
@@ -292,8 +289,33 @@
     .contact .btn-wa{background:rgba(37,211,102,.08);border-color:rgba(74,222,128,.3);color:#4ade80;--splash:rgba(37,211,102,.28)}
     .contact .btn-wa:hover{border-color:rgba(74,222,128,.5)}
 
-    .foot{margin-top:34px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;color:var(--low)}
+    /* formulario de contacto (envía a atención del Clúster) */
+    .cform{width:min(640px,100%);display:flex;flex-direction:column;gap:12px;margin:10px 0 18px;text-align:left}
+    .cform-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .cform input[type=text],.cform input[type=email],.cform textarea{
+      width:100%;border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:13px 16px;
+      background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:13.5px;resize:vertical;
+      transition:border-color .2s ease,background .2s ease}
+    .cform input::placeholder,.cform textarea::placeholder{color:rgba(255,255,255,.42)}
+    .cform input:focus,.cform textarea:focus{outline:none;border-color:rgba(255,90,96,.55);background:rgba(255,255,255,.09)}
+    #cfHoney{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+    .cform-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .cform-status{font-size:12.5px;min-height:18px;color:rgba(255,255,255,.65)}
+    .cform-status.ok{color:#4ade80}
+    .cform-status.err{color:#ff8a8f}
+    .cform-alt{margin-top:4px}
+    @media(max-width:600px){.cform-grid{grid-template-columns:1fr}}
+
+    .foot{margin-top:34px;display:flex;flex-direction:column;align-items:center;gap:12px;font-size:11px;color:var(--low)}
+    .foot p{margin:0;display:flex;align-items:center;gap:10px}
     .foot img{width:22px;height:22px;border-radius:50%;opacity:.8}
+    .lumia-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;
+      background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      font-size:11.5px;font-weight:600;color:var(--mid);transition:transform .2s var(--ease),box-shadow .2s ease}
+    .lumia-badge:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+    .lumia-badge:active{transform:scale(.97)}
+    .lumia-badge img{width:16px;height:16px;border-radius:0;opacity:1}
+    .lumia-badge strong{background:linear-gradient(135deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}
 
     @media(max-width:900px){.b4,.b3{grid-column:span 6}.b6{grid-column:span 12}}
     @media(max-width:600px){
@@ -356,11 +378,11 @@
       <div class="kicker">Lo que hay dentro</div>
       <h2>Todo el motor del Clúster, en un solo lugar.</h2>
       <div class="chips">
-        <div class="chip"><span class="ci" style="background:rgba(255,77,85,.16);color:#ff4d55"><i class="fas fa-calendar-days"></i></span>
+        <div class="chip"><span class="ci" style="color:#ff4d55"><i class="fas fa-calendar-days"></i></span>
           <div><b>Eventos y networking</b><span>Asambleas, foros y registro en un clic</span></div></div>
-        <div class="chip"><span class="ci" style="background:rgba(96,165,250,.16);color:#60a5fa"><i class="fas fa-people-group"></i></span>
+        <div class="chip"><span class="ci" style="color:#60a5fa"><i class="fas fa-people-group"></i></span>
           <div><b>Comités de trabajo</b><span>Comercio exterior, innovación, capital humano</span></div></div>
-        <div class="chip"><span class="ci" style="background:rgba(167,139,250,.16);color:#a78bfa"><i class="fas fa-tags"></i></span>
+        <div class="chip"><span class="ci" style="color:#a78bfa"><i class="fas fa-tags"></i></span>
           <div><b>Beneficios exclusivos</b><span>Convenios corporativos para socios</span></div></div>
       </div>
     </div>
@@ -391,8 +413,7 @@
 <div class="page">
 
   <div class="wm" data-wmf="-0.05" style="top:40px" aria-hidden="true">CLÚSTER</div>
-  <div class="sec rv"><span class="kick"><i class="fas fa-handshake"></i> Equipo</span>
-    <div class="row"><h3>Te recibe gente real</h3><span class="note">el equipo directivo del Clúster</span></div></div>
+  <div class="sec rv"><div class="row"><h3>Te recibe gente real</h3><span class="note">el equipo directivo del Clúster</span></div></div>
   <div class="mq rv" aria-label="Equipo directivo">
     <div class="mq-track" id="mqTrack">
       <span class="person"><img src="./assets/img/Fotos/Elisa-Crespo-.png.webp" alt="Elisa Crespo"><span><b>Elisa Crespo</b><span>Presidenta Ejecutiva CLAUTMET</span></span></span>
@@ -403,23 +424,22 @@
   </div>
 
   <div class="wm" data-wmf="0.06" style="margin-top:-30px" aria-hidden="true">SOCIOS</div>
-  <div class="sec rv"><span class="kick"><i class="fas fa-unlock"></i> Módulos</span>
-    <div class="row"><h3>Lo que usan los socios todos los días</h3><span class="note">con tu cuenta se desbloquea todo</span></div></div>
+  <div class="sec rv"><div class="row"><h3>Lo que usan los socios todos los días</h3><span class="note">con tu cuenta se desbloquea todo</span></div></div>
   <div class="bento">
     <div class="bcard b4 rv"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
-      <div><div class="bic" style="background:rgba(199,37,43,.1);color:#c7252b"><i class="fas fa-calendar-days"></i></div>
+      <div><div class="bic" style="color:#c7252b"><i class="fas fa-calendar-days"></i></div>
       <h4>Eventos y networking</h4><p>Asambleas, foros y encuentros con registro en un clic y recordatorios.</p></div></div>
     <div class="bcard b4 rv" style="--rvd:70ms"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
-      <div><div class="bic" style="background:rgba(29,78,216,.09);color:#1d4ed8"><i class="fas fa-people-group"></i></div>
+      <div><div class="bic" style="color:#1d4ed8"><i class="fas fa-people-group"></i></div>
       <h4>Comités de trabajo</h4><p>Comercio exterior, innovación, capital humano — participa donde aportas.</p></div></div>
     <div class="bcard b4 rv" style="--rvd:140ms"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
-      <div><div class="bic" style="background:rgba(124,58,237,.09);color:#7c3aed"><i class="fas fa-tags"></i></div>
+      <div><div class="bic" style="color:#7c3aed"><i class="fas fa-tags"></i></div>
       <h4>Beneficios exclusivos</h4><p>Descuentos y convenios corporativos negociados para los socios.</p></div></div>
     <div class="bcard b3 rv"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
-      <div><div class="bic" style="background:rgba(13,122,86,.09);color:#0d7a56"><i class="fas fa-folder-open"></i></div>
+      <div><div class="bic" style="color:#0d7a56"><i class="fas fa-folder-open"></i></div>
       <h4>Documentación</h4><p>Normativa y formatos oficiales.</p></div></div>
     <div class="bcard b3 rv" style="--rvd:70ms"><span class="lock"><i class="fas fa-lock"></i><i class="fas fa-lock-open"></i></span>
-      <div><div class="bic" style="background:rgba(2,132,199,.09);color:#0284c7"><i class="fas fa-building"></i></div>
+      <div><div class="bic" style="color:#0284c7"><i class="fas fa-building"></i></div>
       <h4>Red de empresas</h4><p>Directorio y perfil de tu empresa.</p></div></div>
     <div class="bcard b6 cta-red rv" style="--rvd:140ms">
       <div><h4>¿Tu empresa es del sector automotriz?</h4>
@@ -428,27 +448,41 @@
   </div>
 
   <div class="wm" data-wmf="-0.055" style="margin-top:-24px" aria-hidden="true">EVENTOS</div>
-  <div class="sec rv"><span class="kick"><i class="fas fa-calendar-days"></i> Agenda</span>
-    <div class="row"><h3>Próximos eventos abiertos</h3><span class="note">vista pública · solo lectura</span></div></div>
+  <div class="sec rv"><div class="row"><h3>Próximos eventos abiertos</h3><span class="note">vista pública · solo lectura</span></div></div>
   <div class="peek" id="peekEventos"><div class="empty">Cargando eventos…</div></div>
 
   <div class="wm" data-wmf="0.05" style="margin-top:-24px" aria-hidden="true">NOTICIAS</div>
-  <div class="sec rv"><span class="kick"><i class="fas fa-bullhorn"></i> Comunicación</span>
-    <div class="row"><h3>Boletines públicos recientes</h3><span class="note">lo que el Clúster comunica</span></div></div>
+  <div class="sec rv"><div class="row"><h3>Boletines públicos recientes</h3><span class="note">lo que el Clúster comunica</span></div></div>
   <div class="peek" id="peekBoletines"><div class="empty">Cargando boletines…</div></div>
 
   <div class="contact rv">
-    <span class="kick"><i class="fas fa-comments"></i> Estamos para ayudarte</span>
     <h4>¿Dudas antes de registrarte?</h4>
-    <p>El equipo del Clúster te responde directamente — sin filas, sin formularios eternos.</p>
-    <div class="row">
-      <a class="btn btn-red" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Crear mi cuenta</a>
-      <a class="btn btn-mail" href="mailto:atencion@clautedomex.mx" data-metrica="click_correo"><i class="fas fa-envelope"></i> atencion@clautedomex.mx</a>
-      <a class="btn btn-wa" href="https://wa.me/5255000000" target="_blank" rel="noopener" data-metrica="click_whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    <p>Escríbenos aquí mismo — tu mensaje llega directo al equipo del Clúster.</p>
+    <form class="cform" id="contactForm" novalidate>
+      <div class="cform-grid">
+        <input type="text" name="nombre" id="cfNombre" placeholder="Tu nombre" maxlength="120" required autocomplete="name">
+        <input type="email" name="correo" id="cfCorreo" placeholder="Tu correo" maxlength="160" required autocomplete="email">
+      </div>
+      <textarea name="mensaje" id="cfMensaje" placeholder="¿En qué te podemos ayudar?" rows="4" maxlength="3000" required></textarea>
+      <input type="text" name="empresa_web" id="cfHoney" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="cform-foot">
+        <div class="cform-status" id="cfStatus" role="status" aria-live="polite"></div>
+        <button type="submit" class="btn btn-red" id="cfSend"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
+      </div>
+    </form>
+    <div class="row cform-alt">
+      <a class="btn btn-mail btn-sm" href="mailto:atencion@clautedomex.mx" data-metrica="click_correo"><i class="fas fa-envelope"></i> atencion@clautedomex.mx</a>
+      <a class="btn btn-wa btn-sm" href="https://wa.me/5255000000" target="_blank" rel="noopener" data-metrica="click_whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a class="btn btn-frost btn-sm" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Crear mi cuenta</a>
     </div>
   </div>
 
-  <p class="foot"><img src="./assets/img/apple-icon.png" alt="">© <span id="footYear"></span> Clúster Metropolitano · CDMX · EdoMex · Hgo</p>
+  <div class="foot">
+    <p><img src="./assets/img/apple-icon.png" alt="">© <span id="footYear"></span> Clúster Metropolitano · CDMX · EdoMex · Hgo</p>
+    <a href="https://lumiaaisolutions.com" target="_blank" rel="noopener noreferrer" class="lumia-badge">
+      <img src="./assets/img/lumia-icon.png" alt="LUMIA"> Desarrollado por <strong>LUMIA</strong>
+    </a>
+  </div>
 </div>
 </div>
 
@@ -655,6 +689,52 @@
   const mqTrack = document.getElementById('mqTrack');
   if (mqTrack && !reduced) mqTrack.innerHTML += mqTrack.innerHTML;
 
+  // ---- formulario de contacto → correo a atención del Clúster ----
+  const cForm = document.getElementById('contactForm');
+  if (cForm) {
+    const status = document.getElementById('cfStatus');
+    const sendBtn = document.getElementById('cfSend');
+    cForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const nombre = document.getElementById('cfNombre').value.trim();
+      const correo = document.getElementById('cfCorreo').value.trim();
+      const mensaje = document.getElementById('cfMensaje').value.trim();
+      status.className = 'cform-status';
+      if (!nombre || !correo || !mensaje) {
+        status.textContent = 'Completa nombre, correo y mensaje.';
+        status.classList.add('err');
+        return;
+      }
+      sendBtn.disabled = true;
+      const btnHTML = sendBtn.innerHTML;
+      sendBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Enviando…';
+      status.textContent = '';
+      try {
+        const fd = new FormData(cForm);
+        const r = await fetch('./api/contacto-visitante.php', { method: 'POST', body: fd, credentials: 'include' });
+        const d = await r.json();
+        if (d.success) {
+          status.textContent = d.message || '¡Mensaje enviado!';
+          status.classList.add('ok');
+          cForm.reset();
+          // métrica de conversión (sin PII)
+          const mfd = new FormData();
+          mfd.append('tipo', 'contacto_form');
+          navigator.sendBeacon && navigator.sendBeacon('./api/visitante.php?action=metrica', mfd);
+        } else {
+          status.textContent = d.message || 'No se pudo enviar — intenta de nuevo.';
+          status.classList.add('err');
+        }
+      } catch (err) {
+        status.textContent = 'Sin conexión con el servidor — intenta de nuevo o usa WhatsApp.';
+        status.classList.add('err');
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = btnHTML;
+      }
+    });
+  }
+
   // ---- probadita real: eventos públicos ----
   const esc = s => String(s ?? '').replace(/</g, '&lt;');
   const catColores = { reunion: '#3b82f6', capacitacion: '#16a34a', social: '#a21caf', importante: '#C7252B' };
@@ -728,7 +808,7 @@
         const c = colores[i % colores.length];
         return `<div class="pcard" style="--ci:${i * 90}ms">
           <div class="bhead">
-            <span class="bi" style="background:${c}"><i class="fas ${iconos[i % iconos.length]}"></i></span>
+            <span class="bi" style="color:${c}"><i class="fas ${iconos[i % iconos.length]}"></i></span>
             <b>${esc(b.titulo)}</b>
           </div>
           <div class="pbody">
