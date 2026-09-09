@@ -543,7 +543,7 @@ try {
             .container { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
         }
     </style>
-<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260908e">
+<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260909a">
 </head>
 <body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
@@ -2001,6 +2001,6 @@ try {
 
     <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
     <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
-<script src="./js/claut-admin-elite.js?v=20260908e"></script>
+<script src="./js/claut-admin-elite.js?v=20260909a"></script>
 </body>
 </html>

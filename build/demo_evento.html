@@ -762,7 +762,7 @@
             }
         }
     </style>
-<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260908e">
+<link rel="stylesheet" href="./css/claut-admin-elite.css?v=20260909a">
 </head>
 <body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
@@ -919,6 +919,20 @@
                     <div class="stat-icon"><i class="fas fa-users"></i></div>
                 </div>
             </div>
+        </div>
+
+        <!-- Vista Previa / Crear Evento — copia visible solo en móvil, debajo
+             de las stats (en escritorio siguen en el header). Mismos botones
+             reales: mismo href y mismo onclick="showCreateModal()". -->
+        <div class="elite-mobile-header-actions items-center gap-3 mb-8">
+            <a href="./eventos.html" target="_blank" rel="noopener"
+               class="flex items-center justify-center gap-2 text-white px-5 py-2.5 rounded-lg font-bold transition-all hover:opacity-90 flex-1" style="background:#2563eb;">
+                <i class="fas fa-eye"></i><span>Vista Previa</span>
+            </a>
+            <button onclick="showCreateModal()"
+                    class="flex items-center justify-center gap-2 bg-porsche-accent hover:bg-porsche-accent-hover text-white px-6 py-2.5 rounded-lg font-bold transition-all shadow-lg hover:shadow-red-900/40 flex-1">
+                <i class="fas fa-plus"></i><span>Crear Evento</span>
+            </button>
         </div>
 
         <!-- Custom CSS for Table Transition -->
@@ -1387,6 +1401,6 @@
   <script src="assets/js/loading-screen.js"></script>
   <script src="./assets/js/claut-admin-sidebar.js?v=20260901c"></script>
   <script src="./assets/js/claut-wizard.js?v=20260901a"></script>
-<script src="./js/claut-admin-elite.js?v=20260908e"></script>
+<script src="./js/claut-admin-elite.js?v=20260909a"></script>
 </body>
 </html>

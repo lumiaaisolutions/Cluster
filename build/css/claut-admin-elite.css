@@ -191,6 +191,14 @@ body:has(.claut-admin-sidebar) { padding-left: calc(var(--elite-rail-w) + var(--
     border-radius: 0 26px 26px 0;
     background: #131317;
     padding: 0 12px 18px;
+    /* BUG-044: overflow:visible (heredado de la regla del rail de escritorio,
+       de arriba, sin media query) dejaba que los ~13 items del drawer se
+       desbordaran del alto disponible en vez de hacer scroll, solapándose
+       con "Cerrar sesión" (reportado con captura: "Usuarios" tapaba el
+       botón de logout, amontonado, imposible de pulsar bien). El drawer
+       ahora scrollea internamente cuando el contenido no cabe. */
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .claut-admin-sidebar-brand { margin: 0 -12px 6px; border-radius: 0 26px 0 0; }
   .claut-admin-sidebar-title,
@@ -198,6 +206,13 @@ body:has(.claut-admin-sidebar) { padding-left: calc(var(--elite-rail-w) + var(--
   .claut-admin-sidebar.collapsed:hover .claut-admin-sidebar-title { display: block; color: #1c1c1f; font-size: 0.8rem; }
   .claut-admin-sidebar.collapsed .claut-admin-sidebar-logo,
   .claut-admin-sidebar.collapsed:hover .claut-admin-sidebar-logo { width: 64px !important; height: 64px !important; }
+  /* space-evenly (regla del rail de escritorio) fuerza a los ~13 items a
+     repartirse en toda la altura del drawer aunque no quepan — combinado
+     con el overflow:visible de antes, era la otra mitad del bug de
+     amontonamiento. En el drawer se quiere una lista normal de arriba
+     hacia abajo, con scroll si hace falta, no un reparto forzado. */
+  .claut-admin-nav { justify-content: flex-start !important; gap: 2px; }
+  .claut-admin-nav-group { display: block !important; margin-bottom: 6px; }
   .claut-admin-nav-item,
   .claut-admin-sidebar.collapsed .claut-admin-nav-item,
   .claut-admin-sidebar.collapsed:hover .claut-admin-nav-item {
@@ -221,12 +236,80 @@ body:has(.claut-admin-sidebar) { padding-left: calc(var(--elite-rail-w) + var(--
     font-size: 0.875rem;
     display: inline;
   }
+  /* Subcategorías (FEATURE-035): la etiqueta de cada grupo ("General",
+     "Ecosistema de módulos", "Sistema") ya existe en el HTML de las 12
+     páginas pero el skin la ocultaba — se muestra como encabezado de
+     sección; si claut-admin-elite.js le agregó .claut-admin-nav-toggle
+     (grupos con más de 3 items) además funciona como acordeón. */
+  .claut-admin-nav-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0.9rem 1.1rem 0.4rem;
+    font-size: 10.5px;
+  }
+  .claut-admin-nav-toggle-chevron { font-size: 10px; }
   .claut-admin-main { margin-left: 0 !important; padding-left: 0; }
   /* el offset del rail vive en el body — en móvil también hay que quitarlo
      (la franja oscura vacía a la izquierda en las capturas del usuario) */
   body:has(.claut-admin-sidebar) { padding-left: 0; }
   /* admin-panel: su .top-navbar flota sobre el saludo en móvil */
   nav.top-navbar + .elite-greet { margin-top: 78px; }
+}
+
+/* Subcategorías desplegables — comportamiento compartido (móvil y escritorio).
+   claut-admin-elite.js agrega .claut-admin-nav-toggle a la etiqueta de
+   cualquier grupo con más de 3 items ("Ecosistema de módulos": Banners,
+   Boletines, Documentos, Beneficios, Comités, Calendario, Socios, Eventos,
+   Usuarios, Visitantes) y togglea .is-collapsed en el grupo — sin tocar el
+   HTML de ninguna de las 12 páginas que comparten este sidebar. */
+.claut-admin-nav-group.is-collapsed .claut-admin-nav-item { display: none; }
+.claut-admin-nav-toggle-chevron { transition: transform 0.2s cubic-bezier(0.23,1,0.32,1); }
+.claut-admin-nav-group.is-collapsed .claut-admin-nav-toggle-chevron { transform: rotate(-90deg); }
+.claut-admin-nav-label.claut-admin-nav-toggle { cursor: pointer; user-select: none; }
+.claut-admin-nav-label.claut-admin-nav-toggle:hover { color: #cbd2de; }
+
+/* Escritorio: la etiqueta-toggle se vuelve un botón redondo más en el rail
+   (mismo lenguaje que .claut-admin-nav-item) — las demás etiquetas siguen
+   ocultas (el rail de iconos no tiene espacio para texto de sección). */
+@media (min-width: 1025px) {
+  .claut-admin-nav-toggle {
+    display: flex !important;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    color: #71788a;
+    background: transparent;
+    position: relative;
+    transition: background 0.18s cubic-bezier(0.23,1,0.32,1), color 0.18s ease;
+  }
+  .claut-admin-nav-toggle:hover { background: var(--elite-surface-hover); color: #f6f6f8; }
+  .claut-admin-nav-toggle-chevron { font-size: 12px; }
+  .claut-admin-nav-toggle-text { display: none; }
+  /* tooltip del nombre del grupo, igual que el de cada nav-item */
+  .claut-admin-nav-toggle::after {
+    content: attr(data-group-name);
+    position: absolute;
+    left: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-6px);
+    background: #1a1a1f;
+    color: #f6f6f8;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 5;
+  }
+  .claut-admin-nav-toggle:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
 }
 
 /* Pies de tarjeta en listados (banners/boletines/documentos): en pantallas
@@ -426,20 +509,19 @@ body:has(.claut-admin-sidebar) .glass-header {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
-/* móvil: los botones del header de eventos quedaban apilados a lo ancho ANTES
-   del saludo (se veía como panel distinto al resto) — se compactan a íconos
-   en una sola fila junto a la hamburguesa, como en los demás módulos */
+/* móvil: los botones del header de eventos (Vista Previa / Crear Evento)
+   quedaban apilados a lo ancho ANTES del saludo, flotando en un hueco vacío
+   entre la hamburguesa y "Hola, {nombre}" (reportado con captura). Se
+   ocultan aquí y se muestra en su lugar la copia de .elite-mobile-header-actions
+   inyectada después del grid de stats (mismo botón real, mismo onclick). */
 @media (max-width: 768px) {
   body:has(.claut-admin-sidebar) .glass-header .flex.items-center.space-x-4.w-full {
-    width: auto;
-    margin-left: auto;
+    display: none;
   }
-  body:has(.claut-admin-sidebar) .glass-header a span,
-  body:has(.claut-admin-sidebar) .glass-header button span { display: none; }
-  body:has(.claut-admin-sidebar) .glass-header a,
-  body:has(.claut-admin-sidebar) .glass-header button {
-    padding: 0.65rem 0.85rem !important;
-  }
+}
+.elite-mobile-header-actions { display: none; }
+@media (max-width: 768px) {
+  .elite-mobile-header-actions { display: flex; }
 }
 
 /* ============ 4. BOTONES píldora ============ */

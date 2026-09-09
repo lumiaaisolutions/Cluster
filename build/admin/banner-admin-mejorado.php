@@ -364,8 +364,22 @@ try {
             box-shadow: 0 14px 34px -10px rgba(0,0,0,.55) !important;
             border-color: rgba(199,37,43,.35) !important;
         }
+
+        /* Móvil: la tarjeta era miniatura(128px)+contenido lado a lado —
+           en pantallas angostas dejaba muy poco ancho para título/badge y
+           se veía desalineada ("desfasada"). Se apila: imagen arriba a todo
+           el ancho, contenido abajo. */
+        @media (max-width: 640px) {
+            .banner-item .flex.gap-4 { flex-direction: column; }
+            .banner-item .w-32.h-24 { width: 100%; height: 160px; }
+            .banner-item .flex.justify-between.items-start {
+                flex-wrap: wrap;
+                row-gap: 8px;
+            }
+            .banner-item .claut-badge.ml-3 { margin-left: 0; }
+        }
     </style>
-<link rel="stylesheet" href="../css/claut-admin-elite.css?v=20260908e">
+<link rel="stylesheet" href="../css/claut-admin-elite.css?v=20260909a">
 </head>
 <body class="claut-dark">
     <aside class="claut-admin-sidebar" id="claut-admin-sidebar">
@@ -925,6 +939,6 @@ try {
 
     <script src="../assets/js/claut-admin-sidebar.js?v=20260901c"></script>
     <script src="../assets/js/claut-wizard.js?v=20260901a"></script>
-<script src="../js/claut-admin-elite.js?v=20260908e"></script>
+<script src="../js/claut-admin-elite.js?v=20260909a"></script>
 </body>
 </html>

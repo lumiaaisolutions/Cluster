@@ -149,7 +149,7 @@
 
     /* --- Main: padding responsive via clase --- */
     main.claut-main {
-      padding-top: var(--header-height, 64px) !important;
+      padding-top: calc(var(--header-height, 64px) + 1rem) !important;
       margin-top: 0 !important;
       margin-left: 0 !important;
       overflow-x: hidden !important;
@@ -203,7 +203,7 @@
     /* --- Header: padding responsivo --- */
     @media (max-width: 640px) {
       .claut-header { padding: 0 0.75rem !important; }
-      main.claut-main { padding-top: 56px !important; }
+      main.claut-main { padding-top: calc(var(--header-height, 64px) + 1rem) !important; }
     }
     @media (min-width: 641px) and (max-width: 1024px) {
       .claut-header { padding: 0 1rem !important; }

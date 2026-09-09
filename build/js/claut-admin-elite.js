@@ -106,10 +106,78 @@
     else if (mq.addListener) mq.addListener(apply);
   }
 
+  /**
+   * Subcategorías desplegables del sidebar (FEATURE-035). El HTML de las 12
+   * páginas ya agrupa los items en .claut-admin-nav-group con una
+   * .claut-admin-nav-label ("General" / "Ecosistema de módulos" / "Sistema")
+   * — el skin elite solo la ocultaba para el rail de iconos. Cualquier grupo
+   * con más de 3 items se vuelve colapsable (la etiqueta se convierte en
+   * botón): resuelve de paso el amontonamiento del drawer móvil (menos
+   * items visibles por defecto) y cumple el pedido de categorías
+   * desplegables tanto en móvil como en escritorio, sin tocar el HTML de
+   * ninguna página.
+   */
+  function initNavGroups() {
+    var groups = document.querySelectorAll('.claut-admin-nav-group');
+    if (!groups.length) return;
+    var STORE_PREFIX = 'claut-nav-group-';
+
+    groups.forEach(function (group, idx) {
+      var items = group.querySelectorAll(':scope > .claut-admin-nav-item');
+      var label = group.querySelector(':scope > .claut-admin-nav-label');
+      if (!label || items.length <= 3) return; // grupos chicos: siempre visibles, sin toggle
+
+      var groupName = label.textContent.trim() || ('grupo-' + idx);
+      var hasActive = !!group.querySelector('.claut-admin-nav-item.active');
+      var storeKey = STORE_PREFIX + groupName;
+      var stored = null;
+      try { stored = localStorage.getItem(storeKey); } catch (e) { /* localStorage no disponible */ }
+      var collapsed = stored !== null ? stored === '1' : !hasActive;
+
+      label.classList.add('claut-admin-nav-toggle');
+      label.setAttribute('data-group-name', groupName);
+      label.setAttribute('role', 'button');
+      label.setAttribute('tabindex', '0');
+      // El texto va envuelto en su propio <span> para poder ocultarlo SOLO
+      // en el riel de escritorio (ahí el botón es redondo, solo el chevron
+      // cabe) sin tocar el texto visible del drawer móvil.
+      if (!label.querySelector('.claut-admin-nav-toggle-text')) {
+        var textSpan = document.createElement('span');
+        textSpan.className = 'claut-admin-nav-toggle-text';
+        textSpan.textContent = groupName;
+        label.textContent = '';
+        label.appendChild(textSpan);
+      }
+      if (!label.querySelector('.claut-admin-nav-toggle-chevron')) {
+        var chevron = document.createElement('i');
+        chevron.className = 'fas fa-chevron-down claut-admin-nav-toggle-chevron';
+        chevron.setAttribute('aria-hidden', 'true');
+        label.appendChild(chevron);
+      }
+
+      function apply() {
+        group.classList.toggle('is-collapsed', collapsed);
+        label.setAttribute('aria-expanded', String(!collapsed));
+      }
+      apply();
+
+      function toggle() {
+        collapsed = !collapsed;
+        try { localStorage.setItem(storeKey, collapsed ? '1' : '0'); } catch (e) { /* no-op */ }
+        apply();
+      }
+      label.addEventListener('click', toggle);
+      label.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  }
+
   function init() {
     injectGreeting();
     injectBars();
     stripCollapsedOnMobile();
+    initNavGroups();
   }
 
   if (document.readyState === 'loading') {

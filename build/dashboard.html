@@ -4430,7 +4430,7 @@
       max-width: 100vw !important;
       padding-left: clamp(0.75rem, 3vw, 3rem) !important;
       padding-right: clamp(0.75rem, 3vw, 3rem) !important;
-      padding-top: var(--header-height) !important;
+      padding-top: calc(var(--header-height, 64px) + 1rem) !important;
       padding-bottom: 2rem !important;
       margin-left: 0 !important;
       overflow-x: hidden !important;
@@ -4448,10 +4448,9 @@
         padding: 0 0.75rem !important;
         height: 56px !important;
       }
-      --header-height: 56px;
       .claut-header-logo img { width: 26px; height: 26px; }
       .claut-header-logo { font-size: 1rem; }
-      main.claut-main { padding-top: 56px !important; }
+      main.claut-main { padding-top: calc(var(--header-height, 64px) + 1rem) !important; }
     }
 
     @media (min-width: 481px) and (max-width: 767px) {
@@ -5766,8 +5765,8 @@
         <div class="w-full max-w-full px-3 mt-0 mb-8 lg:mb-0 lg:w-full lg:flex-none">
           <div
             class="relative flex flex-col min-w-0 break-words glass-card border-0 border-solid shadow-xl rounded-2xl bg-clip-border overflow-hidden p-6">
-            <div class="flex justify-between items-center mb-6">
-              <div class="flex items-center gap-4">
+            <div id="agendaHeaderRow" class="flex justify-between items-center mb-6">
+              <div id="agendaControlsGroup" class="flex items-center gap-4">
                 <h2 class="text-2xl font-black text-white tracking-tighter uppercase leading-none">Agenda</h2>
                 <div class="flex items-center gap-2 bg-white/[0.03] px-3 py-1 rounded-xl border border-white/5 ml-4">
                   <button id="dashPrevBtn" class="p-2 text-slate-400 hover:text-white transition-all"><i class="fas fa-chevron-left text-xs"></i></button>
@@ -5776,7 +5775,7 @@
                 </div>
                 <div id="dashCalendarTitle" class="text-sm font-bold text-white/70 ml-2 min-w-[120px]"></div>
               </div>
-              <div
+              <div id="agendaActiveBadge"
                 class="flex items-center gap-4 bg-white/[0.03] px-6 py-2 rounded-2xl border border-white/5 backdrop-blur-md">
                 <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
                   <span class="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Eventos Activos</span>
@@ -15552,6 +15551,16 @@
       color: #fff !important;
     }
     #dashPrevBtn:active, #dashNextBtn:active, #dashTodayBtn:active { transform: scale(0.92); }
+
+    /* La fila "Agenda" + controles (prev/hoy/siguiente) + título del mes +
+       badge "Eventos Activos" no envolvía en pantallas angostas — el botón
+       "siguiente" y el badge quedaban literalmente fuera de la pantalla
+       (reportado con captura, vista móvil). Se envuelve y se apila. */
+    @media (max-width: 640px) {
+      #agendaHeaderRow { flex-wrap: wrap; row-gap: 0.75rem; }
+      #agendaControlsGroup { flex-wrap: wrap; row-gap: 0.5rem; }
+      #agendaActiveBadge { width: 100%; justify-content: center; }
+    }
 
     /* Reveal por scroll: cada bloque entra desenfocado y desplazado,
        y se "ensambla" (nítido, en su sitio) al entrar al viewport. */
