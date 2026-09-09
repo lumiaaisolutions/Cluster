@@ -42,8 +42,8 @@
         const css = `
 /* Navbar interno — fuente única de verdad (gana a reglas legacy por orden) */
 body .porsche-navbar[navbar-main] {
-  position: sticky !important;
-  top: calc(var(--header-height, 80px) + 10px) !important;
+  position: relative !important;
+  top: auto !important;
   z-index: 500 !important;
   display: block !important;
   width: 100% !important;
