@@ -309,7 +309,22 @@ Plataforma integral para la gestión de socios y empresas del Clúster Metropoli
     - `build/.htaccess` → `public_html/.htaccess` *(EDITADO)*
     - `build/landing/` → `public_html/landing/` *(NUEVO — carpeta completa, ~14 MB)*
 - [ ] Validar flujo completo: Empresa edita → solicitud llega → Admin aprueba en `demo_empresas.html`.
-- [ ] Finalizar ajustes de responsividad extrema en tablas de `gestionar_usuarios.php`.
+- [x] ~~Finalizar ajustes de responsividad extrema en tablas de `gestionar_usuarios.php`~~ (resuelto al pasar a tarjetas en FEATURE-031 ronda 2).
+
+## 📌 Pendientes vigentes (actualizado 2026-09-09)
+
+**Requieren decisión o acción del usuario:**
+- [ ] **Número real de WhatsApp** para los CTAs de `visitante.html` (sigue el placeholder `wa.me/5255000000` de la landing).
+- [ ] **Marcar al menos un evento** con "Mostrar en el portal de visitantes" (checkbox en demo_evento) — sin eso la sección de eventos del portal muestra el estado vacío.
+- [ ] **`api/admin/backup-database.php`**: construido pero sin desplegar ni commitear — el clasificador de seguridad lo bloqueó como capacidad de exportación masiva no pedida; necesita autorización explícita renovada del usuario para subirse (FIX-032 Fase 4). El botón `backupDatabase()` de admin-panel ya existe como stub esperándolo.
+- [ ] **Revisión visual con sesión real** de las tarjetas de evento del portal visitante con portada de imagen real (no ha existido ningún evento visible aún).
+
+**Trabajo grande documentado, no iniciado o a medias:**
+- [ ] **CSP hardening** (quitar `unsafe-inline`/`unsafe-eval`): Fase A = Tailwind compilado (22 páginas, 1 sesión — requiere al usuario validando visualmente), Fase B = migrar 289 `onclick=""` en 30 archivos (2-3 sesiones), Fase C = scripts inline a externos/nonces, Fase D = switch final. Plan completo en `docs/architecture/PLAN_CSP_HARDENING.md`. Nota: el Report-Only ya se ejecutó y se RETIRÓ (FIX-038, DoS autoinfligido) — no repetirlo al inicio, solo brevemente antes del switch de la Fase D.
+- [ ] **Fase F restante** (migración `.claut-skin` → clases nativas): ~11 archivos de conteo bajo-medio (los 3 grandes ya están).
+- [ ] **Consolidación de APIs duplicadas** (`empresas-simple`/`empresas`, `boletines_simple`/`boletines`...): plan en `docs/architecture/PLAN_CONSOLIDACION_API.md` — ambos lados tienen consumidores reales, no es borrado directo.
+- [ ] **`demo_comite.html` (vista admin)**: mismo patrón de letterboxing de imágenes que se corrigió en la vista socio, pero ahí la solución correcta es fondo blur-fill (la tarjeta comparte grid de altura con boletines/eventos/documentos) — reportado, no ejecutado.
+- [ ] **`api/eventos.php`**: aún redirige a Unsplash en el caso borde "imagen en BD pero archivo perdido" (hallazgo de agente en FEATURE-031 r2, backend, no tocado).
 
 
 

@@ -269,3 +269,28 @@ ya diseñado; y una ronda de bugs de sesión real en `admin-panel.html`
 (notificaciones recortadas por `overflow:hidden`, script duplicado,
 referencias JS huérfanas), `sign-in.html` (segunda vuelta de ajuste) y
 `sign-up.html` (campo "Otros" editable, verificación de guardado en BD).
+
+## Correcciones posteriores al deploy (2026-09-08/09) — detalle en claude.md
+
+- **BUG-042 (crítico)**: el navbar interno compartido seguía pegado al Hero
+  en las 8 páginas pese al fix de especificidad de FIX-040 — la causa real
+  era `position: sticky` calculando mal su posición estática (se pintaba
+  ~66px más abajo del espacio reservado en el flujo, comprobado insertando
+  un marcador en el DOM). `sticky` → `relative` en claut-page-header.js
+  (`?v=20260908h`). Regla: cuando margin/padding no explican una
+  discrepancia, medir con getBoundingClientRect en vivo.
+- **FIX-041**: el "botón" de lupa de los banners del dashboard era un
+  pseudo-elemento decorativo sin listener — el modal solo abría con doble
+  clic. Ahora es un `<button>` real (reutiliza la clase `.card-preview-btn`
+  que existía huérfana en el CSS). Trampa documentada: dashboard.html tiene
+  DOS definiciones de `createExpandingCards` y solo la segunda
+  (`window.createExpandingCards = ...`) se ejecuta.
+- **BUG-043**: el ícono de LUMIA en sign-in.html se veía como mancha — dos
+  reglas `.glass-card img { width: 8rem/6rem !important }` (para el logo en
+  pantallas bajas) capturaban cualquier `<img>` de la tarjeta. Acotadas a
+  `.glass-card img.w-44`.
+- **BUG-044**: navbar de bienvenida pegado al header en móvil en 4 páginas
+  (`padding-top:56px` obsoleto) — ver Ronda 6 de ADMIN_ELITE_2026-09.md.
+- **Portal Visitante v3**: rediseño completo (cine scrollytelling + aurora
+  glass + formulario de contacto) — documento propio:
+  `PORTAL_VISITANTE_2026-09.md`.

@@ -348,3 +348,60 @@ todos los tocados (dashboard.html reporta el artefacto conocido de extracción d
 template-literals — HEAD falla idéntico, diff propio = 2 líneas de CSS);
 27 archivos desplegados; `?v=20260908e` en las 12 páginas admin y
 `header-navbar.css?v=20260908e` en las 7 de socio.
+
+# Ronda 6 (2026-09-09) — responsive móvil real + subcategorías del sidebar · `?v=20260909a`
+
+Reportes del usuario con capturas de iPhone (Safari, producción).
+
+## BUG-045 — Sidebar móvil amontonado sobre "Cerrar sesión" (causa raíz doble)
+1. `.claut-admin-sidebar { overflow: visible }` (regla del rail de escritorio,
+   pensada para que los tooltips no se recorten) no tenía media query — en el
+   drawer móvil los ~13 ítems desbordaban el alto disponible SIN scroll,
+   encimándose sobre el botón de logout ("Usuarios" literalmente encima de
+   "Cerrar sesión"). Fix: `overflow-y:auto` en ≤1024px.
+2. `justify-content: space-evenly` en `.claut-admin-nav` (layout del rail)
+   forzaba a repartir los ítems en toda la altura aunque no cupieran. Fix:
+   `flex-start` en móvil.
+
+## FEATURE-035 — Subcategorías desplegables del sidebar (móvil y PC)
+El HTML de las 12 páginas YA agrupa en `.claut-admin-nav-group` con
+`.claut-admin-nav-label` ("General"/"Ecosistema de módulos"/"Sistema") — la
+capa elite solo lo aplanaba. `initNavGroups()` en `claut-admin-elite.js`
+vuelve colapsable cualquier grupo con >3 ítems (solo "Ecosistema", 9-10):
+- la etiqueta se convierte en botón con chevron (texto envuelto en `<span>`
+  propio para ocultarlo SOLO en el rail de escritorio — bug propio cazado:
+  la v1 desbordaba el texto sobre el botón redondo);
+- estado persistido en localStorage por nombre de grupo; expandido por
+  defecto solo si contiene la página activa;
+- móvil: encabezado de sección clickeable; escritorio: botón redondo más
+  del rail con tooltip del nombre del grupo.
+Cero cambios de markup en las 12 páginas.
+
+## BUG-046 — Tarjeta de banner no responsive (admin/banner-admin-mejorado.php)
+Miniatura 128×96 fija + contenido lado a lado sin punto de quiebre → en
+angosto el título/badge quedaban aplastados. Fix: apilado en ≤640px (imagen
+arriba a todo el ancho 160px, contenido abajo, fila título+badge con wrap).
+
+## BUG-047 — Eventos: botones Vista Previa/Crear flotando antes de las stats
+El `.glass-header` de demo_evento.html apila sus botones en móvil ANTES del
+saludo/stats — hueco raro con 2 botones sueltos. Fix: se ocultan en el header
+en ≤768px y una copia visible-solo-móvil (mismo href / mismo onclick) se
+inserta después del grid de stats (`.elite-mobile-header-actions`).
+
+## BUG-048 — Widget "Agenda" del dashboard con controles fuera de pantalla
+No era calendario.html: es el preview del dashboard (visible para admins).
+La fila título+prev/hoy/sig+mes+badge no tenía flex-wrap → el botón
+"siguiente" y el badge quedaban cortados fuera del viewport. Fix: wrap en la
+fila y su grupo, badge a fila propia centrada en ≤640px.
+
+## BUG-044 (páginas de socio, misma sesión) — navbar pegado al header en móvil
+comites/boletines/descuentos/dashboard llevaban `padding-top: 56px !important`
+hardcodeado en su media query móvil — valor de cuando el header medía menos,
+nunca actualizado al crecer a 80px (FEATURE-027). contacto.html (la única
+sin hardcode, con `calc(var(--header-height)+1rem)`) era la referencia que
+sí se veía bien. Homologadas las 4 al calc; descuentos además tenía padding
+redundante en el propio nav que causaba salto de línea de los botones; el
+dashboard tenía una línea de CSS inválida (`--header-height: 56px;` suelta
+dentro de un @media, fuera de todo selector — ignorada en silencio).
+Diagnóstico por MEDICIÓN en vivo (getBoundingClientRect), no por lectura
+de CSS.
