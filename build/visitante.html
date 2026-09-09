@@ -5,96 +5,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Visitante — Clúster Intranet</title>
   <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Panel de visitante (FEATURE-032) — híbrido landing + elite.
-       Autocontenido a propósito: el visitante no carga el stack admin. */
+    /* ============================================================
+       Portal Visitante v2 (FEATURE-036) — "aurora glass" claro.
+       Rediseño aprobado por el usuario con referencia visual: fondo
+       claro con gradientes pastel difuminados, tarjetas de vidrio
+       esmerilado, acento rojo Clúster. El visor oscuro con la
+       secuencia de rayos-X (scrubbing por scroll) es la firma de la
+       página: una "ventana" a la intranet desde el exterior claro.
+       Autocontenido a propósito: el visitante no carga el stack admin.
+       ============================================================ */
     :root{
-      --bg:#060607; --surface:rgba(255,255,255,.05); --surface-h:rgba(255,255,255,.085);
-      --accent:#c7252b; --accent-glow:rgba(199,37,43,.4);
-      --lime:#d5f259; --lime-deep:#b6d935; --lime-ink:#181a08;
-      --hi:#f6f6f8; --mid:#a2a8b3; --low:#61687a;
-      --info:#60a5fa; --success:#34d399; --wa:#25d366;
+      --bg:#eef0f6; --ink:#16181f; --mid:#525866; --low:#878e9d;
+      --glass:rgba(255,255,255,.62); --glass-h:rgba(255,255,255,.82);
+      --stroke:rgba(255,255,255,.7); --shadow:0 24px 60px -28px rgba(58,66,110,.25);
+      --accent:#c7252b; --accent-deep:#8f1a1f; --accent-glow:rgba(199,37,43,.35);
+      --info:#1d4ed8; --success:#0d7a56; --wa:#128c4b;
       --ease:cubic-bezier(.23,1,.32,1);
     }
-    *{box-sizing:border-box} html,body{overflow-x:clip}
-    body{margin:0;background:var(--bg);color:var(--hi);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
-    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-      background:radial-gradient(55% 40% at 10% -5%,rgba(199,37,43,.15),transparent 60%),radial-gradient(45% 40% at 100% 8%,rgba(139,92,246,.06),transparent 55%)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} html,body{overflow-x:clip}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
     button{font-family:inherit;cursor:pointer}
     a{text-decoration:none;color:inherit}
-    .page{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:18px 20px 80px}
 
-    .hdr{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:100px;padding:10px 16px;flex-wrap:wrap}
-    .hdr img{width:44px;height:44px;border-radius:50%;background:#fff;padding:3px}
-    .hdr b{font-size:15px}
-    .vtag{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);font-weight:800;background:rgba(213,242,89,.12);padding:4px 10px;border-radius:100px}
+    /* --- Fondo aurora: blobs difuminados con parallax (JS mueve --py) --- */
+    .aurora{position:fixed;inset:-20% -10%;z-index:0;pointer-events:none;filter:blur(70px);opacity:.85}
+    .aurora i{position:absolute;border-radius:50%;will-change:transform}
+    .aurora .a1{width:44vw;height:44vw;left:-6%;top:-4%;background:radial-gradient(circle,#c9b9f2 0%,transparent 65%)}
+    .aurora .a2{width:38vw;height:38vw;right:-4%;top:6%;background:radial-gradient(circle,#aac9f0 0%,transparent 65%)}
+    .aurora .a3{width:40vw;height:40vw;left:22%;top:46%;background:radial-gradient(circle,#f2b9c9 0%,transparent 68%)}
+    .aurora .a4{width:34vw;height:34vw;right:8%;top:72%;background:radial-gradient(circle,#b9e2f2 0%,transparent 65%)}
+
+    .page{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:18px 20px 70px}
+
+    /* --- Reveal on scroll --- */
+    .rv{opacity:0;transform:translateY(26px);filter:blur(5px);
+      transition:opacity .7s var(--ease),transform .7s var(--ease),filter .7s ease;
+      transition-delay:var(--rvd,0ms)}
+    .rv.in{opacity:1;transform:none;filter:none}
+
+    /* --- Header pill --- */
+    .hdr{display:flex;align-items:center;gap:12px;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5);border-radius:100px;padding:10px 16px;flex-wrap:wrap;box-shadow:var(--shadow)}
+    .hdr img{width:44px;height:44px;border-radius:50%;background:#fff;padding:3px;box-shadow:0 4px 12px rgba(58,66,110,.15)}
+    .hdr b{font-size:15px;letter-spacing:-.01em}
+    .vtag{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:800;background:rgba(199,37,43,.09);padding:4px 10px;border-radius:100px}
     .hdr-spacer{flex:1}
-    .btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:100px;padding:12px 20px;font-size:13px;font-weight:800;transition:transform .12s var(--ease),filter .15s}
-    .btn:active{transform:scale(.96)}
-    .btn-red{background:linear-gradient(135deg,#e23238,var(--accent) 55%,#8f1a1f);color:#fff;box-shadow:0 14px 30px -10px var(--accent-glow)}
-    .btn-red:hover{filter:brightness(1.1)}
-    .btn-ghost{background:rgba(255,255,255,.09);color:var(--hi)}
-    .btn-wa{background:rgba(37,211,102,.15);color:var(--wa)}
-    .btn-mail{background:rgba(96,165,250,.14);color:var(--info)}
-    .btn-sm{padding:9px 14px;font-size:12px}
 
-    .hero{position:relative;border-radius:28px;overflow:hidden;min-height:400px;display:flex;align-items:flex-end;margin:18px 0 26px;background:#000}
-    #heroCanvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,7,.05) 25%,rgba(6,6,7,.9) 90%)}
-    .hero-copy{position:relative;z-index:2;padding:26px 28px;max-width:660px}
-    .eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);font-weight:800;margin-bottom:8px}
-    .hero-copy h1{margin:0 0 10px;font-size:clamp(26px,4.4vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1.05}
-    .hero-copy h1 em{font-style:normal;color:#ff4d55}
-    .hero-copy p{margin:0 0 18px;font-size:14px;color:var(--mid);line-height:1.55;max-width:560px}
+    /* --- Botones --- */
+    .btn{display:inline-flex;align-items:center;gap:8px;border:none;border-radius:100px;padding:12px 20px;font-size:13px;font-weight:800;transition:transform .16s var(--ease),filter .15s,box-shadow .2s ease;min-height:44px}
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:scale(.96)}
+    .btn-red{background:linear-gradient(135deg,#e23238,var(--accent) 55%,var(--accent-deep));color:#fff;box-shadow:0 14px 30px -10px var(--accent-glow)}
+    .btn-red:hover{filter:brightness(1.08);box-shadow:0 18px 38px -10px var(--accent-glow)}
+    .btn-ghost{background:rgba(22,24,31,.06);color:var(--ink)}
+    .btn-ghost:hover{background:rgba(22,24,31,.1)}
+    .btn-wa{background:#e4f6ec;color:var(--wa)}
+    .btn-wa:hover{background:#d6f0e2}
+    .btn-mail{background:#e8effc;color:var(--info)}
+    .btn-mail:hover{background:#dbe7fa}
+    .btn-sm{padding:9px 14px;font-size:12px;min-height:40px}
+
+    /* --- Hero: copy claro + visor oscuro con la secuencia --- */
+    .hero{margin:44px 0 10px;text-align:left;max-width:760px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:14px}
+    .eyebrow::before{content:"";width:26px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--accent),transparent)}
+    .hero h1{margin:0 0 14px;font-size:clamp(30px,5.2vw,56px);font-weight:900;letter-spacing:-.04em;line-height:1.02}
+    .hero h1 em{font-style:normal;background:linear-gradient(120deg,#e23238,var(--accent) 50%,#7c3aed 130%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{margin:0 0 22px;font-size:15px;color:var(--mid);line-height:1.6;max-width:590px}
     .hero-ctas{display:flex;gap:10px;flex-wrap:wrap}
 
-    .sec{display:flex;align-items:baseline;gap:10px;margin:30px 2px 14px;flex-wrap:wrap}
-    .sec h3{margin:0;font-size:16px;font-weight:800}
+    /* Visor: firma de la página. Marco de vidrio claro, pantalla oscura,
+       la secuencia se "ensambla" al hacer scroll (scrub + suavizado). */
+    .vp-wrap{margin:30px 0 8px;perspective:1200px}
+    .viewport{position:relative;border-radius:26px;overflow:hidden;background:#0a0a0d;
+      box-shadow:0 40px 90px -30px rgba(30,34,60,.45),0 0 0 6px var(--glass),0 0 0 7px var(--stroke);
+      aspect-ratio:16/7;min-height:260px;transform-style:preserve-3d;will-change:transform}
+    #heroCanvas{position:absolute;inset:0;width:100%;height:100%}
+    .vp-glare{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.14) 0%,transparent 28%)}
+    .vp-caption{position:absolute;left:16px;bottom:14px;z-index:2;display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.85);background:rgba(10,10,13,.5);backdrop-filter:blur(8px);padding:7px 13px;border-radius:100px}
+    .vp-caption i{color:#ff4d55;font-size:9px;animation:vppulse 2s ease-in-out infinite}
+    @keyframes vppulse{50%{opacity:.35}}
+    .vp-bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.08);z-index:2}
+    .vp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#e23238,#ff4d55);transition:width .1s linear}
+    .vp-hint{position:absolute;right:16px;bottom:14px;z-index:2;font-size:10.5px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:7px}
+    .vp-hint i{animation:hintbounce 1.6s ease-in-out infinite}
+    @keyframes hintbounce{50%{transform:translateY(3px)}}
+
+    /* --- Secciones --- */
+    .sec{display:flex;align-items:baseline;gap:10px;margin:44px 2px 16px;flex-wrap:wrap}
+    .sec h3{margin:0;font-size:19px;font-weight:800;letter-spacing:-.02em}
     .sec span{font-size:11.5px;color:var(--low)}
 
+    /* --- Bento de módulos --- */
     .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-    .bcard{border-radius:24px;padding:20px;position:relative;background:var(--surface);min-height:118px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .2s var(--ease),background .2s}
-    .bcard:hover{transform:translateY(-3px);background:var(--surface-h)}
-    .lock{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;color:var(--low);font-size:11px}
-    .bic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:15px}
-    .bcard h4{margin:0 0 4px;font-size:14px;font-weight:800}
-    .bcard p{margin:0;font-size:11.5px;color:var(--low);line-height:1.45}
+    .bcard{border-radius:22px;padding:20px;position:relative;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);min-height:126px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease}
+    .bcard:hover{transform:translateY(-5px);box-shadow:0 34px 70px -26px rgba(58,66,110,.35)}
+    .bcard:hover .bic{transform:scale(1.12) rotate(-4deg)}
+    .lock{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(22,24,31,.05);display:flex;align-items:center;justify-content:center;color:var(--low);font-size:11px}
+    .bic{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:16px;transition:transform .25s var(--ease)}
+    .bcard h4{margin:0 0 4px;font-size:14.5px;font-weight:800;letter-spacing:-.01em}
+    .bcard p{margin:0;font-size:12px;color:var(--mid);line-height:1.5}
     .b4{grid-column:span 4}.b3{grid-column:span 3}.b6{grid-column:span 6}
-    .cta-lime{background:linear-gradient(130deg,var(--lime),var(--lime-deep));color:var(--lime-ink)}
-    .cta-lime p{color:rgba(24,26,8,.75)}
-    .cta-lime h4{font-size:16px}
-    .cta-lime .btn{margin-top:12px;background:#141418;color:#fff;align-self:flex-start}
 
+    .cta-red{background:linear-gradient(130deg,#e23238,var(--accent) 55%,var(--accent-deep));border:none;color:#fff;box-shadow:0 26px 60px -20px var(--accent-glow)}
+    .cta-red h4{font-size:17px;color:#fff}
+    .cta-red p{color:rgba(255,255,255,.85)}
+    .cta-red .btn{margin-top:14px;background:#fff;color:var(--accent-deep);align-self:flex-start}
+    .cta-red .btn:hover{filter:none;background:#ffe9ea}
+
+    /* --- Tarjetas de eventos / boletines --- */
     .peek{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
-    .pcard{background:var(--surface);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s var(--ease),background .2s}
-    .pcard:hover{transform:translateY(-3px);background:var(--surface-h)}
-    .pcover{height:120px;position:relative;flex:none;background-size:cover;background-position:center}
-    .pcover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.62))}
+    .pcard{background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .22s var(--ease),box-shadow .25s ease}
+    .pcard:hover{transform:translateY(-5px);box-shadow:0 34px 70px -26px rgba(58,66,110,.35)}
+    .pcover{height:130px;position:relative;flex:none;background-size:cover;background-position:center;overflow:hidden}
+    .pcover .zoom{position:absolute;inset:0;background-image:inherit;background-size:cover;background-position:center;transition:transform .5s var(--ease)}
+    .pcard:hover .pcover .zoom{transform:scale(1.07)}
+    .pcover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(8,10,16,.68));z-index:1}
     .pcover .cat{position:absolute;top:10px;left:10px;font-size:10px;font-weight:800;color:#fff;padding:4px 10px;border-radius:100px;z-index:2;background:rgba(0,0,0,.45)}
     .pcover .ttl{position:absolute;bottom:10px;left:12px;right:12px;z-index:2;font-size:14px;font-weight:800;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6)}
     .pbody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
     .prow{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--mid)}
     .prow i{width:13px;text-align:center;color:var(--low);font-size:11px}
-    .pfoot{margin-top:auto;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+    .pfoot{margin-top:auto;padding-top:10px;border-top:1px solid rgba(22,24,31,.07);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
     .badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;padding:4px 10px;border-radius:100px}
     .badge::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
-    .badge-open{background:rgba(52,211,153,.13);color:var(--success)}
-    .badge-doc{background:rgba(96,165,250,.13);color:var(--info)}
-    .plock{font-size:10.5px;color:var(--low)}
-    .empty{grid-column:1/-1;text-align:center;color:var(--low);font-size:12.5px;padding:26px;background:var(--surface);border-radius:16px}
+    .badge-open{background:#e0f4eb;color:var(--success)}
+    .badge-doc{background:#e6edfb;color:var(--info)}
+    .plock{font-size:10.5px;color:var(--low);transition:color .15s}
+    .plock:hover{color:var(--accent)}
+    .empty{grid-column:1/-1;text-align:center;color:var(--low);font-size:12.5px;padding:26px;background:var(--glass);border:1px solid var(--stroke);border-radius:16px}
 
-    .contact{margin-top:34px;background:var(--surface);border-radius:24px;padding:22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    /* --- Contacto + footer --- */
+    .contact{margin-top:44px;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-radius:24px;padding:22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:var(--shadow)}
     .contact h4{margin:0;font-size:15px;font-weight:800}
     .contact p{margin:2px 0 0;font-size:12px;color:var(--mid)}
     .contact .sp{flex:1}
+    .foot{margin-top:34px;text-align:center;font-size:11px;color:var(--low)}
+
     @media(max-width:900px){.b4,.b3{grid-column:span 6}.b6{grid-column:span 12}}
-    @media(max-width:600px){.b4,.b3,.b6{grid-column:span 12}.hero{min-height:340px}}
+    @media(max-width:600px){
+      .b4,.b3,.b6{grid-column:span 12}
+      .viewport{aspect-ratio:4/3;min-height:230px}
+      .vp-hint{display:none}
+      .hero{margin-top:30px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .rv{opacity:1;transform:none;filter:none;transition:none}
+      .aurora i{transform:none !important}
+      .viewport{transform:none !important}
+      .vp-hint i,.vp-caption i{animation:none}
+      html{scroll-behavior:auto}
+    }
   </style>
 </head>
 <body>
+<div class="aurora" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i></div>
 <div class="page">
-  <header class="hdr">
+  <header class="hdr rv">
     <img src="./assets/img/apple-icon.png" alt="Clúster Metropolitano">
     <b>Clúster Intranet</b>
     <span class="vtag">Modo visitante</span>
@@ -104,8 +175,7 @@
   </header>
 
   <section class="hero">
-    <canvas id="heroCanvas"></canvas>
-    <div class="hero-copy">
+    <div class="rv">
       <div class="eyebrow">Bienvenido al Clúster Metropolitano</div>
       <h1>La industria automotriz, <em>conectada</em> por dentro</h1>
       <p>Esta es la intranet donde los socios gestionan eventos, comités, beneficios y su red de negocio. Explora qué hay dentro — y súmate cuando quieras.</p>
@@ -117,46 +187,60 @@
     </div>
   </section>
 
-  <div class="sec"><h3>Lo que usan los socios todos los días</h3><span>con tu cuenta se desbloquea todo</span></div>
+  <div class="vp-wrap rv" style="--rvd:120ms">
+    <div class="viewport" id="vpCard">
+      <canvas id="heroCanvas"></canvas>
+      <div class="vp-glare"></div>
+      <div class="vp-caption"><i class="fas fa-circle"></i> Radiografía del sector</div>
+      <div class="vp-hint"><i class="fas fa-arrow-down"></i> Desplázate para ensamblar</div>
+      <div class="vp-bar"><i id="vpProgress"></i></div>
+    </div>
+  </div>
+
+  <div class="sec rv"><h3>Lo que usan los socios todos los días</h3><span>con tu cuenta se desbloquea todo</span></div>
   <div class="bento">
-    <div class="bcard b4"><span class="lock"><i class="fas fa-lock"></i></span>
-      <div><div class="bic" style="background:rgba(199,37,43,.16);color:#ff4d55"><i class="fas fa-calendar-days"></i></div>
+    <div class="bcard b4 rv"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(199,37,43,.1);color:#c7252b"><i class="fas fa-calendar-days"></i></div>
       <h4>Eventos y networking</h4><p>Asambleas, foros y encuentros con registro en un clic y recordatorios.</p></div></div>
-    <div class="bcard b4"><span class="lock"><i class="fas fa-lock"></i></span>
-      <div><div class="bic" style="background:rgba(96,165,250,.14);color:#60a5fa"><i class="fas fa-people-group"></i></div>
+    <div class="bcard b4 rv" style="--rvd:70ms"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(29,78,216,.09);color:#1d4ed8"><i class="fas fa-people-group"></i></div>
       <h4>Comités de trabajo</h4><p>Comercio exterior, innovación, capital humano — participa donde aportas.</p></div></div>
-    <div class="bcard b4"><span class="lock"><i class="fas fa-lock"></i></span>
-      <div><div class="bic" style="background:rgba(213,242,89,.14);color:#d5f259"><i class="fas fa-tags"></i></div>
+    <div class="bcard b4 rv" style="--rvd:140ms"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(124,58,237,.09);color:#7c3aed"><i class="fas fa-tags"></i></div>
       <h4>Beneficios exclusivos</h4><p>Descuentos y convenios corporativos negociados para los socios.</p></div></div>
-    <div class="bcard b3"><span class="lock"><i class="fas fa-lock"></i></span>
-      <div><div class="bic" style="background:rgba(52,211,153,.13);color:#34d399"><i class="fas fa-folder-open"></i></div>
+    <div class="bcard b3 rv"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(13,122,86,.09);color:#0d7a56"><i class="fas fa-folder-open"></i></div>
       <h4>Documentación</h4><p>Normativa y formatos oficiales.</p></div></div>
-    <div class="bcard b3"><span class="lock"><i class="fas fa-lock"></i></span>
-      <div><div class="bic" style="background:rgba(139,92,246,.15);color:#a78bfa"><i class="fas fa-building"></i></div>
+    <div class="bcard b3 rv" style="--rvd:70ms"><span class="lock"><i class="fas fa-lock"></i></span>
+      <div><div class="bic" style="background:rgba(2,132,199,.09);color:#0284c7"><i class="fas fa-building"></i></div>
       <h4>Red de empresas</h4><p>Directorio y perfil de tu empresa.</p></div></div>
-    <div class="bcard b6 cta-lime">
+    <div class="bcard b6 cta-red rv" style="--rvd:140ms">
       <div><h4>¿Tu empresa es del sector automotriz?</h4>
       <p>Crea tu cuenta hoy — un administrador validará tu perfil y tendrás acceso completo a la comunidad del Clúster Metropolitano.</p>
       <a class="btn" href="./pages/sign-up.html" data-metrica="click_registro"><i class="fas fa-arrow-right"></i> Iniciar mi registro</a></div></div>
   </div>
 
-  <div class="sec"><h3>Próximos eventos abiertos</h3><span>vista pública · solo lectura</span></div>
+  <div class="sec rv"><h3>Próximos eventos abiertos</h3><span>vista pública · solo lectura</span></div>
   <div class="peek" id="peekEventos"><div class="empty">Cargando eventos…</div></div>
 
-  <div class="sec"><h3>Boletines públicos recientes</h3><span>lo que el Clúster comunica</span></div>
+  <div class="sec rv"><h3>Boletines públicos recientes</h3><span>lo que el Clúster comunica</span></div>
   <div class="peek" id="peekBoletines"><div class="empty">Cargando boletines…</div></div>
 
-  <div class="contact">
+  <div class="contact rv">
     <div><h4>¿Dudas antes de registrarte?</h4><p>El equipo del Clúster te responde directamente.</p></div>
     <div class="sp"></div>
     <a class="btn btn-mail btn-sm" href="mailto:atencion@clautedomex.mx" data-metrica="click_correo"><i class="fas fa-envelope"></i> atencion@clautedomex.mx</a>
     <a class="btn btn-wa btn-sm" href="https://wa.me/5255000000" target="_blank" rel="noopener" data-metrica="click_whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
   </div>
+
+  <p class="foot">© <span id="footYear"></span> Clúster Metropolitano · CDMX · EdoMex · Hgo</p>
 </div>
 
 <script>
 (function () {
   'use strict';
+  document.getElementById('footYear').textContent = new Date().getFullYear();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---- guard: requiere sesión de visitante (o de usuario real) ----
   // Resiliente: si el primer check falla (cookie aún no asentada tras el
@@ -177,19 +261,37 @@
     .catch(() => { /* si la API falla, no bloquear la vista informativa */ });
 
   // ---- métricas de conversión (sin PII, fire-and-forget) ----
-  document.querySelectorAll('[data-metrica]').forEach(el => {
-    el.addEventListener('click', () => {
-      const fd = new FormData();
-      fd.append('tipo', el.dataset.metrica);
-      navigator.sendBeacon
-        ? navigator.sendBeacon('./api/visitante.php?action=metrica', fd)
-        : fetch('./api/visitante.php?action=metrica', { method: 'POST', body: fd, credentials: 'include', keepalive: true });
+  function wireMetrics(root) {
+    (root || document).querySelectorAll('[data-metrica]').forEach(el => {
+      if (el.dataset.metricaWired) return;
+      el.dataset.metricaWired = '1';
+      el.addEventListener('click', () => {
+        const fd = new FormData();
+        fd.append('tipo', el.dataset.metrica);
+        navigator.sendBeacon
+          ? navigator.sendBeacon('./api/visitante.php?action=metrica', fd)
+          : fetch('./api/visitante.php?action=metrica', { method: 'POST', body: fd, credentials: 'include', keepalive: true });
+      });
     });
-  });
+  }
+  wireMetrics();
 
-  // ---- hero: secuencia rayos-X de la landing, 1 de cada 4 frames (42) ----
+  // ---- reveal on scroll ----
+  const rvEls = document.querySelectorAll('.rv');
+  if (reduced || !('IntersectionObserver' in window)) {
+    rvEls.forEach(el => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    rvEls.forEach(el => io.observe(el));
+  }
+
+  // ---- visor: secuencia rayos-X, 1 de cada 4 frames (42), scrub suavizado ----
   const canvas = document.getElementById('heroCanvas');
   const ctx = canvas.getContext('2d');
+  const vpCard = document.getElementById('vpCard');
+  const vpProgress = document.getElementById('vpProgress');
   const STEP = 4, TOTAL = 168;
   const indices = [];
   for (let i = 1; i <= TOTAL; i += STEP) indices.push(i);
@@ -199,8 +301,12 @@
   function draw(idx) {
     const img = frames[idx];
     if (!img) return;
+    const dpr = Math.min(2, devicePixelRatio || 1);
     const cw = canvas.clientWidth, ch = canvas.clientHeight;
-    if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
+    if (canvas.width !== cw * dpr || canvas.height !== ch * dpr) {
+      canvas.width = cw * dpr; canvas.height = ch * dpr;
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const scale = Math.max(cw / img.width, ch / img.height);
     const w = img.width * scale, h = img.height * scale;
     ctx.clearRect(0, 0, cw, ch);
@@ -214,14 +320,63 @@
     img.onload = () => { frames[i] = img; if (++loaded === 1) draw(0); };
   });
 
-  function onScroll() {
-    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-    const p = Math.min(1, Math.max(0, scrollY / (max * 0.5)));
-    const idx = Math.min(indices.length - 1, Math.round(p * (indices.length - 1)));
+  // Scrub con inercia: el frame objetivo sale del avance de scroll sobre
+  // ~1.1 pantallas; el frame pintado persigue al objetivo con lerp para
+  // que el ensamblado se sienta fluido, no a saltos.
+  let targetP = 0, shownP = 0, raf = null;
+  function scrubTick() {
+    shownP += (targetP - shownP) * (reduced ? 1 : 0.16);
+    const idx = Math.min(indices.length - 1, Math.round(shownP * (indices.length - 1)));
     if (idx !== current) draw(idx);
+    vpProgress.style.width = (shownP * 100).toFixed(1) + '%';
+    if (Math.abs(targetP - shownP) > 0.002) raf = requestAnimationFrame(scrubTick);
+    else raf = null;
+  }
+  function onScroll() {
+    targetP = Math.min(1, Math.max(0, scrollY / (innerHeight * 1.1)));
+    if (!raf) raf = requestAnimationFrame(scrubTick);
   }
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', () => { if (current >= 0) draw(current); });
+  onScroll();
+
+  // ---- parallax de los blobs aurora (decorativo — se apaga con reduced) ----
+  if (!reduced) {
+    const blobs = [
+      { el: document.querySelector('.aurora .a1'), f: 0.06 },
+      { el: document.querySelector('.aurora .a2'), f: -0.045 },
+      { el: document.querySelector('.aurora .a3'), f: 0.09 },
+      { el: document.querySelector('.aurora .a4'), f: -0.07 }
+    ];
+    let pRaf = null;
+    function parallaxTick() {
+      const y = scrollY;
+      blobs.forEach(b => { if (b.el) b.el.style.transform = 'translate3d(0,' + (y * b.f).toFixed(1) + 'px,0)'; });
+      pRaf = null;
+    }
+    addEventListener('scroll', () => { if (!pRaf) pRaf = requestAnimationFrame(parallaxTick); }, { passive: true });
+  }
+
+  // ---- tilt sutil del visor con el cursor (solo pointer fino) ----
+  if (!reduced && matchMedia('(pointer: fine)').matches) {
+    let tx = 0, ty = 0, cx = 0, cy = 0, tRaf = null;
+    function tiltTick() {
+      cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
+      vpCard.style.transform = 'rotateX(' + cy.toFixed(2) + 'deg) rotateY(' + cx.toFixed(2) + 'deg)';
+      if (Math.abs(tx - cx) > 0.02 || Math.abs(ty - cy) > 0.02) tRaf = requestAnimationFrame(tiltTick);
+      else tRaf = null;
+    }
+    vpCard.addEventListener('pointermove', e => {
+      const r = vpCard.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 5;
+      ty = -((e.clientY - r.top) / r.height - 0.5) * 4;
+      if (!tRaf) tRaf = requestAnimationFrame(tiltTick);
+    });
+    vpCard.addEventListener('pointerleave', () => {
+      tx = 0; ty = 0;
+      if (!tRaf) tRaf = requestAnimationFrame(tiltTick);
+    });
+  }
 
   // ---- probadita real: eventos públicos ----
   const esc = s => String(s ?? '').replace(/</g, '&lt;');
@@ -248,6 +403,7 @@
         const cat = (ev.tipo || 'Evento');
         return `<div class="pcard">
           <div class="pcover" style="${fondo}">
+            <span class="zoom" style="${fondo}"></span>
             <span class="cat" style="background:${catColores[cat.toLowerCase()] || 'rgba(0,0,0,.45)'}">${esc(cat)}</span>
             <div class="ttl">${esc(ev.titulo)}</div>
           </div>
@@ -261,12 +417,7 @@
           </div>
         </div>`;
       }).join('');
-      cont.querySelectorAll('[data-metrica]').forEach(el => {
-        el.addEventListener('click', () => {
-          const fd = new FormData(); fd.append('tipo', el.dataset.metrica);
-          navigator.sendBeacon && navigator.sendBeacon('./api/visitante.php?action=metrica', fd);
-        });
-      });
+      wireMetrics(cont);
     })
     .catch(() => {
       document.getElementById('peekEventos').innerHTML = '<div class="empty">No se pudieron cargar los eventos.</div>';
@@ -281,7 +432,7 @@
         cont.innerHTML = '<div class="empty">Aún no hay boletines públicos.</div>';
         return;
       }
-      const colores = ['#C7252B', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f87171'];
+      const colores = ['#C7252B', '#1d4ed8', '#0d7a56', '#b45309', '#7c3aed', '#be185d'];
       cont.innerHTML = d.boletines.map((b, i) => {
         const f = new Date((b.fecha_creacion || '').replace(' ', 'T'));
         const fecha = isNaN(f) ? '' : f.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -292,18 +443,13 @@
             <div style="font-size:12px;color:var(--mid);line-height:1.5">${esc(b.resumen)}${(b.resumen || '').length >= 220 ? '…' : ''}</div>
             ${fecha ? `<div class="prow"><i class="fas fa-calendar"></i>${fecha}</div>` : ''}
             <div class="pfoot">
-              <span class="badge badge-doc" style="border-left:3px solid ${colores[i % colores.length]}">Público</span>
+              <span class="badge badge-doc" style="color:${colores[i % colores.length]}">Público</span>
               ${enlace ? `<a class="btn btn-ghost btn-sm" href="${esc(enlace)}" target="_blank" rel="noopener" data-metrica="click_boletin"><i class="fas fa-eye"></i> Leer</a>` : ''}
             </div>
           </div>
         </div>`;
       }).join('');
-      cont.querySelectorAll('[data-metrica]').forEach(el => {
-        el.addEventListener('click', () => {
-          const fd = new FormData(); fd.append('tipo', el.dataset.metrica);
-          navigator.sendBeacon && navigator.sendBeacon('./api/visitante.php?action=metrica', fd);
-        });
-      });
+      wireMetrics(cont);
     })
     .catch(() => {
       document.getElementById('peekBoletines').innerHTML = '<div class="empty">No se pudieron cargar los boletines.</div>';
