@@ -36,9 +36,16 @@ Para cada par, el orden correcto es siempre:
 - Mismo patrón. Nota: `dashboard.html` ya fue corregido en una ronda anterior para usar `estadisticas_simple.php` (bug de guion vs guion bajo, ver `CORRECCIONES_2026-08.md`) — confirmar si ese es ahora el canónico de facto antes de decidir cuál eliminar.
 - **Esfuerzo estimado**: 1 hora.
 
-### `empresas-convenio.php` vs `empresas_convenio.php`
-- El nombre sugiere que son copias casi idénticas (mismo código, un guion vs guion bajo) — de los 4 pares, este es el más probable candidato a ser un duplicado literal (no una API "simple" vs "completa"). Verificar con `diff` directo antes de asumir cuál conservar.
-- **Esfuerzo estimado**: 30 minutos si son idénticos, 1 hora si divergieron.
+### ✅ `empresas-convenio.php` vs `empresas_convenio.php` — CONSOLIDADO (2026-09-22)
+- **Hallazgo del audit**: NO eran duplicados literales — divergieron. El de guion bajo (`empresas_convenio.php`) es el canónico (6 consumidores: demo_descuentos, admin-panel, empresas-destacadas-index.js, empresas-destacadas-widget.js, empresas-convenio.js, sign-up.html) y devuelve `nombre_empresa`. El de guion (`empresas-convenio.php`) tenía UN solo consumidor: un fallback dentro de un `catch` en `gestionar_usuarios.php` (`cargarEmpresasSelect`) que leía `nombre`/`razon_social`.
+- **Migración ejecutada**: el fallback ahora apunta al canónico `empresas_convenio.php` con lectura robusta (`nombre_empresa || nombre || razon_social || '(sin nombre)'`, cubre cualquier contrato). Con eso el archivo de guion quedó con CERO consumidores → borrado del repo y producción (404 confirmado; canónico sigue 200).
+- **Nota de riesgo residual**: el fallback vive en un `catch` (solo se dispara si el fetch primario a `empresas.php` falla), difícil de gatillar en producción — pero la migración es estrictamente MÁS robusta que antes (lectura de campo multi-contrato + API canónica probada por 6 consumidores diarios), así que el cambio no puede empeorar el comportamiento.
+
+### Conteos de consumidores frescos (2026-09-22) — pares restantes, TODOS con lado vivo
+- `estadisticas.php` (1) vs `estadisticas_simple.php` (2)
+- `boletines.php` (3) vs `boletines_simple.php` (1)
+- `empresas.php` (5) vs `empresas-simple.php` (5) ← el más grande, 10 consumidores
+Ninguno tiene un lado muerto — cada uno exige la migración consumidor-por-consumidor con verificación en navegador. NO intentarlos en bloque al cierre de sesión.
 
 ## `api/registros_eventos.php` — desajuste de esquema, no duplicado
 

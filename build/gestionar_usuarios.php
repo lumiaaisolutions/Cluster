@@ -1398,9 +1398,12 @@ try {
                 }
             } catch (error) {
                 console.error('Error al cargar empresas:', error);
-                // Fallback: Cargar empresas desde la tabla de convenios
+                // Fallback: Cargar empresas desde la API canónica de convenios
+                // (empresas_convenio.php, guion bajo — la que usan los otros 6
+                // consumidores del sitio). Lectura de nombre robusta: cubre
+                // nombre_empresa (contrato canónico), nombre y razon_social.
                 try {
-                    const fallbackResponse = await fetch('./api/empresas-convenio.php');
+                    const fallbackResponse = await fetch('./api/empresas_convenio.php');
                     const fallbackResult = await fallbackResponse.json();
 
                     const select = document.getElementById('edit_empresa_id');
@@ -1411,7 +1414,7 @@ try {
                         fallbackResult.data.forEach(empresa => {
                             const option = document.createElement('option');
                             option.value = empresa.id;
-                            option.textContent = empresa.nombre || empresa.razon_social;
+                            option.textContent = empresa.nombre_empresa || empresa.nombre || empresa.razon_social || '(sin nombre)';
                             select.appendChild(option);
                         });
                     }
