@@ -99,3 +99,33 @@ existen — no requiere migración manual. Igual `cp-lookup.php` con `cp_catalog
 - El nivel de acceso exacto que tendrá "empresario (no socio)" al ser aprobado
   quedó como campo de segmentación; si en el futuro debe tener permisos
   distintos a un socio, hay que mapearlo a un `rol` o flag de permisos.
+
+## Plantillas de correo (FEATURE-038, rediseño "aire limpio")
+
+Todos los correos del sistema se construyen con dos métodos privados de
+`EmailService`, así que un cambio ahí afecta a los 6 tipos a la vez:
+
+- **`wrapTemplate($titulo, $contenido)`** — el layout base: fondo crema
+  `#efece2`, tarjeta blanca `border-radius:22px` con sombra suave, **logo del
+  Clúster 138px** arriba, encabezado oscuro `#1e293b`, cuerpo gris `#475569`,
+  y pie de ayuda FUERA de la tarjeta ("¿Necesitas ayuda? … atencion@… · Ir al
+  portal").
+- **`ctaButton($url, $texto)`** — botón sólido rojo de marca, redondeado, con
+  fallback VML para Outlook.
+
+Los 6 correos que heredan el diseño: `sendAccountVerification`,
+`sendPasswordReset`, `sendAccountApproved`, `sendAccountRejected`,
+`sendNotification`, `sendNewRegistrationAlert`.
+
+### Reglas de compatibilidad de email (NO romper)
+- Layout con tablas (`role=presentation`), estilos inline, atributo `bgcolor`.
+- **Imagen del logo hospedada** (URL pública `assets/img/apple-icon.png`) —
+  nunca data-URI (Gmail las bloquea) ni ruta relativa.
+- Botón con conditional `<!--[if mso]>` VML para Outlook + versión normal.
+- Light-mode forzado (`color-scheme: light only` + overrides `@media dark`)
+  para que iOS/Apple Mail no invierta los colores.
+- Colores sólidos, no gradientes (varios clientes no los renderizan).
+
+### Verificación
+Preview con reflexión (`ReflectionMethod::setAccessible` sobre los métodos
+privados) → HTML volcado a archivo → visto en Chrome, sin enviar correos.
