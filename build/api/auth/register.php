@@ -128,6 +128,7 @@ try {
         'email' => 'required|email|max:255',
         'password' => 'required|string|min:8|max:255',
         'rol' => 'string|in:admin,empresa,empleado',
+        'perfil_profesional' => 'string|in:empresario_no_socio,socio_cluster,staff_cluster',
         'telefono' => 'string|min:10|max:15',
         'fecha_nacimiento' => 'string',
         'nombre_empresa' => 'string|max:255',
@@ -157,6 +158,7 @@ try {
     $email = $cleanData['email'];
     $password = $data['password']; // Password no sanitizado para validación
     $rol = $cleanData['rol'] ?? 'empleado';
+    $perfil_profesional = $cleanData['perfil_profesional'] ?? '';
     $telefono = $cleanData['telefono'] ?? '';
     $fecha_nacimiento = $cleanData['fecha_nacimiento'] ?? null;
     $nombre_empresa = $cleanData['nombre_empresa'] ?? '';
@@ -200,6 +202,17 @@ try {
         }
     } catch (Exception $e) {
         error_log("Error verificando campo estado_usuario: " . $e->getMessage());
+    }
+
+    // Crear campo perfil_profesional si no existe (segmentación de comunicación)
+    try {
+        $checkPerfil = $conn->query("SHOW COLUMNS FROM usuarios_perfil LIKE 'perfil_profesional'");
+        if ($checkPerfil->rowCount() == 0) {
+            $conn->exec("ALTER TABLE usuarios_perfil ADD COLUMN perfil_profesional VARCHAR(30) DEFAULT NULL");
+            error_log("Campo perfil_profesional creado automáticamente");
+        }
+    } catch (Exception $e) {
+        error_log("Error verificando campo perfil_profesional: " . $e->getMessage());
     }
     
     // Verificar que el email no exista
@@ -245,10 +258,10 @@ try {
     
     $insertQuery = "INSERT INTO usuarios_perfil
                     (empresa_id, nombre, apellidos, email, password, telefono, fecha_nacimiento,
-                     nombre_empresa, rol, biografia, direccion, ciudad, estado, codigo_postal,
+                     nombre_empresa, rol, perfil_profesional, biografia, direccion, ciudad, estado, codigo_postal,
                      pais, telefono_emergencia, contacto_emergencia, estado_usuario, cargo, departamento, activo)
                     VALUES (:empresa_id, :nombre, :apellidos, :email, :password, :telefono, :fecha_nacimiento,
-                            :nombre_empresa, :rol, :biografia, :direccion, :ciudad, :estado, :codigo_postal,
+                            :nombre_empresa, :rol, :perfil_profesional, :biografia, :direccion, :ciudad, :estado, :codigo_postal,
                             :pais, :telefono_emergencia, :contacto_emergencia, :estado_usuario, :cargo, :departamento, 1)";
     
     $insertStmt = $conn->prepare($insertQuery);
@@ -264,6 +277,7 @@ try {
         ':fecha_nacimiento' => $fecha_nacimiento,
         ':nombre_empresa' => $nombre_empresa,
         ':rol' => $rol,
+        ':perfil_profesional' => $perfil_profesional,
         ':biografia' => $biografia,
         ':direccion' => $direccion,
         ':ciudad' => $ciudad,
@@ -344,6 +358,45 @@ try {
             } catch (Exception $emailEx) {
                 // Fallo de correo — el registro ya fue exitoso, solo loguear
                 error_log("⚠️ Error al enviar correo de bienvenida (registro OK): " . $emailEx->getMessage());
+            }
+            // ═══════════════════════════════════════════════════════════
+
+            // ═══════════════════════════════════════════════════════════
+            // HOOK: Aviso a administradores con todos los datos (best-effort)
+            // ═══════════════════════════════════════════════════════════
+            try {
+                $emailServicePath = dirname(dirname(__DIR__)) . '/services/EmailService.php';
+                if (file_exists($emailServicePath)) {
+                    require_once $emailServicePath;
+                    $perfilesLegibles = [
+                        'empresario_no_socio' => 'Empresario (no socio)',
+                        'socio_cluster'       => 'Socio Clúster',
+                        'staff_cluster'       => 'Staff y personal Clúster',
+                    ];
+                    EmailService::sendNewRegistrationAlert([
+                        'Nombre'               => trim($nombre . ' ' . $apellidos),
+                        'Email'                => $email,
+                        'Perfil profesional'   => $perfilesLegibles[$perfil_profesional] ?? $perfil_profesional,
+                        'Tipo de cuenta'       => $rol === 'empresa' ? 'Socio / Empresa' : 'Staff CLAUT',
+                        'Empresa'              => $nombre_empresa,
+                        'Cargo'                => $cargo,
+                        'Departamento'         => $departamento,
+                        'Teléfono'             => $telefono,
+                        'Fecha de nacimiento'  => $fecha_nacimiento,
+                        'País'                 => $pais,
+                        'Estado'               => $estado,
+                        'Municipio'            => $ciudad,
+                        'Dirección'            => $direccion,
+                        'Código postal'        => $codigo_postal,
+                        'Contacto de emergencia' => $contacto_emergencia,
+                        'Tel. de emergencia'   => $telefono_emergencia,
+                        'Biografía'            => $biografia,
+                        'Fecha de registro'    => date('d/m/Y H:i'),
+                    ]);
+                    error_log("✅ Aviso de nuevo registro enviado a administradores ($email)");
+                }
+            } catch (Exception $adminEx) {
+                error_log("⚠️ Error al avisar a admins del registro (registro OK): " . $adminEx->getMessage());
             }
             // ═══════════════════════════════════════════════════════════
 

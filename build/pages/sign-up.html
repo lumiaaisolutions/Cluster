@@ -360,11 +360,29 @@
                             <div class="h-px bg-slate-100 flex-1"></div>
                         </div>
 
+                        <div class="porsche-input-group mb-1">
+                            <i class="fas fa-id-badge porsche-input-icon"></i>
+                            <select name="perfil_profesional" id="perfil_profesional" required
+                                class="porsche-input appearance-none">
+                                <option value="">Perfil profesional *</option>
+                                <option value="empresario_no_socio">Soy empresario (no socio)</option>
+                                <option value="socio_cluster">Soy socio Clúster</option>
+                                <option value="staff_cluster">Staff y personal Clúster</option>
+                            </select>
+                            <i
+                                class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                            <div class="error-field" id="perfil_profesional-error"></div>
+                        </div>
+                        <p class="text-[10px] text-slate-400 leading-relaxed px-2 mb-4">
+                            Selecciona cómo te identificaremos — esto nos ayuda a enviarte la
+                            información correcta de acuerdo al perfil que elijas.
+                        </p>
+
                         <div class="porsche-input-group mb-4">
                             <i class="fas fa-user-tag porsche-input-icon"></i>
                             <select name="rol" id="rol" required onchange="toggleEmpresaFields()"
                                 class="porsche-input appearance-none">
-                                <option value="">Selecciona tu perfil</option>
+                                <option value="">Tipo de cuenta *</option>
                                 <option value="empleado">Staff CLAUT</option>
                                 <option value="empresa">Socio / Empresa</option>
                             </select>
@@ -471,26 +489,58 @@
                                 <div class="h-px bg-slate-100 flex-1"></div>
                             </div>
 
-                            <div class="porsche-input-group">
+                            <!-- País (combo, México preseleccionado; JS puebla la lista) -->
+                            <div class="porsche-input-group mb-4">
+                                <i class="fas fa-globe-americas porsche-input-icon"></i>
+                                <select name="pais" id="pais" class="porsche-input appearance-none"
+                                    onchange="onPaisChange()">
+                                    <option value="México" selected>México</option>
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                            </div>
+
+                            <!-- Estado + Municipio (combos en México; texto libre en otros países) -->
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div class="relative">
+                                    <select name="estado" id="estado_select" class="porsche-input appearance-none"
+                                        style="padding-left: 1.25rem;">
+                                        <option value="">Estado *</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                                    <input type="text" name="estado" id="estado_input" placeholder="Estado / Provincia"
+                                        class="porsche-input hidden" style="padding-left: 1.25rem;" disabled>
+                                </div>
+                                <div class="relative">
+                                    <select name="ciudad" id="ciudad_select" class="porsche-input appearance-none"
+                                        style="padding-left: 1.25rem;" onchange="onMunicipioChange()">
+                                        <option value="">Municipio (escribe tu C.P.)</option>
+                                        <option value="__otro">Otro — escribirlo…</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                                    <input type="text" name="ciudad" id="ciudad_input" placeholder="Municipio"
+                                        class="porsche-input hidden" style="padding-left: 1.25rem;" disabled>
+                                </div>
+                            </div>
+
+                            <!-- Dirección postal de la empresa -->
+                            <div class="porsche-input-group mb-4">
                                 <i class="fas fa-map-marker-alt porsche-input-icon"></i>
                                 <input type="text" name="direccion" id="direccion"
-                                    placeholder="Dirección / Calle y Número" class="porsche-input">
+                                    placeholder="Dirección postal de tu empresa (calle y número)" class="porsche-input">
                                 <div class="error-field" id="direccion-error"></div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4 mb-4">
-                                <input type="text" name="ciudad" id="ciudad" placeholder="Ciudad" class="porsche-input"
-                                    style="padding-left: 1.25rem;">
-                                <input type="text" name="estado" id="estado" placeholder="Estado" class="porsche-input"
-                                    style="padding-left: 1.25rem;">
+                            <!-- Código postal: calcula estado y municipio automáticamente -->
+                            <div class="porsche-input-group">
+                                <i class="fas fa-map-pin porsche-input-icon"></i>
+                                <input type="text" name="codigo_postal" id="codigo_postal" inputmode="numeric"
+                                    maxlength="5" placeholder="Código Postal" class="porsche-input"
+                                    autocomplete="postal-code">
+                                <div class="error-field" id="codigo_postal-error"></div>
                             </div>
-
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="text" name="codigo_postal" id="codigo_postal" placeholder="Código Postal"
-                                    class="porsche-input" style="padding-left: 1.25rem;">
-                                <input type="text" name="pais" id="pais" value="México" class="porsche-input"
-                                    style="padding-left: 1.25rem;">
-                            </div>
+                            <p class="text-[10px] text-slate-400 px-2 -mt-2 mb-2" id="cpHint">
+                                Al escribir tu C.P. llenamos Estado y Municipio por ti.
+                            </p>
                         </div>
 
                         <!-- Datos Emergencia & Bio Section -->
@@ -710,10 +760,109 @@
         window.addEventListener('load', applySignupLayout);
         window.addEventListener('resize', applySignupLayout);
 
+        // ============================================================
+        // Ubicación: país (combo completo), estados MX, municipio por C.P.
+        // ============================================================
+        const ESTADOS_MX = ['Aguascalientes','Baja California','Baja California Sur','Campeche','Chiapas','Chihuahua','Ciudad de México','Coahuila','Colima','Durango','Estado de México','Guanajuato','Guerrero','Hidalgo','Jalisco','Michoacán','Morelos','Nayarit','Nuevo León','Oaxaca','Puebla','Querétaro','Quintana Roo','San Luis Potosí','Sinaloa','Sonora','Tabasco','Tamaulipas','Tlaxcala','Veracruz','Yucatán','Zacatecas'];
+        const PAISES = ['México','Estados Unidos','Canadá','Alemania','Argentina','Australia','Austria','Bélgica','Bolivia','Brasil','Chile','China','Colombia','Corea del Sur','Costa Rica','Cuba','Dinamarca','Ecuador','El Salvador','Emiratos Árabes Unidos','España','Filipinas','Finlandia','Francia','Grecia','Guatemala','Honduras','Hungría','India','Indonesia','Irlanda','Israel','Italia','Japón','Malasia','Marruecos','Nicaragua','Noruega','Nueva Zelanda','Países Bajos','Panamá','Paraguay','Perú','Polonia','Portugal','Puerto Rico','Reino Unido','República Checa','República Dominicana','Rumania','Rusia','Singapur','Sudáfrica','Suecia','Suiza','Tailandia','Taiwán','Turquía','Ucrania','Uruguay','Venezuela','Vietnam','Otro'];
+
+        function initUbicacion() {
+            const paisSel = document.getElementById('pais');
+            const estadoSel = document.getElementById('estado_select');
+            if (!paisSel || !estadoSel) return;
+            // poblar países (México ya viene como primera opción seleccionada)
+            PAISES.slice(1).forEach(p => {
+                const o = document.createElement('option'); o.value = p; o.textContent = p;
+                paisSel.appendChild(o);
+            });
+            // poblar estados MX
+            ESTADOS_MX.forEach(e => {
+                const o = document.createElement('option'); o.value = e; o.textContent = e;
+                estadoSel.appendChild(o);
+            });
+            // lookup de CP con debounce
+            const cpInput = document.getElementById('codigo_postal');
+            let cpTimer = null;
+            cpInput.addEventListener('input', () => {
+                const cp = cpInput.value.replace(/\D/g, '');
+                cpInput.value = cp;
+                clearTimeout(cpTimer);
+                if (cp.length === 5 && document.getElementById('pais').value === 'México') {
+                    cpTimer = setTimeout(() => buscarCP(cp), 350);
+                }
+            });
+        }
+
+        function setCpHint(texto, tipo) {
+            const hint = document.getElementById('cpHint');
+            if (!hint) return;
+            hint.textContent = texto;
+            hint.className = 'text-[10px] px-2 -mt-2 mb-2 ' +
+                (tipo === 'ok' ? 'text-emerald-600' : tipo === 'err' ? 'text-amber-600' : 'text-slate-400');
+        }
+
+        async function buscarCP(cp) {
+            setCpHint('Buscando tu ubicación…', '');
+            try {
+                const r = await fetch('../api/cp-lookup.php?cp=' + cp);
+                const d = await r.json();
+                if (!d.success) {
+                    setCpHint('No encontramos ese C.P. — elige tu estado y municipio manualmente.', 'err');
+                    return;
+                }
+                const estadoSel = document.getElementById('estado_select');
+                if ([...estadoSel.options].some(o => o.value === d.estado)) {
+                    estadoSel.value = d.estado;
+                }
+                const munSel = document.getElementById('ciudad_select');
+                if (d.municipio) {
+                    munSel.innerHTML = '';
+                    const o = document.createElement('option'); o.value = d.municipio; o.textContent = d.municipio;
+                    const otro = document.createElement('option'); otro.value = '__otro'; otro.textContent = 'Otro — escribirlo…';
+                    munSel.appendChild(o); munSel.appendChild(otro);
+                    munSel.value = d.municipio;
+                    setCpHint('Ubicación encontrada: ' + d.municipio + ', ' + d.estado + '. Puedes corregirla si no coincide.', 'ok');
+                } else {
+                    onMunicipioChange(true); // pasar a captura manual
+                    setCpHint('Estado detectado: ' + d.estado + '. Escribe tu municipio.', 'ok');
+                }
+            } catch (e) {
+                setCpHint('No se pudo consultar el C.P. — captura tu ubicación manualmente.', 'err');
+            }
+        }
+
+        function onPaisChange() {
+            const esMx = document.getElementById('pais').value === 'México';
+            const estadoSel = document.getElementById('estado_select');
+            const estadoInp = document.getElementById('estado_input');
+            const munSel = document.getElementById('ciudad_select');
+            const munInp = document.getElementById('ciudad_input');
+            estadoSel.classList.toggle('hidden', !esMx); estadoSel.disabled = !esMx;
+            estadoInp.classList.toggle('hidden', esMx); estadoInp.disabled = esMx;
+            munSel.classList.toggle('hidden', !esMx); munSel.disabled = !esMx;
+            munInp.classList.toggle('hidden', esMx); munInp.disabled = esMx;
+            document.getElementById('cpHint').style.display = esMx ? '' : 'none';
+            // ocultar los chevrons de los selects cuando están en modo texto
+            estadoSel.parentElement.querySelector('.fa-chevron-down').style.display = esMx ? '' : 'none';
+            munSel.parentElement.querySelector('.fa-chevron-down').style.display = esMx ? '' : 'none';
+        }
+
+        function onMunicipioChange(forzarManual) {
+            const munSel = document.getElementById('ciudad_select');
+            const munInp = document.getElementById('ciudad_input');
+            if (forzarManual === true || munSel.value === '__otro') {
+                munSel.classList.add('hidden'); munSel.disabled = true;
+                munInp.classList.remove('hidden'); munInp.disabled = false;
+                munSel.parentElement.querySelector('.fa-chevron-down').style.display = 'none';
+                munInp.focus();
+            }
+        }
+
         // Logic Initialization
         document.addEventListener('DOMContentLoaded', function () {
             applySignupLayout(); // re-aplicar tras DOM listo
             initPremiumAnimations();
+            initUbicacion();
 
             // Custom checkbox logic
             const checkbox = document.getElementById('accept_terms');
@@ -836,7 +985,11 @@
                 if (!data.nombre || data.nombre.length < 2) { showFieldError('nombre', 'Mínimo 2 caracteres'); isValid = false; }
                 if (!data.apellidos || data.apellidos.length < 2) { showFieldError('apellidos', 'Mínimo 2 caracteres'); isValid = false; }
                 if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { showFieldError('email', 'Email inválido'); isValid = false; }
+                if (!data.perfil_profesional) { showFieldError('perfil_profesional', 'Selecciona tu perfil profesional'); isValid = false; }
                 if (!data.rol) { showFieldError('rol', 'Selecciona un tipo'); isValid = false; }
+                if (data.codigo_postal && !/^\d{5}$/.test(data.codigo_postal) && data.pais === 'México') {
+                    showFieldError('codigo_postal', 'El C.P. debe tener 5 dígitos'); isValid = false;
+                }
                 if (data.rol === 'empresa') {
                     if (isNuevaEmpresaMode()) {
                         const nombreNueva = (data.nueva_empresa_nombre || '').trim();

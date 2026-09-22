@@ -261,6 +261,60 @@ class EmailService
         return self::sendNotification($adminEmail, 'Administrador', $titulo, $contenido);
     }
 
+    /**
+     * Aviso a los administradores de un nuevo registro, con todos los datos
+     * capturados en el formulario (excepto la contraseña). Se envía a las dos
+     * bandejas administrativas acordadas.
+     *
+     * @param array $datos pares etiqueta => valor ya legibles para humanos
+     */
+    public static function sendNewRegistrationAlert(array $datos): array
+    {
+        $destinatarios = [
+            EnvLoader::get('MAIL_ADMIN', 'auxsistemas@clautmetropolitano.mx'),
+            'atencion@clautedomex.mx',
+        ];
+
+        $filas = '';
+        foreach ($datos as $etiqueta => $valor) {
+            if ($valor === null || $valor === '') {
+                $valor = '—';
+            }
+            $filas .= '<tr>'
+                . '<td style="padding:8px 14px;border-bottom:1px solid #e2e8f0;font-size:12px;font-weight:700;'
+                . 'color:#64748b;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;">'
+                . htmlspecialchars((string) $etiqueta) . '</td>'
+                . '<td style="padding:8px 14px;border-bottom:1px solid #e2e8f0;font-size:14px;color:' . self::BRAND_DARK . ';">'
+                . nl2br(htmlspecialchars((string) $valor)) . '</td>'
+                . '</tr>';
+        }
+
+        $body = self::wrapTemplate(
+            'Nuevo registro en la Intranet',
+            "
+            <p style=\"color:#475569;font-size:15px;line-height:1.7;\">
+                Se recibió una nueva solicitud de registro. La cuenta queda
+                <strong>pendiente de aprobación</strong> en el panel de usuarios.
+            </p>
+            <table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;border-collapse:collapse;background:#f8fafc;border-radius:8px;overflow:hidden;\">
+                $filas
+            </table>
+            " . self::ctaButton(self::APP_URL . '/gestionar_usuarios.php', 'Revisar en el panel')
+        );
+
+        $resultado = ['success' => false, 'message' => 'sin destinatarios'];
+        foreach ($destinatarios as $email) {
+            $r = self::send($email, 'Administración Clúster', 'Nuevo registro pendiente — Clúster Intranet', $body);
+            // basta con que uno se entregue para considerarlo enviado
+            if (!empty($r['success'])) {
+                $resultado = $r;
+            } elseif (empty($resultado['success'])) {
+                $resultado = $r;
+            }
+        }
+        return $resultado;
+    }
+
     // ════════════════════════════════════════════════════════════════════
     // HELPERS DE PLANTILLA HTML
     // ════════════════════════════════════════════════════════════════════
