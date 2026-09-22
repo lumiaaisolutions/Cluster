@@ -7,7 +7,7 @@
 class BoletinesManager {
     constructor() {
         this.config = window.BoletinesConfig || {};
-        this.apiBase = this.config.apiEndpoints?.boletines || './api/boletines.php';
+        this.apiBase = this.config.apiEndpoints?.boletines || './api/boletines_simple.php';
         this.currentBoletin = null;
         this.boletines = [];
         this.cache = new Map();

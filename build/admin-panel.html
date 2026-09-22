@@ -2896,7 +2896,7 @@ Beneficios: ${company.beneficios || 'N/A'}`;
 
                         // Cargar estadísticas de boletines
                         try {
-                            const bulletinsResponse = await fetch('./api/boletines.php', {
+                            const bulletinsResponse = await fetch('./api/boletines_simple.php', {
                                 credentials: 'include'
                             });
                             if (bulletinsResponse.ok) {

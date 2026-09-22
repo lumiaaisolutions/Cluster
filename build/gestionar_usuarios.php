@@ -1377,20 +1377,27 @@ try {
         // Función para cargar empresas en el select
         async function cargarEmpresasSelect() {
             try {
-                const response = await fetch('./api/empresas.php');
+                // API canónica: empresas-simple.php (aplica filtro de privacidad por rol;
+                // como admin devuelve todas). Forma de respuesta: data puede ser array plano
+                // o {empresas:[...]} anidado — se lee de forma robusta a ambas.
+                const response = await fetch('./api/empresas-simple.php?action=listar');
                 const result = await response.json();
 
                 const select = document.getElementById('edit_empresa_id');
 
-                if (result.success && result.data) {
+                const empresasArr = Array.isArray(result.data)
+                    ? result.data
+                    : (result.data && Array.isArray(result.data.empresas) ? result.data.empresas : null);
+
+                if (result.success && empresasArr) {
                     // Limpiar opciones existentes excepto la primera
                     select.innerHTML = '<option value="">Seleccionar empresa</option>';
 
-                    // Agregar opciones de empresas
-                    result.data.forEach(empresa => {
+                    // Agregar opciones de empresas (nombre robusto: nombre | nombre_empresa)
+                    empresasArr.forEach(empresa => {
                         const option = document.createElement('option');
                         option.value = empresa.id;
-                        option.textContent = empresa.nombre;
+                        option.textContent = empresa.nombre || empresa.nombre_empresa || '(sin nombre)';
                         select.appendChild(option);
                     });
                 } else {

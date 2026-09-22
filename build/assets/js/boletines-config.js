@@ -6,7 +6,7 @@
 window.BoletinesConfig = {
     // URLs de la API
     apiEndpoints: {
-        boletines: './api/boletines.php',
+        boletines: './api/boletines_simple.php',
         archivos: './api/boletines_archivos.php',
         upload: './api/upload.php'
     },

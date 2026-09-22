@@ -609,9 +609,7 @@
             try {
                 // Intentar varios endpoints para encontrar el que funciona
                 const endpoints = [
-                    './api/empresas.php',
-                    './api/empresas.php?limit=100',
-                    './build/api/empresas.php',
+                    './api/empresas-simple.php?action=listar',
                     './api/empresas_convenio.php?action=listar&activo=1&con_convenio=1',
                     './api/empresas_convenio.php?activo=1&limit=100'
                 ];
@@ -672,6 +670,9 @@
                 if (data.success && data.data && Array.isArray(data.data)) {
                     empresasArray = data.data;
                     console.log('✅ Usando data.data (formato success/data)');
+                } else if (data.data && Array.isArray(data.data.empresas)) {
+                    empresasArray = data.data.empresas;
+                    console.log('✅ Usando data.data.empresas (empresas-simple.php anidado)');
                 } else if (Array.isArray(data.data)) {
                     empresasArray = data.data;
                     console.log('✅ Usando data.data (array directo)');
