@@ -16,7 +16,7 @@ window.I18N = {
     'hero.title1': 'Motor de',
     'hero.title2': 'vinculación',
     'hero.title3': 'automotriz.',
-    'hero.lead': 'Conectamos empresas, talento y tecnología en la zona metropolitana del Valle de México, CDMX e Hidalgo. La red más sólida de la industria, una sola plataforma.',
+    'hero.lead': 'Conectamos empresas, talento y tecnología en CDMX, Estado de México e Hidalgo. La red automotriz más sólida del país.',
     'hero.cta1': 'Únete al clúster',
     'hero.cta2': 'Iniciar sesión',
     'hero.bar1': 'Estado de México',
@@ -44,7 +44,7 @@ window.I18N = {
 
     'sectors.kicker': 'Cadena de valor',
     'sectors.title': 'Toda la industria, en un solo ecosistema.',
-    'sectors.lead': 'Desde la materia prima hasta el ensamble final, los servicios postventa y la electromovilidad. 24 sectores conectados.',
+    'sectors.lead': 'De la materia prima al ensamble final. 24 sectores conectados.',
     'sectors.search': 'Buscar sector…',
 
     'benefits.kicker': 'Ser miembro',
@@ -79,7 +79,7 @@ window.I18N = {
 
     'cta.kicker': 'Listo para conectar',
     'cta.title': 'Forma parte del clúster automotriz más grande del centro de México.',
-    'cta.lead': 'Cuéntanos sobre tu empresa. Un asesor te contactará en menos de 24 horas con un plan de afiliación a la medida.',
+    'cta.lead': 'Cuéntanos sobre tu empresa y un asesor te contactará en menos de 24 horas.',
     'cta.f.name': 'Nombre',
     'cta.f.company': 'Empresa',
     'cta.f.email': 'Email corporativo',
@@ -103,7 +103,7 @@ window.I18N = {
     'foot.cookies': 'Cookies',
 
     'univ.kicker': 'Universo Clúster Intranet',
-    'univ.title': 'Plataforma de contactos con empresas del ámbito nacional e internacional.',
+    'univ.title': 'Contactos con empresas a nivel nacional e internacional.',
     'univ.lead': 'Seis áreas operativas, un solo acceso.',
     'univ.b1.t': 'Ingeniería',
     'univ.b1.d': 'Acompañamiento técnico en proyectos de mejora y transferencia tecnológica.',
@@ -142,7 +142,7 @@ window.I18N = {
     'hero.title1': 'The engine of',
     'hero.title2': 'automotive',
     'hero.title3': 'connection.',
-    'hero.lead': 'We connect companies, talent and technology across Greater Mexico City, the State of Mexico and Hidalgo. The strongest network in the industry, one single platform.',
+    'hero.lead': 'We connect companies, talent and technology across Mexico City, the State of Mexico and Hidalgo. The strongest automotive network in the country.',
     'hero.cta1': 'Join the cluster',
     'hero.cta2': 'Sign in',
     'hero.bar1': 'State of Mexico',
@@ -170,7 +170,7 @@ window.I18N = {
 
     'sectors.kicker': 'Value chain',
     'sectors.title': 'The entire industry in one ecosystem.',
-    'sectors.lead': 'From raw materials to final assembly, after-sales and electromobility. 24 connected sectors.',
+    'sectors.lead': 'From raw materials to final assembly. 24 connected sectors.',
     'sectors.search': 'Search sector…',
 
     'benefits.kicker': 'Membership',
@@ -229,7 +229,7 @@ window.I18N = {
     'foot.cookies': 'Cookies',
 
     'univ.kicker': 'Clúster Intranet universe',
-    'univ.title': 'A platform of contacts with companies at national and international scale.',
+    'univ.title': 'Contacts with companies at national and international scale.',
     'univ.lead': 'Six operating areas, one single access point.',
     'univ.b1.t': 'Engineering',
     'univ.b1.d': 'Technical support on improvement and technology transfer projects.',
