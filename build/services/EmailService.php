@@ -325,14 +325,17 @@ class EmailService
     private static function wrapTemplate(string $titulo, string $contenido): string
     {
         $year      = date('Y');
-        $brandRed  = self::BRAND_RED;
         $brandDark = self::BRAND_DARK;
         $brandName = self::BRAND_NAME;
         $appUrl    = self::APP_URL;
+        $logo      = $appUrl . '/assets/img/apple-icon.png';
+        $soporte   = 'atencion@clautedomex.mx';
 
-        // NOTA: emails usan colores SÓLIDOS (no gradientes) y atributo bgcolor para
-        // máxima compatibilidad con Apple Mail, Gmail, Outlook. Forzamos light mode
-        // para evitar que el cliente invierta colores automáticamente.
+        // Diseño minimalista "aire limpio": fondo crema, tarjeta blanca con
+        // logo del Clúster arriba, encabezado oscuro, cuerpo gris y pie de
+        // ayuda FUERA de la tarjeta. Colores SÓLIDOS + bgcolor + tablas para
+        // máxima compatibilidad (Apple Mail, Gmail, Outlook). Light mode
+        // forzado para evitar inversión automática de colores.
         return <<<HTML
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml">
@@ -347,71 +350,67 @@ class EmailService
         body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
         table { border-collapse: collapse; mso-table-lspace: 0; mso-table-rspace: 0; }
         img { border: 0; -ms-interpolation-mode: bicubic; }
-        /* Forzar light mode en Apple Mail / iOS Mail */
+        a { color: #C7252B; }
         @media (prefers-color-scheme: dark) {
-            .light-bg     { background-color: #f1f5f9 !important; }
-            .card         { background-color: #ffffff !important; }
-            .header-cell  { background-color: #C7252B !important; }
-            .text-dark    { color: #1e293b !important; }
-            .text-muted   { color: #475569 !important; }
-            .text-light-muted { color: #94a3b8 !important; }
-            .cta-btn      { background-color: #C7252B !important; color: #ffffff !important; }
+            .cream-bg  { background-color: #efece2 !important; }
+            .card      { background-color: #ffffff !important; }
+            .h-dark    { color: #1e293b !important; }
+            .t-muted   { color: #475569 !important; }
+            .t-faint   { color: #9aa3af !important; }
+            .cta-btn   { background-color: #C7252B !important; color: #ffffff !important; }
+        }
+        @media only screen and (max-width: 620px) {
+            .card-pad { padding: 34px 26px !important; }
         }
     </style>
 </head>
-<body class="light-bg" style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background-color:#f1f5f9; color:#1e293b;" bgcolor="#f1f5f9">
+<body class="cream-bg" style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background-color:#efece2; color:#1e293b;" bgcolor="#efece2">
 
-    <!-- Preheader hidden -->
+    <!-- Preheader oculto -->
     <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">$titulo</div>
 
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="light-bg" style="background-color:#f1f5f9;" bgcolor="#f1f5f9">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="cream-bg" style="background-color:#efece2;" bgcolor="#efece2">
         <tr>
-            <td align="center" style="padding: 40px 20px;">
+            <td align="center" style="padding: 44px 20px;">
 
-                <!-- Card -->
-                <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="card" style="background-color:#ffffff; border-radius:16px; overflow:hidden; max-width:600px;" bgcolor="#ffffff">
-
-                    <!-- Header (color sólido, no gradient) -->
+                <!-- Tarjeta blanca -->
+                <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" class="card" style="background-color:#ffffff; border-radius:22px; max-width:560px; box-shadow:0 10px 40px rgba(30,41,59,0.08);" bgcolor="#ffffff">
                     <tr>
-                        <td class="header-cell" align="center" style="background-color:$brandRed; padding: 36px 40px;" bgcolor="$brandRed">
-                            <p style="margin:0; color:#ffffff; font-size:11px; font-weight:bold; letter-spacing:3px; text-transform:uppercase; opacity:0.92;">
-                                Clúster Automotriz Metropolitano
-                            </p>
-                            <h1 class="text-light" style="margin:10px 0 0; color:#ffffff; font-size:24px; font-weight:bold; letter-spacing:-0.3px; line-height:1.3;">
+                        <td class="card-pad" style="padding: 44px 46px;">
+
+                            <!-- Logo del Clúster -->
+                            <img src="$logo" width="138" height="138" alt="Clúster Metropolitano" style="display:block; width:138px; height:138px; border-radius:50%; margin:0 0 26px;">
+
+                            <!-- Encabezado -->
+                            <h1 class="h-dark" style="margin:0 0 18px; color:#1e293b; font-size:22px; font-weight:bold; letter-spacing:-0.4px; line-height:1.3;">
                                 $titulo
                             </h1>
+
+                            <!-- Cuerpo -->
+                            <div class="t-muted" style="color:#475569; font-size:15px; line-height:1.7;">
+                                $contenido
+                            </div>
+
                         </td>
                     </tr>
-
-                    <!-- Body -->
-                    <tr>
-                        <td class="text-dark" style="padding: 36px 40px; color:#1e293b; font-size:15px; line-height:1.65;">
-                            $contenido
-                        </td>
-                    </tr>
-
-                    <!-- Divider -->
-                    <tr>
-                        <td style="padding: 0 40px;">
-                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="border-top:1px solid #e2e8f0; font-size:0; line-height:0;">&nbsp;</td></tr></table>
-                        </td>
-                    </tr>
-
-                    <!-- Footer -->
-                    <tr>
-                        <td align="center" class="card" style="padding: 24px 40px 32px; background-color:#ffffff;" bgcolor="#ffffff">
-                            <p class="text-muted" style="margin:0; color:#64748b; font-size:12px; line-height:1.7;">
-                                Este es un correo automático del sistema Intranet del<br>
-                                <strong class="text-dark" style="color:$brandDark;">$brandName</strong>.<br>
-                                Por favor no respondas directamente a este mensaje.
-                            </p>
-                            <p class="text-light-muted" style="margin: 14px 0 0; color:#94a3b8; font-size:11px;">
-                                © $year $brandName &middot; <a href="$appUrl" style="color:#94a3b8; text-decoration:underline;">intranet.clautmetropolitano.mx</a>
-                            </p>
-                        </td>
-                    </tr>
-
                 </table>
+
+                <!-- Pie de ayuda (fuera de la tarjeta) -->
+                <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
+                    <tr>
+                        <td align="center" style="padding: 26px 24px 0;">
+                            <p class="t-faint" style="margin:0; color:#9aa3af; font-size:12.5px; line-height:1.6;">
+                                ¿Necesitas ayuda? Escríbenos a <a href="mailto:$soporte" style="color:#64748b; text-decoration:none; font-weight:600;">$soporte</a>
+                                &nbsp;&middot;&nbsp;
+                                <a href="$appUrl" style="color:#64748b; text-decoration:underline;">Ir al portal</a>
+                            </p>
+                            <p class="t-faint" style="margin:10px 0 0; color:#b4bcc7; font-size:11px;">
+                                © $year $brandName
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
             </td>
         </tr>
     </table>
@@ -421,23 +420,23 @@ HTML;
     }
 
     /**
-     * Genera un botón CTA — color sólido + bordes para máxima compatibilidad
+     * Botón CTA — sólido color de marca, redondeado, compatible con Outlook (VML).
      */
     private static function ctaButton(string $url, string $texto): string
     {
         $brandRed = self::BRAND_RED;
         return <<<HTML
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 32px 0;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 28px 0 6px;">
     <tr>
-        <td align="center">
+        <td align="left">
             <!--[if mso]>
-            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="$url" style="height:48px;v-text-anchor:middle;width:240px;" arcsize="29%" stroke="f" fillcolor="$brandRed">
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="$url" style="height:46px;v-text-anchor:middle;width:220px;" arcsize="26%" stroke="f" fillcolor="$brandRed">
                 <w:anchorlock/>
                 <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:15px;font-weight:bold;">$texto</center>
             </v:roundrect>
             <![endif]-->
             <!--[if !mso]><!-- -->
-            <a href="$url" class="cta-btn" style="display:inline-block; background-color:$brandRed; color:#ffffff !important; text-decoration:none; font-weight:bold; font-size:15px; padding: 14px 36px; border-radius:12px; border: 2px solid $brandRed; mso-padding-alt:0; letter-spacing:0.3px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;" bgcolor="$brandRed">
+            <a href="$url" class="cta-btn" style="display:inline-block; background-color:$brandRed; color:#ffffff !important; text-decoration:none; font-weight:bold; font-size:15px; padding: 14px 32px; border-radius:12px; mso-padding-alt:0; letter-spacing:0.2px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;" bgcolor="$brandRed">
                 <span style="color:#ffffff !important; text-decoration:none;">$texto</span>
             </a>
             <!--<![endif]-->
